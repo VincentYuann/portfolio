@@ -175,9 +175,9 @@ export const ResumeEditor: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="font-serif text-2xl text-light-ink dark:text-dark-ink font-normal">
             Resume &amp; CV
@@ -189,7 +189,7 @@ export const ResumeEditor: React.FC = () => {
         </div>
 
         {/* Save button */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 flex-wrap">
           <Button
             type="button"
             variant={
@@ -219,7 +219,7 @@ export const ResumeEditor: React.FC = () => {
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (
-            <p className="font-sans text-[11px] text-red-400 text-right max-w-xs">{errorMsg}</p>
+            <p className="font-sans text-[11px] text-red-400 text-right w-full max-w-xs">{errorMsg}</p>
           )}
         </div>
       </div>
@@ -230,21 +230,23 @@ export const ResumeEditor: React.FC = () => {
         onValueChange={(val) => setTab(val as Tab)}
         className="w-full"
       >
-        <TabsList className="h-10">
-          <TabsTrigger value="upload" className="gap-2">
-            <Upload className="w-3.5 h-3.5" />
-            <span>Upload PDF / .tex</span>
+        <TabsList className="grid grid-cols-2 w-full sm:w-auto sm:inline-flex h-auto p-1 gap-1">
+          <TabsTrigger value="upload" className="gap-1.5 sm:gap-2 py-2 px-2.5 sm:px-3.5 justify-center">
+            <Upload className="w-3.5 h-3.5 shrink-0 text-terracotta" />
+            <span className="text-xs font-medium">
+              Upload PDF<span className="hidden sm:inline"> / .tex</span>
+            </span>
           </TabsTrigger>
-          <TabsTrigger value="editor" className="gap-2">
-            <FileCode2 className="w-3.5 h-3.5" />
-            <span>LaTeX Editor</span>
+          <TabsTrigger value="editor" className="gap-1.5 sm:gap-2 py-2 px-2.5 sm:px-3.5 justify-center">
+            <FileCode2 className="w-3.5 h-3.5 shrink-0" />
+            <span className="text-xs font-medium">LaTeX Editor</span>
           </TabsTrigger>
         </TabsList>
       </Tabs>
 
       {/* Upload panel */}
       {tab === 'upload' && (
-        <div className="relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-6 sm:p-8 shadow-xs classical-card-frame">
+        <div className="relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-4 sm:p-6 md:p-8 shadow-xs classical-card-frame">
           <CornerBrackets size="md" />
           <input
             ref={fileInputRef}
@@ -255,8 +257,8 @@ export const ResumeEditor: React.FC = () => {
           />
 
           {uploadedFile ? (
-            <div className="flex items-center gap-4 p-5 rounded-xl bg-light-surface dark:bg-dark-surface-muted border border-bamboo/30">
-              <FileText className="w-8 h-8 text-bamboo shrink-0" />
+            <div className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl bg-light-surface dark:bg-dark-surface-muted border border-bamboo/30">
+              <FileText className="w-7 h-7 sm:w-8 sm:h-8 text-bamboo shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="font-sans text-sm font-medium text-light-ink dark:text-dark-ink truncate">
                   {uploadedFile.name}
@@ -273,7 +275,7 @@ export const ResumeEditor: React.FC = () => {
                   setUploadedFile(null);
                   if (fileInputRef.current) fileInputRef.current.value = '';
                 }}
-                className="h-8 w-8 p-0 text-light-ink-muted hover:text-red-500"
+                className="h-8 w-8 p-0 text-light-ink-muted hover:text-red-500 shrink-0"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -281,9 +283,9 @@ export const ResumeEditor: React.FC = () => {
           ) : (
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-full flex flex-col items-center gap-4 py-14 border-2 border-dashed border-light-border dark:border-dark-border rounded-xl hover:border-terracotta hover:bg-terracotta/5 transition-all group cursor-pointer"
+              className="w-full flex flex-col items-center gap-3 sm:gap-4 py-10 sm:py-14 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-xl hover:border-terracotta hover:bg-terracotta/5 transition-all group cursor-pointer"
             >
-              <Upload className="w-10 h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta transition-colors" />
+              <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta transition-colors" />
               <div className="text-center">
                 <p className="font-sans text-sm text-light-ink dark:text-dark-ink font-medium">
                   Drop your PDF or .tex here
@@ -327,14 +329,14 @@ export const ResumeEditor: React.FC = () => {
           </div>
 
           {previewMode ? (
-            <pre className="p-6 font-mono text-xs text-light-ink dark:text-dark-ink leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[60vh]">
+            <pre className="p-4 sm:p-6 font-mono text-xs text-light-ink dark:text-dark-ink leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[60vh]">
               {latex}
             </pre>
           ) : (
             <textarea
               value={latex}
               onChange={(e) => setLatex(e.target.value)}
-              className="w-full p-5 font-mono text-xs text-light-ink dark:text-dark-ink bg-transparent resize-none focus:outline-none leading-relaxed"
+              className="w-full p-4 sm:p-5 font-mono text-xs text-light-ink dark:text-dark-ink bg-transparent resize-none focus:outline-none leading-relaxed"
               style={{ minHeight: '60vh' }}
               spellCheck={false}
               placeholder="Paste or write your LaTeX source…"

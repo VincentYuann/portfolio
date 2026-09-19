@@ -4,6 +4,7 @@ import { ExperienceEditor } from './sections/ExperienceEditor';
 import { ProjectsEditor } from './sections/ProjectsEditor';
 import { ResumeEditor } from './sections/ResumeEditor';
 import { PhilosophyEditor } from './sections/PhilosophyEditor';
+import { ArrowLeft } from 'lucide-react';
 
 type EditSection = 'intro' | 'experience' | 'projects' | 'resume' | 'philosophy';
 
@@ -11,12 +12,12 @@ interface EditPageProps {
   onNavigate: (view: 'home' | 'projects' | 'resume' | 'login' | 'edit') => void;
 }
 
-const SECTIONS: { id: EditSection; label: string; num: string }[] = [
-  { id: 'intro', label: 'Intro & Profile', num: '01' },
-  { id: 'experience', label: 'Experience', num: '02' },
-  { id: 'projects', label: 'Projects', num: '03' },
-  { id: 'philosophy', label: 'Philosophy', num: '04' },
-  { id: 'resume', label: 'Resume', num: '05' },
+const SECTIONS: { id: EditSection; label: string; num: string; shortLabel?: string }[] = [
+  { id: 'intro', label: 'Intro & Profile', shortLabel: 'Intro', num: '01' },
+  { id: 'experience', label: 'Experience', shortLabel: 'Experience', num: '02' },
+  { id: 'projects', label: 'Projects', shortLabel: 'Projects', num: '03' },
+  { id: 'philosophy', label: 'Philosophy', shortLabel: 'Philosophy', num: '04' },
+  { id: 'resume', label: 'Resume', shortLabel: 'Resume', num: '05' },
 ];
 
 export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
@@ -40,43 +41,48 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
   return (
     // pt-20 clears the fixed main header (h-20)
     <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-20">
-      {/* Sub Navbar — sticks just below main header */}
-      <div className="sticky top-20 z-40 bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 h-12 flex items-center gap-1 overflow-x-auto">
-          {/* Badge */}
-          <span className="font-mono text-[10px] text-terracotta border border-terracotta/40 rounded px-1.5 py-0.5 mr-3 uppercase tracking-widest shrink-0">
-            Edit Mode
-          </span>
+      {/* Sub Navbar — sticks just below main header with smooth horizontal scrolling */}
+      <div className="sticky top-20 z-40 bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Badge */}
+            <span className="font-mono text-[10px] text-terracotta border border-terracotta/40 rounded px-1.5 py-0.5 uppercase tracking-widest shrink-0 select-none">
+              EDIT
+            </span>
 
-          {/* Section toggles */}
-          {SECTIONS.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => handleSelectSection(s.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-sans text-xs whitespace-nowrap transition-all duration-150 shrink-0 ${
-                activeSection === s.id
-                  ? 'bg-terracotta/10 text-terracotta border border-terracotta/30 font-semibold'
-                  : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised'
-              }`}
-            >
-              <span className="font-mono text-[10px] opacity-50">{s.num}</span>
-              <span>{s.label}</span>
-            </button>
-          ))}
+            {/* Section toggles */}
+            {SECTIONS.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => handleSelectSection(s.id)}
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg font-sans text-xs whitespace-nowrap transition-all duration-150 shrink-0 cursor-pointer ${
+                  activeSection === s.id
+                    ? 'bg-terracotta/15 text-terracotta border border-terracotta/40 font-semibold shadow-xs'
+                    : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-transparent'
+                }`}
+              >
+                <span className="font-mono text-[10px] opacity-60">{s.num}</span>
+                <span className="hidden sm:inline">{s.label}</span>
+                <span className="sm:hidden">{s.shortLabel || s.label}</span>
+              </button>
+            ))}
+          </div>
 
-          <div className="ml-auto shrink-0">
+          <div className="shrink-0 pl-2">
             <button
               onClick={() => onNavigate('home')}
-              className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors"
+              className="inline-flex items-center gap-1 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors whitespace-nowrap cursor-pointer py-1 px-2 rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised"
             >
-              ← Back to Portfolio
+              <ArrowLeft className="w-3 h-3" />
+              <span className="hidden sm:inline">Back to Portfolio</span>
+              <span className="sm:hidden">Exit</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Section Content — extra top padding so sticky sub-bar never overlaps content */}
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
         {activeSection === 'intro' && <IntroEditor />}
         {activeSection === 'experience' && <ExperienceEditor />}
         {activeSection === 'projects' && <ProjectsEditor />}

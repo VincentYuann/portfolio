@@ -72,16 +72,7 @@ import {
 
 import {
   Sparkles,
-  Terminal,
-  Code2,
-  Database,
-  Box,
-  Server,
-  Workflow,
-  Layers,
-  Cpu,
   Cloud,
-  type LucideIcon,
 } from 'lucide-react';
 
 export type TechIconComponent = React.ComponentType<{
@@ -91,7 +82,7 @@ export type TechIconComponent = React.ComponentType<{
 }>;
 
 export interface TechIconMatch {
-  Icon: TechIconComponent;
+  Icon: TechIconComponent | null;
   isOfficialBrand: boolean;
   canonicalName: string;
 }
@@ -254,26 +245,12 @@ function getLevenshteinDistance(a: string, b: string): number {
 }
 
 /**
- * 5. Semantic Lucide category icon fallback for custom or niche items
- */
-function getFallbackCategoryIcon(normalized: string): LucideIcon {
-  if (/ai|llm|llama|gemini|embedding|qdrant|vector|agent/.test(normalized)) return Sparkles;
-  if (/rust|python|cplusplus|go|shell|bash|terminal|cli/.test(normalized)) return Terminal;
-  if (/react|next|typescript|javascript|vue|svelte|html|css/.test(normalized)) return Code2;
-  if (/docker|k8s|kubernetes|wasm|container/.test(normalized)) return Box;
-  if (/postgres|supabase|sql|db|database|redis|mongo|timescale/.test(normalized)) return Database;
-  if (/aws|gcp|cloud|linux|server|distributed/.test(normalized)) return Server;
-  if (/websocket|kafka|grpc|workflow|stream|mqtt|n8n/.test(normalized)) return Workflow;
-  if (/three|shader|webgl|gpu|canvas|glsl/.test(normalized)) return Layers;
-  return Cpu;
-}
-
-/**
- * Main function: Maps any raw technology string to its official brand logo or category icon.
+ * Main function: Maps any raw technology string to its official brand logo.
+ * If no official brand is matched, returns { Icon: null, isOfficialBrand: false, canonicalName: tag }.
  */
 export function getTechBadgeIcon(tag: string): TechIconMatch {
-  if (!tag) {
-    return { Icon: Cpu as unknown as TechIconComponent, isOfficialBrand: false, canonicalName: tag };
+  if (!tag || !tag.trim()) {
+    return { Icon: null, isOfficialBrand: false, canonicalName: tag || '' };
   }
 
   const raw = tag.toLowerCase().trim();
@@ -298,32 +275,35 @@ export function getTechBadgeIcon(tag: string): TechIconMatch {
     return { Icon: TECH_ICON_REGISTRY[norm].icon, isOfficialBrand: true, canonicalName: TECH_ICON_REGISTRY[norm].name };
   }
 
-  // Tier 2: Substring matching (e.g. 'Llama-3 Local' -> 'llama')
+  // Tier 2: Token / Prefix matching for compound tags (e.g. 'Docker Compose' -> 'Docker', 'Next.js 14' -> 'Next.js')
   for (const [key, item] of Object.entries(TECH_ICON_REGISTRY)) {
-    if (norm.includes(key) || key.includes(norm)) {
-      return { Icon: item.icon, isOfficialBrand: true, canonicalName: item.name };
+    if (key.length >= 3) {
+      if (norm.startsWith(key) || norm.endsWith(key)) {
+        return { Icon: item.icon, isOfficialBrand: true, canonicalName: item.name };
+      }
     }
   }
 
-  // Tier 3: Fuzzy Levenshtein match for typos (e.g. 'pytrch' -> 'pytorch')
-  if (norm.length >= 4) {
+  // Tier 3: Strict Levenshtein match for small typos (e.g. 'pytrch' -> 'pytorch')
+  if (norm.length >= 5) {
     let bestKey: string | null = null;
-    let minDist = 3;
+    let minDist = 999;
 
     for (const key of Object.keys(TECH_ICON_REGISTRY)) {
+      if (Math.abs(norm.length - key.length) > 2) continue;
       const dist = getLevenshteinDistance(norm, key);
-      if (dist < minDist) {
+      const maxAllowed = norm.length >= 7 ? 2 : 1;
+      if (dist <= maxAllowed && dist < minDist) {
         minDist = dist;
         bestKey = key;
       }
     }
 
-    if (bestKey && minDist <= 2) {
+    if (bestKey) {
       return { Icon: TECH_ICON_REGISTRY[bestKey].icon, isOfficialBrand: true, canonicalName: TECH_ICON_REGISTRY[bestKey].name };
     }
   }
 
-  // Tier 4: Fallback to semantic category icon
-  const FallbackIcon = getFallbackCategoryIcon(norm);
-  return { Icon: FallbackIcon as unknown as TechIconComponent, isOfficialBrand: false, canonicalName: tag };
+  // Tier 4: Custom / Unmatched tag — no icon, pure text badge
+  return { Icon: null, isOfficialBrand: false, canonicalName: tag.trim() };
 }

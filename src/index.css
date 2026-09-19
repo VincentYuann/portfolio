@@ -241,7 +241,7 @@
 }
 
 /* Classical Card Frame with delicate inner perimeter */
-.classical-card-frame {
+.classical-card-frame:not(.fixed) {
   position: relative;
 }
 

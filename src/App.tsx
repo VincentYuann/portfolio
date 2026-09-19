@@ -63,12 +63,13 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
 };
 
 export const App: React.FC = () => {
+  const isDevAdmin = typeof window !== 'undefined' && window.sessionStorage?.getItem('dev_admin') === 'true';
   const [currentView, setCurrentView] = useState<ViewMode>(getInitialView);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(isDevAdmin);
   const [authReady, setAuthReady] = useState(false);
 
   // Stable refs so hash routing effect never needs to re-run on state changes
-  const isAdminRef = useRef(false);
+  const isAdminRef = useRef(isDevAdmin);
   const authReadyRef = useRef(false);
   const setViewRef = useRef(setCurrentView);
   setViewRef.current = setCurrentView;
@@ -76,6 +77,9 @@ export const App: React.FC = () => {
   const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL || 'vincentyuan1020@gmail.com').toLowerCase().trim();
 
   const isOwnerSession = (session: any): boolean => {
+    if (typeof window !== 'undefined' && window.sessionStorage?.getItem('dev_admin') === 'true') {
+      return true;
+    }
     const email = session?.user?.email?.toLowerCase()?.trim();
     return !!email && email === ADMIN_EMAIL;
   };

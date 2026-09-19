@@ -189,7 +189,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
 
         {/* Search Input Bar */}
         <div className="p-4 sm:p-5 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface/50 dark:bg-dark-surface-muted/30 shrink-0">
-          <div className="relative flex items-center gap-2">
+          <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-light-ink-subtle pointer-events-none" />
               <Input
@@ -202,7 +202,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                     handleAddCustom();
                   }
                 }}
-                className="pl-9 pr-3 text-xs sm:text-sm"
+                className="pl-9 pr-3 text-xs sm:text-sm w-full"
                 placeholder="Search official tech logos (e.g. PyTorch, Docker, Next.js, Rust, AWS)…"
                 autoFocus
               />
@@ -229,8 +229,8 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                   Official Brand Logo Found
                 </span>
               ) : (
-                <span className="text-[10px] font-mono text-terracotta uppercase">
-                  Category Icon Matched
+                <span className="text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase">
+                  Custom Tag (No Logo)
                 </span>
               )}
             </div>
@@ -353,8 +353,8 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
         </div>
 
         {/* Footer */}
-        <DialogFooter className="p-4 sm:p-5 border-t border-light-border dark:border-dark-border bg-light-surface/90 dark:bg-dark-surface-card shrink-0 flex flex-row items-center justify-between sm:justify-between">
-          <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+        <DialogFooter className="p-3.5 sm:p-5 border-t border-light-border dark:border-dark-border bg-light-surface/90 dark:bg-dark-surface-card shrink-0 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted text-center sm:text-left">
             Monochrome architectural badge design · No rainbow tints
           </span>
           <Button type="button" onClick={onClose} className="px-5">

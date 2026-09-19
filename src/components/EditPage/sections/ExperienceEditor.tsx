@@ -144,9 +144,9 @@ export const ExperienceEditor: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="font-serif text-2xl text-light-ink dark:text-dark-ink font-normal">
             Work Experience
@@ -155,7 +155,7 @@ export const ExperienceEditor: React.FC = () => {
             Manage your professional engineering roles and milestones. Changes sync to Supabase.
           </p>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 flex-wrap">
           <Button
             type="button"
             variant="outline"
@@ -197,7 +197,7 @@ export const ExperienceEditor: React.FC = () => {
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (
-            <p className="font-sans text-[11px] text-red-400 text-right max-w-xs">{errorMsg}</p>
+            <p className="font-sans text-[11px] text-red-400 text-right w-full max-w-xs">{errorMsg}</p>
           )}
         </div>
       </div>
@@ -207,16 +207,16 @@ export const ExperienceEditor: React.FC = () => {
         {entries.map((entry, idx) => (
           <div
             key={entry.id}
-            className="relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-5 sm:p-6 shadow-xs classical-card-frame space-y-4"
+            className="relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-4 sm:p-6 shadow-xs classical-card-frame space-y-4"
           >
             <CornerBrackets size="sm" />
-            <div className="flex items-center justify-between gap-3 pb-2 border-b border-light-border/60 dark:border-dark-border/60">
-              <div className="flex items-center gap-2.5">
-                <GripVertical className="w-4 h-4 text-light-ink-subtle cursor-grab shrink-0" />
-                <Badge variant="terracotta" className="font-mono text-xs px-2 py-0.5">
+            <div className="flex items-start sm:items-center justify-between gap-3 pb-3 border-b border-light-border/60 dark:border-dark-border/60">
+              <div className="flex items-start sm:items-center gap-2 sm:gap-2.5 flex-1 min-w-0">
+                <GripVertical className="w-4 h-4 text-light-ink-subtle cursor-grab shrink-0 mt-0.5 sm:mt-0" />
+                <Badge variant="terracotta" className="font-mono text-xs px-2 py-0.5 shrink-0 mt-0.5 sm:mt-0">
                   {String(idx + 1).padStart(2, '0')}
                 </Badge>
-                <span className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink truncate">
+                <span className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink flex-1 min-w-0">
                   {entry.title || entry.company ? `${entry.title || 'Untitled Role'} — ${entry.company || 'Company'}` : 'New Experience Position'}
                 </span>
               </div>
@@ -226,7 +226,7 @@ export const ExperienceEditor: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => removeEntry(entry)}
-                className="h-8 w-8 p-0 text-light-ink-muted hover:text-red-500 hover:bg-red-500/10"
+                className="h-8 w-8 p-0 text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 shrink-0"
                 title="Delete entry"
               >
                 <Trash2 className="w-4 h-4" />
@@ -263,7 +263,7 @@ export const ExperienceEditor: React.FC = () => {
                   placeholder="e.g. San Francisco, CA / Remote"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <Label className="mb-1.5">Start Date</Label>
                   <Input

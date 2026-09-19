@@ -104,9 +104,9 @@ export const IntroEditor: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header Row */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="font-serif text-2xl text-light-ink dark:text-dark-ink font-normal">
             Intro &amp; Profile
@@ -117,7 +117,7 @@ export const IntroEditor: React.FC = () => {
         </div>
 
         {/* Save Button */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 flex-wrap">
           <Button
             type="button"
             variant={
@@ -147,7 +147,7 @@ export const IntroEditor: React.FC = () => {
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (
-            <p className="font-sans text-[11px] text-red-400 max-w-xs text-right">
+            <p className="font-sans text-[11px] text-red-400 max-w-xs text-right w-full">
               {errorMsg}
             </p>
           )}
@@ -155,7 +155,7 @@ export const IntroEditor: React.FC = () => {
       </div>
 
       {/* Form Card */}
-      <div className="relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs classical-card-frame">
+      <div className="relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-4 sm:p-6 md:p-8 space-y-6 shadow-xs classical-card-frame">
         <CornerBrackets size="md" />
 
         {/* Identity */}
@@ -254,7 +254,7 @@ export const IntroEditor: React.FC = () => {
 
         {/* Capability Pillars */}
         <div className="space-y-3 pt-2 border-t border-light-border/60 dark:border-dark-border/60">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <p className="font-mono text-xs font-semibold text-terracotta uppercase tracking-widest">
                 § Capability Pillars (DOMAINS Ribbon - max 3)
@@ -269,7 +269,7 @@ export const IntroEditor: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={addPillar}
-                className="text-terracotta hover:text-terracotta hover:bg-terracotta/10 text-xs h-7"
+                className="text-terracotta hover:text-terracotta hover:bg-terracotta/10 text-xs h-7 self-start sm:self-center"
               >
                 <Plus className="w-3.5 h-3.5 mr-1" /> Add Pillar
               </Button>
@@ -278,11 +278,14 @@ export const IntroEditor: React.FC = () => {
 
           <div className="space-y-3">
             {data.capability_pillars.map((p, idx) => (
-              <div key={idx} className="flex items-center gap-3 w-full">
+              <div
+                key={idx}
+                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full p-2.5 sm:p-0 rounded-lg bg-light-surface/40 sm:bg-transparent dark:bg-dark-surface/40 sm:dark:bg-transparent border sm:border-0 border-light-border/50 dark:border-dark-border/50"
+              >
                 {/* Pillar Label Input */}
                 <Input
                   type="text"
-                  className="w-36 sm:w-44 shrink-0 font-mono uppercase text-xs"
+                  className="w-full sm:w-40 shrink-0 font-mono uppercase text-xs"
                   value={p.label}
                   onChange={(e) => updatePillar(idx, { label: e.target.value })}
                   placeholder="LABEL (e.g. SYSTEMS)"
@@ -303,7 +306,7 @@ export const IntroEditor: React.FC = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => removePillar(idx)}
-                  className="h-9 w-9 p-0 text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 shrink-0"
+                  className="h-8 w-8 sm:h-9 sm:w-9 p-0 text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 shrink-0 self-end sm:self-center"
                   title="Remove pillar"
                 >
                   <Trash2 className="w-4 h-4" />

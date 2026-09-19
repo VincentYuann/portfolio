@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { X, Sun, Moon } from 'lucide-react';
 import { HankoStamp } from './HankoStamp';
 
 export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit';
@@ -22,10 +22,10 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { theme, setTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const moreMenuRef = useRef<HTMLDivElement>(null);
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,16 +47,29 @@ export const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentView]);
 
-  // Close more-menu on outside click
+  // Close desktop dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (moreMenuRef.current && !moreMenuRef.current.contains(e.target as Node)) {
-        setMoreMenuOpen(false);
+      if (desktopMenuRef.current && !desktopMenuRef.current.contains(e.target as Node)) {
+        setDesktopDropdownOpen(false);
       }
     };
-    if (moreMenuOpen) document.addEventListener('mousedown', handleClickOutside);
+    if (desktopDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [moreMenuOpen]);
+  }, [desktopDropdownOpen]);
+
+  // Close mobile drawer on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setMobileDrawerOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const navItems = [
     { id: 'home', num: '01', label: 'Home', href: '#home', view: 'home' as const },
@@ -75,9 +88,11 @@ export const Header: React.FC<HeaderProps> = ({
     if (onNavigate) {
       e.preventDefault();
       onNavigate(item.view, item.id);
-      setMobileMenuOpen(false);
+      setMobileDrawerOpen(false);
     }
   };
+
+  const isMenuOpen = mobileDrawerOpen || desktopDropdownOpen;
 
   return (
     <header
@@ -87,9 +102,9 @@ export const Header: React.FC<HeaderProps> = ({
           : 'bg-light-canvas/70 dark:bg-dark-canvas/70 backdrop-blur-sm border-b border-transparent'
       }`}
     >
-      <div className="h-20 w-full max-w-7xl mx-auto px-6 flex items-center justify-between gap-4">
+      <div className="h-20 w-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3 sm:gap-4">
         {/* Left: Brand */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <a
             href="#home"
             onClick={(e) => {
@@ -107,8 +122,8 @@ export const Header: React.FC<HeaderProps> = ({
           </a>
         </div>
 
-        {/* Center: Desktop Navigation — 01–06 (and 07 Edit for admin) */}
-        <nav className="hidden md:flex items-center gap-3.5 lg:gap-5 xl:gap-7">
+        {/* Center: Desktop Navigation — Shown on wide screens (>= xl / 1280px) */}
+        <nav className="hidden xl:flex items-center gap-4 2xl:gap-6 min-w-0">
           {navItems.map((item) => {
             const isActive =
               currentView === 'edit'
@@ -124,13 +139,13 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.id}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`group relative font-sans text-[11px] lg:text-xs uppercase tracking-wider lg:tracking-widest transition-colors flex items-center gap-1 lg:gap-1.5 py-1 whitespace-nowrap ${
+                className={`group relative font-sans text-xs uppercase tracking-wider lg:tracking-widest transition-colors flex items-center gap-1.5 py-1 whitespace-nowrap ${
                   isActive
                     ? 'text-terracotta font-semibold'
                     : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
-                <span className="opacity-40 text-[9px] lg:text-[10px] font-mono">{item.num}</span>
+                <span className="opacity-40 text-[10px] font-mono">{item.num}</span>
                 <span>{item.label}</span>
                 <span
                   className={`absolute bottom-0 left-0 h-[1.5px] bg-terracotta rounded-full transition-all duration-300 ${
@@ -142,13 +157,13 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </nav>
 
-        {/* Right side */}
-        <div className="flex items-center gap-2.5 sm:gap-3 lg:gap-4 shrink-0">
+        {/* Right side cluster — always neatly aligned without overlapping */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Day / Night Toggle */}
-          <div className="flex items-center bg-light-surface-muted/90 dark:bg-dark-surface/90 p-1 rounded-full border border-light-border dark:border-dark-border text-[11px]">
+          <div className="flex items-center bg-light-surface-muted/90 dark:bg-dark-surface/90 p-1 rounded-full border border-light-border dark:border-dark-border text-[11px] shrink-0">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 ${
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
                 theme === 'day'
                   ? 'bg-light-surface-raised text-light-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -160,7 +175,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 ${
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
                 theme === 'night'
                   ? 'bg-dark-surface-raised text-dark-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -172,136 +187,169 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Hire Me */}
+          {/* Hire Me (shown on md+ and inside drawer on mobile) */}
           <a
             href="#contact"
-            onClick={onOpenContact}
-            className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-[12px] font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity"
+            onClick={(e) => {
+              if (onOpenContact) {
+                e.preventDefault();
+                onOpenContact();
+              }
+            }}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
           >
             <span>Hire Me</span>
           </a>
 
-          {/* 三 More-options menu — desktop only */}
-          <div className="relative hidden md:block" ref={moreMenuRef}>
+          {/* ── Consistent Bordered 三 Menu Button across ALL screen sizes ── */}
+          <div className="relative" ref={desktopMenuRef}>
             <button
-              onClick={() => setMoreMenuOpen((v) => !v)}
-              className={`p-2 rounded-md text-base leading-none select-none transition-colors ${
-                moreMenuOpen
-                  ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta'
-                  : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised'
+              onClick={() => {
+                if (window.innerWidth >= 1280) {
+                  // On wide desktop: toggle quick dropdown (Edit/Login/Logout)
+                  setDesktopDropdownOpen((prev) => !prev);
+                  setMobileDrawerOpen(false);
+                } else {
+                  // On smaller desktop / tablet / mobile: toggle full mobile drawer
+                  setMobileDrawerOpen((prev) => !prev);
+                  setDesktopDropdownOpen(false);
+                }
+              }}
+              className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all duration-200 select-none cursor-pointer shrink-0 ${
+                isMenuOpen
+                  ? 'border-terracotta bg-terracotta/10 text-terracotta shadow-xs'
+                  : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta/60 hover:text-terracotta'
               }`}
-              aria-label="More options"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              title="Menu"
             >
-              三
+              {isMenuOpen ? (
+                <X className="w-4 h-4 text-terracotta transition-transform duration-200" />
+              ) : (
+                <span className="font-serif text-base font-medium leading-none tracking-tight">三</span>
+              )}
             </button>
 
-            {moreMenuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-40 bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] rounded-xl shadow-lg overflow-hidden py-1.5 z-50">
+            {/* Desktop Quick Dropdown (when >= xl) */}
+            {desktopDropdownOpen && (
+              <div className="hidden xl:block absolute right-0 top-full mt-2 w-44 bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] rounded-xl shadow-xl overflow-hidden py-1.5 z-50 animate-in fade-in-50 zoom-in-95 duration-150">
                 {isAdmin ? (
-                  /* ── Logged in: Edit + Logout ── */
                   <>
                     <button
                       onClick={() => {
-                        setMoreMenuOpen(false);
+                        setDesktopDropdownOpen(false);
                         onNavigate?.('edit');
                       }}
-                      className="w-full text-left px-4 py-2.5 font-sans text-xs text-light-ink dark:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-terracotta transition-colors"
+                      className="w-full text-left px-4 py-2.5 font-sans text-xs text-light-ink dark:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-terracotta transition-colors cursor-pointer"
                     >
                       Edit Portfolio
                     </button>
                     <div className="mx-3 my-1 border-t border-light-border dark:border-dark-border" />
                     <button
                       onClick={() => {
-                        setMoreMenuOpen(false);
+                        setDesktopDropdownOpen(false);
                         onLogout?.();
                       }}
-                      className="w-full text-left px-4 py-2.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-red-400 transition-colors"
+                      className="w-full text-left px-4 py-2.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-red-400 transition-colors cursor-pointer"
                     >
                       Logout
                     </button>
                   </>
                 ) : (
-                  /* ── Logged out: Login ── */
                   <button
                     onClick={() => {
-                      setMoreMenuOpen(false);
+                      setDesktopDropdownOpen(false);
                       onNavigate?.('login');
                     }}
-                    className="w-full text-left px-4 py-2.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-terracotta transition-colors"
+                    className="w-full text-left px-4 py-2.5 font-sans text-xs text-light-ink dark:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-terracotta transition-colors cursor-pointer"
                     aria-label="Admin login"
                   >
-                    Login
+                    Admin Login
                   </button>
                 )}
               </div>
             )}
           </div>
-
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-md border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden px-6 py-5 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-lg">
-          <div className="flex flex-col space-y-3">
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item)}
-                className={`flex items-center justify-between py-2 text-sm font-sans ${
-                  (currentView === 'edit' && item.id === 'edit') ||
-                  (currentView === 'resume' && item.id === 'resume') ||
-                  (currentView === 'projects' && item.id === 'featured-works') ||
-                  (currentView === 'home' && activeSection === item.id)
-                    ? 'text-terracotta font-semibold'
-                    : 'text-light-ink-muted dark:text-dark-ink-muted'
-                }`}
-              >
-                <span>{item.label}</span>
-                <span className="font-mono text-xs opacity-50">{item.num}</span>
-              </a>
-            ))}
+      {/* ── Tablet & Mobile Navigation Drawer (Active on < xl screens) ── */}
+      {mobileDrawerOpen && (
+        <div className="xl:hidden px-6 py-5 bg-light-surface/98 dark:bg-dark-surface/98 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-xl animate-in slide-in-from-top-2 duration-200">
+          <div className="flex flex-col space-y-1">
+            {navItems.map((item) => {
+              const isActive =
+                currentView === 'edit'
+                  ? item.id === 'edit'
+                  : currentView === 'resume'
+                  ? item.id === 'resume'
+                  : currentView === 'projects'
+                  ? item.id === 'featured-works'
+                  : activeSection === item.id;
 
-            <div className="pt-2 border-t border-light-border dark:border-dark-border space-y-2">
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item)}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-sans uppercase tracking-wider transition-colors ${
+                    isActive
+                      ? 'bg-terracotta/10 text-terracotta font-semibold'
+                      : 'text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-light-ink dark:hover:text-dark-ink'
+                  }`}
+                >
+                  <span className="font-medium">{item.label}</span>
+                  <span className="font-mono text-[10px] opacity-50">{item.num}</span>
+                </a>
+              );
+            })}
+
+            {/* Bottom Actions inside Drawer */}
+            <div className="pt-3 mt-2 border-t border-light-border dark:border-dark-border space-y-2">
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  if (onOpenContact) {
+                    e.preventDefault();
+                    onOpenContact();
+                  }
+                  setMobileDrawerOpen(false);
+                }}
+                className="w-full flex items-center justify-center py-2.5 px-4 rounded-lg text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity"
+              >
+                Hire Me / Get in Touch
+              </a>
+
               {isAdmin ? (
-                <>
+                <div className="flex items-center justify-between pt-1 px-1 text-xs">
                   <button
                     onClick={() => {
-                      setMobileMenuOpen(false);
+                      setMobileDrawerOpen(false);
                       onNavigate?.('edit');
                     }}
-                    className="w-full text-left py-2 text-sm font-sans text-light-ink dark:text-dark-ink hover:text-terracotta transition-colors"
+                    className="py-1 text-light-ink dark:text-dark-ink hover:text-terracotta transition-colors font-sans"
                   >
                     Edit Portfolio
                   </button>
                   <button
                     onClick={() => {
-                      setMobileMenuOpen(false);
+                      setMobileDrawerOpen(false);
                       onLogout?.();
                     }}
-                    className="w-full text-left py-2 text-sm font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors"
+                    className="py-1 text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors font-sans"
                   >
                     Logout
                   </button>
-                </>
+                </div>
               ) : (
                 <button
                   onClick={() => {
-                    setMobileMenuOpen(false);
+                    setMobileDrawerOpen(false);
                     onNavigate?.('login');
                   }}
-                  className="w-full text-left py-2 text-sm font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors"
+                  className="w-full text-left px-3 py-2 text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors"
                 >
-                  Login
+                  Admin Login
                 </button>
               )}
             </div>

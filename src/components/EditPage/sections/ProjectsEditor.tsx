@@ -204,7 +204,7 @@ const ImageUploader: React.FC<{
         </div>
 
         {/* Inputs */}
-        <div className="flex-1 space-y-2 w-full">
+        <div className="flex-1 space-y-2 w-full min-w-0">
           <div className="relative">
             <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-light-ink-subtle pointer-events-none" />
             <Input
@@ -216,7 +216,7 @@ const ImageUploader: React.FC<{
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <input
               ref={fileInputRef}
               type="file"
@@ -230,7 +230,7 @@ const ImageUploader: React.FC<{
               size="sm"
               disabled={uploading}
               onClick={() => fileInputRef.current?.click()}
-              className="gap-1.5"
+              className="gap-1.5 shrink-0"
             >
               {uploading ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin text-terracotta" />
@@ -274,7 +274,7 @@ const SectionCardEditor: React.FC<{
           type="text"
           value={section.heading}
           onChange={(e) => onChange({ heading: e.target.value })}
-          className="font-semibold flex-1"
+          className="font-semibold flex-1 min-w-0"
           placeholder="Section heading (e.g. Local Inference Runtime)"
         />
         <Button
@@ -282,7 +282,7 @@ const SectionCardEditor: React.FC<{
           variant="ghost"
           size="sm"
           onClick={onRemove}
-          className="p-1.5 h-8 w-8 text-light-ink-muted hover:text-red-500"
+          className="p-1.5 h-8 w-8 text-light-ink-muted hover:text-red-500 shrink-0"
           title="Remove section"
         >
           <Trash2 className="w-3.5 h-3.5" />
@@ -290,7 +290,7 @@ const SectionCardEditor: React.FC<{
       </div>
 
       {/* Bullets */}
-      <div className="pl-4 sm:pl-6 space-y-2.5">
+      <div className="pl-2 sm:pl-6 space-y-2.5">
         {section.bullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2">
             <span className="text-terracotta text-sm shrink-0 mt-2 select-none">
@@ -300,7 +300,7 @@ const SectionCardEditor: React.FC<{
               rows={2}
               value={bullet}
               onChange={(e) => updateBullet(idx, e.target.value)}
-              className="flex-1 min-h-[52px] text-xs py-1.5"
+              className="flex-1 min-h-[52px] text-xs py-1.5 min-w-0"
               placeholder={`Bullet point ${idx + 1}…`}
             />
             <button
@@ -653,9 +653,9 @@ export const ProjectsEditor: React.FC = () => {
   const displayedList = activeTab === 'featured' ? featuredProjects : projects;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header Row */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="font-serif text-2xl text-light-ink dark:text-dark-ink font-normal">
             Projects &amp; Engineering Works
@@ -665,7 +665,7 @@ export const ProjectsEditor: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 flex-wrap">
           <Button
             type="button"
             variant="outline"
@@ -706,7 +706,7 @@ export const ProjectsEditor: React.FC = () => {
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (
-            <p className="font-sans text-[11px] text-red-400 max-w-xs text-right">
+            <p className="font-sans text-[11px] text-red-400 max-w-xs text-right w-full">
               {errorMsg}
             </p>
           )}
@@ -719,19 +719,26 @@ export const ProjectsEditor: React.FC = () => {
         onValueChange={(val) => setActiveTab(val as ProjectsTab)}
         className="w-full"
       >
-        <TabsList className="h-10">
-          <TabsTrigger value="featured" className="gap-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Selected Works (Home Showcase)</span>
-            <Badge variant="terracotta" className="py-0 px-1.5 text-[10px]">
+        <TabsList className="grid grid-cols-2 w-full sm:w-auto sm:inline-flex h-auto p-1 gap-1">
+          <TabsTrigger value="featured" className="gap-1.5 sm:gap-2 py-2 px-2.5 sm:px-3.5 justify-center">
+            <Sparkles className="w-3.5 h-3.5 shrink-0 text-terracotta" />
+            <span className="text-xs font-medium">
+              <span className="hidden md:inline">Selected Works </span>
+              <span className="sm:hidden">Showcase</span>
+              <span className="hidden sm:inline md:hidden">Home Showcase</span>
+              <span className="hidden md:inline">(Showcase)</span>
+            </span>
+            <Badge variant="terracotta" className="py-0 px-1.5 text-[10px] shrink-0 font-mono">
               {featuredProjects.length}/3
             </Badge>
           </TabsTrigger>
 
-          <TabsTrigger value="all" className="gap-2">
-            <Layers className="w-3.5 h-3.5" />
-            <span>All Projects Catalog</span>
-            <Badge variant="secondary" className="py-0 px-1.5 text-[10px]">
+          <TabsTrigger value="all" className="gap-1.5 sm:gap-2 py-2 px-2.5 sm:px-3.5 justify-center">
+            <Layers className="w-3.5 h-3.5 shrink-0" />
+            <span className="text-xs font-medium">
+              <span className="hidden sm:inline">All </span>Projects<span className="hidden md:inline"> Catalog</span>
+            </span>
+            <Badge variant="secondary" className="py-0 px-1.5 text-[10px] shrink-0 font-mono">
               {projects.length}
             </Badge>
           </TabsTrigger>
@@ -763,19 +770,20 @@ export const ProjectsEditor: React.FC = () => {
             >
               <CornerBrackets size="sm" />
 
-              {/* Compact Mini-Card Header */}
-              <div className="p-4 sm:p-5 flex items-center justify-between gap-3 select-none">
-                <div className="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0">
+              {/* ── Impeccable Responsive Mini-Card Header ── */}
+              <div className="p-3.5 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 select-none">
+                {/* Left: Drag Handle, Arrows, Number & Title */}
+                <div className="flex items-start sm:items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   {/* Grip Handle for Dragging */}
                   <div
-                    className="p-1.5 text-light-ink-subtle hover:text-terracotta cursor-grab active:cursor-grabbing shrink-0 transition-colors"
+                    className="p-1 sm:p-1.5 text-light-ink-subtle hover:text-terracotta cursor-grab active:cursor-grabbing shrink-0 transition-colors mt-0.5 sm:mt-0"
                     title="Click and drag to reorder"
                   >
                     <GripVertical className="w-4 h-4" />
                   </div>
 
                   {/* Up / Down Arrow Controls */}
-                  <div className="flex flex-col gap-0.5 shrink-0" draggable={false}>
+                  <div className="flex flex-col gap-0.5 shrink-0 mt-0.5 sm:mt-0" draggable={false}>
                     <button
                       type="button"
                       onClick={() =>
@@ -805,24 +813,24 @@ export const ProjectsEditor: React.FC = () => {
                   </div>
 
                   {/* Order Num */}
-                  <Badge variant="terracotta" className="font-mono text-xs px-2 py-0.5 shrink-0">
+                  <Badge variant="terracotta" className="font-mono text-xs px-2 py-0.5 shrink-0 mt-0.5 sm:mt-0">
                     {String(idx + 1).padStart(2, '0')}
                   </Badge>
 
                   {/* Title & Info */}
                   <div
                     onClick={() => setExpandedId(isExpanded ? null : project.id)}
-                    className="flex flex-col min-w-0 cursor-pointer group/title"
+                    className="flex flex-col min-w-0 cursor-pointer group/title flex-1"
                   >
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink group-hover/title:text-terracotta transition-colors truncate">
+                      <span className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink group-hover/title:text-terracotta transition-colors">
                         {project.title || 'Untitled Project'}
                       </span>
-                      <Badge variant="outline" className="text-[10px] uppercase font-mono py-0">
+                      <Badge variant="outline" className="text-[10px] uppercase font-mono py-0 shrink-0">
                         {project.category}
                       </Badge>
                       {project.kanji && (
-                        <span className="font-serif text-xs text-terracotta font-semibold">
+                        <span className="font-serif text-xs text-terracotta font-semibold shrink-0">
                           {project.kanji}
                         </span>
                       )}
@@ -836,12 +844,12 @@ export const ProjectsEditor: React.FC = () => {
                 </div>
 
                 {/* Right Quick Actions */}
-                <div className="flex items-center gap-2 shrink-0" draggable={false}>
+                <div className="flex items-center justify-end gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-light-border/40 dark:border-dark-border/40" draggable={false}>
                   {/* Star Toggle Button */}
                   <button
                     type="button"
                     onClick={() => toggleFeatured(project.id)}
-                    className={`p-2 rounded-lg border transition-all cursor-pointer ${
+                    className={`p-1.5 sm:p-2 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
                       project.isFeatured
                         ? 'bg-amber-500/15 border-amber-500/50 text-amber-500 hover:bg-amber-500/25'
                         : 'border-light-border dark:border-dark-border text-light-ink-subtle hover:text-amber-500'
@@ -853,10 +861,13 @@ export const ProjectsEditor: React.FC = () => {
                     }
                   >
                     <Star
-                      className={`w-4 h-4 ${
+                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         project.isFeatured ? 'fill-amber-500' : ''
                       }`}
                     />
+                    <span className="text-[11px] font-sans sm:hidden font-medium">
+                      {project.isFeatured ? 'Featured' : 'Feature'}
+                    </span>
                   </button>
 
                   {/* Expand / Collapse Button */}
@@ -881,7 +892,7 @@ export const ProjectsEditor: React.FC = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => deleteProject(project.id)}
-                    className="h-8 w-8 p-0 text-light-ink-muted hover:text-red-500 hover:bg-red-500/10"
+                    className="h-8 w-8 p-0 text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 shrink-0"
                     title="Delete project"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -893,7 +904,7 @@ export const ProjectsEditor: React.FC = () => {
               {isExpanded && (
                 <div
                   draggable={false}
-                  className="p-5 sm:p-6 border-t border-light-border dark:border-dark-border bg-light-surface-raised/40 dark:bg-dark-surface-card/60 space-y-6"
+                  className="p-4 sm:p-6 border-t border-light-border dark:border-dark-border bg-light-surface-raised/40 dark:bg-dark-surface-card/60 space-y-6"
                 >
                   {/* Grid 1: Title & Category */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
