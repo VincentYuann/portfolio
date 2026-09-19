@@ -79,6 +79,9 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                 src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = './images/sumi-os-workspace.jpg';
+                }}
               />
             </div>
 

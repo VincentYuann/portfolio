@@ -284,22 +284,27 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                       {/* Left: Clean Square Emblem (Custom Logo Image or Default Japanese Hanko Seal) */}
                       <div className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-terracotta/70 dark:border-terracotta/80 bg-light-surface dark:bg-[#16171d] shadow-[0_0_8px_rgba(200,60,35,0.25)] flex items-center justify-center overflow-hidden shrink-0 mx-auto sm:mx-0">
-                        {exp.logoUrl ? (
+                        {/* Fallback Hanko Kanji seal (always rendered underneath) */}
+                        <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
+                          <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
+                            {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
+                          </span>
+                          <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
+                            {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
+                          </span>
+                        </div>
+
+                        {/* Overlaid custom logo image with fallback */}
+                        {exp.logoUrl && (
                           <img
                             src={exp.logoUrl}
                             alt={`${exp.company} emblem`}
-                            className="w-full h-full object-cover"
+                            className="absolute inset-0 w-full h-full object-cover"
                             loading="lazy"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
                           />
-                        ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
-                            <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
-                              {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
-                            </span>
-                            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
-                              {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
-                            </span>
-                          </div>
                         )}
                       </div>
 

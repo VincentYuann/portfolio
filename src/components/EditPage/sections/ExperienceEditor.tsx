@@ -15,7 +15,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { supabase, formatErrorMessage, uploadProjectImage } from '../../../lib/supabase';
+import { supabase, formatErrorMessage, uploadExperienceLogo } from '../../../lib/supabase';
 import { useSiteData, ExperienceRecord } from '../../../context/SiteDataContext';
 import { TechTag } from '../../TechTag';
 import { TechTagModal } from '../TechTagModal';
@@ -262,11 +262,11 @@ export const ExperienceEditor: React.FC = () => {
   const handleImageUpload = async (id: string, file: File) => {
     try {
       setUploadingLogoId(id);
-      const url = await uploadProjectImage(file);
+      const url = await uploadExperienceLogo(file);
       updateEntry(id, { logoUrl: url });
       toast.success('Emblem logo uploaded successfully!');
-    } catch {
-      toast.error('Failed to upload logo image.');
+    } catch (err: unknown) {
+      toast.error('Failed to upload logo image: ' + formatErrorMessage(err));
     } finally {
       setUploadingLogoId(null);
     }
@@ -757,21 +757,26 @@ export const ExperienceEditor: React.FC = () => {
                     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                       {/* Square Visual Preview Box */}
                       <div className="relative shrink-0 flex items-center justify-center w-16 h-16 rounded-xl border border-terracotta/70 bg-light-surface dark:bg-[#181920] overflow-hidden shadow-inner">
-                        {hasLogo ? (
+                        {/* Default Hanko seal rendered underneath */}
+                        <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
+                          <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
+                            {entry.kanji || '木'}
+                          </span>
+                          <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
+                            {entry.kanjiSubtitle || 'AI'}
+                          </span>
+                        </div>
+
+                        {/* Overlaid preview logo if active */}
+                        {hasLogo && (
                           <img
                             src={entry.logoUrl}
                             alt="Emblem preview"
-                            className="w-full h-full object-cover"
+                            className="absolute inset-0 w-full h-full object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
                           />
-                        ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
-                            <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
-                              {entry.kanji || '木'}
-                            </span>
-                            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
-                              {entry.kanjiSubtitle || 'AI'}
-                            </span>
-                          </div>
                         )}
                       </div>
 

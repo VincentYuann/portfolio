@@ -139,10 +139,11 @@ export async function uploadResumePdf(file: File) {
 }
 
 /**
- * Uploads a project thumbnail or screenshot directly into 'portfolio-assets/projects/'
- * and returns the public URL.
+ * Uploads an asset image (project screenshot, company emblem, etc.) directly into 
+ * the Supabase Storage 'portfolio-assets' bucket under the specified folder ('projects' | 'experience' | etc.)
+ * and returns the public CDN URL.
  */
-export async function uploadProjectImage(file: File): Promise<string> {
+export async function uploadAssetImage(file: File, folder: string = 'projects'): Promise<string> {
   if (!supabase) {
     // Fallback to data URL if Supabase client is missing
     return new Promise((resolve, reject) => {
@@ -154,7 +155,7 @@ export async function uploadProjectImage(file: File): Promise<string> {
   }
 
   const cleanName = file.name.toLowerCase().replace(/[^a-z0-9.-]/g, '_');
-  const path = `projects/${Date.now()}-${cleanName}`;
+  const path = `${folder}/${Date.now()}-${cleanName}`;
 
   const { error } = await supabase.storage
     .from(RESUME_BUCKET)
@@ -185,6 +186,9 @@ export async function uploadProjectImage(file: File): Promise<string> {
 
   return `https://${supabaseUrl.replace('https://', '').split('.')[0]}.supabase.co/storage/v1/object/public/${RESUME_BUCKET}/${path}`;
 }
+
+export const uploadProjectImage = (file: File) => uploadAssetImage(file, 'projects');
+export const uploadExperienceLogo = (file: File) => uploadAssetImage(file, 'experience');
 
 /**
  * Loads the LaTeX source content from the Supabase resume_latex table.
