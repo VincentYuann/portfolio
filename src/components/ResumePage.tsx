@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Code2, Download, Copy, Check, ExternalLink, Maximize2, Minimize2, ArrowLeft } from 'lucide-react';
+import { FileText, Code2, Download, Copy, Check, ExternalLink, ArrowLeft } from 'lucide-react';
 import { tokenizeLatexLine, getTokenClassName } from '../lib/latexHighlight';
 import { HankoStamp } from './HankoStamp';
 import { CornerBrackets } from './CornerBrackets';
@@ -121,7 +121,6 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState<'pdf' | 'latex'>('pdf');
   const [latexSource, setLatexSource] = useState(DEFAULT_RESUME_TEX);
   const [copied, setCopied] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Supabase S3-backed storage bucket PDF URL (with local / relative fallback)
   const supabasePdfUrl = getResumePdfUrl();
@@ -265,41 +264,11 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
               </button>
             </div>
           )}
-
-          {/* Fullscreen Toggle */}
-          <button
-            onClick={() => setIsFullscreen(!isFullscreen)}
-            className="p-2 rounded-lg bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink transition-colors"
-            title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
-          >
-            {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-          </button>
         </div>
       </div>
 
       {/* Main Presentation Container */}
-      <div
-        className={`relative transition-all duration-300 ${
-          isFullscreen
-            ? 'fixed inset-0 z-50 bg-light-canvas dark:bg-dark-canvas p-6 overflow-auto'
-            : 'w-full'
-        }`}
-      >
-        {isFullscreen && (
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-light-border dark:border-dark-border">
-            <span className="font-serif text-lg text-light-ink dark:text-dark-ink">
-              Vincent Yuan — Curriculum Vitae
-            </span>
-            <button
-              onClick={() => setIsFullscreen(false)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans rounded-md text-light-ink dark:text-dark-ink"
-            >
-              <Minimize2 className="w-3.5 h-3.5" />
-              <span>Exit Fullscreen</span>
-            </button>
-          </div>
-        )}
-
+      <div className="w-full relative">
         {activeTab === 'pdf' ? (
           /* PDF Viewer Tab */
           <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-xl overflow-hidden shadow-akari dark:shadow-night-glow classical-card-frame">

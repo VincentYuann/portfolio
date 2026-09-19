@@ -16,7 +16,7 @@ export const CornerBrackets: React.FC<CornerBracketsProps> = ({
   };
 
   const dim = sizeMap[size];
-  const borderCls = 'border-ochre/40 dark:border-ochre/30 pointer-events-none transition-colors duration-300';
+  const borderCls = 'border-ochre/55 dark:border-ochre/45 pointer-events-none transition-colors duration-300';
 
   return (
     <div className={`pointer-events-none select-none ${className}`} aria-hidden="true">

@@ -37,6 +37,16 @@ export interface ExperienceRecord {
   startDate: string;
   endDate: string;
   description: string;
+  overview?: string;
+  bullets?: string[];
+  tags?: string[];
+  isActive?: boolean;
+  statusLabel?: string;
+  domainLabel?: string;
+  logoUrl?: string;
+  kanji?: string;
+  kanjiSubtitle?: string;
+  displayOrder?: number;
 }
 
 export interface SiteData {
@@ -243,15 +253,81 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
 
       if (expRes.data) {
-        const mappedExp: ExperienceRecord[] = expRes.data.map((row: any) => ({
-          id: row.id || crypto.randomUUID(),
-          title: row.title || '',
-          company: row.company || '',
-          location: row.location || '',
-          startDate: row.start_date || row.startDate || '',
-          endDate: row.end_date || row.endDate || '',
-          description: row.description || '',
-        }));
+        const mappedExp: ExperienceRecord[] = expRes.data.map((row: any, idx: number) => {
+          const isCurrent =
+            row.is_active ??
+            row.isActive ??
+            (row.end_date?.toLowerCase().includes('present') ||
+              row.endDate?.toLowerCase().includes('present') ||
+              idx === 0);
+
+          // Extract bullets from array or split description
+          let bullets: string[] = [];
+          if (Array.isArray(row.bullets) && row.bullets.length > 0) {
+            bullets = row.bullets;
+          } else if (row.description) {
+            bullets = row.description
+              .split(/(?<=[.!?])\s+/)
+              .map((p: string) => p.trim())
+              .filter((p: string) => p.length > 0);
+          }
+
+          // Default overview summary if not explicitly provided
+          const overview =
+            row.overview ||
+            (idx === 0
+              ? 'High-performance AI inference infrastructure studio specializing in local-first edge LLMs, real-time telemetry pipelines, and artisanal WebGL interfaces.'
+              : idx === 1
+              ? 'Global AI automation consultancy delivering RAG pipeline integrations, vector retrieval systems, and continuous delivery middleware for enterprise clients.'
+              : row.description || '');
+
+          const defaultTags =
+            idx === 0
+              ? ['C++', 'CUDA', 'TimescaleDB', 'WebSockets', 'WebGL', 'React']
+              : idx === 1
+              ? ['LlamaIndex', 'Qdrant', 'Flask', 'Docker', 'Jenkins', 'n8n']
+              : ['Rust', 'PostgreSQL', 'TypeScript'];
+
+          const tags = Array.isArray(row.tags) && row.tags.length > 0
+            ? row.tags
+            : Array.isArray(row.tech_stacks) && row.tech_stacks.length > 0
+            ? row.tech_stacks
+            : defaultTags;
+
+          return {
+            id: row.id || crypto.randomUUID(),
+            title: row.title || '',
+            company: row.company || '',
+            location: row.location || '',
+            startDate: row.start_date || row.startDate || '',
+            endDate: row.end_date || row.endDate || '',
+            description: row.description || '',
+            overview,
+            bullets,
+            tags,
+            isActive: isCurrent,
+            statusLabel:
+              row.status_label ||
+              row.statusLabel ||
+              (isCurrent ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
+            domainLabel: row.domain_label || row.domainLabel || '',
+            logoUrl: row.logo_url || row.logoUrl || row.logo || '',
+            kanji: row.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原'),
+            kanjiSubtitle:
+              row.kanji_subtitle ||
+              row.kanjiSubtitle ||
+              (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS'),
+            displayOrder:
+              typeof row.display_order === 'number'
+                ? row.display_order
+                : typeof row.displayOrder === 'number'
+                ? row.displayOrder
+                : idx,
+          };
+        });
+
+        // Sort by displayOrder ascending
+        mappedExp.sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
         setExperiences(mappedExp);
         try {
           localStorage.setItem('portfolio_experience_cache', JSON.stringify(mappedExp));

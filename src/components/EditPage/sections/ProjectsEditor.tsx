@@ -25,6 +25,8 @@ import { useSiteData } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../CornerBrackets';
 import { TechTag } from '../../TechTag';
 import { TechTagModal } from '../TechTagModal';
+import { KanjiPickerModal } from '../KanjiPickerModal';
+import { getKanjiPreset } from '../../../lib/kanjiLibrary';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
@@ -362,6 +364,7 @@ export const ProjectsEditor: React.FC = () => {
   });
   const [activeTab, setActiveTab] = useState<ProjectsTab>('featured');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [kanjiModalProjectId, setKanjiModalProjectId] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
@@ -1001,12 +1004,23 @@ export const ProjectsEditor: React.FC = () => {
                     </div>
                     <div className="sm:col-span-3">
                       <Label className="mb-1.5 font-medium">Kanji Symbol</Label>
-                      <Input
-                        type="text"
-                        value={project.kanji}
-                        onChange={(e) => updateProject(project.id, { kanji: e.target.value })}
-                        placeholder="e.g. 墨"
-                      />
+                      <button
+                        type="button"
+                        onClick={() => setKanjiModalProjectId(project.id)}
+                        className="w-full flex items-center justify-between px-3 h-9 rounded-lg bg-light-surface dark:bg-dark-surface-muted border border-light-border dark:border-dark-border hover:border-terracotta transition-colors text-left cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="font-serif text-base font-bold text-terracotta">
+                            {project.kanji || '案'}
+                          </span>
+                          <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted truncate">
+                            {getKanjiPreset(project.kanji) ? `· ${getKanjiPreset(project.kanji)?.meaning}` : '· Custom'}
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-mono text-terracotta font-semibold uppercase shrink-0">
+                          Pick ▾
+                        </span>
+                      </button>
                     </div>
                     <div className="sm:col-span-3">
                       <Label className="mb-1.5 font-medium">Badge Label</Label>
@@ -1150,20 +1164,11 @@ export const ProjectsEditor: React.FC = () => {
                     <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
                       <Button
                         type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setExpandedId(null)}
-                        className="text-light-ink-muted hover:text-light-ink dark:hover:text-dark-ink text-xs h-8"
-                      >
-                        Collapse Card
-                      </Button>
-                      <Button
-                        type="button"
                         variant="default"
                         size="sm"
                         disabled={singleSavingId === project.id}
                         onClick={() => handleSaveSingleProject(project.id)}
-                        className="gap-1.5 h-8 px-3 text-xs bg-terracotta hover:bg-terracotta/90 text-white shadow-xs"
+                        className="gap-1.5 h-8 px-4 text-xs bg-terracotta hover:bg-terracotta/90 text-white shadow-xs cursor-pointer"
                       >
                         {singleSavingId === project.id ? (
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -1180,6 +1185,19 @@ export const ProjectsEditor: React.FC = () => {
           );
         })}
       </div>
+
+      {/* Kanji Preset Selection Modal */}
+      {kanjiModalProjectId && (
+        <KanjiPickerModal
+          isOpen={Boolean(kanjiModalProjectId)}
+          onClose={() => setKanjiModalProjectId(null)}
+          selectedChar={projects.find((p) => p.id === kanjiModalProjectId)?.kanji || '案'}
+          onSelect={(kanji) => {
+            updateProject(kanjiModalProjectId, { kanji });
+          }}
+          title={`Select Kanji Symbol for "${projects.find((p) => p.id === kanjiModalProjectId)?.title || 'Project'}"`}
+        />
+      )}
 
       {displayedList.length === 0 && (
         <div className="text-center py-16 text-light-ink-muted dark:text-dark-ink-muted font-sans text-sm rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface p-8">

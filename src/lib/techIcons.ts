@@ -12,6 +12,12 @@ import {
   SiScikitlearn,
   SiKeras,
   SiJupyter,
+  SiPandas,
+  SiNumpy,
+  SiOpencv,
+  SiLangchain,
+  SiOllama,
+  SiQdrant,
 
   // Languages & Core Runtimes
   SiRust,
@@ -22,20 +28,47 @@ import {
   SiTypescript,
   SiJavascript,
   SiNodedotjs,
+  SiBun,
+  SiDeno,
   SiGnubash,
   SiHtml5,
   SiCss,
   SiWebassembly,
+  SiKotlin,
+  SiSwift,
+  SiPhp,
+  SiRuby,
+  SiElixir,
+  SiScala,
+  SiZig,
 
   // Frontend & UI
   SiReact,
   SiNextdotjs,
   SiTailwindcss,
   SiVuedotjs,
+  SiNuxt,
   SiSvelte,
   SiAngular,
+  SiAstro,
+  SiRemix,
+  SiFramer,
   SiVite,
   SiRedux,
+
+  // Backend & APIs
+  SiFastapi,
+  SiFlask,
+  SiDjango,
+  SiExpress,
+  SiNestjs,
+  SiSpringboot,
+  SiTrpc,
+  SiGraphql,
+  SiApachekafka,
+  SiRabbitmq,
+  SiSocketdotio,
+  SiMqtt,
 
   // Databases & Storage
   SiPostgresql,
@@ -45,34 +78,49 @@ import {
   SiSqlite,
   SiMysql,
   SiPrisma,
+  SiTimescale,
+  SiClickhouse,
+  SiGooglebigquery,
+  SiApachecassandra,
+  SiFirebase,
 
-  // Cloud, Infrastructure & Containers
+  // Cloud, Infrastructure & DevOps
   SiDocker,
   SiKubernetes,
   SiLinux,
   SiGooglecloud,
   SiCloudflare,
   SiGithub,
+  SiGitlab,
   SiGit,
   SiNginx,
   SiVercel,
-
-  // Streams, Events & APIs
-  SiApachekafka,
-  SiGraphql,
-  SiSocketdotio,
-  SiRabbitmq,
+  SiNetlify,
+  SiTerraform,
+  SiAnsible,
+  SiJenkins,
+  SiDatadog,
+  SiPrometheus,
+  SiGrafana,
 
   // Creative Tech & Graphics
   SiThreedotjs,
   SiWebgl,
   SiOpengl,
   SiBlender,
+  SiFigma,
+
+  // Testing & Tooling
+  SiPostman,
+  SiJest,
+  SiVitest,
+  SiCypress,
 } from '@icons-pack/react-simple-icons';
 
 import {
   Sparkles,
   Cloud,
+  Cpu,
 } from 'lucide-react';
 
 export type TechIconComponent = React.ComponentType<{
@@ -88,7 +136,7 @@ export interface TechIconMatch {
 }
 
 /**
- * 1. Curated Registry of Official Brand Tech Logos
+ * Curated Registry of Official Brand Tech Logos
  */
 export const TECH_ICON_REGISTRY: Record<string, { icon: TechIconComponent; name: string }> = {
   // AI & ML
@@ -105,6 +153,14 @@ export const TECH_ICON_REGISTRY: Record<string, { icon: TechIconComponent; name:
   meta: { icon: SiMeta, name: 'Meta' },
   metaai: { icon: SiMetaai, name: 'Meta AI' },
   openai: { icon: Sparkles as unknown as TechIconComponent, name: 'OpenAI' },
+  pandas: { icon: SiPandas, name: 'Pandas' },
+  numpy: { icon: SiNumpy, name: 'NumPy' },
+  opencv: { icon: SiOpencv, name: 'OpenCV' },
+  langchain: { icon: SiLangchain, name: 'LangChain' },
+  ollama: { icon: SiOllama, name: 'Ollama' },
+  qdrant: { icon: SiQdrant, name: 'Qdrant' },
+  cuda: { icon: Cpu as unknown as TechIconComponent, name: 'CUDA' },
+  llamacpp: { icon: SiCplusplus, name: 'llama.cpp' },
 
   // Languages & Runtimes
   rust: { icon: SiRust, name: 'Rust' },
@@ -116,21 +172,48 @@ export const TECH_ICON_REGISTRY: Record<string, { icon: TechIconComponent; name:
   typescript: { icon: SiTypescript, name: 'TypeScript' },
   javascript: { icon: SiJavascript, name: 'JavaScript' },
   nodejs: { icon: SiNodedotjs, name: 'Node.js' },
+  bun: { icon: SiBun, name: 'Bun' },
+  deno: { icon: SiDeno, name: 'Deno' },
   bash: { icon: SiGnubash, name: 'Bash' },
   shell: { icon: SiGnubash, name: 'Shell' },
   wasm: { icon: SiWebassembly, name: 'WebAssembly' },
+  kotlin: { icon: SiKotlin, name: 'Kotlin' },
+  swift: { icon: SiSwift, name: 'Swift' },
+  php: { icon: SiPhp, name: 'PHP' },
+  ruby: { icon: SiRuby, name: 'Ruby' },
+  elixir: { icon: SiElixir, name: 'Elixir' },
+  scala: { icon: SiScala, name: 'Scala' },
+  zig: { icon: SiZig, name: 'Zig' },
+  html5: { icon: SiHtml5, name: 'HTML5' },
+  css: { icon: SiCss, name: 'CSS3' },
 
   // Frontend
   react: { icon: SiReact, name: 'React' },
   nextjs: { icon: SiNextdotjs, name: 'Next.js' },
   tailwindcss: { icon: SiTailwindcss, name: 'Tailwind CSS' },
   vue: { icon: SiVuedotjs, name: 'Vue.js' },
+  nuxt: { icon: SiNuxt, name: 'Nuxt.js' },
   svelte: { icon: SiSvelte, name: 'Svelte' },
   angular: { icon: SiAngular, name: 'Angular' },
+  astro: { icon: SiAstro, name: 'Astro' },
+  remix: { icon: SiRemix, name: 'Remix' },
+  framermotion: { icon: SiFramer, name: 'Framer Motion' },
   vite: { icon: SiVite, name: 'Vite' },
   redux: { icon: SiRedux, name: 'Redux' },
-  html5: { icon: SiHtml5, name: 'HTML5' },
-  css: { icon: SiCss, name: 'CSS3' },
+
+  // Backend & APIs
+  fastapi: { icon: SiFastapi, name: 'FastAPI' },
+  flask: { icon: SiFlask, name: 'Flask' },
+  django: { icon: SiDjango, name: 'Django' },
+  express: { icon: SiExpress, name: 'Express' },
+  nestjs: { icon: SiNestjs, name: 'NestJS' },
+  springboot: { icon: SiSpringboot, name: 'Spring Boot' },
+  trpc: { icon: SiTrpc, name: 'tRPC' },
+  graphql: { icon: SiGraphql, name: 'GraphQL' },
+  kafka: { icon: SiApachekafka, name: 'Apache Kafka' },
+  rabbitmq: { icon: SiRabbitmq, name: 'RabbitMQ' },
+  websocket: { icon: SiSocketdotio, name: 'WebSockets' },
+  mqtt: { icon: SiMqtt, name: 'MQTT' },
 
   // Databases & Backend
   postgresql: { icon: SiPostgresql, name: 'PostgreSQL' },
@@ -140,6 +223,11 @@ export const TECH_ICON_REGISTRY: Record<string, { icon: TechIconComponent; name:
   sqlite: { icon: SiSqlite, name: 'SQLite' },
   mysql: { icon: SiMysql, name: 'MySQL' },
   prisma: { icon: SiPrisma, name: 'Prisma' },
+  timescaledb: { icon: SiTimescale, name: 'TimescaleDB' },
+  clickhouse: { icon: SiClickhouse, name: 'ClickHouse' },
+  bigquery: { icon: SiGooglebigquery, name: 'BigQuery' },
+  cassandra: { icon: SiApachecassandra, name: 'Cassandra' },
+  firebase: { icon: SiFirebase, name: 'Firebase' },
 
   // DevOps & Cloud
   docker: { icon: SiDocker, name: 'Docker' },
@@ -149,25 +237,34 @@ export const TECH_ICON_REGISTRY: Record<string, { icon: TechIconComponent; name:
   gcp: { icon: SiGooglecloud, name: 'Google Cloud' },
   cloudflare: { icon: SiCloudflare, name: 'Cloudflare' },
   github: { icon: SiGithub, name: 'GitHub' },
+  gitlab: { icon: SiGitlab, name: 'GitLab' },
   git: { icon: SiGit, name: 'Git' },
   nginx: { icon: SiNginx, name: 'NGINX' },
   vercel: { icon: SiVercel, name: 'Vercel' },
+  netlify: { icon: SiNetlify, name: 'Netlify' },
+  terraform: { icon: SiTerraform, name: 'Terraform' },
+  ansible: { icon: SiAnsible, name: 'Ansible' },
+  jenkins: { icon: SiJenkins, name: 'Jenkins' },
+  datadog: { icon: SiDatadog, name: 'Datadog' },
+  prometheus: { icon: SiPrometheus, name: 'Prometheus' },
+  grafana: { icon: SiGrafana, name: 'Grafana' },
 
-  // Streams & APIs
-  kafka: { icon: SiApachekafka, name: 'Apache Kafka' },
-  graphql: { icon: SiGraphql, name: 'GraphQL' },
-  websocket: { icon: SiSocketdotio, name: 'WebSockets' },
-  rabbitmq: { icon: SiRabbitmq, name: 'RabbitMQ' },
-
-  // Creative Tech
+  // Creative Tech & 3D
   threejs: { icon: SiThreedotjs, name: 'Three.js' },
   webgl: { icon: SiWebgl, name: 'WebGL' },
   opengl: { icon: SiOpengl, name: 'OpenGL' },
   blender: { icon: SiBlender, name: 'Blender' },
+  figma: { icon: SiFigma, name: 'Figma' },
+
+  // Testing & Quality
+  postman: { icon: SiPostman, name: 'Postman' },
+  jest: { icon: SiJest, name: 'Jest' },
+  vitest: { icon: SiVitest, name: 'Vitest' },
+  cypress: { icon: SiCypress, name: 'Cypress' },
 };
 
 /**
- * 2. Aliases for natural search and abbreviations
+ * Aliases for natural search and abbreviations
  */
 const TECH_ALIASES: Record<string, string> = {
   k8s: 'kubernetes',
@@ -186,12 +283,13 @@ const TECH_ALIASES: Record<string, string> = {
   vuejs: 'vue',
   next: 'nextjs',
   'next.js': 'nextjs',
+  'next.js 14': 'nextjs',
   'three.js': 'threejs',
   three: 'threejs',
-  'llama.cpp': 'llama',
+  'llama.cpp': 'llamacpp',
   'llama-3': 'llama',
   'llama 3': 'llama',
-  llamaindex: 'llama',
+  llamaindex: 'langchain',
   'socket.io': 'websocket',
   websockets: 'websocket',
   'amazon web services': 'aws',
@@ -202,10 +300,12 @@ const TECH_ALIASES: Record<string, string> = {
   zsh: 'bash',
   css3: 'css',
   html: 'html5',
+  framer: 'framermotion',
+  timescale: 'timescaledb',
 };
 
 /**
- * 3. Normalizer helper for consistent lookup
+ * Normalizer helper for consistent lookup
  */
 export function normalizeTechKey(input: string): string {
   return input
@@ -218,7 +318,7 @@ export function normalizeTechKey(input: string): string {
 }
 
 /**
- * 4. Typo-tolerant Levenshtein distance
+ * Typo-tolerant Levenshtein distance
  */
 function getLevenshteinDistance(a: string, b: string): number {
   if (a.length === 0) return b.length;
@@ -245,8 +345,7 @@ function getLevenshteinDistance(a: string, b: string): number {
 }
 
 /**
- * Main function: Maps any raw technology string to its official brand logo.
- * If no official brand is matched, returns { Icon: null, isOfficialBrand: false, canonicalName: tag }.
+ * Maps any raw technology string to its official brand logo.
  */
 export function getTechBadgeIcon(tag: string): TechIconMatch {
   if (!tag || !tag.trim()) {
@@ -275,7 +374,7 @@ export function getTechBadgeIcon(tag: string): TechIconMatch {
     return { Icon: TECH_ICON_REGISTRY[norm].icon, isOfficialBrand: true, canonicalName: TECH_ICON_REGISTRY[norm].name };
   }
 
-  // Tier 2: Token / Prefix matching for compound tags (e.g. 'Docker Compose' -> 'Docker', 'Next.js 14' -> 'Next.js')
+  // Tier 2: Token / Prefix matching for compound tags
   for (const [key, item] of Object.entries(TECH_ICON_REGISTRY)) {
     if (key.length >= 3) {
       if (norm.startsWith(key) || norm.endsWith(key)) {
@@ -284,7 +383,7 @@ export function getTechBadgeIcon(tag: string): TechIconMatch {
     }
   }
 
-  // Tier 3: Strict Levenshtein match for small typos (e.g. 'pytrch' -> 'pytorch')
+  // Tier 3: Strict Levenshtein match for small typos
   if (norm.length >= 5) {
     let bestKey: string | null = null;
     let minDist = 999;
@@ -304,6 +403,6 @@ export function getTechBadgeIcon(tag: string): TechIconMatch {
     }
   }
 
-  // Tier 4: Custom / Unmatched tag — no icon, pure text badge
+  // Tier 4: Custom / Unmatched tag
   return { Icon: null, isOfficialBrand: false, canonicalName: tag.trim() };
 }

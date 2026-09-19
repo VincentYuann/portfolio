@@ -3,6 +3,8 @@ import { Plus, Trash2, Save, CheckCircle2, AlertCircle, Loader2 } from 'lucide-r
 import { supabase, formatErrorMessage } from '../../../lib/supabase';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../CornerBrackets';
+import { KanjiPickerModal } from '../KanjiPickerModal';
+import { getKanjiPreset } from '../../../lib/kanjiLibrary';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
@@ -46,6 +48,7 @@ export const PhilosophyEditor: React.FC = () => {
     return [];
   });
   const [saveState, setSaveState] = useState<SaveState>('idle');
+  const [kanjiModalPillarPos, setKanjiModalPillarPos] = useState<number | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
 
   // Sync from SiteDataContext when context data changes
@@ -220,14 +223,24 @@ export const PhilosophyEditor: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <Label className="mb-1.5">Kanji (Japanese Symbol)</Label>
-                <Input
-                  type="text"
-                  value={pillar.kanji}
-                  onChange={(e) => update(pillar.position, { kanji: e.target.value })}
-                  placeholder="e.g. 間"
-                  className="font-serif text-base"
-                />
+                <Label className="mb-1.5 font-medium">Kanji Symbol</Label>
+                <button
+                  type="button"
+                  onClick={() => setKanjiModalPillarPos(pillar.position)}
+                  className="w-full flex items-center justify-between px-3 h-9 rounded-lg bg-light-surface dark:bg-dark-surface-muted border border-light-border dark:border-dark-border hover:border-terracotta transition-colors text-left cursor-pointer"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="font-serif text-base font-bold text-terracotta">
+                      {pillar.kanji || '間'}
+                    </span>
+                    <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted truncate">
+                      {getKanjiPreset(pillar.kanji) ? `· ${getKanjiPreset(pillar.kanji)?.meaning}` : '· Custom'}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono text-terracotta font-semibold uppercase shrink-0">
+                    Pick ▾
+                  </span>
+                </button>
               </div>
               <div>
                 <Label className="mb-1.5">Romaji</Label>
@@ -273,6 +286,23 @@ export const PhilosophyEditor: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {/* Kanji Preset Selection Modal */}
+      {kanjiModalPillarPos !== null && (
+        <KanjiPickerModal
+          isOpen={kanjiModalPillarPos !== null}
+          onClose={() => setKanjiModalPillarPos(null)}
+          selectedChar={pillars.find((p) => p.position === kanjiModalPillarPos)?.kanji || '間'}
+          onSelect={(kanji, preset) => {
+            update(kanjiModalPillarPos, {
+              kanji,
+              romaji: preset ? preset.romaji.split('/')[0].trim() : pillars.find((p) => p.position === kanjiModalPillarPos)?.romaji,
+              title: (!pillars.find((p) => p.position === kanjiModalPillarPos)?.title && preset) ? preset.meaning : pillars.find((p) => p.position === kanjiModalPillarPos)?.title,
+            });
+          }}
+          title={`Select Kanji for Pillar #${kanjiModalPillarPos}`}
+        />
+      )}
 
       {pillars.length === 0 && (
         <div className="text-center py-16 text-light-ink-muted dark:text-dark-ink-muted font-sans text-sm rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface p-8">
