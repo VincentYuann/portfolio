@@ -4,6 +4,7 @@ import { ExperienceEditor } from './sections/ExperienceEditor';
 import { ProjectsEditor } from './sections/ProjectsEditor';
 import { ResumeEditor } from './sections/ResumeEditor';
 import { PhilosophyEditor } from './sections/PhilosophyEditor';
+import { VerticalMarginWidget, MARGIN_PRESETS } from '../VerticalMarginWidget';
 import { ArrowLeft } from 'lucide-react';
 
 type EditSection = 'intro' | 'experience' | 'projects' | 'resume' | 'philosophy';
@@ -40,7 +41,25 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
 
   return (
     // pt-20 clears the fixed main header (h-20)
-    <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-20">
+    <div className="relative min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-20">
+      {/* Floating Vertical Margins */}
+      <VerticalMarginWidget
+        side="left"
+        top="top-64"
+        {...MARGIN_PRESETS.shokuninCraft}
+      />
+      <VerticalMarginWidget
+        side="right"
+        top="top-80"
+        {...MARGIN_PRESETS.akariSimplicity}
+      />
+      <VerticalMarginWidget
+        side="right"
+        top="top-[65%]"
+        type="minimal"
+        stampChar="整"
+      />
+
       {/* Sub Navbar — sticks just below main header with smooth horizontal scrolling */}
       <div className="sticky top-20 z-40 bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">

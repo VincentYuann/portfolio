@@ -6,6 +6,7 @@ import { EnsoOrbital } from './EnsoOrbital';
 import { HankoStamp } from './HankoStamp';
 import { TechTag } from './TechTag';
 import { CornerBrackets } from './CornerBrackets';
+import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { useSiteData } from '../context/SiteDataContext';
 
 interface ProjectsPageProps {
@@ -33,8 +34,27 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
   });
 
   return (
-    <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen">
-      {/* Detail Modal */}
+    <div className="relative w-full min-h-screen overflow-x-clip">
+      {/* Floating Vertical Margins in Left & Right Empty Spaces */}
+      <VerticalMarginWidget
+        side="left"
+        top="top-72"
+        {...MARGIN_PRESETS.inkHarmony}
+      />
+      <VerticalMarginWidget
+        side="right"
+        top="top-96"
+        {...MARGIN_PRESETS.codeSoul}
+      />
+      <VerticalMarginWidget
+        side="right"
+        top="top-[68%]"
+        type="minimal"
+        stampChar="創"
+      />
+
+      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Detail Modal */}
       <ProjectDetailModal
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
@@ -59,8 +79,8 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
               </h1>
               <span className="font-serif text-sm text-terracotta dark:text-ochre">作品全集</span>
             </div>
-            <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-2xl">
-              A comprehensive archive of production systems, ambient computing interfaces, distributed microservices, and generative AI platforms built with deliberate restraint.
+            <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-2xl font-light">
+              Archive of distributed microservices, generative AI runtimes, and contemplative computing interfaces.
             </p>
           </div>
 
@@ -222,6 +242,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 };

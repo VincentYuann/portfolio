@@ -177,7 +177,7 @@ export const PhilosophyEditor: React.FC = () => {
                 ? 'Saved to DB'
                 : saveState === 'error'
                 ? 'Retry'
-                : 'Save All'}
+                : 'Save Philosophy Pillars'}
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (

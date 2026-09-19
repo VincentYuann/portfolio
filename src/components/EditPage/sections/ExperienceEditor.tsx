@@ -193,7 +193,7 @@ export const ExperienceEditor: React.FC = () => {
                 ? 'Saved to DB'
                 : saveState === 'error'
                 ? 'Retry'
-                : 'Save All'}
+                : 'Save All Experience'}
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (

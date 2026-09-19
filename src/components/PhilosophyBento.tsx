@@ -3,6 +3,7 @@ import { Compass, Feather, ShieldCheck } from 'lucide-react';
 import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
 import { CornerBrackets } from './CornerBrackets';
+import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { useSiteData } from '../context/SiteDataContext';
 
 const PILLAR_CONFIGS = [
@@ -100,31 +101,19 @@ export const PhilosophyBento: React.FC = () => {
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-light-canvas via-light-canvas/80 to-transparent dark:from-dark-canvas dark:via-dark-canvas/80 z-10 pointer-events-none" />
       </div>
 
-      {/* Left Empty Margin Japanese Design Widget (Visible on wide screens) */}
-      <div className="absolute left-4 xl:left-10 top-1/2 -translate-y-1/2 hidden 2xl:flex flex-col items-center gap-4 text-light-ink-muted/60 dark:text-dark-ink-muted/50 pointer-events-none select-none z-10">
-        <div className="w-px h-16 bg-gradient-to-b from-transparent via-terracotta/40 to-ochre/40" />
-        <div className="writing-vertical-rl font-mono text-[10px] tracking-[0.3em] uppercase">
-          空間の美学 // MA & WABI
-        </div>
-        <div className="w-2 h-2 rounded-full bg-terracotta/80 animate-ruby-pulse" />
-        <div className="writing-vertical-rl font-mono text-[10px] tracking-widest opacity-80">
-          35°41'N · 139°46'E
-        </div>
-        <div className="w-px h-16 bg-gradient-to-b from-ochre/40 via-light-border dark:via-dark-border to-transparent" />
-      </div>
+      {/* Left Empty Margin Japanese Vertical Floating Widget (Visible on wide screens) */}
+      <VerticalMarginWidget
+        side="left"
+        top="top-1/2 -translate-y-1/2"
+        {...MARGIN_PRESETS.maWabi}
+      />
 
-      {/* Right Empty Margin Japanese Design Widget (Visible on wide screens) */}
-      <div className="absolute right-4 xl:right-10 top-1/2 -translate-y-1/2 hidden 2xl:flex flex-col items-center gap-4 text-light-ink-muted/60 dark:text-dark-ink-muted/50 pointer-events-none select-none z-10">
-        <div className="w-px h-16 bg-gradient-to-b from-transparent via-bamboo/40 to-ochre/40" />
-        <div className="writing-vertical-rl font-mono text-[10px] tracking-[0.3em] uppercase">
-          職人の規矩 // CRAFT SPEC
-        </div>
-        <div className="w-2 h-2 rounded-full bg-bamboo/80 animate-status-glow" />
-        <div className="writing-vertical-rl font-mono text-[10px] tracking-widest opacity-80">
-          KYOTO · HEIAN ARCHIVE
-        </div>
-        <div className="w-px h-16 bg-gradient-to-b from-ochre/40 via-light-border dark:via-dark-border to-transparent" />
-      </div>
+      {/* Right Empty Margin Japanese Vertical Floating Widget (Visible on wide screens) */}
+      <VerticalMarginWidget
+        side="right"
+        top="top-1/2 -translate-y-1/2"
+        {...MARGIN_PRESETS.craftSpec}
+      />
 
       {/* Main Philosophy Bento Content */}
       <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
@@ -166,7 +155,7 @@ export const PhilosophyBento: React.FC = () => {
             return (
               <div
                 key={pillar.position || idx}
-                className="interactive-card bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-7 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-all duration-300 hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame"
+                className="interactive-card bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-all duration-300 hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame"
               >
                 {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered card */}
                 <EnsoOrbital placement="top-left" size={112} hoverOnly={true} />
@@ -175,9 +164,9 @@ export const PhilosophyBento: React.FC = () => {
                 <CornerBrackets size="md" />
 
                 {/* Top Accent Kanji & Icon */}
-                <div className="space-y-4 relative z-10">
-                  <div className="flex items-center justify-between border-b border-light-border/60 dark:border-[#2D3039]/60 pb-4">
-                    <span className="pillar-kanji font-serif text-5xl sm:text-6xl text-terracotta font-light leading-none inline-block pl-2">
+                <div className="space-y-3 sm:space-y-4 relative z-10">
+                  <div className="flex items-center justify-between border-b border-light-border/60 dark:border-[#2D3039]/60 pb-3 sm:pb-4">
+                    <span className="pillar-kanji font-serif text-4xl sm:text-6xl text-terracotta font-light leading-none inline-block pl-1 sm:pl-2">
                       {pillar.kanji}
                     </span>
                     <div className="flex items-center gap-2">
@@ -191,15 +180,15 @@ export const PhilosophyBento: React.FC = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta transition-colors">
-                      {pillar.romaji}{' '}
+                    <h3 className="font-serif text-lg sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta transition-colors">
+                      {pillar.romaji}
                       {pillar.title && (
-                        <span className="text-light-ink-muted dark:text-dark-ink-muted text-base font-light">
-                          ({pillar.title})
+                        <span className="font-sans text-xs sm:text-sm font-light text-light-ink-muted dark:text-dark-ink-muted ml-2 block sm:inline">
+                          · {pillar.title}
                         </span>
                       )}
                     </h3>
-                    <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-3 leading-relaxed font-light">
+                    <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 leading-relaxed font-light">
                       {pillar.description}
                     </p>
                   </div>
@@ -207,7 +196,7 @@ export const PhilosophyBento: React.FC = () => {
 
                 {/* Bottom Tag */}
                 {pillar.tag && (
-                  <div className="relative z-10 pt-6 mt-6 border-t border-light-border/40 dark:border-[#2D3039]/40 flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
+                  <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-[#2D3039]/40 flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
                     <span className="w-1.5 h-1.5 rounded-full bg-terracotta" />
                     <span className="font-sans text-[10px] uppercase tracking-[0.18em] font-medium">
                       {pillar.tag}

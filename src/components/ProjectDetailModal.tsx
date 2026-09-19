@@ -102,16 +102,17 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                 {project.architectureDetails.map((section, idx) => (
                   <div
                     key={idx}
-                    className="bg-light-surface-raised dark:bg-dark-surface-card p-4 sm:p-5 rounded-xl border border-light-border/60 dark:border-dark-border/60"
+                    className="p-3 sm:p-4 rounded-lg border-l-2 border-terracotta/50 bg-light-surface-raised/60 dark:bg-dark-surface-card/60 pl-3.5 sm:pl-4"
                   >
-                    <h4 className="font-sans text-sm font-semibold text-light-ink dark:text-dark-ink mb-2">
-                      {section.title}
+                    <h4 className="font-sans text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink mb-1.5 flex items-center gap-1.5">
+                      <span className="text-terracotta font-mono text-xs">§</span>
+                      <span>{section.title}</span>
                     </h4>
                     <ul className="space-y-1.5">
                       {section.points.map((pt, pIdx) => (
                         <li
                           key={pIdx}
-                          className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted flex items-start gap-2"
+                          className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted flex items-start gap-2 leading-relaxed font-light"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5 text-terracotta shrink-0 mt-0.5" />
                           <span>{pt}</span>

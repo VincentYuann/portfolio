@@ -159,31 +159,33 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right side cluster — always neatly aligned without overlapping */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Day / Night Toggle */}
-          <div className="flex items-center bg-light-surface-muted/90 dark:bg-dark-surface/90 p-1 rounded-full border border-light-border dark:border-dark-border text-[11px] shrink-0">
+          {/* Day / Night segmented toggle */}
+          <div className="flex items-center p-0.5 rounded-full bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[11px] select-none shrink-0 shadow-2xs">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
                 theme === 'day'
-                  ? 'bg-light-surface-raised text-light-ink shadow-sm'
+                  ? 'bg-light-surface text-light-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
               }`}
               title="Day Mode"
+              aria-label="Switch to Day Mode"
             >
               <Sun className="w-3 h-3" />
-              <span>DAY</span>
+              <span className="hidden sm:inline">DAY</span>
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
                 theme === 'night'
                   ? 'bg-dark-surface-raised text-dark-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
               }`}
               title="Night Mode"
+              aria-label="Switch to Night Mode"
             >
               <Moon className="w-3 h-3" />
-              <span>NIGHT</span>
+              <span className="hidden sm:inline">NIGHT</span>
             </button>
           </div>
 

@@ -2,13 +2,16 @@ import React from 'react';
 
 interface SectionDividerProps {
   label?: string;
+  shortLabel?: string;
 }
 
 export const SectionDivider: React.FC<SectionDividerProps> = ({
   label = 'MA · WABI-SABI · CRAFT',
+  shortLabel,
 }) => {
+  const displayShort = shortLabel || label;
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-6 my-12 sm:my-16 flex items-center justify-center select-none">
+    <div className="relative w-full max-w-7xl mx-auto px-6 my-8 sm:my-14 flex items-center justify-center select-none">
       <div className="relative w-full flex items-center justify-center">
         {/* Hairline rules with warm gold/amber tone */}
         <div className="w-full absolute inset-x-0 flex items-center justify-center pointer-events-none">
@@ -29,10 +32,11 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
         </div>
 
         {/* Center Label Pill */}
-        <div className="relative z-10 inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-light-surface dark:bg-[#181920] border border-light-border dark:border-[#3A332A] shadow-xs backdrop-blur-sm hover:border-ochre/50 transition-colors">
+        <div className="relative z-10 inline-flex items-center gap-2 sm:gap-3 px-3.5 sm:px-5 py-1 sm:py-1.5 rounded-full bg-light-surface dark:bg-[#181920] border border-light-border dark:border-[#3A332A] shadow-xs backdrop-blur-sm hover:border-ochre/50 transition-colors">
           <span className="w-1.5 h-1.5 rounded-full bg-terracotta animate-pulse" />
-          <span className="font-sans font-semibold tracking-[0.24em] text-light-ink-muted dark:text-[#B8A892] uppercase text-[10px]">
-            {label}
+          <span className="font-sans font-semibold tracking-[0.2em] sm:tracking-[0.24em] text-light-ink-muted dark:text-[#B8A892] uppercase text-[9px] sm:text-[10px]">
+            <span className="sm:hidden">{displayShort}</span>
+            <span className="hidden sm:inline">{label}</span>
           </span>
           <span className="w-1.5 h-1.5 rounded-full bg-terracotta animate-pulse" />
         </div>

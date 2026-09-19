@@ -95,7 +95,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             </p>
 
             {/* CTA Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
               <a
                 href="#featured-works"
                 onClick={(e) => {
@@ -104,10 +104,11 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                     onNavigate('home', 'featured-works');
                   }
                 }}
-                className="btn-bloom group inline-flex items-center gap-2.5 px-6 py-3.5 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-sm font-medium rounded-md shadow-sm transition-all duration-200 cursor-pointer"
+                className="btn-bloom group inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs sm:text-sm font-medium rounded-md shadow-sm transition-all duration-200 cursor-pointer"
               >
-                <span>Explore Selected Works</span>
-                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                <span className="sm:hidden">Explore Works</span>
+                <span className="hidden sm:inline">Explore Selected Works</span>
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-1" />
               </a>
               <a
                 href="#resume"
@@ -117,29 +118,30 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                     onNavigate('resume');
                   }
                 }}
-                className="group inline-flex items-center gap-2 px-6 py-3.5 bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/40 text-light-ink dark:text-dark-ink font-sans text-sm font-medium rounded-md shadow-xs transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                className="group inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/40 text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-md shadow-xs transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
               >
-                <span>View Resume & CV</span>
+                <span className="sm:hidden">View Resume</span>
+                <span className="hidden sm:inline">View Resume & CV</span>
                 <Sparkles className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:rotate-45" />
               </a>
             </div>
 
             {/* Tech Capabilities Ribbon */}
             {capabilityPillars.length > 0 && (
-              <div className="pt-3 flex flex-wrap items-center gap-2.5 text-light-ink-muted dark:text-dark-ink-muted">
-                <span className="font-sans text-[10px] font-semibold uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle mr-1">
+              <div className="pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-light-ink-muted dark:text-dark-ink-muted">
+                <span className="font-sans text-[10px] font-semibold uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle mr-1 hidden sm:inline">
                   DOMAINS:
                 </span>
                 {capabilityPillars.map((pillar) => (
                   <div
                     key={pillar.label}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-light-surface-card dark:bg-dark-surface border border-light-border/80 dark:border-[#2D3039] hover:border-terracotta/40 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md bg-light-surface-card dark:bg-dark-surface border border-light-border/80 dark:border-[#2D3039] hover:border-terracotta/40 transition-colors shadow-2xs"
                   >
                     <span className="font-mono text-[10px] font-semibold text-terracotta uppercase tracking-wider">
                       {pillar.label}
                     </span>
                     <span className="text-light-ink-subtle dark:text-dark-ink-subtle text-xs">/</span>
-                    <span className="font-sans text-xs text-light-ink dark:text-dark-ink font-medium">
+                    <span className="font-sans text-[11px] sm:text-xs text-light-ink dark:text-dark-ink font-medium">
                       {pillar.items}
                     </span>
                   </div>
@@ -149,18 +151,18 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           </div>
 
           {/* Right Column: Classical Seal Showcase Box (4 cols) with Double Hairline Frame & Ensō Background */}
-          <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-between self-stretch pt-6 lg:pt-0 relative">
+          <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-between self-stretch pt-4 sm:pt-6 lg:pt-0 relative">
             {/* Authentic Sumi-e Bamboo Art Floating Beside Seal Box with Gentle Sway */}
             <div className="absolute -left-14 -top-12 hidden lg:block pointer-events-none -z-0">
               <BambooArt className="w-40 h-56" sway={true} opacity={0.75} />
             </div>
 
-            <div className="relative z-10 w-full max-w-sm bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-md double-hairline-frame p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:shadow-2xl group">
+            <div className="relative z-10 w-full max-w-sm bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-md double-hairline-frame p-4 sm:p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:shadow-2xl group">
               {/* Celestial Ensō Orbital Circle */}
               <EnsoOrbital placement="top-left" size={136} interactive={true} />
 
               {/* Box Header */}
-              <div className="w-full flex items-center justify-between pb-2 mb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
+              <div className="w-full flex items-center justify-between pb-2 mb-3 sm:mb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
                 <span className="font-sans font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase text-[10px] tracking-wider">
                   SEAL / 認印
                 </span>
@@ -170,12 +172,12 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               </div>
 
               {/* Hanko Seal Mark with Breathing Pulse */}
-              <div className="relative p-2 flex items-center justify-center animate-seal-breathe z-10">
-                <HankoStamp className="w-20 h-20 transition-transform duration-300 group-hover:scale-105" />
+              <div className="relative p-1.5 sm:p-2 flex items-center justify-center animate-seal-breathe z-10">
+                <HankoStamp className="w-16 h-16 sm:w-20 sm:h-20 transition-transform duration-300 group-hover:scale-105" />
               </div>
 
-              <div className="mt-3 text-center relative z-10">
-                <h3 className="font-serif text-xl font-medium text-light-ink dark:text-dark-ink">
+              <div className="mt-2 sm:mt-3 text-center relative z-10">
+                <h3 className="font-serif text-lg sm:text-xl font-medium text-light-ink dark:text-dark-ink">
                   {displayName}
                 </h3>
                 <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-0.5">
@@ -184,14 +186,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               </div>
 
               {/* Vertical Tategaki Japanese Prose snippet */}
-              <div className="w-full mt-4 pt-4 bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70 rounded-md p-4 flex items-center justify-center gap-6 group-hover:border-terracotta/30 transition-colors duration-300 relative z-10">
-                <div className="writing-vertical-rl font-vertical text-[13px] tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-85 h-32 leading-relaxed hover:opacity-100 transition-opacity cursor-default">
+              <div className="w-full mt-3 sm:mt-4 pt-3 sm:pt-4 bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70 rounded-md p-3 sm:p-4 flex items-center justify-center gap-5 sm:gap-6 group-hover:border-terracotta/30 transition-colors duration-300 relative z-10">
+                <div className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-85 h-28 sm:h-32 leading-relaxed hover:opacity-100 transition-opacity cursor-default">
                   間と余白の美学
                 </div>
-                <div className="writing-vertical-rl font-vertical text-[13px] tracking-[0.3em] text-terracotta font-medium h-32 leading-relaxed hover:scale-105 transition-transform cursor-default">
+                <div className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-terracotta font-medium h-28 sm:h-32 leading-relaxed hover:scale-105 transition-transform cursor-default">
                   静寂と簡素な調和
                 </div>
-                <div className="writing-vertical-rl font-vertical text-[13px] tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-70 h-32 leading-relaxed hover:opacity-100 transition-opacity cursor-default">
+                <div className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-70 h-28 sm:h-32 leading-relaxed hover:opacity-100 transition-opacity cursor-default">
                   職人の精緻な組手
                 </div>
               </div>

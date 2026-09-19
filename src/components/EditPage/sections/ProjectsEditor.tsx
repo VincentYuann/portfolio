@@ -365,6 +365,7 @@ export const ProjectsEditor: React.FC = () => {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
+  const [singleSavingId, setSingleSavingId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
 
   // Sync from SiteDataContext
@@ -415,7 +416,7 @@ export const ProjectsEditor: React.FC = () => {
     if (willBeFeatured) {
       const currentCount = projects.filter((p) => p.isFeatured).length;
       if (currentCount >= 3) {
-        toast.info('Maximum 3 Selected Works allowed on the Home Page.');
+        toast.info('Maximum 3 featured projects allowed on the Home Page. Unstar another project first to feature this one.');
         return;
       }
     }
@@ -534,6 +535,56 @@ export const ProjectsEditor: React.FC = () => {
     setProjects((prev) => [...prev, created]);
     setExpandedId(created.id);
     setActiveTab('all');
+  };
+
+  /* ─── Save Single Project to Supabase ─── */
+  const handleSaveSingleProject = async (projectId: string) => {
+    const p = projects.find((item) => item.id === projectId);
+    if (!p) return;
+
+    setSingleSavingId(projectId);
+    try {
+      if (!supabase) throw new Error('Supabase client is not configured.');
+
+      const idx = projects.findIndex((item) => item.id === projectId);
+      const row = {
+        id: p.id,
+        title: p.title || `Project ${idx + 1}`,
+        subtitle: p.subtitle,
+        category: p.category,
+        summary: p.summary,
+        description: p.summary,
+        overview: p.overview || p.summary,
+        kanji: p.kanji || '案',
+        badge: p.badge || 'ENGINEERING ARCHIVE',
+        image: p.image || './images/sumi-os-workspace.jpg',
+        tech_stacks: p.techStacks,
+        sections: p.sections,
+        github_link: p.githubLink,
+        live_link: p.liveLink,
+        is_featured: p.isFeatured,
+        display_order: typeof p.displayOrder === 'number' ? p.displayOrder : idx,
+        is_published: true,
+        updated_at: new Date().toISOString(),
+      };
+
+      // Cache locally
+      try {
+        localStorage.setItem('portfolio_projects_cache', JSON.stringify(projects));
+      } catch {}
+
+      const { error } = await supabase.from('projects').upsert(row, { onConflict: 'id' });
+      if (error) throw error;
+
+      await refresh();
+      toast.success(`"${p.title || 'Project'}" saved directly to database!`);
+      setExpandedId(null);
+    } catch (err: unknown) {
+      const msg = formatErrorMessage(err);
+      toast.error(msg || 'Failed to save project.');
+    } finally {
+      setSingleSavingId(null);
+    }
   };
 
   /* ─── Robust Drag & Drop Handling ─── */
@@ -702,7 +753,7 @@ export const ProjectsEditor: React.FC = () => {
                 ? 'Saved to DB'
                 : saveState === 'error'
                 ? 'Retry'
-                : 'Save All'}
+                : 'Save All Projects'}
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (
@@ -909,8 +960,8 @@ export const ProjectsEditor: React.FC = () => {
                   {/* Grid 1: Title & Category */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="sm:col-span-2">
-                      <Label className="text-terracotta mb-1.5">
-                        Title <span className="text-light-ink-subtle dark:text-dark-ink-subtle font-normal">(table primary identifier)</span>
+                      <Label className="text-terracotta mb-1.5 font-medium">
+                        Title
                       </Label>
                       <Input
                         type="text"
@@ -921,7 +972,7 @@ export const ProjectsEditor: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <Label className="mb-1.5">Category</Label>
+                      <Label className="mb-1.5 font-medium">Category</Label>
                       <select
                         className="flex h-9 w-full rounded-lg border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-muted px-3 py-1 text-xs sm:text-sm text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta"
                         value={project.category}
@@ -939,7 +990,7 @@ export const ProjectsEditor: React.FC = () => {
                   {/* Grid 2: Subtitle, Kanji, Badge */}
                   <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
                     <div className="sm:col-span-6">
-                      <Label className="mb-1.5">Subtitle / Tagline (Resizable)</Label>
+                      <Label className="mb-1.5 font-medium">Subtitle / Tagline</Label>
                       <Textarea
                         rows={2}
                         className="min-h-[58px]"
@@ -949,7 +1000,7 @@ export const ProjectsEditor: React.FC = () => {
                       />
                     </div>
                     <div className="sm:col-span-3">
-                      <Label className="mb-1.5">Kanji Symbol</Label>
+                      <Label className="mb-1.5 font-medium">Kanji Symbol</Label>
                       <Input
                         type="text"
                         value={project.kanji}
@@ -958,7 +1009,7 @@ export const ProjectsEditor: React.FC = () => {
                       />
                     </div>
                     <div className="sm:col-span-3">
-                      <Label className="mb-1.5">Badge Label</Label>
+                      <Label className="mb-1.5 font-medium">Badge Label</Label>
                       <Input
                         type="text"
                         value={project.badge}
@@ -971,7 +1022,7 @@ export const ProjectsEditor: React.FC = () => {
                   {/* Summary & Overview */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label className="mb-1.5">Summary (Card Narrative - Resizable)</Label>
+                      <Label className="mb-1.5 font-medium">Card Summary</Label>
                       <Textarea
                         rows={3}
                         className="min-h-[85px]"
@@ -981,7 +1032,7 @@ export const ProjectsEditor: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <Label className="mb-1.5">Overview (Modal Narrative - Resizable)</Label>
+                      <Label className="mb-1.5 font-medium">Modal Overview</Label>
                       <Textarea
                         rows={3}
                         className="min-h-[85px]"
@@ -1002,9 +1053,9 @@ export const ProjectsEditor: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label>Sections (Highlight Cards for Case Study)</Label>
+                        <Label className="font-medium">Case Study Sections</Label>
                         <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted">
-                          Each section represents one architectural focus card with resizable bullet points.
+                          Key architectural highlights and focus points.
                         </p>
                       </div>
                       <Button
@@ -1108,16 +1159,18 @@ export const ProjectsEditor: React.FC = () => {
                       </Button>
                       <Button
                         type="button"
-                        variant="secondary"
+                        variant="default"
                         size="sm"
-                        onClick={() => {
-                          setExpandedId(null);
-                          toast.success(`Changes to "${project.title || 'Project'}" ready to save.`);
-                        }}
-                        className="gap-1.5 h-8 px-3 text-xs"
+                        disabled={singleSavingId === project.id}
+                        onClick={() => handleSaveSingleProject(project.id)}
+                        className="gap-1.5 h-8 px-3 text-xs bg-terracotta hover:bg-terracotta/90 text-white shadow-xs"
                       >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-bamboo" />
-                        <span>Done Editing</span>
+                        {singleSavingId === project.id ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                          <Save className="w-3.5 h-3.5" />
+                        )}
+                        <span>{singleSavingId === project.id ? 'Saving…' : 'Save Project'}</span>
                       </Button>
                     </div>
                   </div>

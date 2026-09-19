@@ -5,6 +5,7 @@ import { ProjectDetailModal } from './ProjectDetailModal';
 import { EnsoOrbital } from './EnsoOrbital';
 import { TechTag } from './TechTag';
 import { CornerBrackets } from './CornerBrackets';
+import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { useSiteData } from '../context/SiteDataContext';
 
 interface ProjectsShowcaseProps {
@@ -58,7 +59,19 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/70 z-10 pointer-events-none" />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
+      {/* Floating Vertical Margins */}
+      <VerticalMarginWidget
+        side="left"
+        top="top-1/2 -translate-y-1/2"
+        {...MARGIN_PRESETS.inkHarmony}
+      />
+      <VerticalMarginWidget
+        side="right"
+        top="top-1/2 -translate-y-1/2"
+        {...MARGIN_PRESETS.codeSoul}
+      />
+
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & View All Action */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80 gap-6">
           <div>
@@ -85,20 +98,21 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
               className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
             >
               <Layers className="w-3.5 h-3.5 text-terracotta" />
-              <span>View All Projects ({projects?.length || 0})</span>
+              <span className="sm:hidden">All Projects ({projects?.length || 0})</span>
+              <span className="hidden sm:inline">View All Projects ({projects?.length || 0})</span>
               <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-1" />
             </a>
           </div>
         </div>
 
         {/* Alternating Editorial Project Cards Stack (Top 3 on Home) */}
-        <div className="flex flex-col space-y-8">
+        <div className="flex flex-col space-y-6 sm:space-y-8">
           {displayedProjects.map((project, index) => {
             const isAlternate = index % 2 === 1;
             return (
               <article
                 key={project.id}
-                className="interactive-card group relative w-full bg-light-surface-card dark:bg-[#1B1C22] hover:bg-light-surface dark:hover:bg-[#202229] border border-light-border dark:border-[#2D3039] rounded-xl p-6 sm:p-8 transition-all duration-300 shadow-sm hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame overflow-visible"
+                className="interactive-card group relative w-full bg-light-surface-card dark:bg-[#1B1C22] hover:bg-light-surface dark:hover:bg-[#202229] border border-light-border dark:border-[#2D3039] rounded-xl p-4 sm:p-8 transition-all duration-300 shadow-sm hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame overflow-visible"
               >
                 {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered project card */}
                 <EnsoOrbital
@@ -111,7 +125,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                 <CornerBrackets size="md" />
 
                 <div
-                  className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center ${
+                  className={`grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-12 items-center ${
                     isAlternate ? 'lg:grid-flow-dense' : ''
                   }`}
                 >
@@ -124,10 +138,6 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700 ease-out"
                         loading="lazy"
                       />
-                      {/* Subtle Kanji Watermark in Corner */}
-                      <div className="absolute bottom-3 right-3 select-none pointer-events-none px-2.5 py-1 rounded bg-black/40 backdrop-blur-xs text-xs font-serif text-white/90">
-                        {project.kanji}
-                      </div>
                     </div>
                   </div>
 

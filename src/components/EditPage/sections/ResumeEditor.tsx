@@ -215,7 +215,9 @@ export const ResumeEditor: React.FC = () => {
                 ? 'Saved to DB'
                 : saveState === 'error'
                 ? 'Retry'
-                : 'Save All'}
+                : tab === 'upload'
+                ? 'Save & Publish PDF'
+                : 'Save LaTeX Source'}
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (

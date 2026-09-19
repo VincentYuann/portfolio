@@ -143,7 +143,7 @@ export const IntroEditor: React.FC = () => {
                 ? 'Saved to DB'
                 : saveState === 'error'
                 ? 'Retry'
-                : 'Save All'}
+                : 'Save Profile'}
             </span>
           </Button>
           {saveState === 'error' && errorMsg && (

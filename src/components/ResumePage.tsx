@@ -3,6 +3,7 @@ import { FileText, Code2, Download, Copy, Check, ExternalLink, Maximize2, Minimi
 import { tokenizeLatexLine, getTokenClassName } from '../lib/latexHighlight';
 import { HankoStamp } from './HankoStamp';
 import { CornerBrackets } from './CornerBrackets';
+import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { getResumePdfUrl, fetchResumeLatex } from '../lib/supabase';
 
 interface ResumePageProps {
@@ -162,8 +163,32 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen">
-      {/* Top Breadcrumb & Header */}
+    <div className="relative w-full min-h-screen overflow-x-clip">
+      {/* Floating Vertical Margins in Left & Right Empty Spaces */}
+      <VerticalMarginWidget
+        side="left"
+        top="top-72"
+        {...MARGIN_PRESETS.seiJaku}
+      />
+      <VerticalMarginWidget
+        side="right"
+        top="top-96"
+        type="calligraphy"
+        motto="経歴の記録"
+        submotto="CURRICULUM VITAE"
+        coordinate="WATERLOO · TOKYO"
+        stampChar="記"
+        pulseColor="bamboo"
+      />
+      <VerticalMarginWidget
+        side="left"
+        top="top-[65%]"
+        type="minimal"
+        stampChar="証"
+      />
+
+      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Top Breadcrumb & Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-light-border dark:border-dark-border">
         <div>
           <button
@@ -373,6 +398,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

@@ -40,14 +40,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </span>
             </div>
             <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
-              Inspired by the organic asymmetry of handmade washi paper, natural pine & bamboo ink-wash (*sumi-e*), and the intentional negative space (*Ma* 間) of Kyoto architectural tea houses.
+              Crafted with organic washi textures, ink-wash (*sumi-e*) motifs, and the intentional negative space (*Ma* 間) of Kyoto architectural traditions.
             </p>
           </div>
 
           {/* Navigation Shortcuts */}
           <div className="md:col-span-3 flex flex-col sm:items-end">
             <span className="font-sans text-[11px] font-semibold text-light-ink dark:text-dark-ink uppercase tracking-widest mb-3">
-              INDEX & ARCHIVE
+              INDEX &amp; ARCHIVE
             </span>
             <div className="flex flex-col sm:items-end space-y-2 text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted">
               <a
@@ -60,7 +60,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta transition-colors"
               >
-                01 // Home Overview
+                Home Overview
               </a>
               <a
                 href="#experience"
@@ -72,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta transition-colors"
               >
-                02 // Work Experience
+                Work Experience
               </a>
               <a
                 href="#featured-works"
@@ -84,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta transition-colors"
               >
-                03 // Selected Works
+                Featured Works
               </a>
               <a
                 href="#philosophy"
@@ -96,7 +96,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta transition-colors"
               >
-                04 // Philosophy &amp; Craft
+                Philosophy &amp; Craft
               </a>
               <a
                 href="#contact"
@@ -108,7 +108,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta transition-colors"
               >
-                05 // Initiate Dialogue
+                Initiate Dialogue
               </a>
               <a
                 href="#resume"
@@ -120,7 +120,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta transition-colors"
               >
-                06 // Curriculum Vitae (PDF/TeX)
+                Curriculum Vitae
               </a>
             </div>
           </div>

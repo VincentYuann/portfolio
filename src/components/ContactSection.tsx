@@ -138,12 +138,12 @@ export const ContactSection: React.FC = () => {
             <BambooArt className="w-full h-full" sway={true} opacity={0.75} />
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             {/* Left Column: Narrative & Direct Links */}
             <div className="lg:col-span-6 flex flex-col space-y-6">
               <div className="flex items-center gap-2.5">
                 <HankoStamp className="h-6 w-6 animate-seal-breathe" />
-                <span className="font-serif text-terracotta text-sm">04 // 原</span>
+                <span className="font-serif text-terracotta text-sm">05 // 原</span>
                 <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                   INITIATE A DIALOGUE
                 </span>
@@ -198,8 +198,8 @@ export const ContactSection: React.FC = () => {
             </div>
 
             {/* Right Column: Inquiries Form */}
-            <div className="lg:col-span-6 w-full bg-light-surface-raised dark:bg-dark-surface-muted/90 p-6 sm:p-8 rounded-lg border border-light-border/70 dark:border-dark-border/70 shadow-sm">
-              <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink mb-6">
+            <div className="lg:col-span-6 w-full bg-light-surface/70 dark:bg-dark-surface-card/60 p-5 sm:p-7 rounded-xl border border-light-border/60 dark:border-dark-border/60 shadow-xs">
+              <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink mb-5">
                 Send a Message
               </h3>
 

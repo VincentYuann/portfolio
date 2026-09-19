@@ -40,23 +40,23 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
       <Hero onNavigate={onNavigate} />
       {hasExperiences && (
         <>
-          <SectionDivider label="CAREER TRAJECTORY · 職歴 · MILESTONES" />
+          <SectionDivider label="CAREER TRAJECTORY · 職歴 · MILESTONES" shortLabel="CAREER · 職歴" />
           <ExperienceSection onNavigate={onNavigate} />
         </>
       )}
       {hasProjects && (
         <>
-          <SectionDivider label="MA · WABI-SABI · CRAFT" />
+          <SectionDivider label="MA · WABI-SABI · CRAFT" shortLabel="CRAFT · 作品" />
           <ProjectsShowcase onNavigate={onNavigate} />
         </>
       )}
       {hasPillars && (
         <>
-          <SectionDivider label="PHILOSOPHY · SHOKUNIN · MA" />
+          <SectionDivider label="PHILOSOPHY · SHOKUNIN · MA" shortLabel="PHILOSOPHY · 哲学" />
           <PhilosophyBento />
         </>
       )}
-      <SectionDivider label="INITIATE A DIALOGUE · 対話" />
+      <SectionDivider label="INITIATE A DIALOGUE · 対話" shortLabel="DIALOGUE · 対話" />
       <ContactSection />
     </>
   );
