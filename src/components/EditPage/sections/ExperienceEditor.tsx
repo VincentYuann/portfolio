@@ -764,9 +764,11 @@ export const ExperienceEditor: React.FC = () => {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center font-serif font-black text-terracotta text-2xl leading-none select-none p-1">
-                            <span>{entry.kanji || '木'}</span>
-                            <span className="text-[8px] font-mono tracking-widest text-ochre uppercase mt-1 font-bold">
+                          <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
+                            <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
+                              {entry.kanji || '木'}
+                            </span>
+                            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
                               {entry.kanjiSubtitle || 'AI'}
                             </span>
                           </div>

@@ -292,9 +292,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             loading="lazy"
                           />
                         ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none select-none tracking-tight p-1 bg-light-surface/40 dark:bg-[#181920]/40">
-                            <span>{exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}</span>
-                            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase mt-1 font-bold">
+                          <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
+                            <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
+                              {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
+                            </span>
+                            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
                               {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
                             </span>
                           </div>
