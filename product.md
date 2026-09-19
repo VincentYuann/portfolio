@@ -45,13 +45,17 @@ graph TD
 
 ### 01. Home (`#home`)
 * **Hero Banner**: Full-bleed Sumi-e landscape art blended with edge radial masks, anchored by a high-contrast Japanese Pine Tree (*Matsu* 松), dynamic capability ribbon, and call-to-action buttons.
+* **Seigaiha & Diamond Crest Section Dividers (`<SectionDivider />`)**: Hand-drawn layered wave surges (Seigaiha motif) perched above a dashed hairline rule flanked by concentric terracotta/ochre diamond crests with center dots and Japanese/English section descriptors.
 * **Featured Projects Showcase**: Curated top engineering projects featuring `.classical-card-frame` double hairline joinery, shifting `.corner-bracket` accents, and hover-exclusive Ensō orbital blooms (`hoverOnly={true}`).
-* **Architectural Philosophy Bento**: 3 core tenets with kanji watermarks and design manifestos.
+* **Work Experience Timeline**: Structured engineering roles with company badges, date chips, and clean bullet lists.
+* **Architectural Philosophy Bento**: 3 core tenets with kanji watermarks and design manifestos, flanked by full-width misty landscapes and swaying bamboo illustrations.
+* **Scattered Vertical Floating Widgets**: Architectural marginalia (`VerticalMarginWidget`) featuring Japanese calligraphy (*tategaki*), coordinates, and authentic square Hanko seal stamps.
 * **Initiate a Dialogue (Contact)**: Direct message dispatching to `contact_messages` table with client-side and database-level rate limiting.
 
 ### 02. Projects Archive (`#all-projects` / `#projects`)
 * Complete catalog of distributed systems, generative AI runtimes, and creative tech projects.
 * Real-time category filtering and search query matching.
+* **`<VerticalMarginWidget />` Flanks**: Left `余白の調和 // HARMONY` (`墨`) and Right `コードの魂 // DIGITAL CRAFT` (`道`) with lower minimal hairline (`創`).
 * **`<TechTag />`**: Unified monochrome tech stack badges with domain-specific icons from `lucide-react` (AI, Systems, Web, Data).
 * **System Architecture Modal**: In-depth modal breakdown detailing engineering highlights, architecture decisions, and repository/live deployment links.
 
@@ -59,15 +63,18 @@ graph TD
 * **Dual-Mode Interactive Viewer**:
   * **Interactive PDF View**: Streams live resume PDF from Supabase S3 storage (`portfolio-assets/resumes/vincent-yuan-cv.pdf`).
   * **LaTeX Source Code Editor**: Full syntax-highlighted LaTeX source code with real-time copy and download capabilities, synchronized with Supabase `resume_latex` table.
+* **`<VerticalMarginWidget />` Flanks**: Left `沈黙と静寂 // SEI & JAKU` (`侘`) and Right `経歴の記録 // CURRICULUM VITAE` (`記`) with lower minimal hairline (`証`).
 
 ### 04. Admin Live Edit Dashboard (`#edit` — Admin Only)
 * Secure, real-time portfolio management accessible exclusively to the verified portfolio owner (`vincentyuan1020@gmail.com`).
+* **`<VerticalMarginWidget />` Flanks**: Left `匠の精緻 // SHOKUNIN` (`匠`) and Right `簡素の極み // SIMPLICITY` (`明`) with lower minimal hairline (`整`).
 * **5 Dedicated Live Editors**:
-  1. **Intro & Profile**: Headline, tagline, capability pillars ribbon, social links.
-  2. **Experience**: Work history, roles, date ranges, bullets, and technology tags.
-  3. **Projects**: Project cards, descriptions, architecture points, metrics, and tags.
-  4. **Resume**: Live LaTeX source editor with Supabase database persistence.
-  5. **Philosophy**: Kanji, Romaji, title, taglines, and core tenet descriptions.
+  1. **Intro & Profile**: Headline, tagline, capability pillars ribbon, social links (`Save Profile`).
+  2. **Experience**: Work history, roles, date ranges, bullets, and technology tags (`Save Experience`).
+  3. **Projects**: Project cards, descriptions, architecture points, metrics, and tags (`Save Project` per item, `Save All Projects` global).
+  4. **Resume**: Live LaTeX source editor with Supabase database persistence (`Save LaTeX Source`, `Save & Publish PDF`).
+  5. **Philosophy**: Kanji, Romaji, title, taglines, and core tenet descriptions (`Save Philosophy Pillars`).
+* **Sticky Sub-Navigation Bar**: Horizontal scrolling pill bar on mobile with short labels (`Intro`, `Projects`, `Exit`), and full labels on desktop.
 * **Live Database Syncing & Toast Feedback**: Optimistic updates and instant `sonner` toast confirmations on saves and deletions.
 
 ---

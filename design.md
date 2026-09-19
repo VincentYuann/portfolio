@@ -516,14 +516,23 @@ Decorative elements in the Akari Wabi-Sabi system are living architectural accen
   - **Hover-Exclusive Reveal (`hoverOnly={true}`)**: To honor the core principle of *Ma* (intentional negative space), cards remain serenely clean by default (`opacity-0 scale-90 pointer-events-none`). When the user hovers over a card, the Ensō circle blooms smoothly on that specific card (`group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 ease-out`).
 - **Hanko Seal Stamp (`HankoStamp.tsx`)**:
   - Vectorized cinnabar vermilion seal script stamp (`原` - Haru/Origin) with authentic square double hairline border, completely transparent in both Day and Night modes, animated with a gentle breathing pulse (`animate-seal-breathe` 6s).
-- **Seigaiha Wave & Hairline Rules (`SectionDivider.tsx`)**:
-  - Concentric geometric wave arches symbolizing boundless tranquility and resilience, framed by double hairline rules, centered diamond/kanji, and Romanized section descriptors (`MA · WABI-SABI · CRAFT`, `PHILOSOPHY · SHOKUNIN · MA`, `INITIATE A DIALOGUE · 対話`).
+- **Seigaiha Wave & Dashed Diamond Crest Dividers (`SectionDivider.tsx`)**:
+  - **Seigaiha Wave Arches Motif (`SeigaihaMotif`)**: Hand-drawn layered wave surges (Motif 03 from `some motif decorators.png`), rendered in SVG with terracotta (`#c83c23`), ochre (`#d49b6a`), and sumi ink (`#4a443e` / `#a8a29e` in dark mode), positioned gracefully above the divider line.
+  - **Dashed Hairlines & Concentric Diamond Crests (`DiamondCrest`)**: Rhythmic dashed hairline rules (`stroke-dasharray="16 4 4 4 24 4 8 4"`) in ochre/gold flanking outer terracotta and inner ochre diamond crests with center dots (`<polygon>` + `<circle>`), with the section description in the middle (`CAREER TRAJECTORY · 職歴 · MILESTONES`, `MA · WABI-SABI · CRAFT`, `PHILOSOPHY · SHOKUNIN · MA`, `INITIATE A DIALOGUE · 対話`).
+- **Scattered Vertical Margin Bento Widgets (`VerticalMarginWidget.tsx`)**:
+  - **Widescreen Architectural Anchors (`hidden xl:flex`)**: Vertical hairlines, Japanese *tategaki* typography, telemetry coordinates, pulsing jewel status dots, and authentic square Hanko seal stamps scattered across pages in wide outer margins (*Ma*).
+  - **Curated Presets Across Pages**:
+    - **Projects Archive (`#projects`)**: Left `余白の調和 // HARMONY` (Stamp `墨`) + Right `コードの魂 // DIGITAL CRAFT` (Stamp `道`) + Lower minimal hairline (Stamp `創`).
+    - **Admin & Edit Page (`#edit`)**: Left `匠の精緻 // SHOKUNIN` (Stamp `匠`) + Right `簡素の極み // SIMPLICITY` (Stamp `明`) + Lower minimal hairline (Stamp `整`).
+    - **Resume & LaTeX CV (`#resume`)**: Left `沈黙と静寂 // SEI & JAKU` (Stamp `侘`) + Right `経歴の記録 // CURRICULUM VITAE` (Stamp `記`) + Lower minimal hairline (Stamp `証`).
+    - **Philosophy Bento (`#philosophy`)**: Left `空間の美学 // MA & WABI` (Stamp `原`) + Right `職人の規矩 // CRAFT SPEC` (Stamp `寂`).
+    - **Experience Timeline (`#experience`)**: Left `歩みの軌跡 // TIMELINE` (Stamp `歴`) + Right minimal hairline (Stamp `道`).
+    - **Featured Works (`#featured-works`)**: Left `余白の調和 // HARMONY` (Stamp `墨`) + Right `コードの魂 // DIGITAL CRAFT` (Stamp `道`).
 - **Full-Bleed Panoramic Landscape & Left Pine Tree (Matsu 松)**:
   - Stretched full-bleed panoramic Sumi-e landscape banner spanning the hero header, blended into washi and obsidian canvas colors with radial edge masks (`maskImage: radial-gradient(...)`).
   - Anchored on the left flank by a crisp, high-visibility Japanese Pine Tree (*Matsu* 松) with inverted dark-mode filters and softened vignettes so needle clusters and twisted branches remain vivid.
 - **Flanking Bamboo Margins & Tategaki Marginalia**:
   - Wide-screen outer viewport margins are balanced by tall vertical Sumi-e bamboo stalks (`sumie-tall-vertical-bamboo.jpg`) with subtle natural sway (`animate-bamboo-sway` 7s).
-  - Paired with architectural Japanese *tategaki* (vertical writing) marginalia widgets: Kyoto coordinates (`空間の美学 // MA & WABI`, `35°41'N · 139°46'E`) and craft provenance specifications with pulsing jewels.
 - **Deleted Redundant Clutter**:
   - The standalone "Motifs Pack" display and "Algorithmic Integrity" cards from early prototypes were removed from the layout. Motifs must never compete with real project and engineering content for screen space.
 
