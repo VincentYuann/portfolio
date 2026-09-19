@@ -284,27 +284,22 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                       {/* Left: Clean Square Emblem (Custom Logo Image or Default Japanese Hanko Seal) */}
                       <div className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-terracotta/70 dark:border-terracotta/80 bg-light-surface dark:bg-[#16171d] shadow-[0_0_8px_rgba(200,60,35,0.25)] flex items-center justify-center overflow-hidden shrink-0 mx-auto sm:mx-0">
-                        {/* Fallback Hanko Kanji seal (always rendered underneath) */}
-                        <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
-                          <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
-                            {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
-                          </span>
-                          <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
-                            {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
-                          </span>
-                        </div>
-
-                        {/* Overlaid custom logo image with fallback */}
-                        {exp.logoUrl && (
+                        {exp.logoUrl ? (
                           <img
                             src={exp.logoUrl}
                             alt={`${exp.company} emblem`}
-                            className="absolute inset-0 w-full h-full object-cover"
+                            className="w-full h-full object-cover"
                             loading="lazy"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
                           />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
+                            <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
+                              {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
+                            </span>
+                            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
+                              {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
+                            </span>
+                          </div>
                         )}
                       </div>
 
@@ -323,18 +318,18 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             {exp.startDate} — {exp.endDate || 'Present'}
                           </span>
 
-                          {/* High-Contrast Status Badge (Active vs Completed) */}
+                          {/* High-Contrast Themed Status Badge (Active vs Completed) */}
                           <span
                             className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10.5px] sm:text-[11px] font-bold uppercase tracking-wider transition-colors ${
                               isCurrent
-                                ? 'bg-emerald-500/15 border border-emerald-500/60 text-emerald-800 dark:text-emerald-300 dark:shadow-[0_0_10px_rgba(16,185,129,0.2)]'
-                                : 'bg-stone-100 border border-stone-300 text-stone-700 dark:bg-[#20222a] dark:border-[#383b47] dark:text-stone-300'
+                                ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63] dark:shadow-[0_0_10px_rgba(200,60,35,0.25)]'
+                                : 'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#20222a] dark:border-[#383b47] dark:text-stone-400'
                             }`}
                           >
                             <span
                               className={`w-1.5 h-1.5 rounded-full ${
                                 isCurrent
-                                  ? 'bg-emerald-500 shadow-[0_0_6px_#10b981] animate-pulse'
+                                  ? 'bg-terracotta shadow-[0_0_6px_rgba(200,60,35,0.8)] animate-pulse'
                                   : 'bg-stone-400 dark:bg-neutral-500'
                               }`}
                             />

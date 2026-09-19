@@ -688,21 +688,21 @@ export const ExperienceEditor: React.FC = () => {
 
                 {/* Right Quick Actions */}
                 <div className="flex items-center justify-end gap-2.5 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-light-border/40 dark:border-dark-border/40" draggable={false}>
-                  {/* High-Contrast Active vs Completed Toggle Pill */}
+                  {/* High-Contrast Themed Active vs Completed Toggle Pill */}
                   <button
                     type="button"
                     onClick={() => toggleActiveState(entry.id)}
                     className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-mono text-[10.5px] sm:text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                       entry.isActive
-                        ? 'bg-emerald-500/15 border border-emerald-500/60 text-emerald-800 dark:text-emerald-300 shadow-2xs hover:bg-emerald-500/25'
-                        : 'bg-stone-100 border border-stone-300 text-stone-700 dark:bg-[#20222b] dark:border-[#383b49] dark:text-stone-300 hover:border-light-ink-subtle'
+                        ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63] shadow-xs hover:bg-terracotta/25'
+                        : 'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#20222b] dark:border-[#383b49] dark:text-stone-400 hover:border-light-ink-subtle'
                     }`}
                     title={entry.isActive ? 'Active position (Click to mark Completed)' : 'Completed role (Click to mark Active)'}
                   >
                     <span
                       className={`w-2 h-2 rounded-full ${
                         entry.isActive
-                          ? 'bg-emerald-500 shadow-[0_0_6px_#10b981] animate-pulse'
+                          ? 'bg-terracotta shadow-[0_0_6px_rgba(200,60,35,0.8)] animate-pulse'
                           : 'bg-stone-400 dark:bg-neutral-500'
                       }`}
                     />
@@ -757,26 +757,21 @@ export const ExperienceEditor: React.FC = () => {
                     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                       {/* Square Visual Preview Box */}
                       <div className="relative shrink-0 flex items-center justify-center w-16 h-16 rounded-xl border border-terracotta/70 bg-light-surface dark:bg-[#181920] overflow-hidden shadow-inner">
-                        {/* Default Hanko seal rendered underneath */}
-                        <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
-                          <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
-                            {entry.kanji || '木'}
-                          </span>
-                          <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
-                            {entry.kanjiSubtitle || 'AI'}
-                          </span>
-                        </div>
-
-                        {/* Overlaid preview logo if active */}
-                        {hasLogo && (
+                        {hasLogo ? (
                           <img
                             src={entry.logoUrl}
                             alt="Emblem preview"
-                            className="absolute inset-0 w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
+                            className="w-full h-full object-cover"
                           />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
+                            <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
+                              {entry.kanji || '木'}
+                            </span>
+                            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
+                              {entry.kanjiSubtitle || 'AI'}
+                            </span>
+                          </div>
                         )}
                       </div>
 
