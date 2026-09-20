@@ -177,7 +177,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               <BambooArt className="w-40 h-56" sway={true} opacity={0.75} />
             </div>
 
-            <div className="relative z-10 w-full max-w-sm bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-md double-hairline-frame p-4 sm:p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-all duration-300 hover:shadow-2xl group">
+            <div className="relative z-10 w-full max-w-sm bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-md border border-light-border dark:border-dark-border classical-card-frame p-4 sm:p-6 rounded-xl shadow-sm hover:shadow-akari dark:hover:shadow-night-glow hover:border-terracotta/40 dark:hover:border-terracotta/40 flex flex-col items-center text-center transition-all duration-300 group overflow-visible">
               {/* Celestial Ensō Orbital Circle */}
               <EnsoOrbital placement="top-left" size={136} interactive={true} />
 
