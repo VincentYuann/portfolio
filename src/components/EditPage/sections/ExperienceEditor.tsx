@@ -292,7 +292,7 @@ export const ExperienceEditor: React.FC = () => {
               key={exp.id}
               ordinal={idx + 1}
               title={exp.company ? `${exp.title || 'Role'} · ${exp.company}` : exp.title}
-              subtitle={`${exp.startDate || 'Start'} — ${exp.endDate || 'Present'}${exp.location ? ` · ${exp.location}` : ''}`}
+              subtitle={`${exp.startDate || 'Start'} - ${exp.endDate || 'Present'}${exp.location ? ` · ${exp.location}` : ''}`}
               badge={
                 <span
                   className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider ${

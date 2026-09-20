@@ -42,7 +42,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs text-terracotta font-semibold tracking-wider uppercase flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-terracotta" />
-              {project.startDate || '2024'} — {project.endDate || (project.isActive ? 'Present' : 'Completed')}
+              {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
             </span>
 
             <span

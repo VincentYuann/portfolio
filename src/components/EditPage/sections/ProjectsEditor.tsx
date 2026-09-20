@@ -341,7 +341,7 @@ export const ProjectsEditor: React.FC = () => {
               key={project.id}
               ordinal={originalIdx + 1}
               title={project.title}
-              subtitle={`${project.startDate || 'Start'} — ${project.endDate || (project.isActive ? 'Present' : 'Completed')}${project.subtitle ? ` · ${project.subtitle}` : ''}`}
+              subtitle={`${project.startDate || 'Start'} - ${project.endDate || (project.isActive ? 'Present' : 'Completed')}${project.subtitle ? ` · ${project.subtitle}` : ''}`}
               badge={
                 <div className="flex items-center gap-1.5">
                   <button

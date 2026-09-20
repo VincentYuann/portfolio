@@ -145,10 +145,11 @@ export const PhilosophyBento: React.FC = () => {
 
         {/* 04.1 Origin Trajectory Bento Box */}
         <div className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 transition-colors duration-300">
+          <EnsoOrbital placement="top-right" size={128} hoverOnly={true} />
           <CornerBrackets size="md" />
 
           {/* Card Top Sub-Header */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60 relative z-10">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
               <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
@@ -163,7 +164,7 @@ export const PhilosophyBento: React.FC = () => {
           </div>
 
           {/* Headline & Lead Narrative */}
-          <div className="max-w-3xl mb-6">
+          <div className="max-w-3xl mb-6 relative z-10">
             <h3 className="font-serif text-xl sm:text-2xl text-light-ink dark:text-dark-ink font-medium tracking-tight">
               {originStory.headline || 'From Logic Puzzles to Full-Stack Systems'}
             </h3>
@@ -173,13 +174,16 @@ export const PhilosophyBento: React.FC = () => {
           </div>
 
           {/* 4 Milestones Responsive Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 relative z-10">
             {milestones.map((m, idx) => (
               <div
                 key={idx}
-                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-200 group/node relative"
+                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-300 group/node relative overflow-visible shadow-2xs hover:shadow-sm"
               >
-                <div>
+                {/* Celestial Ensō Orbital Circle on hover for each milestone */}
+                <EnsoOrbital placement="top-left" size={88} hoverOnly={true} />
+
+                <div className="relative z-10">
                   <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40">
                     <span className="font-mono text-[10px] font-bold text-terracotta tracking-wider uppercase">
                       {m.era || `PHASE 0${idx + 1}`}

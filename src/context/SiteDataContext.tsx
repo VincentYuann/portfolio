@@ -81,7 +81,7 @@ export const DEFAULT_ORIGIN_STORY: OriginStoryConfig = {
       subtitle: 'High School HTML / CSS / JS',
       tag: 'WEB ROOTS',
       description:
-        'Discovered coding in a high school class—seeing how a few lines of JavaScript could turn static markup into an interactive canvas. The thrill of transforming logic into visual response set the foundation.',
+        'Discovered coding in a high school class: seeing how a few lines of JavaScript could turn static markup into an interactive canvas. The thrill of transforming logic into visual response set the foundation.',
     },
     {
       era: 'PHASE 02',
@@ -105,7 +105,7 @@ export const DEFAULT_ORIGIN_STORY: OriginStoryConfig = {
       subtitle: 'Service Industry to Code',
       tag: 'USER-FIRST CRAFT',
       description:
-        'Years as a barista and server in Philadelphia taught me active listening, anticipating user friction before it happens, and remaining calm during peak rushes—translating directly into human-centered software engineering.',
+        'Years as a barista and server in Philadelphia taught me active listening, anticipating user friction before it happens, and remaining calm during peak rushes, translating directly into human-centered software engineering.',
     },
   ],
 };
@@ -166,14 +166,18 @@ export interface SiteData {
 export const DEFAULT_EXPERIENCES: ExperienceRecord[] = [];
 
 export const DEFAULT_PROFILE: SiteProfile = {
-  name: '',
-  headline: '',
-  tagline: '',
-  email: '',
-  github: '',
-  linkedin: '',
-  role: '',
-  capability_pillars: [],
+  name: 'Vincent Yuan',
+  headline: 'Crafting disciplined software systems with full-stack precision, algorithmic clarity, and Japanese wabi-sabi harmony.',
+  tagline: 'Computer Science student with Systems Architecture & AI concentrations based in Philadelphia. Bringing curiosity from game mechanics and logic puzzles into scalable backend architecture, intuitive user interfaces, and the user-first empathy of hospitality.',
+  email: 'vincentyuan1020@gmail.com',
+  github: 'https://github.com/VincentYuann',
+  linkedin: 'https://linkedin.com',
+  role: 'Software Engineer · Full-Stack & Systems',
+  capability_pillars: [
+    { label: 'SYSTEMS & ARCHITECTURE', items: 'TypeScript · Python · Docker · Linux', tags: ['TypeScript', 'Python', 'Docker', 'Linux'] },
+    { label: 'FULL-STACK & DATA', items: 'React · Next.js · Node.js · PostgreSQL · Tailwind CSS', tags: ['React', 'Next.js', 'Node.js', 'PostgreSQL', 'Tailwind CSS'] },
+    { label: 'AI & RUNTIMES', items: 'PyTorch · Local LLMs · REST APIs · Git', tags: ['PyTorch', 'Local LLMs', 'REST APIs', 'Git'] },
+  ],
   hanko_card: DEFAULT_HANKO_CARD,
   origin_story: DEFAULT_ORIGIN_STORY,
 };

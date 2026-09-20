@@ -305,31 +305,17 @@ export const PhilosophyEditor: React.FC = () => {
               </Button>
             </div>
 
-            {/* Badge & Headline */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                  Card Eyebrow Badge
-                </Label>
-                <Input
-                  value={originData.badge || ''}
-                  onChange={(e) => updateOrigin({ badge: e.target.value })}
-                  placeholder="ORIGIN & TRAJECTORY · 原点と軌跡"
-                  className="font-mono text-xs h-8"
-                />
-              </div>
-
-              <div>
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                  Narrative Headline
-                </Label>
-                <Input
-                  value={originData.headline || ''}
-                  onChange={(e) => updateOrigin({ headline: e.target.value })}
-                  placeholder="From Logic Puzzles to Full-Stack Systems"
-                  className="font-serif text-xs font-medium h-8"
-                />
-              </div>
+            {/* Headline */}
+            <div>
+              <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                Narrative Headline
+              </Label>
+              <Input
+                value={originData.headline || ''}
+                onChange={(e) => updateOrigin({ headline: e.target.value })}
+                placeholder="From Logic Puzzles to Full-Stack Systems"
+                className="font-serif text-sm font-medium h-9"
+              />
             </div>
 
             {/* Lead Narrative Paragraph */}
@@ -349,7 +335,7 @@ export const PhilosophyEditor: React.FC = () => {
             {/* 4 Milestones */}
             <div className="space-y-4 pt-2 border-t border-light-border/60 dark:border-dark-border/60">
               <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted block">
-                Four Trajectory Milestones (Phases 01 – 04)
+                Four Trajectory Milestones (Phases 01 - 04)
               </Label>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

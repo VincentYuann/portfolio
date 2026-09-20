@@ -114,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({
               }
             }}
             className="flex items-center group cursor-pointer"
-            aria-label="Vincent Yuan — Home"
+            aria-label="Vincent Yuan · Home"
           >
             <div className="relative flex items-center justify-center -rotate-1 transition-transform duration-300 group-hover:rotate-0 group-hover:scale-105">
               <HankoStamp className="h-9 w-9 transition-all duration-300" />

@@ -154,7 +154,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                 <div className="flex flex-wrap items-center justify-between gap-1.5 mb-2">
                   <span className="font-mono text-[11px] text-terracotta font-semibold tracking-wider uppercase flex items-center gap-1">
                     <Calendar className="w-3 h-3 text-terracotta" />
-                    {project.startDate || '2024'} — {project.endDate || (project.isActive ? 'Present' : 'Completed')}
+                    {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
                   </span>
 
                   <span

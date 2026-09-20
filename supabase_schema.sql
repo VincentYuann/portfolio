@@ -41,27 +41,28 @@ DROP TABLE IF EXISTS public.contact_messages CASCADE;
 CREATE TABLE IF NOT EXISTS public.profile (
   id INT PRIMARY KEY DEFAULT 1,
   name TEXT DEFAULT 'Vincent Yuan',
-  headline TEXT DEFAULT 'Crafting thoughtful digital experiences with algorithmic clarity & Japanese wabi-sabi harmony.',
-  tagline TEXT DEFAULT 'Specializing in robust distributed web architecture, local & cloud generative AI systems, and serene user interfaces governed by the timeless cadence of intentional space.',
+  headline TEXT DEFAULT 'Crafting disciplined software systems with full-stack precision, algorithmic clarity, and Japanese wabi-sabi harmony.',
+  tagline TEXT DEFAULT 'Computer Science student with Systems Architecture & AI concentrations based in Philadelphia. Bringing curiosity from game mechanics and logic puzzles into scalable backend architecture, intuitive user interfaces, and the user-first empathy of hospitality.',
   email TEXT DEFAULT 'vincentyuan1020@gmail.com',
   github TEXT DEFAULT 'https://github.com/VincentYuann',
   linkedin TEXT DEFAULT 'https://linkedin.com',
-  role TEXT DEFAULT 'Software & Generative AI Engineer',
+  role TEXT DEFAULT 'Software Engineer · Full-Stack & Systems',
   capability_pillars JSONB DEFAULT '[
-    {"label": "SYSTEMS", "items": "Rust · Docker · Linux"},
-    {"label": "AI & RUNTIME", "items": "PyTorch · llama.cpp · Local LLMs"},
-    {"label": "FULL-STACK", "items": "Next.js · TypeScript · PostgreSQL"}
+    {"label": "SYSTEMS & ARCHITECTURE", "items": "TypeScript · Python · Docker · Linux"},
+    {"label": "FULL-STACK & DATA", "items": "React · Next.js · Node.js · PostgreSQL · Tailwind CSS"},
+    {"label": "AI & RUNTIMES", "items": "PyTorch · Local LLMs · REST APIs · Git"}
   ]'::jsonb,
   hanko_card JSONB DEFAULT '{
     "headerLabel": "SEAL / 認印",
-    "locationArchive": "KYOTO ARCHIVE",
+    "locationArchive": "PHILADELPHIA, PA",
     "stampCharacter": "原",
-    "statusBadge": "",
+    "statusBadge": "OPEN TO ROLES · FULL-STACK",
     "lines": [
       {"text": "間と余白の美学", "label": "MA · 間", "tooltip": "Aesthetics of Negative Space (Ma)"},
       {"text": "静寂と簡素な調和", "label": "WA · 調和", "tooltip": "Silence and Simple Harmony (Wa)"},
       {"text": "職人の精緻な組手", "label": "CRAFT · 職人", "tooltip": "Artisan Precision and Joinery (Shokunin)"}
     ]
+  }'::jsonb,
   origin_story JSONB DEFAULT '{
     "badge": "ORIGIN & TRAJECTORY · 原点と軌跡",
     "headline": "From Logic Puzzles to Full-Stack Systems",
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS public.profile (
         "title": "The Spark & Logic",
         "subtitle": "High School HTML / CSS / JS",
         "tag": "WEB ROOTS",
-        "description": "Discovered coding in a high school class—seeing how a few lines of JavaScript could turn static markup into an interactive canvas. The thrill of transforming logic into visual response set the foundation."
+        "description": "Discovered coding in a high school class: seeing how a few lines of JavaScript could turn static markup into an interactive canvas. The thrill of transforming logic into visual response set the foundation."
       },
       {
         "era": "PHASE 02",
@@ -93,7 +94,7 @@ CREATE TABLE IF NOT EXISTS public.profile (
         "title": "Hospitality Empathy",
         "subtitle": "Service Industry to Code",
         "tag": "USER-FIRST CRAFT",
-        "description": "Years as a barista and server in Philadelphia taught me active listening, anticipating user friction before it happens, and remaining calm during peak rushes—translating directly into human-centered software engineering."
+        "description": "Years as a barista and server in Philadelphia taught me active listening, anticipating user friction before it happens, and remaining calm during peak rushes, translating directly into human-centered software engineering."
       }
     ]
   }'::jsonb,

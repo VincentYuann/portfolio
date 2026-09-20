@@ -97,7 +97,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
         <div className="px-4 py-2.5 sm:py-3 bg-terracotta/5 dark:bg-terracotta/10 border-b border-light-border/60 dark:border-dark-border/60 flex items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-terracotta/40 bg-light-surface dark:bg-dark-surface-card flex items-center justify-center font-serif text-xl sm:text-2xl font-black text-terracotta select-none shadow-2xs shrink-0">
-              {selectedChar || '—'}
+              {selectedChar || '-'}
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">

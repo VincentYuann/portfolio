@@ -299,7 +299,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           {/* Date Range */}
                           <span className="font-mono text-xs text-terracotta font-semibold tracking-wider uppercase flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5 text-terracotta" />
-                            {exp.startDate} — {exp.endDate || 'Present'}
+                            {exp.startDate} - {exp.endDate || 'Present'}
                           </span>
 
                           {/* High-Contrast Themed Status Badge (Active vs Completed) */}
