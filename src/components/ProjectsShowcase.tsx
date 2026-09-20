@@ -121,8 +121,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
             return (
               <article
                 key={project.id}
-                onClick={() => setSelectedProject(project)}
-                className="interactive-card group relative w-full bg-light-surface-card dark:bg-[#1B1C22] hover:bg-light-surface dark:hover:bg-[#202229] border border-light-border dark:border-[#2D3039] rounded-xl p-4 sm:p-8 transition-all duration-300 shadow-sm hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame overflow-visible cursor-pointer"
+                className="interactive-card group relative w-full bg-light-surface-card dark:bg-[#1B1C22] hover:bg-light-surface dark:hover:bg-[#202229] border border-light-border dark:border-[#2D3039] rounded-xl p-4 sm:p-8 transition-all duration-300 shadow-sm hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame overflow-visible"
               >
                 {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered project card */}
                 <EnsoOrbital
