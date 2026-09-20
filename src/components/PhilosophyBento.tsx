@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Compass, Feather, ShieldCheck } from 'lucide-react';
 import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
@@ -49,6 +49,7 @@ const PILLAR_CONFIGS = [
 
 export const PhilosophyBento: React.FC = () => {
   const { pillars: rawPillars, profile } = useSiteData();
+  const [hoveredTrajectory, setHoveredTrajectory] = useState<'parent' | number | null>(null);
   const displayPillars = Array.isArray(rawPillars) ? rawPillars : [];
   const originStory = profile?.origin_story || DEFAULT_ORIGIN_STORY;
   const milestones =
@@ -144,9 +145,18 @@ export const PhilosophyBento: React.FC = () => {
         </div>
 
         {/* 04.1 Origin Trajectory Bento Box */}
-        <div className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 transition-colors duration-300">
-          {/* Celestial Ensō Orbital Circle: blooms on top-left when hovering the bigger div */}
-          <EnsoOrbital placement="top-left" size={128} hoverOnly={true} />
+        <div
+          onMouseEnter={() => setHoveredTrajectory('parent')}
+          onMouseLeave={() => setHoveredTrajectory(null)}
+          className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 transition-colors duration-300"
+        >
+          {/* Celestial Ensō Orbital Circle: blooms on top-left when hovering the bigger div outside small cards */}
+          <EnsoOrbital
+            placement="top-left"
+            size={128}
+            active={hoveredTrajectory === 'parent'}
+            interactive={false}
+          />
           <CornerBrackets size="md" />
 
           {/* Card Top Sub-Header */}
@@ -176,10 +186,25 @@ export const PhilosophyBento: React.FC = () => {
             {milestones.map((m, idx) => (
               <div
                 key={idx}
-                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-300 relative shadow-2xs hover:shadow-sm"
+                onMouseEnter={(e) => {
+                  e.stopPropagation();
+                  setHoveredTrajectory(idx);
+                }}
+                onMouseLeave={(e) => {
+                  e.stopPropagation();
+                  setHoveredTrajectory('parent');
+                }}
+                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm"
               >
+                {/* Celestial Ensō Orbital Circle: blooms on top-left of this specific milestone card */}
+                <EnsoOrbital
+                  placement="top-left"
+                  size={88}
+                  active={hoveredTrajectory === idx}
+                  interactive={false}
+                />
                 <div>
-                  <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40">
+                  <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
                     <span className="font-mono text-[10px] font-bold text-terracotta tracking-wider uppercase">
                       {m.era || `PHASE 0${idx + 1}`}
                     </span>
@@ -189,15 +214,15 @@ export const PhilosophyBento: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors">
+                  <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors relative z-10">
                     {m.title}
                   </h4>
                   {m.subtitle && (
-                    <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-normal">
+                    <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-normal relative z-10">
                       {m.subtitle}
                     </p>
                   )}
-                  <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mt-2.5">
+                  <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mt-2.5 relative z-10">
                     {m.description}
                   </p>
                 </div>

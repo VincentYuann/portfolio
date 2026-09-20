@@ -23,7 +23,7 @@ import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs';
 
 type Tab = 'upload' | 'editor';
 
-const DEFAULT_LATEX_CV = `% ── Vincent Yuan — Curriculum Vitae ──────────────────────────────────
+const DEFAULT_LATEX_CV = `% -- Vincent Yuan: Curriculum Vitae ----------------------------------
 \\documentclass[letterpaper,11pt]{article}
 \\usepackage{latexsym}
 \\usepackage[empty]{fullpage}

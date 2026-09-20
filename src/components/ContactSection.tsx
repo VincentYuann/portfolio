@@ -98,7 +98,7 @@ export const ContactSection: React.FC = () => {
           {/* Corner Hairline Brackets */}
           <CornerBrackets size="lg" />
 
-          {/* Komorebi Japanese Landscape Mask Backdrop — Anchored Clearly on Left Side */}
+          {/* Komorebi Japanese Landscape Mask Backdrop: Anchored Clearly on Left Side */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-full lg:w-[50%] select-none overflow-hidden opacity-75 dark:opacity-55 mix-blend-multiply dark:mix-blend-screen dark:invert animate-gentle-drift rounded-l-2xl">
             <img
               src="./images/komorebi-spatial.jpg"

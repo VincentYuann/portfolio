@@ -134,7 +134,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
         stampChar="整"
       />
 
-      {/* Sub Navbar — sticks just below main header with smooth horizontal scrolling */}
+      {/* Sub Navbar: sticks just below main header with smooth horizontal scrolling */}
       <div className="sticky top-20 z-40 bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-13 flex items-center justify-between gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden relative">
           <div

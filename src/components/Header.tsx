@@ -122,7 +122,7 @@ export const Header: React.FC<HeaderProps> = ({
           </a>
         </div>
 
-        {/* Center: Desktop Navigation — Shown on wide screens (>= xl / 1280px) */}
+        {/* Center: Desktop Navigation: Shown on wide screens (>= xl / 1280px) */}
         <nav className="hidden xl:flex items-center gap-4 2xl:gap-6 min-w-0">
           {navItems.map((item) => {
             const isActive =
@@ -157,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </nav>
 
-        {/* Right side cluster — always neatly aligned without overlapping */}
+        {/* Right side cluster: always neatly aligned without overlapping */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Day / Night segmented toggle */}
           <div className="flex items-center p-0.5 rounded-full bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[11px] select-none shrink-0 shadow-2xs">

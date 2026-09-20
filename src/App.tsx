@@ -110,7 +110,7 @@ export const App: React.FC = () => {
     );
   };
 
-  /* ── Supabase auth listener — single subscription, strict admin verification ── */
+  /* -- Supabase auth listener: single subscription, strict admin verification -- */
   useEffect(() => {
     if (!supabase) {
       authReadyRef.current = true;
@@ -149,7 +149,7 @@ export const App: React.FC = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
         } else {
-          // Unauthorized user logged in — revoke and reject
+          // Unauthorized user logged in: revoke and reject
           supabase?.auth.signOut();
           if (window.location.hash.toLowerCase() === '#edit') {
             setViewRef.current('home');
@@ -177,7 +177,7 @@ export const App: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  /* ── URL hash routing ── */
+  /* -- URL hash routing -- */
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.toLowerCase();
@@ -211,7 +211,7 @@ export const App: React.FC = () => {
       } else if (hash === '' || hash === '#home' || hash === '#') {
         setViewRef.current('home');
       }
-      // Any unrecognised hash (e.g. section anchors like #contact) — do nothing
+      // Any unrecognised hash (e.g. section anchors like #contact): do nothing
     };
 
     handleHashChange(); // Run once on mount

@@ -6,6 +6,7 @@ interface EnsoOrbitalProps {
   placement?: 'top-left' | 'top-right' | 'center' | 'custom';
   interactive?: boolean;
   hoverOnly?: boolean;
+  active?: boolean;
 }
 
 /**
@@ -24,6 +25,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
   placement = 'top-left',
   interactive = true,
   hoverOnly = true,
+  active,
 }) => {
   const placementClasses = {
     'top-left': '-top-7 -left-7 sm:-top-8 sm:-left-8',
@@ -32,9 +34,13 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
     custom: '',
   }[placement];
 
-  const hoverClasses = hoverOnly
-    ? 'opacity-0 scale-90 pointer-events-none group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 ease-out'
-    : 'opacity-100 transition-transform duration-500';
+  const hoverClasses = typeof active === 'boolean'
+    ? (active
+        ? 'opacity-100 scale-100 transition-all duration-300 ease-out'
+        : 'opacity-0 scale-90 pointer-events-none transition-all duration-300 ease-out')
+    : hoverOnly
+      ? 'opacity-0 scale-90 pointer-events-none group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 ease-out'
+      : 'opacity-100 transition-transform duration-500';
 
   return (
     <div
