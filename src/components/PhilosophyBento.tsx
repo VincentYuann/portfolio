@@ -144,8 +144,7 @@ export const PhilosophyBento: React.FC = () => {
         </div>
 
         {/* 04.1 Origin Trajectory Bento Box */}
-        <div className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 transition-colors duration-300">
-          <EnsoOrbital placement="top-right" size={128} hoverOnly={true} />
+        <div className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame">
           <CornerBrackets size="md" />
 
           {/* Card Top Sub-Header */}
@@ -178,9 +177,9 @@ export const PhilosophyBento: React.FC = () => {
             {milestones.map((m, idx) => (
               <div
                 key={idx}
-                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-300 group/node relative overflow-visible shadow-2xs hover:shadow-sm"
+                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-300 group relative overflow-visible shadow-2xs hover:shadow-sm"
               >
-                {/* Celestial Ensō Orbital Circle on hover for each milestone */}
+                {/* Celestial Ensō Orbital Circle on hover for this specific milestone card (top-left, 1 at a time) */}
                 <EnsoOrbital placement="top-left" size={88} hoverOnly={true} />
 
                 <div className="relative z-10">
@@ -194,7 +193,7 @@ export const PhilosophyBento: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink group-hover/node:text-terracotta transition-colors">
+                  <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta transition-colors">
                     {m.title}
                   </h4>
                   {m.subtitle && (
