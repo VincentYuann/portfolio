@@ -60,9 +60,9 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
 
       <div className="p-3 sm:p-4 rounded-xl bg-light-surface/50 dark:bg-dark-surface/50 border border-light-border dark:border-dark-border space-y-3">
         {/* Top Header: Seal Box + Kanji Browse & Romaji Subtitle Stack */}
-        <div className="flex items-start gap-3">
+        <div className="flex items-center gap-3">
           {/* Visual Seal Preview Box */}
-          <div className="relative shrink-0 flex items-center justify-center w-14 h-14 rounded-xl border border-terracotta/70 bg-light-surface dark:bg-dark-surface overflow-hidden shadow-inner">
+          <div className="relative shrink-0 flex items-center justify-center w-14 h-14 rounded-xl border border-terracotta/60 bg-terracotta/5 dark:bg-terracotta/10 overflow-hidden shadow-inner">
             {hasLogo ? (
               <img
                 src={logoUrl}
@@ -70,15 +70,10 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-dark-surface/40">
-                <span className="font-serif font-black text-terracotta text-2xl leading-none tracking-normal">
+              <div className="w-full h-full flex items-center justify-center select-none">
+                <span className="font-serif font-black text-terracotta text-3xl leading-none">
                   {kanji || '木'}
                 </span>
-                {kanjiSubtitle && (
-                  <span className="text-[10px] font-mono tracking-wider text-ochre uppercase font-bold leading-none mt-1 truncate max-w-[48px]">
-                    {kanjiSubtitle}
-                  </span>
-                )}
               </div>
             )}
           </div>
@@ -91,26 +86,36 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
               variant="outline"
               size="sm"
               onClick={() => setKanjiModalOpen(true)}
-              className="w-full text-xs h-8 px-2.5 border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta cursor-pointer justify-start font-medium"
+              className="w-full text-xs h-8 px-3 border-light-border dark:border-dark-border hover:border-terracotta/60 hover:text-terracotta cursor-pointer justify-between font-medium"
             >
-              <BookOpen className="w-3.5 h-3.5 mr-1.5 text-ochre shrink-0" />
-              <span className="truncate">Kanji: {kanji || 'None'}</span>
+              <div className="flex items-center gap-1.5 min-w-0">
+                <BookOpen className="w-3.5 h-3.5 text-ochre shrink-0" />
+                <span className="truncate">
+                  Symbol:{' '}
+                  <span className="font-serif font-bold text-terracotta text-sm ml-0.5">
+                    {kanji || 'None'}
+                  </span>
+                </span>
+              </div>
+              <span className="text-[10px] font-mono text-terracotta font-semibold uppercase tracking-wider shrink-0 hidden xs:inline">
+                Browse →
+              </span>
             </Button>
 
             {/* Romaji Subtitle Input */}
             {onKanjiSubtitleChange && (
-              <div className="flex items-center gap-1.5">
-                <span className="text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase shrink-0 font-medium">
-                  Tag:
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase shrink-0 font-semibold tracking-wider">
+                  Romaji:
                 </span>
                 <Input
                   type="text"
                   value={kanjiSubtitle}
                   onChange={(e) => onKanjiSubtitleChange(e.target.value)}
-                  placeholder="ROMAJI"
-                  className="text-xs h-7.5 font-mono uppercase flex-1 min-w-0 text-center"
-                  maxLength={10}
-                  title="Romaji / Subtitle Tag"
+                  placeholder="e.g. SUMI, WABI-SABI"
+                  className="text-xs h-7.5 font-mono uppercase flex-1 min-w-0"
+                  maxLength={20}
+                  title="Romaji / Concept Tag"
                 />
               </div>
             )}
@@ -187,7 +192,7 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
         onSelect={(char, preset) => {
           onKanjiChange(char, preset?.romaji);
           if (onKanjiSubtitleChange && preset?.romaji && !kanjiSubtitle) {
-            onKanjiSubtitleChange(preset.romaji.toUpperCase().slice(0, 5));
+            onKanjiSubtitleChange(preset.romaji.toUpperCase());
           }
           setKanjiModalOpen(false);
         }}

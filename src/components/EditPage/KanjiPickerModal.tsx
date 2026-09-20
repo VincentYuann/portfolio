@@ -74,7 +74,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl h-[86vh] max-h-[680px] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent className="max-w-3xl lg:max-w-4xl xl:max-w-5xl h-[88vh] max-h-[780px] flex flex-col p-0 gap-0 overflow-hidden">
         {/* Header */}
         <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0">
           <div className="flex items-center gap-2 mb-1">
@@ -186,7 +186,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
         {/* Scrollable Kanji Cards Grid */}
         <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5">
           {filteredPresets.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
               {filteredPresets.map((preset) => {
                 const isSelected = selectedChar === preset.char;
                 return (

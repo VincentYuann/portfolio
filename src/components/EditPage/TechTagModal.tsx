@@ -243,7 +243,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl h-[88vh] max-h-[720px] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent className="max-w-3xl lg:max-w-4xl xl:max-w-5xl h-[88vh] max-h-[780px] flex flex-col p-0 gap-0 overflow-hidden">
         {/* Header */}
         <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">

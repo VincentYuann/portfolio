@@ -21,7 +21,13 @@ $$;
 GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated, anon;
 
 -- ==============================================================================
--- 2. Tables & Schema Definitions
+-- 2. Cleanup Legacy / Unused Tables
+-- ==============================================================================
+DROP TABLE IF EXISTS public.categories CASCADE;
+DROP TABLE IF EXISTS public.project_categories CASCADE;
+
+-- ==============================================================================
+-- 3. Tables & Schema Definitions
 -- ==============================================================================
 
 -- Profile Table (Intro / Hero / Seal Card / Contact Links)
@@ -74,22 +80,26 @@ CREATE TABLE IF NOT EXISTS public.experience (
   location TEXT DEFAULT '',
   start_date TEXT DEFAULT '',
   end_date TEXT DEFAULT '',
+  is_active BOOLEAN DEFAULT false,
   description TEXT DEFAULT '',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   CONSTRAINT experience_title_company_unique UNIQUE (title, company)
 );
 
--- Projects Table
+-- Projects Table (Unified date and active status model)
 CREATE TABLE IF NOT EXISTS public.projects (
   title TEXT PRIMARY KEY,
   id TEXT,
   kanji TEXT DEFAULT '案',
-  category TEXT DEFAULT 'Distributed Systems',
   badge TEXT DEFAULT 'ENGINEERING ARCHIVE',
   subtitle TEXT DEFAULT '',
   summary TEXT DEFAULT '',
   description TEXT DEFAULT '',
+  start_date TEXT DEFAULT '',
+  end_date TEXT DEFAULT '',
+  is_active BOOLEAN DEFAULT false,
+  status_label TEXT DEFAULT '',
   image TEXT DEFAULT './images/sumi-os-workspace.jpg',
   tech_stacks TEXT[] DEFAULT ARRAY[]::TEXT[],
   sections JSONB DEFAULT '[]'::jsonb,
@@ -123,7 +133,20 @@ CREATE TABLE IF NOT EXISTS public.contact_messages (
 );
 
 -- ==============================================================================
--- 3. Grants: Expose Tables & Routines to PostgREST Data API
+-- 4. Schema Upgrades for Existing Databases (Idempotent ALTERS)
+-- ==============================================================================
+
+ALTER TABLE public.projects 
+  ADD COLUMN IF NOT EXISTS start_date TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS end_date TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT false,
+  ADD COLUMN IF NOT EXISTS status_label TEXT DEFAULT '';
+
+ALTER TABLE public.experience 
+  ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT false;
+
+-- ==============================================================================
+-- 5. Grants: Expose Tables & Routines to PostgREST Data API
 -- ==============================================================================
 
 GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
@@ -136,7 +159,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authen
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;
 
 -- ==============================================================================
--- 4. Enable Row Level Security (RLS) on all tables
+-- 6. Enable Row Level Security (RLS) on all tables
 -- ==============================================================================
 
 ALTER TABLE public.profile ENABLE ROW LEVEL SECURITY;
@@ -147,7 +170,7 @@ ALTER TABLE public.resume_latex ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
 
 -- ==============================================================================
--- 5. Policies: Public Read Access (All Visitors)
+-- 7. Policies: Public Read Access (All Visitors)
 -- ==============================================================================
 
 DROP POLICY IF EXISTS "Allow public read on profile" ON public.profile;
@@ -181,7 +204,7 @@ CREATE POLICY "Allow public insert on contact_messages"
   WITH CHECK (true);
 
 -- ==============================================================================
--- 6. Policies: Strict Admin Write Access (Only vincentyuan1020@gmail.com)
+-- 8. Policies: Strict Admin Write Access (Only vincentyuan1020@gmail.com)
 -- ==============================================================================
 
 DROP POLICY IF EXISTS "Allow authenticated admin full access on profile" ON public.profile;
@@ -232,7 +255,7 @@ CREATE POLICY "Allow only admin to read contact_messages"
   USING (public.is_admin());
 
 -- ==============================================================================
--- 7. Storage Security Policies for 'portfolio-assets' Bucket
+-- 9. Storage Security Policies for 'portfolio-assets' Bucket
 -- ==============================================================================
 
 DROP POLICY IF EXISTS "Allow public read on portfolio-assets" ON storage.objects;
@@ -260,7 +283,7 @@ CREATE POLICY "Allow only admin to delete portfolio-assets"
   USING (bucket_id = 'portfolio-assets' AND public.is_admin());
 
 -- ==============================================================================
--- 8. Force PostgREST to Immediately Reload Schema Cache
+-- 10. Force PostgREST to Immediately Reload Schema Cache
 -- ==============================================================================
 
 NOTIFY pgrst, 'reload schema';
