@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, User, Globe, Mail, Github, Linkedin, ScrollText } from 'lucide-react';
+import {
+  Plus,
+  Trash2,
+  User,
+  Globe,
+  Mail,
+  Github,
+  Linkedin,
+  ScrollText,
+  ChevronDown,
+  ChevronRight,
+} from 'lucide-react';
 import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
 import {
   useSiteData,
@@ -46,14 +57,6 @@ const HANKO_PRESETS = [
   },
 ];
 
-const STAMP_KANJI_OPTIONS = [
-  { char: '原', label: 'Haru / Origin' },
-  { char: '匠', label: 'Takumi / Craft' },
-  { char: '創', label: 'Sō / Create' },
-  { char: '道', label: 'Dō / The Path' },
-  { char: '明', label: 'Mei / Clarity' },
-];
-
 export const IntroEditor: React.FC = () => {
   const { profile: contextProfile, refresh } = useSiteData();
   const [data, setData] = useState(() => ({
@@ -72,6 +75,16 @@ export const IntroEditor: React.FC = () => {
   }));
 
   const [saveState, setSaveState] = useState<SaveState>('idle');
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({
+    identity: false,
+    social: false,
+    domains: false,
+    hanko: false,
+  });
+
+  const toggle = (section: string) => {
+    setCollapsed((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
 
   // Sync from context
   useEffect(() => {
@@ -232,222 +245,319 @@ export const IntroEditor: React.FC = () => {
         saveLabel="Save Profile"
       />
 
-      {/* Form Container */}
-      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-7 space-y-6 shadow-xs classical-card-frame">
-        <CornerBrackets size="md" />
-
-        {/* Identity & Seal Card */}
-        <div className="space-y-3">
-          <p className="font-mono text-xs font-semibold text-terracotta uppercase tracking-widest flex items-center gap-1.5">
-            <User className="w-3.5 h-3.5 text-ochre" />
-            <span>Identity &amp; Display Name</span>
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="intro-name" required>Display Name</Label>
-              <Input
-                id="intro-name"
-                type="text"
-                value={data.name}
-                onChange={(e) => set('name', e.target.value)}
-                placeholder="Vincent Yuan"
-                className="mt-1 font-serif text-sm font-medium"
-              />
+      {/* Collapsible Section 1: Identity & Hero Statement */}
+      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
+        <CornerBrackets size="sm" />
+        <button
+          type="button"
+          onClick={() => toggle('identity')}
+          className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-light-surface/40 dark:hover:bg-dark-surface/40 transition-colors cursor-pointer select-none text-left"
+          aria-expanded={!collapsed.identity}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+              <User className="w-4 h-4" />
             </div>
             <div>
-              <Label htmlFor="intro-role">Role Headline / Craft Specialization</Label>
-              <Input
-                id="intro-role"
-                type="text"
-                value={data.role}
-                onChange={(e) => set('role', e.target.value)}
-                placeholder="Distributed Systems & Creative Technologist"
-                className="mt-1 text-xs"
-              />
+              <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
+                Identity &amp; Hero Statement
+              </h3>
+              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+                Display name, professional role headline, and primary hero biography statement.
+              </p>
             </div>
           </div>
-        </div>
+          <div className="flex items-center gap-2">
+            {!collapsed.identity ? (
+              <ChevronDown className="w-4 h-4 text-terracotta" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
+            )}
+          </div>
+        </button>
 
-        {/* Hero Headline & Tagline */}
-        <div className="space-y-3 pt-3 border-t border-light-border/60 dark:border-dark-border/60">
-          <p className="font-mono text-xs font-semibold text-terracotta uppercase tracking-widest">
-            Hero Narrative &amp; Statement
-          </p>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="intro-headline" className="text-xs font-medium">
-                Headline (Hero Statement)
-              </Label>
-              <Textarea
-                id="intro-headline"
-                rows={2}
-                value={data.headline}
-                onChange={(e) => set('headline', e.target.value)}
-                placeholder="Bridging Distributed Computing and Japanese Aesthetic Craft…"
-                className="mt-1 font-serif text-sm leading-snug"
-              />
+        {!collapsed.identity && (
+          <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-5 border-t border-light-border/60 dark:border-dark-border/60">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="intro-name" required>Display Name</Label>
+                <Input
+                  id="intro-name"
+                  type="text"
+                  value={data.name}
+                  onChange={(e) => set('name', e.target.value)}
+                  placeholder="Vincent Yuan"
+                  className="mt-1 font-serif text-sm font-medium"
+                />
+              </div>
+              <div>
+                <Label htmlFor="intro-role">Role Headline / Craft Specialization</Label>
+                <Input
+                  id="intro-role"
+                  type="text"
+                  value={data.role}
+                  onChange={(e) => set('role', e.target.value)}
+                  placeholder="Full-Stack Software Engineer"
+                  className="mt-1 text-xs"
+                />
+              </div>
             </div>
-            <div>
-              <Label htmlFor="intro-tagline" className="text-xs font-medium">
-                Biography Narrative Tagline
-              </Label>
-              <Textarea
-                id="intro-tagline"
-                rows={3}
-                value={data.tagline}
-                onChange={(e) => set('tagline', e.target.value)}
-                placeholder="Comprehensive narrative paragraph placed directly below the hero headline…"
-                className="mt-1 text-xs leading-relaxed"
-              />
+
+            <div className="space-y-4 pt-2 border-t border-light-border/40 dark:border-dark-border/40">
+              <div>
+                <Label htmlFor="intro-headline" className="text-xs font-medium">
+                  Headline (Hero Statement)
+                </Label>
+                <Textarea
+                  id="intro-headline"
+                  rows={2}
+                  value={data.headline}
+                  onChange={(e) => set('headline', e.target.value)}
+                  placeholder="Building responsive web applications and thoughtful digital experiences with full-stack discipline…"
+                  className="mt-1 font-serif text-sm leading-snug"
+                />
+              </div>
+              <div>
+                <Label htmlFor="intro-tagline" className="text-xs font-medium">
+                  Biography Narrative Tagline
+                </Label>
+                <Textarea
+                  id="intro-tagline"
+                  rows={3}
+                  value={data.tagline}
+                  onChange={(e) => set('tagline', e.target.value)}
+                  placeholder="Bridging modern frontend architectures with resilient backend services. Specializing in TypeScript, React, Python, and cloud backends…"
+                  className="mt-1 text-xs leading-relaxed"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
+      </div>
 
-        {/* Contact & Social Links */}
-        <div className="space-y-3 pt-3 border-t border-light-border/60 dark:border-dark-border/60">
-          <p className="font-mono text-xs font-semibold text-terracotta uppercase tracking-widest flex items-center gap-1.5">
-            <Globe className="w-3.5 h-3.5 text-ochre" />
-            <span>Contact &amp; Public Social Links</span>
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="intro-email" className="text-xs font-medium flex items-center gap-1">
-                <Mail className="w-3 h-3 text-light-ink-muted" />
-                <span>Email Address</span>
-              </Label>
-              <Input
-                id="intro-email"
-                type="email"
-                value={data.email}
-                onChange={(e) => set('email', e.target.value)}
-                placeholder="vincent@example.com"
-                className="mt-1 text-xs font-mono"
-              />
+      {/* Collapsible Section 2: Contact & Social Presence */}
+      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
+        <CornerBrackets size="sm" />
+        <button
+          type="button"
+          onClick={() => toggle('social')}
+          className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-light-surface/40 dark:hover:bg-dark-surface/40 transition-colors cursor-pointer select-none text-left"
+          aria-expanded={!collapsed.social}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+              <Globe className="w-4 h-4" />
             </div>
             <div>
-              <Label htmlFor="intro-github" className="text-xs font-medium flex items-center gap-1">
-                <Github className="w-3 h-3 text-light-ink-muted" />
-                <span>GitHub Profile</span>
-              </Label>
-              <Input
-                id="intro-github"
-                type="url"
-                value={data.github}
-                onChange={(e) => set('github', e.target.value)}
-                placeholder="https://github.com/..."
-                className="mt-1 text-xs font-mono"
-              />
-            </div>
-            <div>
-              <Label htmlFor="intro-linkedin" className="text-xs font-medium flex items-center gap-1">
-                <Linkedin className="w-3 h-3 text-light-ink-muted" />
-                <span>LinkedIn Profile</span>
-              </Label>
-              <Input
-                id="intro-linkedin"
-                type="url"
-                value={data.linkedin}
-                onChange={(e) => set('linkedin', e.target.value)}
-                placeholder="https://linkedin.com/in/..."
-                className="mt-1 text-xs font-mono"
-              />
+              <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
+                Contact &amp; Public Channels
+              </h3>
+              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+                Direct email address, GitHub repository, and professional LinkedIn profile.
+              </p>
             </div>
           </div>
-        </div>
+          <div className="flex items-center gap-2">
+            {!collapsed.social ? (
+              <ChevronDown className="w-4 h-4 text-terracotta" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
+            )}
+          </div>
+        </button>
 
-        {/* Capability Domains Ribbon */}
-        <div className="space-y-3 pt-3 border-t border-light-border/60 dark:border-dark-border/60">
-          <div className="flex items-center justify-between">
+        {!collapsed.social && (
+          <div className="p-4 sm:p-6 pt-2 sm:pt-2 border-t border-light-border/60 dark:border-dark-border/60">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="intro-email" className="text-xs font-medium flex items-center gap-1">
+                  <Mail className="w-3 h-3 text-light-ink-muted" />
+                  <span>Email Address</span>
+                </Label>
+                <Input
+                  id="intro-email"
+                  type="email"
+                  value={data.email}
+                  onChange={(e) => set('email', e.target.value)}
+                  placeholder="vincent@example.com"
+                  className="mt-1 text-xs font-mono"
+                />
+              </div>
+              <div>
+                <Label htmlFor="intro-github" className="text-xs font-medium flex items-center gap-1">
+                  <Github className="w-3 h-3 text-light-ink-muted" />
+                  <span>GitHub Profile</span>
+                </Label>
+                <Input
+                  id="intro-github"
+                  type="url"
+                  value={data.github}
+                  onChange={(e) => set('github', e.target.value)}
+                  placeholder="https://github.com/..."
+                  className="mt-1 text-xs font-mono"
+                />
+              </div>
+              <div>
+                <Label htmlFor="intro-linkedin" className="text-xs font-medium flex items-center gap-1">
+                  <Linkedin className="w-3 h-3 text-light-ink-muted" />
+                  <span>LinkedIn Profile</span>
+                </Label>
+                <Input
+                  id="intro-linkedin"
+                  type="url"
+                  value={data.linkedin}
+                  onChange={(e) => set('linkedin', e.target.value)}
+                  placeholder="https://linkedin.com/in/..."
+                  className="mt-1 text-xs font-mono"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Collapsible Section 3: Technical Domains Ribbon */}
+      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
+        <CornerBrackets size="sm" />
+        <button
+          type="button"
+          onClick={() => toggle('domains')}
+          className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-light-surface/40 dark:hover:bg-dark-surface/40 transition-colors cursor-pointer select-none text-left"
+          aria-expanded={!collapsed.domains}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+              <ScrollText className="w-4 h-4" />
+            </div>
             <div>
-              <p className="font-mono text-xs font-semibold text-terracotta uppercase tracking-widest">
+              <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Technical Domains Ribbon (Max 3)
-              </p>
-              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted">
-                These tags display in the architectural badge strip beneath your hero section.
+              </h3>
+              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+                Substrate domain categories and official technology badges beneath your hero section.
               </p>
             </div>
-            {data.capability_pillars.length < 3 && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={addPillar}
-                className="text-terracotta hover:text-terracotta hover:bg-terracotta/10 text-xs h-7 px-2 cursor-pointer"
-              >
-                <Plus className="w-3.5 h-3.5 mr-1" />
-                Add Domain
-              </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-light-ink-subtle px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+              {data.capability_pillars.length}/3 DOMAINS
+            </span>
+            {!collapsed.domains ? (
+              <ChevronDown className="w-4 h-4 text-terracotta" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
           </div>
+        </button>
 
-          <div className="space-y-3">
-            {data.capability_pillars.map((p, idx) => {
-              const currentTags = getPillarTags(p);
-              return (
-                <div
-                  key={idx}
-                  className="p-3.5 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/70 dark:border-dark-border/70 space-y-3"
+        {!collapsed.domains && (
+          <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-4 border-t border-light-border/60 dark:border-dark-border/60">
+            <div className="flex items-center justify-between">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+                Assign a category name and select official technology logo tags for each domain.
+              </p>
+              {data.capability_pillars.length < 3 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={addPillar}
+                  className="text-terracotta hover:text-terracotta hover:bg-terracotta/10 text-xs h-7 px-2 cursor-pointer"
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex-1 max-w-sm">
-                      <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                        Domain Category
-                      </Label>
-                      <Input
-                        value={p.label}
-                        onChange={(e) => updatePillar(idx, { label: e.target.value.toUpperCase() })}
-                        placeholder="DOMAIN (e.g. SYSTEMS, CLOUD)"
-                        className="font-mono uppercase text-xs h-8"
-                      />
+                  <Plus className="w-3.5 h-3.5 mr-1" />
+                  Add Domain
+                </Button>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              {data.capability_pillars.map((p, idx) => {
+                const currentTags = getPillarTags(p);
+                return (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/70 dark:border-dark-border/70 space-y-3"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex-1 max-w-sm">
+                        <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                          Domain Category
+                        </Label>
+                        <Input
+                          value={p.label}
+                          onChange={(e) => updatePillar(idx, { label: e.target.value.toUpperCase() })}
+                          placeholder="DOMAIN (e.g. FULL-STACK, SYSTEMS)"
+                          className="font-mono uppercase text-xs h-8"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removePillar(idx)}
+                        className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded transition-colors cursor-pointer self-end mb-0.5"
+                        title="Remove domain"
+                        aria-label="Remove domain"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => removePillar(idx)}
-                      className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded transition-colors cursor-pointer self-end mb-0.5"
-                      title="Remove domain"
-                      aria-label="Remove domain"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+
+                    <TechTagSelector
+                      tags={currentTags}
+                      onChange={(tags) =>
+                        updatePillar(idx, {
+                          tags,
+                          items: tags.join(' · '),
+                        })
+                      }
+                      label="Technologies &amp; Substrates"
+                    />
                   </div>
+                );
+              })}
 
-                  <TechTagSelector
-                    tags={currentTags}
-                    onChange={(tags) =>
-                      updatePillar(idx, {
-                        tags,
-                        items: tags.join(' · '),
-                      })
-                    }
-                    label="Technologies & Substrates"
-                  />
-                </div>
-              );
-            })}
-
-            {data.capability_pillars.length === 0 && (
-              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted italic py-1">
-                No domain ribbons added. Click "+ Add Domain" above.
-              </p>
-            )}
+              {data.capability_pillars.length === 0 && (
+                <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted italic py-1">
+                  No domain ribbons added. Click "+ Add Domain" above.
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+      </div>
 
-        {/* Hanko Seal Card Showcase Editor */}
-        <div className="space-y-4 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
-          <div className="flex items-center justify-between">
+      {/* Collapsible Section 4: Hanko Seal Showcase Card (認印) */}
+      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
+        <CornerBrackets size="sm" />
+        <button
+          type="button"
+          onClick={() => toggle('hanko')}
+          className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-light-surface/40 dark:hover:bg-dark-surface/40 transition-colors cursor-pointer select-none text-left"
+          aria-expanded={!collapsed.hanko}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+              <HankoStamp char="原" className="w-5 h-5" />
+            </div>
             <div>
-              <p className="font-mono text-xs font-semibold text-terracotta uppercase tracking-widest flex items-center gap-1.5">
-                <ScrollText className="w-3.5 h-3.5" />
+              <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Hanko Seal Showcase Card (認印)
-              </p>
-              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted">
-                Customize the authentic seal stamp box on the right flank of the Hero section.
+              </h3>
+              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+                Personal seal coordinates, availability status, and vertical Japanese prose.
               </p>
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            {!collapsed.hanko ? (
+              <ChevronDown className="w-4 h-4 text-terracotta" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
+            )}
+          </div>
+        </button>
 
-          <div className="p-4 rounded-xl bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/70 dark:border-dark-border/70 space-y-4">
+        {!collapsed.hanko && (
+          <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-4 border-t border-light-border/60 dark:border-dark-border/60">
             {/* Header & Location row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -468,66 +578,30 @@ export const IntroEditor: React.FC = () => {
                 <Input
                   value={hankoData.locationArchive || ''}
                   onChange={(e) => updateHanko({ locationArchive: e.target.value })}
-                  placeholder="e.g. TORONTO, CA or KYOTO ARCHIVE"
+                  placeholder="e.g. PHILADELPHIA, PA"
                   className="font-mono uppercase text-xs h-8"
                 />
               </div>
             </div>
 
-            {/* Hanko Stamp Character & Status Pill */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              <div>
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                  Hanko Seal Stamp Character
-                </Label>
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 shrink-0 flex items-center justify-center p-1 rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
-                    <HankoStamp char={hankoData.stampCharacter || '原'} className="w-8 h-8" />
-                  </div>
-                  <Input
-                    value={hankoData.stampCharacter || '原'}
-                    onChange={(e) => updateHanko({ stampCharacter: e.target.value.slice(0, 2) })}
-                    maxLength={2}
-                    className="w-14 text-center font-serif font-bold text-base h-10"
-                  />
-                  <div className="flex items-center gap-1 flex-wrap">
-                    {STAMP_KANJI_OPTIONS.map((opt) => (
-                      <button
-                        key={opt.char}
-                        type="button"
-                        onClick={() => updateHanko({ stampCharacter: opt.char })}
-                        className={`px-2 py-1 text-xs rounded border transition-colors cursor-pointer font-serif ${
-                          hankoData.stampCharacter === opt.char
-                            ? 'border-terracotta bg-terracotta/10 text-terracotta font-semibold'
-                            : 'border-light-border dark:border-dark-border hover:border-terracotta/40'
-                        }`}
-                        title={opt.label}
-                      >
-                        {opt.char}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                  Live Status / Availability Pill (Optional)
-                </Label>
-                <Input
-                  value={hankoData.statusBadge || ''}
-                  onChange={(e) => updateHanko({ statusBadge: e.target.value })}
-                  placeholder="e.g. AVAILABLE FOR WORK or OPEN TO ROLES"
-                  className="font-mono uppercase text-xs h-10"
-                />
-              </div>
+            {/* Live Status / Availability Pill */}
+            <div>
+              <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                Live Status / Availability Pill (Optional)
+              </Label>
+              <Input
+                value={hankoData.statusBadge || ''}
+                onChange={(e) => updateHanko({ statusBadge: e.target.value })}
+                placeholder="e.g. AVAILABLE FOR WORK or EST. 2021 · FULL-STACK"
+                className="font-mono uppercase text-xs h-8"
+              />
             </div>
 
             {/* Vertical Prose Snippets & Presets */}
             <div className="pt-2 border-t border-light-border/50 dark:border-dark-border/50 space-y-3">
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted">
-                  Vertical Tategaki Columns (3 Lines) & Footer Labels
+                  Vertical Tategaki Columns (3 Lines) &amp; Footer Labels
                 </Label>
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-[10px] font-mono text-light-ink-subtle">Presets:</span>
@@ -535,7 +609,11 @@ export const IntroEditor: React.FC = () => {
                     <button
                       key={preset.name}
                       type="button"
-                      onClick={() => updateHanko({ lines: preset.lines as [HankoCardLine, HankoCardLine, HankoCardLine] })}
+                      onClick={() =>
+                        updateHanko({
+                          lines: preset.lines as [HankoCardLine, HankoCardLine, HankoCardLine],
+                        })
+                      }
                       className="px-2 py-0.5 text-[10px] font-mono rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta transition-colors cursor-pointer"
                     >
                       {preset.name}
@@ -546,7 +624,8 @@ export const IntroEditor: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {[0, 1, 2].map((idx) => {
-                  const line = (hankoData.lines && hankoData.lines[idx]) || DEFAULT_HANKO_CARD.lines![idx];
+                  const line =
+                    (hankoData.lines && hankoData.lines[idx]) || DEFAULT_HANKO_CARD.lines![idx];
                   return (
                     <div
                       key={idx}
@@ -591,7 +670,7 @@ export const IntroEditor: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
