@@ -74,9 +74,9 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                 />
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-lg bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 p-1.5">
-                {/* 1 Big Main Display Photo (Spans 2 columns) */}
-                <div className="col-span-1 md:col-span-2 relative overflow-hidden rounded bg-light-surface dark:bg-dark-surface group/hero h-full">
+              <div className="flex flex-col md:grid md:grid-cols-3 gap-2 md:aspect-[16/10] overflow-hidden rounded-lg bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 p-1.5">
+                {/* 1 Big Main Display Photo (Spans 2 columns on desktop, aspect-[16/10] on mobile) */}
+                <div className="relative aspect-[16/10] md:aspect-auto md:col-span-2 md:h-full overflow-hidden rounded bg-light-surface dark:bg-dark-surface group/hero">
                   <img
                     src={heroImage}
                     alt={`${hobby.title} main view`}
@@ -89,14 +89,14 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                   </div>
                 </div>
 
-                {/* Up to 4 Side Thumbnails (Spans 1 column) */}
-                <div className="col-span-1 grid grid-cols-2 md:grid-cols-1 gap-1.5 h-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                {/* Up to 4 Side/Bottom Thumbnails (Vertical stack on desktop, horizontal scrollable row on mobile) */}
+                <div className="flex md:flex-col gap-1.5 md:h-full overflow-x-auto md:overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden pt-0.5 md:pt-0">
                   {sideThumbnails.map(({ img, idx }) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setActiveImageIndex(idx)}
-                      className="relative flex-1 min-h-[44px] sm:min-h-[50px] overflow-hidden rounded border border-light-border/60 dark:border-dark-border/60 opacity-75 hover:opacity-100 hover:border-terracotta transition-all duration-200 cursor-pointer group/thumb"
+                      className="relative flex-1 min-w-[68px] h-14 sm:h-16 md:min-w-0 md:h-auto overflow-hidden rounded border border-light-border/60 dark:border-dark-border/60 opacity-80 hover:opacity-100 hover:border-terracotta transition-all duration-200 cursor-pointer group/thumb shrink-0 md:shrink"
                       title={`Click to show photo ${idx + 1} in main frame`}
                       aria-label={`Show photo ${idx + 1} for ${hobby.title}`}
                     >
