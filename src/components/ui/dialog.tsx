@@ -42,7 +42,7 @@ const DialogContent = React.forwardRef<
     >
       {showCornerBrackets && <CornerBrackets size="md" />}
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 z-10 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-terracotta disabled:pointer-events-none cursor-pointer">
+      <DialogPrimitive.Close className="absolute right-3.5 top-3.5 z-10 p-2.5 rounded-lg text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta opacity-80 transition-all hover:opacity-100 hover:bg-light-surface dark:hover:bg-dark-surface-raised focus:outline-none focus:ring-2 focus:ring-terracotta disabled:pointer-events-none cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>

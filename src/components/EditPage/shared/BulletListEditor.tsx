@@ -91,11 +91,11 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
             <button
               type="button"
               onClick={() => removeBullet(idx)}
-              className="text-light-ink-subtle hover:text-red-500 p-1.5 rounded hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer shrink-0 mt-1"
+              className="text-light-ink-subtle hover:text-red-500 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-md hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer shrink-0 mt-1"
               title="Remove point"
               aria-label={`Remove point ${idx + 1}`}
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         ))}

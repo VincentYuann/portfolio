@@ -58,10 +58,10 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
             <button
               type="button"
               onClick={() => handleRemove(idx)}
-              className="text-light-ink-subtle hover:text-red-500 transition-colors p-0.5 cursor-pointer"
+              className="text-light-ink-subtle hover:text-red-500 transition-colors min-w-[28px] min-h-[28px] flex items-center justify-center rounded hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
               aria-label={`Remove ${tag}`}
             >
-              <X className="w-3 h-3" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </span>
         ))}
