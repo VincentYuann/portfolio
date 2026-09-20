@@ -138,6 +138,17 @@ ON CONFLICT (id) DO NOTHING;
 -- Contact messages are no longer saved to the database.
 DROP TABLE IF EXISTS public.contact_messages CASCADE;
 
+-- Contact Rate Limits (Maintained securely by Edge Function via service_role to prevent email flooding)
+CREATE TABLE IF NOT EXISTS public.contact_rate_limits (
+  ip TEXT PRIMARY KEY,
+  count INT NOT NULL DEFAULT 1,
+  window_start TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  last_request TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE public.contact_rate_limits ENABLE ROW LEVEL SECURITY;
+-- No public RLS policies: only service_role (Edge Function) can access this table.
+
 -- ==============================================================================
 -- 4. Schema Upgrades for Existing Databases (Idempotent ALTERS)
 -- ==============================================================================

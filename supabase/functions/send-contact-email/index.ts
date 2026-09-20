@@ -1,6 +1,8 @@
 // Supabase Edge Function: send-contact-email
 // Handles secure portfolio contact form submissions via Resend API
-// Keeps Resend API key strictly on the server (Supabase Secrets)
+// Protects against abuse via Honeypot trap and IP-based rate limiting
+
+import { createClient } from 'npm:@supabase/supabase-js@2';
 
 interface ContactRequestBody {
   name?: string;
@@ -29,6 +31,89 @@ function escapeHtml(text: string): string {
 // Strips carriage returns and newlines to prevent email header / CRLF injection
 function sanitizeHeader(text: string): string {
   return text.replace(/[\r\n\t]/g, ' ').trim();
+}
+
+/**
+ * Checks and updates rate limits using the contact_rate_limits table in Supabase.
+ * Enforces a maximum of 5 contact submissions per 1-hour window per client IP.
+ * Fails open (allows request) if DB check encounters an unexpected error.
+ */
+async function checkRateLimit(clientIp: string): Promise<{ allowed: boolean; retryAfterMinutes?: number }> {
+  if (!clientIp || clientIp === 'unknown' || clientIp === 'localhost' || clientIp === '127.0.0.1') {
+    return { allowed: true };
+  }
+
+  const supabaseUrl = Deno.env.get('SUPABASE_URL');
+  const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+  if (!supabaseUrl || !supabaseServiceKey) {
+    return { allowed: true };
+  }
+
+  const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+  const now = new Date();
+  const WINDOW_MS = 60 * 60 * 1000; // 1-hour sliding window
+  const MAX_REQUESTS = 5; // Max 5 messages per hour per IP
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('contact_rate_limits')
+      .select('*')
+      .eq('ip', clientIp)
+      .maybeSingle();
+
+    if (error) {
+      console.warn('Rate limit query warning (bypassing):', error);
+      return { allowed: true };
+    }
+
+    if (!data) {
+      // First request from this IP
+      await supabaseAdmin.from('contact_rate_limits').insert({
+        ip: clientIp,
+        count: 1,
+        window_start: now.toISOString(),
+        last_request: now.toISOString(),
+      });
+      return { allowed: true };
+    }
+
+    const windowStart = new Date(data.window_start).getTime();
+    const elapsed = now.getTime() - windowStart;
+
+    if (elapsed > WINDOW_MS) {
+      // Window expired; reset window and count
+      await supabaseAdmin
+        .from('contact_rate_limits')
+        .update({
+          count: 1,
+          window_start: now.toISOString(),
+          last_request: now.toISOString(),
+        })
+        .eq('ip', clientIp);
+      return { allowed: true };
+    }
+
+    if (data.count >= MAX_REQUESTS) {
+      const remainingMs = WINDOW_MS - elapsed;
+      const retryAfterMinutes = Math.max(1, Math.ceil(remainingMs / 60000));
+      return { allowed: false, retryAfterMinutes };
+    }
+
+    // Increment count
+    await supabaseAdmin
+      .from('contact_rate_limits')
+      .update({
+        count: data.count + 1,
+        last_request: now.toISOString(),
+      })
+      .eq('ip', clientIp);
+
+    return { allowed: true };
+  } catch (err) {
+    console.warn('Rate limit check encountered error (bypassing gracefully):', err);
+    return { allowed: true };
+  }
 }
 
 Deno.serve(async (req: Request) => {
@@ -115,7 +200,27 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // 4. Sanitize inputs
+    // 4. IP-Based Rate Limiting Check
+    const clientIp =
+      req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+      req.headers.get('cf-connecting-ip') ||
+      req.headers.get('x-real-ip') ||
+      'unknown';
+
+    const rateLimit = await checkRateLimit(clientIp);
+    if (!rateLimit.allowed) {
+      return new Response(
+        JSON.stringify({
+          error: `Transmission rate limit reached (5 messages/hour). Please try again in ${rateLimit.retryAfterMinutes || 15} minutes.`,
+        }),
+        {
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // 5. Sanitize inputs
     const cleanName = sanitizeHeader(trimmedName);
     const cleanTopic = sanitizeHeader(rawTopic.slice(0, 100));
     const safeName = escapeHtml(cleanName);
@@ -125,7 +230,7 @@ Deno.serve(async (req: Request) => {
 
     const formattedTime = new Date().toUTCString();
 
-    // 5. Construct HTML and Text Email Templates
+    // 6. Construct HTML and Text Email Templates
     const emailSubject = `[Portfolio] ${cleanTopic} from ${cleanName}`;
 
     const emailHtml = `
@@ -169,6 +274,10 @@ Deno.serve(async (req: Request) => {
           <td class="meta-label">Date:</td>
           <td class="meta-value">${formattedTime}</td>
         </tr>
+        <tr>
+          <td class="meta-label">IP:</td>
+          <td class="meta-value" style="font-family: monospace; font-size: 12px; color: #71717a;">${escapeHtml(clientIp)}</td>
+        </tr>
       </table>
 
       <div style="margin-top: 12px; margin-bottom: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #71717a;">
@@ -198,6 +307,7 @@ Deno.serve(async (req: Request) => {
 Sender: ${cleanName} (${trimmedEmail})
 Topic: ${cleanTopic}
 Time: ${formattedTime}
+IP: ${clientIp}
 
 Message:
 --------------------------------------------------
@@ -207,7 +317,7 @@ ${trimmedMessage}
 Reply directly to this email to respond to ${cleanName} (${trimmedEmail}).
 `;
 
-    // 6. Send email via Resend REST API
+    // 7. Send email via Resend REST API
     const resendResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
