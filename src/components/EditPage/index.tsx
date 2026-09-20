@@ -159,10 +159,6 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
   }, [handleSelectSection]);
 
   const handleExit = () => {
-    if (hasAnyDirty) {
-      const confirmed = window.confirm('You have unsaved changes. Are you sure you want to leave the editor?');
-      if (!confirmed) return;
-    }
     onNavigate('home');
   };
 
@@ -287,8 +283,6 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
                 <button
                   type="button"
                   onClick={() => {
-                    const confirmed = window.confirm(`Discard unsaved changes in ${activeSectionObj?.label || 'this section'}?`);
-                    if (!confirmed) return;
                     window.dispatchEvent(new CustomEvent('portfolio-admin-discard', { detail: { section: activeSection } }));
                     setDirtySections((prev) => ({ ...prev, [activeSection]: false }));
                     toast.info(`Discarded unsaved changes in ${activeSectionObj?.shortLabel || 'section'}`);
