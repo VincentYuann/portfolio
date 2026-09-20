@@ -192,6 +192,7 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
           currentIndex={activeImageIndex}
           onIndexChange={setActiveImageIndex}
           title={hobby.title}
+          subtitle={hobby.subtitle}
           kanji={hobby.kanji}
         />
       )}

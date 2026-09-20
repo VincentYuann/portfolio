@@ -131,6 +131,8 @@ export const DEFAULT_HOBBIES: HobbyItem[] = [
     subtitle: 'Character Arcs, World-Building & Sakuga Animation',
     images: [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuBNUbl-6saHrZBnNOQEft_44ErmBzcNf2_3GgN4Xh2hxYnrVyHmx0Kz7DBGAQU30hv1C56hMzEkMbUvzMsgiiQJO5-JOSAYbf_MTlCsxqsG6oYp2JOG6zBceu8-bSXRVljpncu6N9vfbZ1ELq___5JJUl5KKRHtAYdMHHOco-rVkrLgjawbqtRYqfqTWnnGG7IsPoXWB1Y7Rep0IHev5pbIs2-M31bmqSw0CJhNHoyX_8cvun5BWnCorQ',
+      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879980878-1000025253.png',
+      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879575417-gemini_generated_image_fg6i8ufg6i8ufg6i.jpg',
     ],
     whyDescription:
       'Watching anime is a study in creative world-building, intricate lore structures, and emotional character arcs. Deconstructing how complex narratives resolve across hundreds of episodes inspires the intentionality and structural cohesion I bring to software architectures.',
@@ -148,6 +150,8 @@ export const DEFAULT_HOBBIES: HobbyItem[] = [
     subtitle: 'Real-Time State, Tick Rates & Competitive Play',
     images: [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuA1W78vnIMUOZKe7hIAoZsWy9lJceC1GpqMkqCmJ0zjjhiQRCMfeO5ejXeEFDH10cv9VQ-v34kBBbp7myZGbKDV_4cTYbwZkD7my_EJIz0AaigAKuxHxLaqbPY3rz0uyQRh3VXovKJ0q8mi47qszpp4XFdiWdzRtPHfxCANH_mlPFejUqNlRNslttdcVZcNUKICTpcQjiwuDY__vaTUy4XZJu7pWzO6fZFAOcVs98n4WD37JYOW7sBiRA',
+      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879973432-1000025251.jpg',
+      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879579761-day_and_nigh_theme.png',
     ],
     whyDescription:
       'Games are the ultimate intersection of real-time mathematics, state synchronization, and low-latency feedback loops. Exploring game loops, hitbox collisions, and client-server prediction models keeps my understanding of distributed systems and interactive frontend performance razor-sharp.',
@@ -165,6 +169,7 @@ export const DEFAULT_HOBBIES: HobbyItem[] = [
     subtitle: 'Progressive Overload & Daily Physical Training',
     images: [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuBIQr3bTk3yvKCBXiAYi_kPdrzrSDIS4QJkYLWaCRKFOh_Iyvqgn2IkCe1PeeRqs_ScybEjUyNSBVPfSoqCDoXz-iTNgSOXxxNxKheHSrcnFQZE-bhBwH5mmkRJxXWbCWlus4MxGuYXevVL7oTqwrTcvbKPWwGtZj2VEYvaUrcisA4rRI0jgNhTBKtJgVQFJ86vzJ-h43U6tuThqzyw2TBz0s1ypULVS2GnMSJ5B4Q19cWnTVqag0yRHw',
+      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879977164-1000025250.jpg',
     ],
     whyDescription:
       'Engineering is intensely cognitive; the gym provides essential physical grounding. Progressive overload teaches that meaningful growth is cumulative, demanding daily discipline, proper form, and recovery. It provides the stamina and mental endurance required for deep focus.',
@@ -182,6 +187,7 @@ export const DEFAULT_HOBBIES: HobbyItem[] = [
     subtitle: 'Order Flow, Volatility & Systematic Execution',
     images: [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuBg-wZeKdlcgCrJC9erSQCxG7UvapQqbvhrt6rKGTVp7-eZT8s7AeO6dMKSPvrleqxjpYga7NSq0euWrBCozfTAv5vckRlEL_2P1HrawliMAIhTgvS9tgflMmTvNVKa8XvFTeb-cWOUTUzO1TiSVwgJwDrxMCivMlme4gOAbjrPE9ae2jR37V4v19KzIpP4Y4Sxt9cZKg7wkd-TpIoL5wKoV2fOBnnMgOOw44llnc8BfNRz0xLmforWM_fP63iZA9ibRq8',
+      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879932755-1000025280.jpg',
     ],
     whyDescription:
       'Day trading the Nasdaq demands strict risk management, probability modeling, and unwavering psychological discipline under high volatility. It sharpens my ability to stay objective, manage downside risks, and execute deterministic strategies without hesitation.',
@@ -199,6 +205,7 @@ export const DEFAULT_HOBBIES: HobbyItem[] = [
     subtitle: 'Shared Meals, Hospitality & Authentic Connection',
     images: [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuA2pdPd8CnVOnZYPBQsr47gzJPGBsD3Umny072KbSji2j8ByvSS5A2-4M5CKznNCanIim2LRBVzRaf_28DBhgqM1X1_fbkE3X7dghJAIkJb9tX9tr00QGf-THZVPfzovWMXnTtc0KxqMwgS1VytvsKGr5i21bjMvHx3rCqyCMRxI6qYe6EoxHRSKV8H68eVRi3jxO07zcRfBfovYmvVzqiFCBWzOxspiFqqJeStUOjb7KmxZ8gfXabqaA',
+      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879579761-day_and_nigh_theme.png',
     ],
     whyDescription:
       'Breaking bread with friends is where hospitality and genuine human connection flourish. Drawing from my background in the service industry, sharing great food and rich conversations grounds me in why we build software in the first place: to serve people and create shared joy.',
@@ -437,6 +444,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       if (profileRes.data) {
         const row = profileRes.data;
+        const dbHanko = row.hanko_card && typeof row.hanko_card === 'object' ? row.hanko_card : null;
         let localHankoOverride: HankoCardConfig | null = null;
         try {
           const cached = localStorage.getItem('portfolio_hanko_card_override');
@@ -445,10 +453,11 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
         const mappedHankoCard: HankoCardConfig = {
           ...DEFAULT_HANKO_CARD,
-          ...(row.hanko_card && typeof row.hanko_card === 'object' ? row.hanko_card : {}),
           ...(localHankoOverride || {}),
+          ...(dbHanko || {}),
         };
 
+        const dbOrigin = row.origin_story && typeof row.origin_story === 'object' ? row.origin_story : null;
         let localOriginOverride: OriginStoryConfig | null = null;
         try {
           const cachedOrigin = localStorage.getItem('portfolio_origin_story_override');
@@ -457,22 +466,40 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
         const mappedOriginStory: OriginStoryConfig = {
           ...DEFAULT_ORIGIN_STORY,
-          ...(row.origin_story && typeof row.origin_story === 'object' ? row.origin_story : {}),
           ...(localOriginOverride || {}),
+          ...(dbOrigin || {}),
         };
 
+        const dbHobbies = Array.isArray(row.hobbies) && row.hobbies.length > 0 ? row.hobbies : null;
         let localHobbiesOverride: HobbyItem[] | null = null;
         try {
           const cachedHobbies = localStorage.getItem('portfolio_hobbies_override');
           if (cachedHobbies) localHobbiesOverride = JSON.parse(cachedHobbies);
         } catch {}
 
+        // Cloud database always wins over stale browser cache; fallback to local cache then default
         const mappedHobbies: HobbyItem[] =
-          localHobbiesOverride && Array.isArray(localHobbiesOverride) && localHobbiesOverride.length > 0
+          dbHobbies ||
+          (localHobbiesOverride && Array.isArray(localHobbiesOverride) && localHobbiesOverride.length > 0
             ? localHobbiesOverride
-            : Array.isArray(row.hobbies) && row.hobbies.length > 0
-            ? row.hobbies
-            : DEFAULT_HOBBIES;
+            : DEFAULT_HOBBIES);
+
+        // Keep local cache in sync with cloud database
+        if (dbHobbies) {
+          try {
+            localStorage.setItem('portfolio_hobbies_override', JSON.stringify(dbHobbies));
+          } catch {}
+        }
+        if (dbHanko) {
+          try {
+            localStorage.setItem('portfolio_hanko_card_override', JSON.stringify(dbHanko));
+          } catch {}
+        }
+        if (dbOrigin) {
+          try {
+            localStorage.setItem('portfolio_origin_story_override', JSON.stringify(dbOrigin));
+          } catch {}
+        }
 
         const mappedProfile: SiteProfile = {
           name:     row.name     || '',

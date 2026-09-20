@@ -197,14 +197,16 @@ export const IntroEditor: React.FC = () => {
         (async () => {
           const { error } = await supabase
             .from('profile')
-            .upsert({ id: 1, ...data, updated_at: new Date().toISOString() });
+            .update({ ...data, updated_at: new Date().toISOString() })
+            .eq('id', 1);
           if (error) {
             // Graceful fallback if hanko_card column does not exist in Postgres yet
             if (error.code === '42703' || error.message?.includes('hanko_card')) {
               const { hanko_card, ...rest } = data as any;
               const retry = await supabase
                 .from('profile')
-                .upsert({ id: 1, ...rest, updated_at: new Date().toISOString() });
+                .update({ ...rest, updated_at: new Date().toISOString() })
+                .eq('id', 1);
               if (retry.error) throw retry.error;
               if (hanko_card) {
                 try {

@@ -182,6 +182,7 @@ export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ h
           currentIndex={activeImageIndex}
           onIndexChange={setActiveImageIndex}
           title={hobby.title}
+          subtitle={hobby.subtitle}
           kanji={hobby.kanji}
         />
       )}

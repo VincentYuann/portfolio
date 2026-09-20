@@ -434,3 +434,50 @@
   color: #F7F0E3 !important;
 }
 
+/* ==============================================================================
+   Yet Another React Lightbox Theme (Japanese Wabi-Sabi Styling)
+   ============================================================================== */
+.yarl__root {
+  --yarl__color_backdrop: rgba(10, 11, 14, 0.94);
+  --yarl__color_button: rgba(237, 234, 228, 0.85);
+  --yarl__color_button_active: #C83C23;
+  --yarl__thumbnails_thumbnail_border_active: #C83C23;
+  --yarl__thumbnails_thumbnail_background: rgba(24, 25, 32, 0.85);
+  --yarl__thumbnails_thumbnail_border: rgba(255, 255, 255, 0.15);
+  --yarl__thumbnails_container_background: rgba(10, 11, 14, 0.8);
+  --yarl__thumbnails_container_padding: 10px 16px;
+  --yarl__slide_title_color: #EDEAE4;
+  --yarl__slide_description_color: rgba(237, 234, 228, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.yarl__button {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border-radius: 8px !important;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yarl__button:hover {
+  color: #C83C23 !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.yarl__thumbnails_thumbnail {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease !important;
+}
+
+.yarl__thumbnails_thumbnail:hover {
+  transform: scale(1.05);
+}
+
+.yarl__thumbnails_thumbnail_active {
+  border-color: #C83C23 !important;
+  box-shadow: 0 0 0 2px rgba(200, 60, 35, 0.4) !important;
+}
+
+
