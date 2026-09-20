@@ -102,7 +102,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
             filter="url(#enso-ink-bleed)"
           />
 
-          {/* Secondary inner dry-brush texture stroke */}
+          {/* Secondary inner dry-brush texture stroke with real-time draw on hover */}
           <path
             d="M 100,28
                C 130,28 164,48 174,80
@@ -110,15 +110,18 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
                C 110,184 72,180 50,154"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.2"
+            strokeWidth="1.6"
             strokeLinecap="round"
-            className="text-light-ink-muted/40 dark:text-dark-ink-muted/30"
+            className="text-light-ink-muted/50 dark:text-dark-ink-muted/40 animate-enso-draw"
           />
         </g>
 
         {/* 2. LAYER: Rotating Celestial Elements Group (Golden Arc + Apex Ruby + Dashed Trail) */}
-        <g className="animate-orbital-spin origin-center">
-          {/* Golden Orbit Arc (sweeps top to right) */}
+        <g
+          className="animate-orbital-spin"
+          style={{ transformOrigin: '100px 100px' }}
+        >
+          {/* Golden Orbit Arc (sweeps top to right with real-time drawing) */}
           <path
             d="M 106,16
                A 86 86 0 0 1 184,124"
@@ -126,7 +129,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
             stroke="#D59E66"
             strokeWidth="3.2"
             strokeLinecap="round"
-            className="opacity-95 dark:opacity-90"
+            className="opacity-95 dark:opacity-90 animate-enso-draw"
             filter="url(#gold-glow)"
           />
 
