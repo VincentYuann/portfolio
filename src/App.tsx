@@ -7,6 +7,7 @@ import { SectionDivider } from './components/SectionDivider';
 import { ExperienceSection } from './components/ExperienceSection';
 import { ProjectsShowcase } from './components/ProjectsShowcase';
 import { PhilosophyBento } from './components/PhilosophyBento';
+import { HobbiesSection } from './components/HobbiesSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { supabase } from './lib/supabase';
@@ -49,10 +50,11 @@ const getInitialView = (): ViewMode => {
 };
 
 const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => void }> = ({ onNavigate }) => {
-  const { experiences, projects, pillars, profile } = useSiteData();
+  const { experiences, projects, pillars, profile, hobbies } = useSiteData();
   const hasExperiences = Array.isArray(experiences) && experiences.length > 0;
   const hasProjects = Array.isArray(projects) && projects.length > 0;
   const hasPhilosophy = (Array.isArray(pillars) && pillars.length > 0) || Boolean(profile?.origin_story);
+  const hasHobbies = Array.isArray(hobbies) && hobbies.length > 0;
 
   return (
     <>
@@ -73,6 +75,12 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
         <>
           <SectionDivider label="ORIGIN & PHILOSOPHY · 原点と哲学" shortLabel="PHILOSOPHY · 哲学" />
           <PhilosophyBento />
+        </>
+      )}
+      {hasHobbies && (
+        <>
+          <SectionDivider label="PURSUITS & CRAFTS · 余白と手仕事" shortLabel="CRAFTS · 余白" />
+          <HobbiesSection />
         </>
       )}
       <SectionDivider label="INITIATE A DIALOGUE · 対話" shortLabel="DIALOGUE · 対話" />

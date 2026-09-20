@@ -2,13 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { IntroEditor } from './sections/IntroEditor';
 import { ExperienceEditor } from './sections/ExperienceEditor';
 import { ProjectsEditor } from './sections/ProjectsEditor';
-import { ResumeEditor } from './sections/ResumeEditor';
 import { PhilosophyEditor } from './sections/PhilosophyEditor';
+import { HobbiesEditor } from './sections/HobbiesEditor';
+import { ResumeEditor } from './sections/ResumeEditor';
 import { VerticalMarginWidget, MARGIN_PRESETS } from '../VerticalMarginWidget';
 import { ArrowLeft, Layers, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
-type EditSection = 'intro' | 'experience' | 'projects' | 'philosophy' | 'resume';
+type EditSection = 'intro' | 'experience' | 'projects' | 'philosophy' | 'hobbies' | 'resume';
 
 interface EditPageProps {
   onNavigate: (view: 'home' | 'projects' | 'resume' | 'login' | 'edit') => void;
@@ -19,7 +20,8 @@ const SECTIONS: { id: EditSection; label: string; num: string; shortLabel?: stri
   { id: 'experience', label: 'Experience', shortLabel: 'Experience', num: '02' },
   { id: 'projects', label: 'Projects', shortLabel: 'Projects', num: '03' },
   { id: 'philosophy', label: 'Philosophy', shortLabel: 'Philosophy', num: '04' },
-  { id: 'resume', label: 'Resume', shortLabel: 'Resume', num: '05' },
+  { id: 'hobbies', label: 'Hobbies & Craft', shortLabel: 'Hobbies', num: '05' },
+  { id: 'resume', label: 'Resume', shortLabel: 'Resume', num: '06' },
 ];
 
 export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
@@ -197,6 +199,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
           {activeSection === 'experience' && <ExperienceEditor />}
           {activeSection === 'projects' && <ProjectsEditor />}
           {activeSection === 'philosophy' && <PhilosophyEditor />}
+          {activeSection === 'hobbies' && <HobbiesEditor />}
           {activeSection === 'resume' && <ResumeEditor />}
         </div>
       </div>

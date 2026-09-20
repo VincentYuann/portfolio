@@ -110,6 +110,97 @@ export const DEFAULT_ORIGIN_STORY: OriginStoryConfig = {
   ],
 };
 
+export interface HobbyItem {
+  id: string;
+  title: string;
+  kanji?: string;
+  category?: string;
+  subtitle?: string;
+  images: string[];
+  whyDescription: string;
+  metadata?: { label: string; value: string }[];
+  displayOrder?: number;
+}
+
+export const DEFAULT_HOBBIES: HobbyItem[] = [
+  {
+    id: 'woodworking',
+    title: 'Sashimono Woodworking',
+    kanji: '木工技芸',
+    category: 'Woodcraft',
+    subtitle: 'Hand-planed Hinoki & Precision Joinery',
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBIQr3bTk3yvKCBXiAYi_kPdrzrSDIS4QJkYLWaCRKFOh_Iyvqgn2IkCe1PeeRqs_ScybEjUyNSBVPfSoqCDoXz-iTNgSOXxxNxKheHSrcnFQZE-bhBwH5mmkRJxXWbCWlus4MxGuYXevVL7oTqwrTcvbKPWwGtZj2VEYvaUrcisA4rRI0jgNhTBKtJgVQFJ86vzJ-h43U6tuThqzyw2TBz0s1ypULVS2GnMSJ5B4Q19cWnTVqag0yRHw',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuB2WFweXy4kKW8bvOnv5eAl8K4fYGibTjsSW1jfbVi5-hMizxKNNHdZDnUso1GFuRJ7BcWM7zIJ0rUCiPL21mDERl2-xN_g3ULKSovWx6e9uuwNQgjuBZlBhjfA4kY4CBZ5pHaB2v8bTCFUcAkfiztO4Ws8lm2gGTsd94zG_4jEv8cRxBgj4YP9yQMEF3Sswnp_mvYVSJ2NfnozxzDT5WEo5G5Jk6GiswdagPeJbs0i47rZkjIKSEhILdjJUbtSIKioOB4',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBNUbl-6saHrZBnNOQEft_44ErmBzcNf2_3GgN4Xh2hxYnrVyHmx0Kz7DBGAQU30hv1C56hMzEkMbUvzMsgiiQJO5-JOSAYbf_MTlCsxqsG6oYp2JOG6zBceu8-bSXRVljpncu6N9vfbZ1ELq___5JJUl5KKRHtAYdMHHOco-rVkrLgjawbqtRYqfqTWnnGG7IsPoXWB1Y7Rep0IHev5pbIs2-M31bmqSw0CJhNHoyX_8cvun5BWnCorQ',
+    ],
+    whyDescription:
+      'Writing software is ephemeral; once code compiles, it lives unseen in silicon. Working with Hinoki cedar forces me to respect physical grains and sub-millimeter tolerances without nails or glue. It keeps me patient and grounded when engineering intricate software systems.',
+    metadata: [
+      { label: 'Material', value: 'Kiso Hinoki' },
+      { label: 'Favorite Tool', value: 'Tsunesaburo Kanna' },
+    ],
+    displayOrder: 1,
+  },
+  {
+    id: 'chado-kintsugi',
+    title: 'Chadō & Ceramic Kintsugi',
+    kanji: '侘び寂びと茶の湯',
+    category: 'Ceremony',
+    subtitle: 'Tea Preparation & Gold Urushi Repair',
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuA2pdPd8CnVOnZYPBQsr47gzJPGBsD3Umny072KbSji2j8ByvSS5A2-4M5CKznNCanIim2LRBVzRaf_28DBhgqM1X1_fbkE3X7dghJAIkJb9tX9tr00QGf-THZVPfzovWMXnTtc0KxqMwgS1VytvsKGr5i21bjMvHx3rCqyCMRxI6qYe6EoxHRSKV8H68eVRi3jxO07zcRfBfovYmvVzqiFCBWzOxspiFqqJeStUOjb7KmxZ8gfXabqaA',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvcQXHPLoNu2wASnQkgBA268ObsK-qfA_q-fDh8WoyC2x2WPhmkCKGffOuYuVbRXrwaX1Kf2M8UB4kHDKXBgoWtQJUtGCWKGI4NpvvTuf5KJE9DKtFKw1q8B7eKoBsB98bxYIIPJpAov0Wb4PdIpFeqcEejzor5q3vHPeADeW93jb_w1XiQ2fqxljWq-DKtzR97TXQZ2ZhbR4m0j7u7RYTBy6ZIVk47LkEGOllSKL0NnUc0e7oxYHogUKk-ggfWptaeE',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBIQr3bTk3yvKCBXiAYi_kPdrzrSDIS4QJkYLWaCRKFOh_Iyvqgn2IkCe1PeeRqs_ScybEjUyNSBVPfSoqCDoXz-iTNgSOXxxNxKheHSrcnFQZE-bhBwH5mmkRJxXWbCWlus4MxGuYXevVL7oTqwrTcvbKPWwGtZj2VEYvaUrcisA4rRI0jgNhTBKtJgVQFJ86vzJ-h43U6tuThqzyw2TBz0s1ypULVS2GnMSJ5B4Q19cWnTVqag0yRHw',
+    ],
+    whyDescription:
+      'Whisking matcha every morning creates a deliberate pause before screens turn on. Repairing broken ceramics with gold lacquer (Kintsugi) is a quiet reminder that flaws, production incidents, and scars make a system more resilient and honest rather than something to hide.',
+    metadata: [
+      { label: 'Routine', value: '15-min Morning Whisk' },
+      { label: 'Tea Cultivar', value: 'Uji Samidori' },
+    ],
+    displayOrder: 2,
+  },
+  {
+    id: 'sumie-shodo',
+    title: 'Sumi-e & Shodō Ink Wash',
+    kanji: '墨絵と筆致',
+    category: 'Focus',
+    subtitle: 'Raw Kozo Mulberry Paper & Inkstone',
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBNUbl-6saHrZBnNOQEft_44ErmBzcNf2_3GgN4Xh2hxYnrVyHmx0Kz7DBGAQU30hv1C56hMzEkMbUvzMsgiiQJO5-JOSAYbf_MTlCsxqsG6oYp2JOG6zBceu8-bSXRVljpncu6N9vfbZ1ELq___5JJUl5KKRHtAYdMHHOco-rVkrLgjawbqtRYqfqTWnnGG7IsPoXWB1Y7Rep0IHev5pbIs2-M31bmqSw0CJhNHoyX_8cvun5BWnCorQ',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuClO-_M4JLPlq9fuXOkR0VqL0Ftj7qkrzxjiIqN3p0rE8bjSD_ovkLpK88j5fmt6KSbi-oEZE4MuMIxhGTNunXZvVpDP0TZfc3HP0wZJBif4x-2Aff_Gn6unjrvb_fnKY465KpwA6zY6clzkiFRnBFAlIfKv2M6QBDPmTtDxoTUK-RFkAl8gZb0kWSMnlZ50MJr6WCPRIwwaUQ9ZCWQasnNmeXdJ4c6A3m5cs7Oy2EruIIJ0K6kY8LMHV-P-s1skPD6LGE',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuA2pdPd8CnVOnZYPBQsr47gzJPGBsD3Umny072KbSji2j8ByvSS5A2-4M5CKznNCanIim2LRBVzRaf_28DBhgqM1X1_fbkE3X7dghJAIkJb9tX9tr00QGf-THZVPfzovWMXnTtc0KxqMwgS1VytvsKGr5i21bjMvHx3rCqyCMRxI6qYe6EoxHRSKV8H68eVRi3jxO07zcRfBfovYmvVzqiFCBWzOxspiFqqJeStUOjb7KmxZ8gfXabqaA',
+    ],
+    whyDescription:
+      'In Shodō, there is no undo or backspace. Once ink touches the washi fiber, the choice is permanent. Grinding the inkstone for 20 minutes clears mental clutter and teaches decisive, unwavering action before execution.',
+    metadata: [
+      { label: 'Paper', value: 'Echizen Raw Kozo' },
+      { label: 'Ink', value: 'Nara Pine-Soot' },
+    ],
+    displayOrder: 3,
+  },
+  {
+    id: 'custom-keyboards',
+    title: 'Custom Keyboards & Soldering',
+    kanji: '自作鍵盤工芸',
+    category: 'Hardware',
+    subtitle: 'Hand-lubed Switches & Brass Plate Builds',
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuA1W78vnIMUOZKe7hIAoZsWy9lJceC1GpqMkqCmJ0zjjhiQRCMfeO5ejXeEFDH10cv9VQ-v34kBBbp7myZGbKDV_4cTYbwZkD7my_EJIz0AaigAKuxHxLaqbPY3rz0uyQRh3VXovKJ0q8mi47qszpp4XFdiWdzRtPHfxCANH_mlPFejUqNlRNslttdcVZcNUKICTpcQjiwuDY__vaTUy4XZJu7pWzO6fZFAOcVs98n4WD37JYOW7sBiRA',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBg-wZeKdlcgCrJC9erSQCxG7UvapQqbvhrt6rKGTVp7-eZT8s7AeO6dMKSPvrleqxjpYga7NSq0euWrBCozfTAv5vckRlEL_2P1HrawliMAIhTgvS9tgflMmTvNVKa8XvFTeb-cWOUTUzO1TiSVwgJwDrxMCivMlme4gOAbjrPE9ae2jR37V4v19KzIpP4Y4Sxt9cZKg7wkd-TpIoL5wKoV2fOBnnMgOOw44llnc8BfNRz0xLmforWM_fP63iZA9ibRq8',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBIQr3bTk3yvKCBXiAYi_kPdrzrSDIS4QJkYLWaCRKFOh_Iyvqgn2IkCe1PeeRqs_ScybEjUyNSBVPfSoqCDoXz-iTNgSOXxxNxKheHSrcnFQZE-bhBwH5mmkRJxXWbCWlus4MxGuYXevVL7oTqwrTcvbKPWwGtZj2VEYvaUrcisA4rRI0jgNhTBKtJgVQFJ86vzJ-h43U6tuThqzyw2TBz0s1ypULVS2GnMSJ5B4Q19cWnTVqag0yRHw',
+    ],
+    whyDescription:
+      'As programmers, our keyboard is our primary physical connection to thought and work. Hand-soldering diodes, lubing switch stems, and adjusting plate resonance turns an everyday plastic tool into a tailored instrument that brings joy to every keystroke.',
+    metadata: [
+      { label: 'Switches', value: 'Lubed Holy Panda X' },
+      { label: 'Mounting', value: 'Gasket Leaf-Spring' },
+    ],
+    displayOrder: 4,
+  },
+];
+
 export interface SiteProfile {
   name: string;
   headline: string;
@@ -121,6 +212,7 @@ export interface SiteProfile {
   capability_pillars: CapabilityPillar[];
   hanko_card?: HankoCardConfig;
   origin_story?: OriginStoryConfig;
+  hobbies?: HobbyItem[];
 }
 
 export interface PhilosophyPillar {
@@ -157,6 +249,7 @@ export interface SiteData {
   pillars: PhilosophyPillar[];
   projects: Project[];
   experiences: ExperienceRecord[];
+  hobbies: HobbyItem[];
   loading: boolean;
   refresh: () => Promise<void>;
 }
@@ -180,6 +273,7 @@ export const DEFAULT_PROFILE: SiteProfile = {
   ],
   hanko_card: DEFAULT_HANKO_CARD,
   origin_story: DEFAULT_ORIGIN_STORY,
+  hobbies: DEFAULT_HOBBIES,
 };
 
 export const DEFAULT_PILLARS: PhilosophyPillar[] = [];
@@ -191,6 +285,7 @@ const SiteDataContext = createContext<SiteData>({
   pillars: DEFAULT_PILLARS,
   projects: [],
   experiences: DEFAULT_EXPERIENCES,
+  hobbies: DEFAULT_HOBBIES,
   loading: true,
   refresh: async () => {},
 });
@@ -269,6 +364,9 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           const parsed = JSON.parse(cached);
           if (!parsed.origin_story) {
             parsed.origin_story = DEFAULT_ORIGIN_STORY;
+          }
+          if (!parsed.hobbies || !Array.isArray(parsed.hobbies) || parsed.hobbies.length === 0) {
+            parsed.hobbies = DEFAULT_HOBBIES;
           }
           return parsed;
         }
@@ -354,6 +452,19 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           ...(localOriginOverride || {}),
         };
 
+        let localHobbiesOverride: HobbyItem[] | null = null;
+        try {
+          const cachedHobbies = localStorage.getItem('portfolio_hobbies_override');
+          if (cachedHobbies) localHobbiesOverride = JSON.parse(cachedHobbies);
+        } catch {}
+
+        const mappedHobbies: HobbyItem[] =
+          localHobbiesOverride && Array.isArray(localHobbiesOverride) && localHobbiesOverride.length > 0
+            ? localHobbiesOverride
+            : Array.isArray(row.hobbies) && row.hobbies.length > 0
+            ? row.hobbies
+            : DEFAULT_HOBBIES;
+
         const mappedProfile: SiteProfile = {
           name:     row.name     || '',
           headline: row.headline || '',
@@ -374,6 +485,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             : [],
           hanko_card: mappedHankoCard,
           origin_story: mappedOriginStory,
+          hobbies: mappedHobbies,
         };
         setProfile(mappedProfile);
         try {
@@ -524,7 +636,17 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [fetchAll]);
 
   return (
-    <SiteDataContext.Provider value={{ profile, pillars, projects, experiences, loading, refresh: fetchAll }}>
+    <SiteDataContext.Provider
+      value={{
+        profile,
+        pillars,
+        projects,
+        experiences,
+        hobbies: profile.hobbies || DEFAULT_HOBBIES,
+        loading,
+        refresh: fetchAll,
+      }}
+    >
       {children}
     </SiteDataContext.Provider>
   );

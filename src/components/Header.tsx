@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
       }
 
       const scrollPosition = window.scrollY + 220;
-      const sections = ['contact', 'philosophy', 'featured-works', 'experience', 'home'];
+      const sections = ['contact', 'hobbies', 'philosophy', 'featured-works', 'experience', 'home'];
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
         if (el) {
@@ -84,9 +84,10 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'experience', num: '02', label: 'Experience', href: '#experience', view: 'home' as const },
     { id: 'featured-works', num: '03', label: 'Projects', href: '#featured-works', view: 'home' as const },
     { id: 'philosophy', num: '04', label: 'Philosophy', href: '#philosophy', view: 'home' as const },
-    { id: 'contact', num: '05', label: 'Contact', href: '#contact', view: 'home' as const },
-    { id: 'resume', num: '06', label: 'Resume', href: '#resume', view: 'resume' as const },
-    ...(isAdmin ? [{ id: 'edit', num: '07', label: 'Edit', href: '#edit', view: 'edit' as const }] : []),
+    { id: 'hobbies', num: '05', label: 'Hobbies & Craft', href: '#hobbies', view: 'home' as const },
+    { id: 'contact', num: '06', label: 'Contact', href: '#contact', view: 'home' as const },
+    { id: 'resume', num: '07', label: 'Resume', href: '#resume', view: 'resume' as const },
+    ...(isAdmin ? [{ id: 'edit', num: '08', label: 'Edit', href: '#edit', view: 'edit' as const }] : []),
   ];
 
   const handleNavClick = (
