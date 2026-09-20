@@ -4,7 +4,7 @@ import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
 import { HankoStamp } from './HankoStamp';
 import { TechTag } from './TechTag';
-import { useSiteData, parsePillarTags } from '../context/SiteDataContext';
+import { useSiteData, parsePillarTags, DEFAULT_HANKO_CARD } from '../context/SiteDataContext';
 
 interface HeroProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
@@ -21,6 +21,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     Array.isArray(profile?.capability_pillars) && profile.capability_pillars.length > 0
       ? profile.capability_pillars
       : [];
+  const hanko = profile?.hanko_card || DEFAULT_HANKO_CARD;
+  const hankoLines = (hanko.lines && hanko.lines.length === 3) ? hanko.lines : DEFAULT_HANKO_CARD.lines!;
 
   return (
     <section id="home" className="relative w-full overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24">
@@ -182,16 +184,22 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               {/* Box Header */}
               <div className="w-full flex items-center justify-between pb-2 mb-3 sm:mb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
                 <span className="font-sans font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase text-[10px] tracking-wider">
-                  SEAL / 認印
+                  {hanko.headerLabel || 'SEAL / 認印'}
                 </span>
                 <span className="font-sans text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest text-[10px] font-mono">
-                  KYOTO ARCHIVE
+                  {hanko.locationArchive || 'KYOTO ARCHIVE'}
                 </span>
               </div>
 
               {/* Hanko Seal Mark with Breathing Pulse */}
-              <div className="relative p-1.5 sm:p-2 flex items-center justify-center animate-seal-breathe z-10">
-                <HankoStamp className="w-16 h-16 sm:w-20 sm:h-20 transition-transform duration-300 group-hover:scale-105" />
+              <div className="relative p-1.5 sm:p-2 flex flex-col items-center justify-center animate-seal-breathe z-10">
+                <HankoStamp char={hanko.stampCharacter || '原'} className="w-16 h-16 sm:w-20 sm:h-20 transition-transform duration-300 group-hover:scale-105" />
+                {hanko.statusBadge && (
+                  <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-light-surface/90 dark:bg-dark-surface-raised border border-light-border/80 dark:border-dark-border text-[10px] font-mono font-medium text-terracotta tracking-wider uppercase shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-terracotta animate-pulse" />
+                    <span>{hanko.statusBadge}</span>
+                  </div>
+                )}
               </div>
 
               <div className="mt-2 sm:mt-3 text-center relative z-10">
@@ -207,28 +215,28 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               <div className="w-full mt-3 sm:mt-4 pt-3 sm:pt-4 bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70 rounded-md p-3 sm:p-4 flex flex-col items-center justify-center group-hover:border-terracotta/30 transition-colors duration-300 relative z-10">
                 <div className="flex items-center justify-center gap-5 sm:gap-6 w-full">
                   <div
-                    title="Aesthetics of Negative Space (Ma)"
+                    title={hankoLines[0].tooltip || hankoLines[0].label}
                     className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-85 min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
                   >
-                    間と余白の美学
+                    {hankoLines[0].text}
                   </div>
                   <div
-                    title="Silence and Simple Harmony (Wa)"
+                    title={hankoLines[1].tooltip || hankoLines[1].label}
                     className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-terracotta font-medium min-h-[148px] leading-relaxed hover:scale-105 transition-transform cursor-default whitespace-nowrap select-none"
                   >
-                    静寂と簡素な調和
+                    {hankoLines[1].text}
                   </div>
                   <div
-                    title="Artisan Precision and Joinery (Shokunin)"
+                    title={hankoLines[2].tooltip || hankoLines[2].label}
                     className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-70 min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
                   >
-                    職人の精緻な組手
+                    {hankoLines[2].text}
                   </div>
                 </div>
                 <div className="mt-2.5 pt-2 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[10px] font-mono tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle uppercase px-1">
-                  <span>MA · 間</span>
-                  <span>WA · 調和</span>
-                  <span>CRAFT · 職人</span>
+                  <span>{hankoLines[0].label}</span>
+                  <span>{hankoLines[1].label}</span>
+                  <span>{hankoLines[2].label}</span>
                 </div>
               </div>
             </div>

@@ -28,6 +28,32 @@ export function parsePillarTags(pillar: { items?: string; tags?: string[] }): st
     .filter((s) => Boolean(s.length > 0 && !s.includes('\uFFFD') && !/^[\s·,・•|/]+$/.test(s)));
 }
 
+export interface HankoCardLine {
+  text: string;
+  label: string;
+  tooltip?: string;
+}
+
+export interface HankoCardConfig {
+  headerLabel?: string;       // e.g. "SEAL / 認印"
+  locationArchive?: string;   // e.g. "KYOTO ARCHIVE" or "TORONTO, CA"
+  stampCharacter?: string;    // e.g. "原", "匠", "創", "道"
+  statusBadge?: string;       // e.g. "AVAILABLE FOR WORK"
+  lines?: HankoCardLine[];
+}
+
+export const DEFAULT_HANKO_CARD: HankoCardConfig = {
+  headerLabel: 'SEAL / 認印',
+  locationArchive: 'KYOTO ARCHIVE',
+  stampCharacter: '原',
+  statusBadge: '',
+  lines: [
+    { text: '間と余白の美学', label: 'MA · 間', tooltip: 'Aesthetics of Negative Space (Ma)' },
+    { text: '静寂と簡素な調和', label: 'WA · 調和', tooltip: 'Silence and Simple Harmony (Wa)' },
+    { text: '職人の精緻な組手', label: 'CRAFT · 職人', tooltip: 'Artisan Precision and Joinery (Shokunin)' },
+  ],
+};
+
 export interface SiteProfile {
   name: string;
   headline: string;
@@ -37,6 +63,7 @@ export interface SiteProfile {
   linkedin: string;
   role: string;
   capability_pillars: CapabilityPillar[];
+  hanko_card?: HankoCardConfig;
 }
 
 export interface PhilosophyPillar {
@@ -90,6 +117,7 @@ export const DEFAULT_PROFILE: SiteProfile = {
   linkedin: '',
   role: '',
   capability_pillars: [],
+  hanko_card: DEFAULT_HANKO_CARD,
 };
 
 export const DEFAULT_PILLARS: PhilosophyPillar[] = [];
@@ -234,6 +262,18 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       if (profileRes.data) {
         const row = profileRes.data;
+        let localHankoOverride: HankoCardConfig | null = null;
+        try {
+          const cached = localStorage.getItem('portfolio_hanko_card_override');
+          if (cached) localHankoOverride = JSON.parse(cached);
+        } catch {}
+
+        const mappedHankoCard: HankoCardConfig = {
+          ...DEFAULT_HANKO_CARD,
+          ...(row.hanko_card && typeof row.hanko_card === 'object' ? row.hanko_card : {}),
+          ...(localHankoOverride || {}),
+        };
+
         const mappedProfile: SiteProfile = {
           name:     row.name     || '',
           headline: row.headline || '',
@@ -252,6 +292,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 };
               })
             : [],
+          hanko_card: mappedHankoCard,
         };
         setProfile(mappedProfile);
         try {

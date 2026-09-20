@@ -52,8 +52,22 @@ CREATE TABLE IF NOT EXISTS public.profile (
     {"label": "AI & RUNTIME", "items": "PyTorch · llama.cpp · Local LLMs"},
     {"label": "FULL-STACK", "items": "Next.js · TypeScript · PostgreSQL"}
   ]'::jsonb,
+  hanko_card JSONB DEFAULT '{
+    "headerLabel": "SEAL / 認印",
+    "locationArchive": "KYOTO ARCHIVE",
+    "stampCharacter": "原",
+    "statusBadge": "",
+    "lines": [
+      {"text": "間と余白の美学", "label": "MA · 間", "tooltip": "Aesthetics of Negative Space (Ma)"},
+      {"text": "静寂と簡素な調和", "label": "WA · 調和", "tooltip": "Silence and Simple Harmony (Wa)"},
+      {"text": "職人の精緻な組手", "label": "CRAFT · 職人", "tooltip": "Artisan Precision and Joinery (Shokunin)"}
+    ]
+  }'::jsonb,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Ensure hanko_card column exists on existing profile tables
+ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS hanko_card JSONB;
 
 -- Seed initial profile row
 INSERT INTO public.profile (id, name, email)
