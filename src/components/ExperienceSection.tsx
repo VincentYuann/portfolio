@@ -18,6 +18,103 @@ interface ExperienceSectionProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
 }
 
+interface MilestoneTheme {
+  primary: string;
+  textClass: string;
+  badgeBg: string;
+  badgeBorder: string;
+  badgeText: string;
+  emblemBorder: string;
+  emblemShadow: string;
+  cardActiveBorder: string;
+  cardActiveRing: string;
+  cardActiveGlow: string;
+  nodeActiveBg: string;
+  nodeActiveBorder: string;
+  nodeActiveShadow: string;
+  bulletOrdinalClass: string;
+  accentBarClass: string;
+}
+
+const MILESTONE_THEMES: MilestoneTheme[] = [
+  // 0: Active / AI & Full-Stack Systems (木) - Bamboo Emerald Green
+  {
+    primary: '#446557',
+    textClass: 'text-bamboo dark:text-[#658B7B]',
+    badgeBg: 'bg-bamboo/15 dark:bg-bamboo/20',
+    badgeBorder: 'border-bamboo/50 dark:border-bamboo/60',
+    badgeText: 'text-bamboo dark:text-[#87A889]',
+    emblemBorder: 'border-bamboo/70 dark:border-bamboo/80',
+    emblemShadow: 'shadow-[0_0_12px_rgba(68,101,87,0.3)]',
+    cardActiveBorder: 'border-bamboo/60 dark:border-bamboo/60',
+    cardActiveRing: 'ring-1 ring-bamboo/25',
+    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(68,101,87,0.22),0_0_24px_-4px_rgba(212,155,106,0.1)]',
+    nodeActiveBg: 'bg-bamboo',
+    nodeActiveBorder: 'border-bamboo',
+    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(68,101,87,0.7)]',
+    bulletOrdinalClass: 'text-bamboo dark:text-[#87A889] bg-bamboo/10 dark:bg-bamboo/20 border-bamboo/30 shadow-[0_0_8px_rgba(68,101,87,0.15)]',
+    accentBarClass: 'border-l-2 border-l-bamboo/70 dark:border-l-bamboo/70',
+  },
+  // 1: Software Engineering & Architecture (墨) - Cinnabar Terracotta
+  {
+    primary: '#C83C23',
+    textClass: 'text-terracotta dark:text-[#ff7d63]',
+    badgeBg: 'bg-terracotta/15 dark:bg-terracotta/20',
+    badgeBorder: 'border-terracotta/50 dark:border-terracotta/60',
+    badgeText: 'text-terracotta dark:text-[#ff7d63]',
+    emblemBorder: 'border-terracotta/70 dark:border-terracotta/80',
+    emblemShadow: 'shadow-[0_0_12px_rgba(200,60,35,0.3)]',
+    cardActiveBorder: 'border-terracotta/60 dark:border-terracotta/60',
+    cardActiveRing: 'ring-1 ring-terracotta/25',
+    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(200,60,35,0.25),0_0_24px_-4px_rgba(212,155,106,0.12)]',
+    nodeActiveBg: 'bg-terracotta',
+    nodeActiveBorder: 'border-terracotta',
+    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(200,60,35,0.7)]',
+    bulletOrdinalClass: 'text-terracotta dark:text-[#ff7d63] bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-[0_0_8px_rgba(200,60,35,0.15)]',
+    accentBarClass: 'border-l-2 border-l-terracotta/70 dark:border-l-terracotta/70',
+  },
+  // 2: Craft & Operations / Joinery (明) - Warm Ochre Amber
+  {
+    primary: '#D49B6A',
+    textClass: 'text-ochre dark:text-[#E5B88F]',
+    badgeBg: 'bg-ochre/15 dark:bg-ochre/20',
+    badgeBorder: 'border-ochre/50 dark:border-ochre/60',
+    badgeText: 'text-ochre dark:text-[#E5B88F]',
+    emblemBorder: 'border-ochre/70 dark:border-ochre/80',
+    emblemShadow: 'shadow-[0_0_12px_rgba(212,155,106,0.3)]',
+    cardActiveBorder: 'border-ochre/60 dark:border-ochre/60',
+    cardActiveRing: 'ring-1 ring-ochre/25',
+    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(212,155,106,0.25),0_0_24px_-4px_rgba(200,60,35,0.1)]',
+    nodeActiveBg: 'bg-ochre',
+    nodeActiveBorder: 'border-ochre',
+    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(212,155,106,0.7)]',
+    bulletOrdinalClass: 'text-ochre dark:text-[#E5B88F] bg-ochre/10 dark:bg-ochre/20 border-ochre/30 shadow-[0_0_8px_rgba(212,155,106,0.15)]',
+    accentBarClass: 'border-l-2 border-l-ochre/70 dark:border-l-ochre/70',
+  },
+  // 3: Foundation & Roots (原) - Deep Indigo / Sumi Slate
+  {
+    primary: '#3B4E6B',
+    textClass: 'text-[#3B4E6B] dark:text-[#8EA8C3]',
+    badgeBg: 'bg-[#3B4E6B]/15 dark:bg-[#3B4E6B]/25',
+    badgeBorder: 'border-[#3B4E6B]/50 dark:border-[#3B4E6B]/60',
+    badgeText: 'text-[#3B4E6B] dark:text-[#8EA8C3]',
+    emblemBorder: 'border-[#3B4E6B]/70 dark:border-[#3B4E6B]/80',
+    emblemShadow: 'shadow-[0_0_12px_rgba(59,78,107,0.3)]',
+    cardActiveBorder: 'border-[#3B4E6B]/60 dark:border-[#3B4E6B]/60',
+    cardActiveRing: 'ring-1 ring-[#3B4E6B]/25',
+    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(59,78,107,0.25),0_0_24px_-4px_rgba(212,155,106,0.1)]',
+    nodeActiveBg: 'bg-[#3B4E6B]',
+    nodeActiveBorder: 'border-[#3B4E6B]',
+    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(59,78,107,0.7)]',
+    bulletOrdinalClass: 'text-[#3B4E6B] dark:text-[#8EA8C3] bg-[#3B4E6B]/10 dark:bg-[#3B4E6B]/20 border-[#3B4E6B]/30 shadow-[0_0_8px_rgba(59,78,107,0.15)]',
+    accentBarClass: 'border-l-2 border-l-[#3B4E6B]/70 dark:border-l-[#3B4E6B]/70',
+  },
+];
+
+const getMilestoneTheme = (idx: number): MilestoneTheme => {
+  return MILESTONE_THEMES[idx % MILESTONE_THEMES.length];
+};
+
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate }) => {
   const { experiences } = useSiteData();
   const list = Array.isArray(experiences) ? experiences : [];
@@ -195,8 +292,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
         {/* Timeline Container */}
         <div className="relative timeline-container">
-          {/* Vertical Joinery Axis Line */}
-          <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-[2px] bg-gradient-to-b from-terracotta/70 via-ochre/40 to-ochre/20 -translate-x-1/2 pointer-events-none z-0" />
+          {/* Vertical Joinery Axis Line with Multi-Stop Organic Gradient */}
+          <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-[2px] bg-gradient-to-b from-bamboo via-terracotta via-ochre to-[#3B4E6B]/50 -translate-x-1/2 pointer-events-none z-0" />
 
           {/* Milestone Cards Stack */}
           <div className="space-y-8 sm:space-y-12">
@@ -205,6 +302,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
               const isCardActive = String(activeCardId) === String(cardKey);
               const isExpanded = !!expandedCards[cardKey];
               const isCurrent = typeof exp.isActive === 'boolean' ? exp.isActive : idx === 0;
+              const theme = getMilestoneTheme(idx);
 
               // Extract bullet points
               const bullets = Array.isArray(exp.bullets) && exp.bullets.length > 0
@@ -240,16 +338,16 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     }}
                     className={`timeline-node absolute left-3.5 sm:left-5 top-7 sm:top-8 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border-2 -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300 cursor-pointer ${
                       isCardActive
-                        ? 'border-terracotta bg-terracotta shadow-[0_0_12px_2px_rgba(200,60,35,0.6)] scale-110'
+                        ? `${theme.nodeActiveBorder} ${theme.nodeActiveBg} ${theme.nodeActiveShadow} scale-115`
                         : 'border-ochre/70 bg-light-canvas dark:bg-dark-canvas group-hover:border-terracotta group-hover:scale-110'
                     }`}
                   />
 
-                  {/* Milestone Card Frame (overflow-visible to let Ensō ring bleed smoothly) */}
+                  {/* Milestone Card Frame */}
                   <div
                     className={`relative rounded-xl sm:rounded-2xl border p-4 sm:p-7 overflow-visible transition-all duration-200 classical-card-frame shadow-akari dark:shadow-night-glow ${
                       isCardActive
-                        ? 'border-terracotta/50 bg-light-surface-card dark:bg-[#181920] ring-1 ring-terracotta/20 shadow-[0_12px_40px_-8px_rgba(200,60,35,0.2),0_0_24px_-4px_rgba(212,155,106,0.12)]'
+                        ? `${theme.cardActiveBorder} bg-light-surface-card dark:bg-[#181920] ${theme.cardActiveRing} ${theme.cardActiveGlow}`
                         : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] hover:border-ochre/50 hover:bg-light-surface dark:hover:bg-[#1f2028]'
                     }`}
                   >
@@ -270,7 +368,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                       {/* Left: Clean Square Emblem (Custom Logo Image or Default Japanese Hanko Seal) */}
-                      <div className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-terracotta/70 dark:border-terracotta/80 bg-light-surface dark:bg-[#16171d] shadow-[0_0_8px_rgba(200,60,35,0.25)] flex items-center justify-center overflow-hidden shrink-0 mx-auto sm:mx-0">
+                      <div className={`relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-xl border ${theme.emblemBorder} bg-light-surface dark:bg-[#16171d] ${theme.emblemShadow} flex items-center justify-center overflow-hidden shrink-0 mx-auto sm:mx-0 transition-shadow duration-300`}>
                         {exp.logoUrl ? (
                           <img
                             src={exp.logoUrl}
@@ -280,10 +378,10 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
-                            <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
+                            <span className={`font-serif font-black ${theme.textClass} text-2xl sm:text-3xl leading-none tracking-normal`}>
                               {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
                             </span>
-                            <span className="text-[10px] font-mono tracking-wider text-ochre uppercase font-bold leading-none mt-1">
+                            <span className={`text-[10px] font-mono tracking-wider ${theme.textClass} uppercase font-bold leading-none mt-1 opacity-90`}>
                               {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
                             </span>
                           </div>
@@ -299,29 +397,36 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             #{String(idx + 1).padStart(2, '0')}
                           </Badge>
 
-                          {/* Date Range */}
-                          <span className="font-mono text-xs text-terracotta font-semibold tracking-wider uppercase flex items-center gap-1.5">
-                            <Calendar className="w-3.5 h-3.5 text-terracotta" />
+                          {/* Date Range with Domain Color */}
+                          <span className={`font-mono text-xs ${theme.textClass} font-semibold tracking-wider uppercase flex items-center gap-1.5`}>
+                            <Calendar className={`w-3.5 h-3.5 ${theme.textClass}`} />
                             {exp.startDate} - {exp.endDate || 'Present'}
                           </span>
 
-                          {/* High-Contrast Themed Status Badge (Active vs Completed) */}
+                          {/* High-Contrast Themed Status Badge */}
                           <span
                             className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-colors ${
                               isCurrent
-                                ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63] dark:shadow-[0_0_10px_rgba(200,60,35,0.25)]'
+                                ? `${theme.badgeBg} ${theme.badgeBorder} ${theme.badgeText} border shadow-xs`
                                 : 'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#20222a] dark:border-[#383b47] dark:text-stone-400'
                             }`}
                           >
                             <span
                               className={`w-1.5 h-1.5 rounded-full ${
                                 isCurrent
-                                  ? 'bg-terracotta shadow-[0_0_6px_rgba(200,60,35,0.8)] animate-pulse'
+                                  ? `${theme.nodeActiveBg} shadow-xs animate-pulse`
                                   : 'bg-stone-400 dark:bg-neutral-500'
                               }`}
                             />
                             <span>{isCurrent ? 'ACTIVE / 現職' : '歴任 / COMPLETED'}</span>
                           </span>
+
+                          {/* Optional Domain Category Tag */}
+                          {exp.domainLabel && (
+                            <span className={`font-mono text-[10px] px-2 py-0.5 rounded ${theme.badgeBg} ${theme.badgeBorder} ${theme.badgeText} border uppercase tracking-wider hidden sm:inline-block`}>
+                              {exp.domainLabel}
+                            </span>
+                          )}
                         </div>
 
                         {/* Title & Company */}
@@ -329,8 +434,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           {exp.title}
                         </h3>
 
-                        <div className="flex items-center gap-2 text-xs sm:text-sm text-terracotta font-medium mt-1">
-                          <span>{exp.company}</span>
+                        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium mt-1">
+                          <span className={`${theme.textClass}`}>{exp.company}</span>
                           {exp.location && (
                             <>
                               <span className="text-light-ink-subtle">·</span>
@@ -357,11 +462,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                               onClick={(e) => toggleExpand(cardKey, e)}
                               className={`inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-lg font-mono text-xs transition-all duration-200 border cursor-pointer ${
                                 isExpanded
-                                  ? 'bg-terracotta/10 text-terracotta border-terracotta/40 font-medium'
+                                  ? `${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder} font-medium`
                                   : 'bg-light-surface dark:bg-[#181920] text-light-ink-muted dark:text-neutral-300 border-light-border dark:border-[#282a36] hover:border-terracotta/60 hover:text-terracotta'
                               }`}
                             >
-                              <Layers className="w-3.5 h-3.5 text-terracotta" />
+                              <Layers className={`w-3.5 h-3.5 ${theme.textClass}`} />
                               <span>
                                 {isExpanded
                                   ? 'Collapse Details ↑'
@@ -377,17 +482,17 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             {/* Engineering Impact Bullets */}
                             {bullets.length > 0 && (
                               <div>
-                                <div className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-ochre font-semibold mb-2.5 flex items-center gap-1.5">
-                                  <ListChecks className="w-3.5 h-3.5 text-terracotta" />
+                                <div className={`text-[10px] sm:text-[11px] font-mono uppercase tracking-widest ${theme.textClass} font-semibold mb-2.5 flex items-center gap-1.5`}>
+                                  <ListChecks className={`w-3.5 h-3.5 ${theme.textClass}`} />
                                   Engineering Contributions &amp; Quantified Impact
                                 </div>
                                 <ul className="space-y-2.5">
                                   {bullets.map((pt, pIdx) => (
                                     <li
                                       key={pIdx}
-                                      className="p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/60 dark:bg-dark-surface-card/60 hover:border-terracotta/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet"
+                                      className={`p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/60 dark:bg-dark-surface-card/60 ${theme.accentBarClass} hover:border-terracotta/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet`}
                                     >
-                                      <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-terracotta dark:text-[#ff7d63] bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-0.5 shrink-0 select-none shadow-[0_0_8px_rgba(200,60,35,0.15)] mt-0.5">
+                                      <span className={`font-mono text-[10px] sm:text-[11px] font-semibold ${theme.bulletOrdinalClass} rounded px-1.5 py-0.5 shrink-0 select-none mt-0.5`}>
                                         #{String(pIdx + 1).padStart(2, '0')}
                                       </span>
                                       <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">

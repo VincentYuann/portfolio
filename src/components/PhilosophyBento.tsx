@@ -6,13 +6,48 @@ import { CornerBrackets } from './CornerBrackets';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { useSiteData, DEFAULT_ORIGIN_STORY } from '../context/SiteDataContext';
 
+const TRAJECTORY_THEMES = [
+  {
+    eraColor: 'text-ochre dark:text-[#E5B88F]',
+    tagBg: 'bg-ochre/10 dark:bg-ochre/20 text-ochre dark:text-[#E5B88F] border-ochre/30',
+    borderHover: 'hover:border-ochre/50',
+    accentBar: 'border-l-2 border-l-ochre/70 dark:border-l-ochre/70',
+    glow: 'hover:shadow-[0_4px_20px_rgba(212,155,106,0.12)]',
+  },
+  {
+    eraColor: 'text-[#4A6B82] dark:text-[#8EA8C3]',
+    tagBg: 'bg-[#4A6B82]/10 dark:bg-[#4A6B82]/20 text-[#4A6B82] dark:text-[#8EA8C3] border-[#4A6B82]/30',
+    borderHover: 'hover:border-[#4A6B82]/50',
+    accentBar: 'border-l-2 border-l-[#4A6B82]/70 dark:border-l-[#4A6B82]/70',
+    glow: 'hover:shadow-[0_4px_20px_rgba(74,107,130,0.12)]',
+  },
+  {
+    eraColor: 'text-terracotta dark:text-[#ff7d63]',
+    tagBg: 'bg-terracotta/10 dark:bg-terracotta/20 text-terracotta dark:text-[#ff7d63] border-terracotta/30',
+    borderHover: 'hover:border-terracotta/50',
+    accentBar: 'border-l-2 border-l-terracotta/70 dark:border-l-terracotta/70',
+    glow: 'hover:shadow-[0_4px_20px_rgba(200,60,35,0.12)]',
+  },
+  {
+    eraColor: 'text-bamboo dark:text-[#658B7B]',
+    tagBg: 'bg-bamboo/10 dark:bg-bamboo/20 text-bamboo dark:text-[#87A889] border-bamboo/30',
+    borderHover: 'hover:border-bamboo/50',
+    accentBar: 'border-l-2 border-l-bamboo/70 dark:border-l-bamboo/70',
+    glow: 'hover:shadow-[0_4px_20px_rgba(68,101,87,0.12)]',
+  },
+];
+
 const PILLAR_CONFIGS = [
   {
     icon: Compass,
     num: 'PILLAR 01',
+    kanjiColor: 'text-[#3B4E6B] dark:text-[#8EA8C3]',
+    iconColor: 'text-[#3B4E6B] dark:text-[#8EA8C3]',
+    dotColor: 'bg-[#3B4E6B]',
+    hoverBorder: 'hover:border-[#3B4E6B]/50',
     watermark: (
       <svg
-        className="w-32 h-32 absolute -right-6 -bottom-6 text-light-ink-muted/15 dark:text-dark-ink-muted/10 pointer-events-none"
+        className="w-32 h-32 absolute -right-6 -bottom-6 text-[#3B4E6B]/15 dark:text-[#8EA8C3]/10 pointer-events-none"
         viewBox="0 0 100 100"
         fill="none"
         stroke="currentColor"
@@ -26,6 +61,10 @@ const PILLAR_CONFIGS = [
   {
     icon: Feather,
     num: 'PILLAR 02',
+    kanjiColor: 'text-terracotta dark:text-[#ff7d63]',
+    iconColor: 'text-terracotta dark:text-[#ff7d63]',
+    dotColor: 'bg-terracotta',
+    hoverBorder: 'hover:border-terracotta/50',
     watermark: (
       <div className="absolute -right-4 -bottom-4 w-32 h-36 opacity-20 dark:opacity-10 pointer-events-none">
         <img
@@ -39,6 +78,10 @@ const PILLAR_CONFIGS = [
   {
     icon: ShieldCheck,
     num: 'PILLAR 03',
+    kanjiColor: 'text-bamboo dark:text-[#87A889]',
+    iconColor: 'text-bamboo dark:text-[#87A889]',
+    dotColor: 'bg-bamboo',
+    hoverBorder: 'hover:border-bamboo/50',
     watermark: (
       <div className="absolute -right-4 -bottom-4 w-28 h-40 opacity-25 dark:opacity-15 pointer-events-none">
         <BambooArt className="w-full h-full" sway={false} opacity={0.8} />
@@ -183,51 +226,54 @@ export const PhilosophyBento: React.FC = () => {
 
           {/* 4 Milestones Responsive Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 relative z-10">
-            {milestones.map((m, idx) => (
-              <div
-                key={idx}
-                onMouseEnter={(e) => {
-                  e.stopPropagation();
-                  setHoveredTrajectory(idx);
-                }}
-                onMouseLeave={(e) => {
-                  e.stopPropagation();
-                  setHoveredTrajectory('parent');
-                }}
-                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm"
-              >
-                {/* Celestial Ensō Orbital Circle: blooms on top-left of this specific milestone card */}
-                <EnsoOrbital
-                  placement="top-left"
-                  size={88}
-                  active={hoveredTrajectory === idx}
-                  interactive={false}
-                />
-                <div>
-                  <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
-                    <span className="font-mono text-[10px] font-bold text-terracotta tracking-wider uppercase">
-                      {m.era || `PHASE 0${idx + 1}`}
-                    </span>
-                    {m.tag && (
-                      <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-subtle tracking-wider uppercase">
-                        {m.tag}
+            {milestones.map((m, idx) => {
+              const tTheme = TRAJECTORY_THEMES[idx % TRAJECTORY_THEMES.length];
+              return (
+                <div
+                  key={idx}
+                  onMouseEnter={(e) => {
+                    e.stopPropagation();
+                    setHoveredTrajectory(idx);
+                  }}
+                  onMouseLeave={(e) => {
+                    e.stopPropagation();
+                    setHoveredTrajectory('parent');
+                  }}
+                  className={`p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between ${tTheme.borderHover} ${tTheme.accentBar} ${tTheme.glow} transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm`}
+                >
+                  {/* Celestial Ensō Orbital Circle: blooms on top-left of this specific milestone card */}
+                  <EnsoOrbital
+                    placement="top-left"
+                    size={88}
+                    active={hoveredTrajectory === idx}
+                    interactive={false}
+                  />
+                  <div>
+                    <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
+                      <span className={`font-mono text-[10px] font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
+                        {m.era || `PHASE 0${idx + 1}`}
                       </span>
+                      {m.tag && (
+                        <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${tTheme.tagBg} tracking-wider uppercase`}>
+                          {m.tag}
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors relative z-10">
+                      {m.title}
+                    </h4>
+                    {m.subtitle && (
+                      <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-normal relative z-10">
+                        {m.subtitle}
+                      </p>
                     )}
-                  </div>
-                  <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors relative z-10">
-                    {m.title}
-                  </h4>
-                  {m.subtitle && (
-                    <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-normal relative z-10">
-                      {m.subtitle}
+                    <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mt-2.5 relative z-10">
+                      {m.description}
                     </p>
-                  )}
-                  <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mt-2.5 relative z-10">
-                    {m.description}
-                  </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -265,9 +311,9 @@ export const PhilosophyBento: React.FC = () => {
             return (
               <div
                 key={pillar.position || idx}
-                className="interactive-card bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-all duration-300 hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame min-h-[280px]"
+                className={`interactive-card bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-all duration-300 ${config.hoverBorder} hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame min-h-[280px]`}
               >
-                {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered card (overflow-visible allows full circle bloom) */}
+                {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered card */}
                 <EnsoOrbital placement="top-left" size={112} hoverOnly={true} />
 
                 {/* Corner Hairline Brackets */}
@@ -276,7 +322,7 @@ export const PhilosophyBento: React.FC = () => {
                 {/* Top Accent Kanji & Icon */}
                 <div className="space-y-3 sm:space-y-4 relative z-10">
                   <div className="flex items-center justify-between border-b border-light-border/60 dark:border-[#2D3039]/60 pb-3 sm:pb-4">
-                    <span className="pillar-kanji font-serif text-4xl sm:text-6xl text-terracotta font-light leading-none inline-block pl-1 sm:pl-2 select-none">
+                    <span className={`pillar-kanji font-serif text-4xl sm:text-6xl ${config.kanjiColor} font-light leading-none inline-block pl-1 sm:pl-2 select-none transition-colors`}>
                       {pillar.kanji}
                     </span>
                     <div className="flex items-center gap-2">
@@ -284,7 +330,7 @@ export const PhilosophyBento: React.FC = () => {
                         {num}
                       </span>
                       <div className="w-7 h-7 rounded-full bg-light-surface-raised dark:bg-[#14151A] border border-light-border dark:border-[#2D3039] flex items-center justify-center">
-                        <Icon className="w-3.5 h-3.5 text-terracotta" />
+                        <Icon className={`w-3.5 h-3.5 ${config.iconColor}`} />
                       </div>
                     </div>
                   </div>
@@ -307,7 +353,7 @@ export const PhilosophyBento: React.FC = () => {
                 {/* Bottom Tag */}
                 {pillar.tag && (
                   <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-[#2D3039]/40 flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
-                    <span className="w-1.5 h-1.5 rounded-full bg-terracotta" />
+                    <span className={`w-1.5 h-1.5 rounded-full ${config.dotColor}`} />
                     <span className="font-mono text-[10px] uppercase tracking-[0.18em] font-medium truncate">
                       {pillar.tag}
                     </span>

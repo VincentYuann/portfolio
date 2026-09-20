@@ -7,6 +7,29 @@ import { useSiteData, HobbyItem } from '../context/SiteDataContext';
 import { Sparkles, Image as ImageIcon, ArrowRight, Layers, Maximize2 } from 'lucide-react';
 import { ViewMode } from '../App';
 
+const getCategoryStyle = (category?: string, idx: number = 0) => {
+  const cat = (category || '').toLowerCase();
+  if (cat.includes('food') || cat.includes('culinary') || cat.includes('tea') || cat.includes('coffee') || cat.includes('plant')) {
+    return 'bg-bamboo/10 dark:bg-bamboo/20 border-bamboo/30 text-bamboo dark:text-[#87A889]';
+  }
+  if (cat.includes('anime') || cat.includes('visual') || cat.includes('art') || cat.includes('story')) {
+    return 'bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 text-terracotta dark:text-[#ff7d63]';
+  }
+  if (cat.includes('craft') || cat.includes('wood') || cat.includes('build') || cat.includes('hardware')) {
+    return 'bg-ochre/10 dark:bg-ochre/20 border-ochre/30 text-ochre dark:text-[#E5B88F]';
+  }
+  if (cat.includes('music') || cat.includes('sound') || cat.includes('photo') || cat.includes('camera')) {
+    return 'bg-[#3B4E6B]/10 dark:bg-[#3B4E6B]/25 border-[#3B4E6B]/30 text-[#3B4E6B] dark:text-[#8EA8C3]';
+  }
+  const fallbacks = [
+    'bg-bamboo/10 dark:bg-bamboo/20 border-bamboo/30 text-bamboo dark:text-[#87A889]',
+    'bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 text-terracotta dark:text-[#ff7d63]',
+    'bg-ochre/10 dark:bg-ochre/20 border-ochre/30 text-ochre dark:text-[#E5B88F]',
+    'bg-[#3B4E6B]/10 dark:bg-[#3B4E6B]/25 border-[#3B4E6B]/30 text-[#3B4E6B] dark:text-[#8EA8C3]',
+  ];
+  return fallbacks[idx % fallbacks.length];
+};
+
 interface HobbyCardProps {
   hobby: HobbyItem;
   index: number;
@@ -25,6 +48,8 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
     .filter((item) => item.idx !== activeImageIndex)
     .slice(0, 4);
 
+  const categoryStyle = getCategoryStyle(hobby.category, index);
+
   return (
     <article
       className="bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-7 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 dark:hover:border-terracotta/40 transition-all duration-300 flex flex-col justify-between"
@@ -37,7 +62,7 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
       />
       <CornerBrackets size="md" />
 
-      {/* Card Header (Clean: No red dot) */}
+      {/* Card Header */}
       <div className="relative z-10">
         <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60">
           <div>
@@ -57,7 +82,7 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
           </div>
 
           {hobby.category && (
-            <span className="font-mono text-[10px] px-2.5 py-1 rounded bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider shrink-0 select-none">
+            <span className={`font-mono text-[10px] px-2.5 py-1 rounded border uppercase tracking-wider shrink-0 select-none ${categoryStyle}`}>
               {hobby.category}
             </span>
           )}

@@ -184,12 +184,22 @@ export const SystemCraft: React.FC = () => {
               <span>Sandbox Runtime Execution Output</span>
             </div>
             <div className="space-y-1 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted bg-light-surface dark:bg-dark-surface p-3 rounded border border-light-border/60 dark:border-dark-border/60">
-              {simulationLogs.map((log, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <span className="text-terracotta text-[10px]">▶</span>
-                  <span>{log}</span>
-                </div>
-              ))}
+              {simulationLogs.map((log, i) => {
+                const isCheck = log.startsWith('✓');
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="text-terracotta text-[10px]">▶</span>
+                    {isCheck ? (
+                      <span>
+                        <span className="text-bamboo dark:text-[#87A889] font-bold">✓ </span>
+                        <span className="text-light-ink dark:text-dark-ink">{log.slice(2)}</span>
+                      </span>
+                    ) : (
+                      <span className="text-light-ink-muted dark:text-dark-ink-muted">{log}</span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
