@@ -256,20 +256,6 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
             />
           ))}
         </div>
-
-        {/* Bottom CTA for Complete Archive */}
-        {hobbies.length > 2 && (
-          <div className="mt-10 sm:mt-12 text-center">
-            <button
-              type="button"
-              onClick={() => onNavigate?.('hobbies')}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface hover:border-terracotta text-light-ink dark:text-dark-ink hover:text-terracotta font-sans text-xs uppercase tracking-widest shadow-2xs transition-all duration-300 group cursor-pointer"
-            >
-              <span>Explore All Pursuits &amp; Crafts ({hobbies.length})</span>
-              <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
-          </div>
-        )}
       </div>
     </section>
   );
