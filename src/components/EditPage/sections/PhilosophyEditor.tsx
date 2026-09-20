@@ -163,7 +163,7 @@ export const PhilosophyEditor: React.FC = () => {
         subtitle="Up to 3 core tenets mapped directly to the Japanese Bento on the homepage."
         saveState={saveState}
         onSave={handleSave}
-        saveLabel="Save Pillars"
+        saveLabel="Save All Pillars"
         onAdd={pillars.length < 3 ? addPillar : undefined}
         addLabel="Add Pillar"
       />

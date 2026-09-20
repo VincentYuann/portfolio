@@ -59,19 +59,19 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
       <Hero onNavigate={onNavigate} />
       {hasExperiences && (
         <>
-          <SectionDivider label="CAREER TRAJECTORY · 職歴 · MILESTONES" shortLabel="CAREER · 職歴" />
+          <SectionDivider label="CAREER TRAJECTORY · 職歴" shortLabel="CAREER · 職歴" />
           <ExperienceSection onNavigate={onNavigate} />
         </>
       )}
       {hasProjects && (
         <>
-          <SectionDivider label="MA · WABI-SABI · CRAFT" shortLabel="CRAFT · 作品" />
+          <SectionDivider label="SELECTED PORTFOLIO · 作品" shortLabel="PORTFOLIO · 作品" />
           <ProjectsShowcase onNavigate={onNavigate} />
         </>
       )}
       {hasPillars && (
         <>
-          <SectionDivider label="PHILOSOPHY · SHOKUNIN · MA" shortLabel="PHILOSOPHY · 哲学" />
+          <SectionDivider label="ARCHITECTURAL PHILOSOPHY · 哲学" shortLabel="PHILOSOPHY · 哲学" />
           <PhilosophyBento />
         </>
       )}

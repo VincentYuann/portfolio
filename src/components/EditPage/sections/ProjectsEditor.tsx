@@ -310,7 +310,7 @@ export const ProjectsEditor: React.FC = () => {
         onSave={handleSaveAll}
         saveLabel="Save All Projects"
         onAdd={addProject}
-        addLabel="New Project"
+        addLabel="Add Project"
         extraActions={
           <Tabs
             value={activeTab}
@@ -373,7 +373,7 @@ export const ProjectsEditor: React.FC = () => {
                         project.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
                       }`}
                     />
-                    <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED'}</span>
+                    <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'}</span>
                   </span>
                 </div>
               }

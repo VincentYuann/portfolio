@@ -172,7 +172,7 @@ export const DiamondCrest: React.FC<{ className?: string }> = ({
 );
 
 export const SectionDivider: React.FC<SectionDividerProps> = ({
-  label = 'MA · WABI-SABI · CRAFT',
+  label = 'SECTION · 節',
   shortLabel,
   className = '',
 }) => {

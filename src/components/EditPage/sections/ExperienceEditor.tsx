@@ -279,7 +279,7 @@ export const ExperienceEditor: React.FC = () => {
         onSave={handleSaveAll}
         saveLabel="Save All Milestones"
         onAdd={addEntry}
-        addLabel="New Milestone"
+        addLabel="Add Milestone"
       />
 
       {/* Experience Cards Stack */}
@@ -306,7 +306,7 @@ export const ExperienceEditor: React.FC = () => {
                       exp.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
                     }`}
                   />
-                  <span>{exp.isActive ? 'ACTIVE / 現職' : 'COMPLETED'}</span>
+                  <span>{exp.isActive ? 'ACTIVE / 現職' : 'COMPLETED / 歴任'}</span>
                 </span>
               }
               emblem={

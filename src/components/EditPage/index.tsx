@@ -183,7 +183,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
               className="inline-flex items-center gap-1 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors whitespace-nowrap cursor-pointer py-1.5 px-3 min-h-[38px] rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Back to Portfolio</span>
+              <span className="hidden sm:inline">Return to Portfolio</span>
               <span className="sm:hidden">Exit</span>
             </button>
           </div>

@@ -166,7 +166,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
                 className="px-2.5 py-1 text-xs font-mono font-semibold bg-red-600 hover:bg-red-700 text-white rounded-md shadow-xs transition-colors flex items-center gap-1 cursor-pointer min-h-[34px]"
               >
                 <AlertTriangle className="w-3.5 h-3.5" />
-                <span>Confirm?</span>
+                <span>Confirm Delete</span>
               </button>
               <button
                 type="button"

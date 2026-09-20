@@ -189,7 +189,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Hire Me (shown on md+ and inside drawer on mobile) */}
+          {/* Contact CTA (shown on md+ and inside drawer on mobile) */}
           <a
             href="#contact"
             onClick={(e) => {
@@ -200,7 +200,7 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             className="hidden sm:inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
           >
-            <span>Hire Me</span>
+            <span>Get in Touch</span>
           </a>
 
           {/* ── Consistent Bordered 三 Menu Button across ALL screen sizes ── */}
@@ -319,7 +319,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className="w-full flex items-center justify-center py-2.5 px-4 rounded-lg text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity"
               >
-                Hire Me / Get in Touch
+                Get in Touch
               </a>
 
               {isAdmin ? (
