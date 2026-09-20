@@ -81,7 +81,7 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
       )}
       {hasHobbies && (
         <>
-          <SectionDivider label="PURSUITS & CRAFTS · 余白と手仕事" shortLabel="CRAFTS · 余白" />
+          <SectionDivider label="HOBBIES & INTERESTS · 趣味と日常" shortLabel="HOBBIES · 趣味" />
           <HobbiesSection onNavigate={onNavigate} />
         </>
       )}

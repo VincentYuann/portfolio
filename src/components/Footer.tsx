@@ -99,6 +99,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 Philosophy &amp; Craft
               </a>
               <a
+                href="#hobbies"
+                onClick={(e) => {
+                  if (onNavigate) {
+                    e.preventDefault();
+                    onNavigate('home', 'hobbies');
+                  }
+                }}
+                className="hover:text-terracotta transition-colors"
+              >
+                Hobbies &amp; Interests
+              </a>
+              <a
                 href="#contact"
                 onClick={(e) => {
                   if (onNavigate) {

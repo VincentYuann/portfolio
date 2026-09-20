@@ -84,7 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'experience', num: '02', label: 'Experience', fullLabel: 'Experience', href: '#experience', view: 'home' as const },
     { id: 'featured-works', num: '03', label: 'Projects', fullLabel: 'Projects', href: '#featured-works', view: 'home' as const },
     { id: 'philosophy', num: '04', label: 'Philosophy', fullLabel: 'Philosophy', href: '#philosophy', view: 'home' as const },
-    { id: 'hobbies', num: '05', label: 'Hobbies', fullLabel: 'Hobbies & Craft', href: '#hobbies', view: 'home' as const },
+    { id: 'hobbies', num: '05', label: 'Hobbies', fullLabel: 'Hobbies & Interests', href: '#hobbies', view: 'home' as const },
     { id: 'contact', num: '06', label: 'Contact', fullLabel: 'Contact', href: '#contact', view: 'home' as const },
     { id: 'resume', num: '07', label: 'Resume', fullLabel: 'Resume', href: '#resume', view: 'resume' as const },
     ...(isAdmin ? [{ id: 'edit', num: '08', label: 'Edit', fullLabel: 'Edit Portfolio', href: '#edit', view: 'edit' as const }] : []),

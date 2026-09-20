@@ -179,12 +179,12 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
           </div>
         )}
 
-        {/* Why I Do This / Grounded Reflection Block */}
+        {/* What I Enjoy / Personal Notes Block */}
         <div className="space-y-2 pt-3 border-t border-light-border/60 dark:border-[#2D3039]/60">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-terracotta" />
             <span className="font-mono text-[10px] font-semibold text-terracotta tracking-wider uppercase">
-              WHY I DO THIS · 余白の理由
+              WHAT I ENJOY · 趣味の魅力
             </span>
           </div>
           <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
@@ -246,7 +246,7 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
         <img
           src="./images/hero-sumie-landscape-banner.jpg"
-          alt="Sumi-e landscape behind pursuits section"
+          alt="Sumi-e landscape behind hobbies section"
           className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen dark:invert"
           style={{
             maskImage: 'radial-gradient(ellipse 90% 75% at 50% 50%, black 25%, transparent 85%)',
@@ -282,17 +282,17 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-serif text-terracotta text-sm">05 //</span>
                 <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                  PURSUITS &amp; CRAFTS · 余白と手仕事
+                  HOBBIES &amp; INTERESTS · 趣味と日常
                 </span>
               </div>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
-                Disciplines of Quiet Focus{' '}
+                Hobbies &amp; Interests{' '}
                 <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
-                  余白と技芸
+                  趣味と日常
                 </span>
               </h2>
               <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
-                Bridging the physical and digital. Creative storytelling, interactive mechanics, athletic discipline, and quantitative execution cultivate the patience, tactile rigor, and structural humility essential to resilient software systems.
+                What I enjoy doing when I'm away from the keyboard: watching anime, gaming with friends, fitness, day trading, and discovering great food.
               </p>
             </div>
 
@@ -310,8 +310,8 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
                   className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
                 >
                   <Layers className="w-3.5 h-3.5 text-terracotta" />
-                  <span className="sm:hidden">All Pursuits ({hobbies.length})</span>
-                  <span className="hidden sm:inline">View Complete Pursuits Archive ({hobbies.length})</span>
+                  <span className="sm:hidden">All Hobbies ({hobbies.length})</span>
+                  <span className="hidden sm:inline">View All Hobbies ({hobbies.length})</span>
                   <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-1" />
                 </a>
               </div>

@@ -168,12 +168,12 @@ export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ h
           </div>
         )}
 
-        {/* Why I Do This Narrative Reflection Block */}
+        {/* What I Enjoy / Personal Notes Block */}
         <div className="space-y-2 pt-3 border-t border-light-border/60 dark:border-[#2D3039]/60">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-terracotta" />
             <span className="font-mono text-[10px] font-semibold text-terracotta tracking-wider uppercase">
-              WHY I DO THIS · 余白の理由
+              WHAT I ENJOY · 趣味の魅力
             </span>
           </div>
           <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
@@ -262,17 +262,17 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>
               <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                PURSUITS &amp; CRAFTS · 余白と手仕事
+                HOBBIES &amp; INTERESTS · 趣味と日常
               </span>
             </div>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
-              Pursuits Beyond the Terminal{' '}
+              Hobbies &amp; Interests{' '}
               <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
-                余白と手仕事
+                趣味と日常
               </span>
             </h1>
             <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed max-w-3xl">
-              A collection of offline disciplines, creative storytelling, physical training, and quantitative execution that shape how I approach software architecture.
+              What I love doing outside of coding: anime, gaming with friends, fitness, market trading, and sharing good meals.
             </p>
           </div>
 
@@ -283,13 +283,13 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search pursuits..."
+              placeholder="Search hobbies..."
               className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60"
             />
           </div>
         </div>
 
-        {/* Pursuits Grid */}
+        {/* Hobbies Grid */}
         {filteredHobbies.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
             {filteredHobbies.map((hobby, idx) => (
@@ -299,7 +299,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
         ) : (
           <div className="text-center py-20 border border-dashed border-light-border dark:border-dark-border rounded-xl">
             <p className="font-serif text-lg text-light-ink dark:text-dark-ink mb-1">
-              No pursuits found matching your search.
+              No hobbies found matching your search.
             </p>
             <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
               Try a different keyword or return to the main overview.

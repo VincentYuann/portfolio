@@ -28,17 +28,17 @@ const MAX_IMAGES_PER_HOBBY = 5;
 
 const newHobbyTemplate = (pos: number): HobbyItem => ({
   id: `hobby-${Date.now()}`,
-  title: 'New Pursuit',
-  kanji: '技',
-  category: 'Craft',
-  subtitle: 'Personal discipline and creative focus',
+  title: 'New Hobby',
+  kanji: '好',
+  category: 'Interests',
+  subtitle: 'What I enjoy doing and why',
   images: [
     'https://lh3.googleusercontent.com/aida-public/AB6AXuBIQr3bTk3yvKCBXiAYi_kPdrzrSDIS4QJkYLWaCRKFOh_Iyvqgn2IkCe1PeeRqs_ScybEjUyNSBVPfSoqCDoXz-iTNgSOXxxNxKheHSrcnFQZE-bhBwH5mmkRJxXWbCWlus4MxGuYXevVL7oTqwrTcvbKPWwGtZj2VEYvaUrcisA4rRI0jgNhTBKtJgVQFJ86vzJ-h43U6tuThqzyw2TBz0s1ypULVS2GnMSJ5B4Q19cWnTVqag0yRHw',
   ],
   whyDescription:
-    'Practicing this pursuit cultivates the discipline, patience, and deliberate focus that translates directly into robust software architecture.',
+    'A personal hobby that brings fun, balance, and joy to my daily routine.',
   metadata: [
-    { label: 'Focus', value: 'Discipline & Balance' },
+    { label: 'Category', value: 'Personal Interest' },
   ],
   displayOrder: pos,
 });
@@ -139,7 +139,7 @@ export const HobbiesEditor: React.FC = () => {
     setHobbies(reordered);
     setDraggedIdx(null);
     setDragOverIdx(null);
-    toast.success(`Moved "${moved.title || 'Pursuit'}" to position #${targetIdx + 1}`);
+    toast.success(`Moved "${moved.title || 'Hobby'}" to position #${targetIdx + 1}`);
   };
 
   // Keyboard save listener (Cmd+S / Ctrl+S)
@@ -178,7 +178,7 @@ export const HobbiesEditor: React.FC = () => {
     const created = newHobbyTemplate(hobbies.length + 1);
     setHobbies((prev) => [created, ...prev]);
     setExpandedId(created.id);
-    toast.success('New pursuit card created. Click Save to persist.');
+    toast.success('New hobby card created. Click Save to persist.');
   };
 
   // Delete hobby with undo capability
@@ -192,15 +192,15 @@ export const HobbiesEditor: React.FC = () => {
     setHobbies(updatedList);
     notifyDirty();
 
-    toast(`Deleted "${target.title || 'Pursuit'}"`, {
-      description: 'Click undo to restore this pursuit card.',
+    toast(`Deleted "${target.title || 'Hobby'}"`, {
+      description: 'Click undo to restore this hobby card.',
       duration: 6000,
       action: {
         label: 'Undo',
         onClick: () => {
           setHobbies(originalList);
           notifyDirty();
-          toast.success(`Restored "${target.title || 'Pursuit'}"`);
+          toast.success(`Restored "${target.title || 'Hobby'}"`);
         },
       },
     });
@@ -216,7 +216,7 @@ export const HobbiesEditor: React.FC = () => {
 
     const currentHobby = hobbies.find((h) => h.id === hobbyId);
     if (currentHobby && currentHobby.images.length >= MAX_IMAGES_PER_HOBBY) {
-      toast.error(`Maximum ${MAX_IMAGES_PER_HOBBY} pictures allowed per pursuit.`);
+      toast.error(`Maximum ${MAX_IMAGES_PER_HOBBY} pictures allowed per hobby.`);
       return;
     }
 
@@ -240,7 +240,7 @@ export const HobbiesEditor: React.FC = () => {
 
     const currentHobby = hobbies.find((h) => h.id === hobbyId);
     if (currentHobby && currentHobby.images.length >= MAX_IMAGES_PER_HOBBY) {
-      toast.error(`Maximum ${MAX_IMAGES_PER_HOBBY} pictures allowed per pursuit.`);
+      toast.error(`Maximum ${MAX_IMAGES_PER_HOBBY} pictures allowed per hobby.`);
       if (e.target) e.target.value = '';
       return;
     }
@@ -342,11 +342,11 @@ export const HobbiesEditor: React.FC = () => {
       await refresh();
       notifyClean();
       setSaveState('success');
-      toast.success('Pursuits & Crafts saved and dynamically synced!');
+      toast.success('Hobbies & Interests saved and dynamically synced!');
       setTimeout(() => setSaveState('idle'), 4000);
     } catch (err: unknown) {
       setSaveState('error');
-      toast.error('Failed to save pursuits: ' + formatErrorMessage(err));
+      toast.error('Failed to save hobbies: ' + formatErrorMessage(err));
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
@@ -358,13 +358,13 @@ export const HobbiesEditor: React.FC = () => {
     <div className="space-y-6 sm:space-y-8">
       {/* Universal Section Header */}
       <EditorSectionHeader
-        title="Hobbies & Crafts"
-        subtitle="Manage personal pursuits, upload up to 5 photos per hobby to Supabase Storage, and articulate philosophical reflections."
+        title="Hobbies & Interests"
+        subtitle="Manage your personal hobbies, upload photos (up to 5 per hobby) to Supabase Storage, and write notes about what you enjoy."
         saveState={saveState}
         onSave={handleSave}
-        saveLabel="Save Pursuits"
+        saveLabel="Save Hobbies"
         onAdd={handleAddHobby}
-        addLabel="Add Pursuit"
+        addLabel="Add Hobby"
       />
 
       {/* Hobbies Cards List using Universal EditorCardShell */}
@@ -379,11 +379,11 @@ export const HobbiesEditor: React.FC = () => {
             <EditorCardShell
               key={hobby.id || index}
               ordinal={index + 1}
-              title={hobby.title || 'Untitled Pursuit'}
+              title={hobby.title || 'Untitled Hobby'}
               subtitle={hobby.subtitle}
               emblem={
                 <span className="font-serif font-bold text-terracotta text-base leading-none">
-                  {hobby.kanji || '技'}
+                  {hobby.kanji || '好'}
                 </span>
               }
               badge={
@@ -418,12 +418,12 @@ export const HobbiesEditor: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
                   <div className="sm:col-span-6 space-y-1.5">
                     <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
-                      Pursuit Title
+                      Hobby Title
                     </Label>
                     <Input
                       value={hobby.title}
                       onChange={(e) => updateHobby(hobby.id, { title: e.target.value })}
-                      placeholder="e.g. Anime & Visual Storytelling"
+                      placeholder="e.g. Anime, Gaming, Fitness, Markets, Food"
                       className="bg-light-surface dark:bg-dark-surface text-sm font-serif font-medium"
                     />
                   </div>
@@ -597,16 +597,16 @@ export const HobbiesEditor: React.FC = () => {
                   )}
                 </div>
 
-                {/* Row 4: Why I Do This Reflection Narrative */}
+                {/* Row 4: What I Love About This Hobby */}
                 <div className="space-y-1.5">
                   <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted block">
-                    Philosophical Reflection ("Why I Do This")
+                    What I Love About This Hobby
                   </Label>
                   <Textarea
                     rows={3}
                     value={hobby.whyDescription}
                     onChange={(e) => updateHobby(hobby.id, { whyDescription: e.target.value })}
-                    placeholder="Explain how this hobby grounds your thinking, creativity, or engineering discipline..."
+                    placeholder="Share what makes this hobby fun, exciting, or meaningful to you..."
                     className="bg-light-surface dark:bg-dark-surface text-xs leading-relaxed"
                   />
                 </div>
@@ -618,7 +618,7 @@ export const HobbiesEditor: React.FC = () => {
         {hobbies.length === 0 && (
           <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-xl bg-light-surface/30 dark:bg-dark-surface/30">
             <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-              No pursuit cards found. Click "+ Add Pursuit" above to create one.
+              No hobby cards found. Click "+ Add Hobby" above to create one.
             </p>
           </div>
         )}

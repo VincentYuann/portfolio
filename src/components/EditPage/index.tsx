@@ -39,7 +39,7 @@ const SECTIONS: SectionMeta[] = [
   { id: 'experience', label: 'Experience', shortLabel: 'Experience', num: '02', icon: Briefcase },
   { id: 'projects', label: 'Projects', shortLabel: 'Projects', num: '03', icon: FolderGit2 },
   { id: 'philosophy', label: 'Philosophy', shortLabel: 'Philosophy', num: '04', icon: Compass },
-  { id: 'hobbies', label: 'Hobbies & Crafts', shortLabel: 'Hobbies', num: '05', icon: Palette },
+  { id: 'hobbies', label: 'Hobbies & Interests', shortLabel: 'Hobbies', num: '05', icon: Palette },
   { id: 'resume', label: 'Resume & CV', shortLabel: 'Resume', num: '06', icon: FileText },
 ];
 
