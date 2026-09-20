@@ -80,14 +80,14 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navItems = [
-    { id: 'home', num: '01', label: 'Home', href: '#home', view: 'home' as const },
-    { id: 'experience', num: '02', label: 'Experience', href: '#experience', view: 'home' as const },
-    { id: 'featured-works', num: '03', label: 'Projects', href: '#featured-works', view: 'home' as const },
-    { id: 'philosophy', num: '04', label: 'Philosophy', href: '#philosophy', view: 'home' as const },
-    { id: 'hobbies', num: '05', label: 'Hobbies & Craft', href: '#hobbies', view: 'home' as const },
-    { id: 'contact', num: '06', label: 'Contact', href: '#contact', view: 'home' as const },
-    { id: 'resume', num: '07', label: 'Resume', href: '#resume', view: 'resume' as const },
-    ...(isAdmin ? [{ id: 'edit', num: '08', label: 'Edit', href: '#edit', view: 'edit' as const }] : []),
+    { id: 'home', num: '01', label: 'Home', fullLabel: 'Home', href: '#home', view: 'home' as const },
+    { id: 'experience', num: '02', label: 'Experience', fullLabel: 'Experience', href: '#experience', view: 'home' as const },
+    { id: 'featured-works', num: '03', label: 'Projects', fullLabel: 'Projects', href: '#featured-works', view: 'home' as const },
+    { id: 'philosophy', num: '04', label: 'Philosophy', fullLabel: 'Philosophy', href: '#philosophy', view: 'home' as const },
+    { id: 'hobbies', num: '05', label: 'Hobbies', fullLabel: 'Hobbies & Craft', href: '#hobbies', view: 'home' as const },
+    { id: 'contact', num: '06', label: 'Contact', fullLabel: 'Contact', href: '#contact', view: 'home' as const },
+    { id: 'resume', num: '07', label: 'Resume', fullLabel: 'Resume', href: '#resume', view: 'resume' as const },
+    ...(isAdmin ? [{ id: 'edit', num: '08', label: 'Edit', fullLabel: 'Edit Portfolio', href: '#edit', view: 'edit' as const }] : []),
   ];
 
   const handleNavClick = (
@@ -131,8 +131,8 @@ export const Header: React.FC<HeaderProps> = ({
           </a>
         </div>
 
-        {/* Center: Desktop Navigation: Shown on wide screens (>= xl / 1280px) */}
-        <nav className="hidden xl:flex items-center gap-4 2xl:gap-6 min-w-0">
+        {/* Center: Desktop Navigation: Shown on wide screens (>= xl / 1280px) with adaptive spacing */}
+        <nav className="hidden xl:flex items-center gap-2.5 2xl:gap-5 min-w-0">
           {navItems.map((item) => {
             const isActive =
               currentView === 'edit'
@@ -150,7 +150,7 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.id}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`group relative font-sans text-xs uppercase tracking-wider lg:tracking-widest transition-colors flex items-center gap-1.5 py-1 whitespace-nowrap ${
+                className={`group relative font-sans text-[11px] 2xl:text-xs uppercase tracking-wider 2xl:tracking-widest transition-colors flex items-center gap-1.5 py-1 whitespace-nowrap ${
                   isActive
                     ? 'text-terracotta font-semibold'
                     : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
@@ -169,12 +169,12 @@ export const Header: React.FC<HeaderProps> = ({
         </nav>
 
         {/* Right side cluster: always neatly aligned without overlapping */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-2.5 2xl:gap-3 shrink-0">
           {/* Day / Night segmented toggle */}
-          <div className="flex items-center p-0.5 rounded-full bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[11px] select-none shrink-0 shadow-2xs">
+          <div className="flex items-center p-0.5 rounded-full bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[10px] sm:text-[11px] select-none shrink-0 shadow-2xs">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
                 theme === 'day'
                   ? 'bg-light-surface text-light-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -187,7 +187,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
                 theme === 'night'
                   ? 'bg-dark-surface-raised text-dark-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -200,7 +200,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Contact CTA (shown on md+ and inside drawer on mobile) */}
+          {/* Contact CTA (shown on sm-lg; hidden on xl to prevent navbar crowding, shown on 2xl where there's ample room) */}
           <a
             href="#contact"
             onClick={(e) => {
@@ -209,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onOpenContact();
               }
             }}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
+            className="hidden sm:inline-flex xl:hidden 2xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
           >
             <span>Get in Touch</span>
           </a>
@@ -313,7 +313,7 @@ export const Header: React.FC<HeaderProps> = ({
                       : 'text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-light-ink dark:hover:text-dark-ink'
                   }`}
                 >
-                  <span className="font-medium">{item.label}</span>
+                  <span className="font-medium">{item.fullLabel || item.label}</span>
                   <span className="font-mono text-[10px] opacity-50">{item.num}</span>
                 </a>
               );
