@@ -144,17 +144,16 @@ export const PhilosophyBento: React.FC = () => {
         </div>
 
         {/* 04.1 Origin Trajectory Bento Box */}
-        <div className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame">
+        <div className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 transition-colors duration-300">
+          {/* Celestial Ensō Orbital Circle: blooms on top-left when hovering the bigger div */}
+          <EnsoOrbital placement="top-left" size={128} hoverOnly={true} />
           <CornerBrackets size="md" />
 
           {/* Card Top Sub-Header */}
           <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60 relative z-10">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
-              <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                {originStory.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
-              </span>
-            </div>
+            <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+              {originStory.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
+            </span>
             <div className="flex items-center gap-1.5 font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider">
               <span>PHILADELPHIA, PA</span>
               <span className="opacity-40">·</span>
@@ -177,12 +176,9 @@ export const PhilosophyBento: React.FC = () => {
             {milestones.map((m, idx) => (
               <div
                 key={idx}
-                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-300 group relative overflow-visible shadow-2xs hover:shadow-sm"
+                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-300 relative shadow-2xs hover:shadow-sm"
               >
-                {/* Celestial Ensō Orbital Circle on hover for this specific milestone card (top-left, 1 at a time) */}
-                <EnsoOrbital placement="top-left" size={88} hoverOnly={true} />
-
-                <div className="relative z-10">
+                <div>
                   <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40">
                     <span className="font-mono text-[10px] font-bold text-terracotta tracking-wider uppercase">
                       {m.era || `PHASE 0${idx + 1}`}
@@ -193,7 +189,7 @@ export const PhilosophyBento: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta transition-colors">
+                  <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors">
                     {m.title}
                   </h4>
                   {m.subtitle && (
