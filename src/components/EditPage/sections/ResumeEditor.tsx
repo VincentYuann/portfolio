@@ -3,10 +3,6 @@ import {
   Upload,
   FileText,
   X,
-  Save,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
   FileCode2,
   Eye,
   EyeOff,
@@ -20,10 +16,10 @@ import {
 } from '../../../lib/supabase';
 import { toast } from 'sonner';
 import { CornerBrackets } from '../../CornerBrackets';
+import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { Button } from '../../ui/button';
 import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs';
 
-type SaveState = 'idle' | 'saving' | 'success' | 'error';
 type Tab = 'upload' | 'editor';
 
 const DEFAULT_LATEX_CV = `% ── Vincent Yuan — Curriculum Vitae ──────────────────────────────────
@@ -99,7 +95,6 @@ export const ResumeEditor: React.FC = () => {
   const [latex, setLatex] = useState(DEFAULT_LATEX_CV);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
   const [previewMode, setPreviewMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -110,7 +105,21 @@ export const ResumeEditor: React.FC = () => {
     });
   }, []);
 
-  /* ── File upload handler ── */
+  const notifyDirty = () => {
+    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { dirty: true } }));
+  };
+
+  const notifyClean = () => {
+    window.dispatchEvent(new CustomEvent('portfolio-admin-clean'));
+  };
+
+  // Global save listener
+  useEffect(() => {
+    const handleGlobalSave = () => handleSave();
+    window.addEventListener('portfolio-admin-save', handleGlobalSave);
+    return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
+  });
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -118,19 +127,16 @@ export const ResumeEditor: React.FC = () => {
     const allowed = ['.pdf', '.tex', '.txt'];
     const ext = '.' + file.name.split('.').pop()?.toLowerCase();
     if (!allowed.includes(ext)) {
-      setErrorMsg('Only .pdf, .tex, or .txt files are accepted.');
-      setSaveState('error');
+      toast.error('Only .pdf, .tex, or .txt files are accepted.');
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
-      setErrorMsg('File must be under 10 MB.');
-      setSaveState('error');
+      toast.error('File must be under 10 MB.');
       return;
     }
 
+    notifyDirty();
     setUploadedFile(file);
-    setErrorMsg('');
-    setSaveState('idle');
 
     // If it's a .tex or .txt, read contents directly into editor
     if (ext === '.tex' || ext === '.txt') {
@@ -139,17 +145,16 @@ export const ResumeEditor: React.FC = () => {
         if (ev.target?.result) {
           setLatex(ev.target.result as string);
           setTab('editor');
+          toast.info('Loaded LaTeX source into editor!');
         }
       };
       reader.readAsText(file);
     }
   };
 
-  /* ── Save to Supabase Storage & Database ── */
   const handleSave = async () => {
     if (saveState === 'saving') return;
     setSaveState('saving');
-    setErrorMsg('');
 
     try {
       if (!supabase) throw new Error('Supabase client is not configured.');
@@ -159,96 +164,55 @@ export const ResumeEditor: React.FC = () => {
         await uploadResumePdf(uploadedFile);
       }
 
-      // 2. Always persist current LaTeX source to database
+      // 2. Persist current LaTeX source to database
       await saveResumeLatex(latex);
 
+      notifyClean();
       setSaveState('success');
-      toast.success('Resume PDF & LaTeX saved to Supabase!');
+      toast.success('Resume PDF & LaTeX source saved to Supabase!');
       setTimeout(() => setSaveState('idle'), 4000);
     } catch (err: unknown) {
-      const msg = formatErrorMessage(err);
-      setErrorMsg(msg);
       setSaveState('error');
-      toast.error(msg || 'Failed to save resume.');
+      toast.error('Failed to save resume: ' + formatErrorMessage(err));
       setTimeout(() => setSaveState('idle'), 8000);
     }
   };
 
+  const lineCount = latex.split('\n').length;
+  const charCount = latex.length;
+
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="font-serif text-2xl text-light-ink dark:text-dark-ink font-normal">
-            Resume &amp; CV
-          </h2>
-          <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
-            Upload a PDF to store in your Supabase S3 bucket, or write / paste LaTeX directly.
-            Uploading a .tex file will populate the editor automatically.
-          </p>
-        </div>
-
-        {/* Save button */}
-        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 flex-wrap">
-          <Button
-            type="button"
-            variant={
-              saveState === 'success'
-                ? 'secondary'
-                : saveState === 'error'
-                ? 'destructive'
-                : 'default'
-            }
-            size="sm"
-            disabled={saveState === 'saving'}
-            onClick={handleSave}
-            className="gap-2"
+      {/* Universal Section Header */}
+      <EditorSectionHeader
+        title="Resume & Curriculum Vitae"
+        subtitle="Upload your compiled PDF document or write and edit raw LaTeX source code."
+        saveState={saveState}
+        onSave={handleSave}
+        saveLabel={tab === 'upload' ? 'Save & Publish PDF' : 'Save LaTeX Code'}
+        extraActions={
+          <Tabs
+            value={tab}
+            onValueChange={(val) => setTab(val as Tab)}
+            className="w-auto shrink-0"
           >
-            {saveState === 'saving' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-            {saveState === 'success' && <CheckCircle2 className="w-3.5 h-3.5 text-bamboo" />}
-            {saveState === 'error' && <AlertCircle className="w-3.5 h-3.5" />}
-            {saveState === 'idle' && <Save className="w-3.5 h-3.5" />}
-            <span>
-              {saveState === 'saving'
-                ? 'Saving…'
-                : saveState === 'success'
-                ? 'Saved to DB'
-                : saveState === 'error'
-                ? 'Retry'
-                : tab === 'upload'
-                ? 'Save & Publish PDF'
-                : 'Save LaTeX Source'}
-            </span>
-          </Button>
-          {saveState === 'error' && errorMsg && (
-            <p className="font-sans text-[11px] text-red-400 text-right w-full max-w-xs">{errorMsg}</p>
-          )}
-        </div>
-      </div>
+            <TabsList className="h-9 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+              <TabsTrigger value="upload" className="text-xs px-3 gap-1.5 cursor-pointer">
+                <Upload className="w-3.5 h-3.5 text-terracotta" />
+                <span>Upload PDF</span>
+              </TabsTrigger>
+              <TabsTrigger value="editor" className="text-xs px-3 gap-1.5 cursor-pointer">
+                <FileCode2 className="w-3.5 h-3.5 text-ochre" />
+                <span>LaTeX Editor</span>
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        }
+      />
 
-      {/* Tab toggles */}
-      <Tabs
-        value={tab}
-        onValueChange={(val) => setTab(val as Tab)}
-        className="w-full"
-      >
-        <TabsList className="grid grid-cols-2 w-full sm:w-auto sm:inline-flex h-auto p-1 gap-1">
-          <TabsTrigger value="upload" className="gap-1.5 sm:gap-2 py-2 px-2.5 sm:px-3.5 justify-center">
-            <Upload className="w-3.5 h-3.5 shrink-0 text-terracotta" />
-            <span className="text-xs font-medium">
-              Upload PDF<span className="hidden sm:inline"> / .tex</span>
-            </span>
-          </TabsTrigger>
-          <TabsTrigger value="editor" className="gap-1.5 sm:gap-2 py-2 px-2.5 sm:px-3.5 justify-center">
-            <FileCode2 className="w-3.5 h-3.5 shrink-0" />
-            <span className="text-xs font-medium">LaTeX Editor</span>
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
-
-      {/* Upload panel */}
+      {/* Upload Panel */}
       {tab === 'upload' && (
-        <div className="relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-4 sm:p-6 md:p-8 shadow-xs classical-card-frame">
+        <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl p-6 sm:p-8 shadow-xs classical-card-frame">
           <CornerBrackets size="md" />
           <input
             ref={fileInputRef}
@@ -259,14 +223,14 @@ export const ResumeEditor: React.FC = () => {
           />
 
           {uploadedFile ? (
-            <div className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl bg-light-surface dark:bg-dark-surface-muted border border-bamboo/30">
-              <FileText className="w-7 h-7 sm:w-8 sm:h-8 text-bamboo shrink-0" />
+            <div className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-lg bg-light-surface dark:bg-dark-surface border border-bamboo/40">
+              <FileText className="w-8 h-8 text-bamboo shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="font-sans text-sm font-medium text-light-ink dark:text-dark-ink truncate">
                   {uploadedFile.name}
                 </p>
                 <p className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5">
-                  {(uploadedFile.size / 1024).toFixed(1)} KB
+                  {(uploadedFile.size / 1024).toFixed(1)} KB · Ready to save to Supabase Storage
                 </p>
               </div>
               <Button
@@ -277,45 +241,59 @@ export const ResumeEditor: React.FC = () => {
                   setUploadedFile(null);
                   if (fileInputRef.current) fileInputRef.current.value = '';
                 }}
-                className="h-8 w-8 p-0 text-light-ink-muted hover:text-red-500 shrink-0"
+                className="h-8 w-8 p-0 text-light-ink-muted hover:text-red-500 shrink-0 cursor-pointer"
+                aria-label="Remove uploaded file"
               >
                 <X className="w-4 h-4" />
               </Button>
             </div>
           ) : (
-            <button
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => fileInputRef.current?.click()}
-              className="w-full flex flex-col items-center gap-3 sm:gap-4 py-10 sm:py-14 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-xl hover:border-terracotta hover:bg-terracotta/5 transition-all group cursor-pointer"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+              className="w-full flex flex-col items-center gap-3 py-12 sm:py-16 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-xl hover:border-terracotta hover:bg-terracotta/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta"
             >
-              <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta transition-colors" />
+              <Upload className="w-10 h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta transition-colors" />
               <div className="text-center">
                 <p className="font-sans text-sm text-light-ink dark:text-dark-ink font-medium">
-                  Drop your PDF or .tex here
+                  Click or drag your PDF / .tex file here
                 </p>
                 <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
-                  Accepts .pdf, .tex, .txt — max 10 MB (stored in Supabase S3 bucket)
+                  Accepts .pdf, .tex, .txt up to 10 MB (Stored in Supabase S3-compatible storage)
                 </p>
               </div>
-            </button>
+            </div>
           )}
 
           <p className="mt-4 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-            Uploading a <code className="font-mono">.tex</code> file will also populate the LaTeX
-            editor for direct modification.
+            Uploading a <code className="font-mono bg-light-surface dark:bg-dark-surface px-1 py-0.5 rounded border border-light-border dark:border-dark-border">.tex</code> file will populate the LaTeX editor for direct code modification.
           </p>
         </div>
       )}
 
-      {/* LaTeX Editor */}
+      {/* LaTeX Code Editor */}
       {tab === 'editor' && (
-        <div className="relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl shadow-xs overflow-hidden classical-card-frame">
+        <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs overflow-hidden classical-card-frame">
           <CornerBrackets size="md" />
-          {/* Editor toolbar */}
-          <div className="flex items-center justify-between px-4 py-2.5 bg-light-surface/80 dark:bg-dark-surface-muted/60 border-b border-light-border dark:border-dark-border">
-            <div className="flex items-center gap-2">
-              <FileCode2 className="w-3.5 h-3.5 text-terracotta" />
-              <span className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted">
-                resume.tex
+          {/* Editor Header Bar */}
+          <div className="flex items-center justify-between px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <FileCode2 className="w-3.5 h-3.5 text-terracotta" />
+                <span className="font-mono text-xs text-light-ink font-medium dark:text-dark-ink">
+                  resume.tex
+                </span>
+              </div>
+              <span className="text-light-ink-subtle text-xs">·</span>
+              <span className="font-mono text-[10px] text-light-ink-muted dark:text-dark-ink-muted">
+                {lineCount} lines · {charCount} characters
               </span>
             </div>
             <Button
@@ -323,25 +301,29 @@ export const ResumeEditor: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={() => setPreviewMode((v) => !v)}
-              className="gap-1.5 h-7 text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta"
+              className="gap-1.5 h-7 text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta cursor-pointer"
             >
               {previewMode ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-              <span>{previewMode ? 'Edit Mode' : 'Preview Mode'}</span>
+              <span>{previewMode ? 'Code Mode' : 'Preview Mode'}</span>
             </Button>
           </div>
 
           {previewMode ? (
-            <pre className="p-4 sm:p-6 font-mono text-xs text-light-ink dark:text-dark-ink leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[60vh]">
+            <pre className="p-5 font-mono text-xs text-light-ink dark:text-dark-ink leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[60vh] bg-light-surface/30 dark:bg-dark-surface/30">
               {latex}
             </pre>
           ) : (
             <textarea
               value={latex}
-              onChange={(e) => setLatex(e.target.value)}
-              className="w-full p-4 sm:p-5 font-mono text-xs text-light-ink dark:text-dark-ink bg-transparent resize-none focus:outline-none leading-relaxed"
+              onChange={(e) => {
+                notifyDirty();
+                setLatex(e.target.value);
+              }}
+              className="w-full p-5 font-mono text-xs text-light-ink dark:text-dark-ink bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-terracotta/20 selection:text-terracotta"
               style={{ minHeight: '60vh' }}
               spellCheck={false}
-              placeholder="Paste or write your LaTeX source…"
+              placeholder="Write or paste your LaTeX resume code…"
+              aria-label="LaTeX Resume Code"
             />
           )}
         </div>

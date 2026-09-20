@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { SiteDataProvider, useSiteData } from './context/SiteDataContext';
 import { Header } from './components/Header';
@@ -9,13 +9,32 @@ import { ProjectsShowcase } from './components/ProjectsShowcase';
 import { PhilosophyBento } from './components/PhilosophyBento';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
-import { ProjectsPage } from './components/ProjectsPage';
-import { ResumePage } from './components/ResumePage';
-import { LoginPage } from './components/LoginPage';
-import { EditPage } from './components/EditPage';
 import { supabase } from './lib/supabase';
 import { toast } from 'sonner';
 import { ThemedToaster } from './components/ThemedToaster';
+
+// Route-level code-splitting for non-critical views (drastically reduces initial bundle size)
+const ProjectsPage = lazy(() => import('./components/ProjectsPage').then((m) => ({ default: m.ProjectsPage })));
+const ResumePage = lazy(() => import('./components/ResumePage').then((m) => ({ default: m.ResumePage })));
+const LoginPage = lazy(() => import('./components/LoginPage').then((m) => ({ default: m.LoginPage })));
+const EditPage = lazy(() => import('./components/EditPage').then((m) => ({ default: m.EditPage })));
+
+const RouteLoadingFallback: React.FC = () => (
+  <div
+    className="min-h-[70vh] flex flex-col items-center justify-center gap-4 text-light-ink-muted dark:text-dark-ink-muted animate-in fade-in duration-300"
+    role="status"
+    aria-live="polite"
+    aria-label="Loading view"
+  >
+    <div className="relative flex items-center justify-center">
+      <div className="w-10 h-10 rounded-full border border-terracotta/20 dark:border-terracotta/30 animate-ping absolute" />
+      <div className="w-7 h-7 rounded-full border-2 border-terracotta/30 border-t-terracotta animate-spin" />
+    </div>
+    <span className="font-mono text-xs uppercase tracking-widest text-light-ink-muted/80 dark:text-dark-ink-muted/80">
+      Loading · 読み込み中
+    </span>
+  </div>
+);
 
 export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit';
 
@@ -251,33 +270,35 @@ export const App: React.FC = () => {
           />
 
           <main className="flex-1 w-full">
-            {currentView === 'login' && (
-              <LoginPage onNavigate={handleNavigate} />
-            )}
+            <Suspense fallback={<RouteLoadingFallback />}>
+              {currentView === 'login' && (
+                <LoginPage onNavigate={handleNavigate} />
+              )}
 
-            {currentView === 'edit' && (
-              isAdmin ? (
-                <EditPage onNavigate={handleNavigate} />
-              ) : !authReady ? (
-                <div className="min-h-screen flex items-center justify-center pt-20">
-                  <div className="text-center font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-                    Verifying authorization…
+              {currentView === 'edit' && (
+                isAdmin ? (
+                  <EditPage onNavigate={handleNavigate} />
+                ) : !authReady ? (
+                  <div className="min-h-screen flex items-center justify-center pt-20">
+                    <div className="text-center font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+                      Verifying authorization…
+                    </div>
                   </div>
-                </div>
-              ) : null
-            )}
+                ) : null
+              )}
 
-            {currentView === 'resume' && (
-              <ResumePage onNavigate={handleNavigate} />
-            )}
+              {currentView === 'resume' && (
+                <ResumePage onNavigate={handleNavigate} />
+              )}
 
-            {currentView === 'projects' && (
-              <ProjectsPage onNavigate={handleNavigate} />
-            )}
+              {currentView === 'projects' && (
+                <ProjectsPage onNavigate={handleNavigate} />
+              )}
 
-            {currentView === 'home' && (
-              <HomeView onNavigate={handleNavigate} />
-            )}
+              {currentView === 'home' && (
+                <HomeView onNavigate={handleNavigate} />
+              )}
+            </Suspense>
           </main>
 
           {currentView === 'home' && <Footer onNavigate={handleNavigate} />}

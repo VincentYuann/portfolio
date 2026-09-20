@@ -3,9 +3,10 @@ node_modules
 .pnp
 .pnp.js
 
-# Production build output
+# Production build output & cache
 dist
 dist-ssr
+.vite
 
 # Local env files
 .env

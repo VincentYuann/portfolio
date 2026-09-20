@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Check, Sparkles } from 'lucide-react';
+import { Search, Check, BookOpen } from 'lucide-react';
 import { KANJI_PRESETS, KanjiPreset, getKanjiPreset } from '../../lib/kanjiLibrary';
 import {
   Dialog,
@@ -78,9 +78,9 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
         {/* Header */}
         <DialogHeader className="p-5 sm:p-6 pb-4 border-b border-light-border dark:border-dark-border shrink-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className="font-mono text-xs text-terracotta font-semibold uppercase tracking-widest flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" />
-              Traditional Japanese Kanji Presets
+            <span className="font-mono text-xs text-terracotta font-semibold uppercase tracking-widest flex items-center gap-1.5">
+              <BookOpen className="w-3.5 h-3.5 text-ochre" />
+              Traditional Japanese Kanji Library
             </span>
             <span className="text-light-ink-subtle text-xs">·</span>
             <Badge variant="terracotta" className="text-[10px] py-0 px-1.5 font-mono">
@@ -96,7 +96,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
         {/* Currently Selected Banner */}
         <div className="px-5 py-3 bg-terracotta/5 dark:bg-terracotta/10 border-b border-light-border/60 dark:border-dark-border/60 flex items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg border border-terracotta/40 bg-light-surface dark:bg-[#181920] flex items-center justify-center font-serif text-2xl font-black text-terracotta select-none shadow-2xs">
+            <div className="w-10 h-10 rounded-lg border border-terracotta/40 bg-light-surface dark:bg-dark-surface-card flex items-center justify-center font-serif text-2xl font-black text-terracotta select-none shadow-2xs">
               {selectedChar || '—'}
             </div>
             <div>
@@ -128,6 +128,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-9 pr-3 text-xs sm:text-sm w-full"
                 placeholder="Search by meaning or romaji (e.g. Tree, Space, Sō, Sumi, Cloud)…"
+                aria-label="Search Kanji presets"
                 autoFocus
               />
             </div>
@@ -147,6 +148,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                 }}
                 className="w-20 text-center font-serif text-sm"
                 placeholder="Custom"
+                aria-label="Enter custom Kanji character"
               />
               <Button
                 type="button"
@@ -167,11 +169,12 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
               <button
                 key={cat}
                 type="button"
+                aria-pressed={selectedCategory === cat}
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-2.5 py-1 rounded-md font-mono text-[11px] whitespace-nowrap transition-colors cursor-pointer ${
                   selectedCategory === cat
                     ? 'bg-terracotta text-white font-semibold shadow-xs'
-                    : 'bg-light-surface dark:bg-[#1a1c24] border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50 hover:text-light-ink dark:hover:text-dark-ink'
+                    : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50 hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
                 {cat === 'all' ? 'All Categories' : cat}
@@ -190,19 +193,20 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                   <button
                     key={preset.char}
                     type="button"
+                    aria-pressed={isSelected}
                     onClick={() => handlePick(preset)}
                     className={`group relative text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer flex items-start gap-3 ${
                       isSelected
                         ? 'bg-terracotta/10 border-terracotta ring-1 ring-terracotta shadow-xs'
-                        : 'bg-light-surface dark:bg-[#16171F] border-light-border dark:border-[#2b2d38] hover:border-terracotta/60 hover:bg-light-surface-raised dark:hover:bg-[#1e202a]'
+                        : 'bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border hover:border-terracotta/60 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised'
                     }`}
                   >
                     {/* Big Kanji Badge */}
-                    <div className="w-12 h-12 rounded-lg border border-terracotta/30 bg-light-surface-card dark:bg-[#121318] flex flex-col items-center justify-center shrink-0 group-hover:border-terracotta transition-colors select-none shadow-2xs">
+                    <div className="w-12 h-12 rounded-lg border border-terracotta/30 bg-light-surface-card dark:bg-dark-canvas flex flex-col items-center justify-center shrink-0 group-hover:border-terracotta transition-colors select-none shadow-2xs">
                       <span className="font-serif text-xl font-bold text-terracotta leading-none">
                         {preset.char}
                       </span>
-                      <span className="font-mono text-[8px] uppercase tracking-wider text-ochre mt-0.5 font-semibold">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-ochre mt-0.5 font-semibold">
                         {preset.romaji.split('/')[0].trim()}
                       </span>
                     </div>
@@ -248,12 +252,18 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
         </div>
 
         {/* Footer */}
-        <DialogFooter className="p-3.5 sm:p-4 border-t border-light-border dark:border-dark-border bg-light-surface/90 dark:bg-dark-surface-card shrink-0 flex items-center justify-between">
-          <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-            Click any card to select instantly · Presets indicate deep meaning
+        <DialogFooter className="p-3.5 sm:p-4 border-t border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-muted flex items-center justify-between gap-2 shrink-0">
+          <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:inline">
+            Click any Kanji card to select and close.
           </span>
-          <Button type="button" variant="outline" size="sm" onClick={onClose} className="px-4">
-            Close
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="text-xs"
+          >
+            Cancel
           </Button>
         </DialogFooter>
       </DialogContent>

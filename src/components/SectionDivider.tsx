@@ -209,8 +209,8 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
         <DiamondCrest className="w-4 h-3.5 sm:w-5 sm:h-4 text-terracotta" />
 
         {/* Section Description in the Middle */}
-        <div className="relative z-10 inline-flex items-center px-3.5 sm:px-5 py-1 sm:py-1.5 rounded-full bg-light-surface/90 dark:bg-[#181920]/90 border border-light-border/80 dark:border-[#3A332A] shadow-xs backdrop-blur-xs hover:border-ochre/50 transition-colors shrink-0">
-          <span className="font-sans font-semibold tracking-[0.2em] sm:tracking-[0.24em] text-light-ink-muted dark:text-[#B8A892] uppercase text-[9px] sm:text-[10.5px]">
+        <div className="relative z-10 inline-flex items-center px-3.5 sm:px-5 py-1 sm:py-1.5 rounded-full bg-light-surface/90 dark:bg-dark-surface/90 border border-light-border/80 dark:border-dark-border/80 shadow-xs backdrop-blur-xs hover:border-ochre/50 transition-colors shrink-0">
+          <span className="font-sans font-semibold tracking-[0.16em] sm:tracking-[0.2em] text-light-ink-muted dark:text-dark-ink-muted uppercase text-[10px] sm:text-[11px]">
             <span className="sm:hidden">{displayShort}</span>
             <span className="hidden sm:inline">{label}</span>
           </span>

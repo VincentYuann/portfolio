@@ -251,7 +251,7 @@
   inset: 6px;
   border: 1px solid rgb(var(--color-ochre-rgb) / 0.12);
   pointer-events: none;
-  border-radius: 6px;
+  border-radius: 4px;
   transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -360,7 +360,7 @@
 }
 
 [data-sonner-toast] {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-family: inherit !important;
   border-radius: 12px !important;
   border-width: 1.5px !important;
   backdrop-filter: blur(16px) !important;
@@ -377,32 +377,32 @@
 
 /* Icons: In Day mode (dark toast), icons are luminous terracotta/ochre */
 [data-sonner-toast] [data-icon] {
-  color: #FFB5A7 !important;
+  color: #F0D7C7 !important;
 }
 
 [data-sonner-toast][data-type="success"] [data-icon] {
-  color: #FFB5A7 !important;
+  color: #87A889 !important;
 }
 
 [data-sonner-toast][data-type="info"] [data-icon] {
-  color: #E5B88F !important;
+  color: #D3A45B !important;
 }
 
 /* Icons: In Night mode (light toast), icons are cinnabar terracotta/ochre */
 .dark [data-sonner-toast] [data-icon] {
-  color: #C83C23 !important;
+  color: #B5482E !important;
 }
 
 .dark [data-sonner-toast][data-type="success"] [data-icon] {
-  color: #C83C23 !important;
+  color: #526D57 !important;
 }
 
 .dark [data-sonner-toast][data-type="info"] [data-icon] {
-  color: #936600 !important;
+  color: #9A6B2E !important;
 }
 
 [data-sonner-toast] [data-title] {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-family: inherit !important;
   font-weight: 600 !important;
   font-size: 13px !important;
   letter-spacing: 0.01em !important;
@@ -410,22 +410,22 @@
 }
 
 [data-sonner-toast] [data-description] {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  font-size: 12px !important;
+  font-family: inherit !important;
+  font-size: 11px !important;
   opacity: 0.88 !important;
   color: inherit !important;
 }
 
 /* Button in Day mode (dark toast) */
 [data-sonner-toast] [data-button] {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  border-radius: 6px !important;
+  font-family: inherit !important;
+  border-radius: 4px !important;
   font-weight: 600 !important;
   font-size: 11px !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  background-color: #EDEAE4 !important;
-  color: #16171D !important;
+  background-color: #E8E6DF !important;
+  color: #1E1F24 !important;
 }
 
 /* Button in Night mode (light toast) */

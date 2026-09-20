@@ -5,7 +5,7 @@ import {
   MapPin,
   Calendar,
   Layers,
-  Sparkles,
+  ListChecks,
 } from 'lucide-react';
 import { CornerBrackets } from './CornerBrackets';
 import { EnsoOrbital } from './EnsoOrbital';
@@ -275,7 +275,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     {/* Top-Right Architectural Ribbon (Rendered for Active Roles) */}
                     {isCurrent && (
                       <div className="absolute top-0 right-0 overflow-hidden w-28 h-28 pointer-events-none z-20">
-                        <div className="absolute transform rotate-45 bg-gradient-to-r from-terracotta to-[#d4482b] text-white font-mono text-[9px] font-bold tracking-widest uppercase py-0.5 sm:py-1 right-[-32px] top-[16px] sm:top-[18px] w-[130px] text-center shadow-xs border-b border-ochre/40 select-none">
+                        <div className="absolute transform rotate-45 bg-gradient-to-r from-terracotta to-[#d4482b] text-white font-mono text-[10px] font-bold tracking-widest uppercase py-0.5 sm:py-1 right-[-32px] top-[16px] sm:top-[18px] w-[130px] text-center shadow-xs border-b border-ochre/40 select-none">
                           * ACTIVE // {String(idx + 1).padStart(2, '0')}
                         </div>
                       </div>
@@ -296,7 +296,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
                               {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
                             </span>
-                            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-ochre uppercase font-bold leading-none mt-1">
+                            <span className="text-[10px] font-mono tracking-wider text-ochre uppercase font-bold leading-none mt-1">
                               {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
                             </span>
                           </div>
@@ -320,7 +320,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                           {/* High-Contrast Themed Status Badge (Active vs Completed) */}
                           <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10.5px] sm:text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-colors ${
                               isCurrent
                                 ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63] dark:shadow-[0_0_10px_rgba(200,60,35,0.25)]'
                                 : 'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#20222a] dark:border-[#383b47] dark:text-stone-400'
@@ -357,7 +357,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                         {/* High-Level Narrative Overview (Always visible) */}
                         {overviewText && (
-                          <p className="font-sans text-xs sm:text-sm text-light-ink/90 dark:text-dark-ink/90 leading-relaxed font-light mt-3">
+                          <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-3">
                             {overviewText}
                           </p>
                         )}
@@ -390,15 +390,15 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             {/* Engineering Impact Bullets */}
                             {bullets.length > 0 && (
                               <div>
-                                <div className="text-[10.5px] font-mono uppercase tracking-widest text-ochre font-semibold mb-2.5 flex items-center gap-1.5">
-                                  <Sparkles className="w-3.5 h-3.5 text-terracotta" />
+                                <div className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-ochre font-semibold mb-2.5 flex items-center gap-1.5">
+                                  <ListChecks className="w-3.5 h-3.5 text-terracotta" />
                                   Engineering Contributions &amp; Quantified Impact
                                 </div>
                                 <ul className="space-y-2">
                                   {bullets.map((pt, pIdx) => (
                                     <li
                                       key={pIdx}
-                                      className="flex items-start gap-2.5 font-sans text-xs sm:text-sm text-light-ink/90 dark:text-dark-ink/90 leading-relaxed font-light"
+                                      className="flex items-start gap-2.5 font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal"
                                     >
                                       <span className="text-terracotta text-xs sm:text-sm select-none shrink-0 mt-0.5">
                                         ⊘

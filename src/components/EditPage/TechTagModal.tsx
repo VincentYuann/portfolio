@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, Plus, Check, ChevronDown, ChevronRight, Sparkles } from 'lucide-react';
+import { Search, X, Plus, Check, ChevronDown, ChevronRight, Layers } from 'lucide-react';
 import { TechTag } from '../TechTag';
 import { getTechBadgeIcon } from '../../lib/techIcons';
 import {
@@ -198,23 +198,13 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
         match.canonicalName.toLowerCase().includes(q)
       );
     });
-  }, [search, allTags]);
+  }, [allTags, search]);
 
-  const toggleCategory = (category: string) => {
-    setCollapsedCategories((prev) => ({
-      ...prev,
-      [category]: !prev[category],
-    }));
-  };
-
-  const expandAll = () => setCollapsedCategories({});
-  const collapseAll = () => {
-    const collapsed: Record<string, boolean> = {};
-    TECH_CATEGORIES.forEach((c) => {
-      collapsed[c.category] = true;
-    });
-    setCollapsedCategories(collapsed);
-  };
+  const searchBadge = useMemo(() => {
+    const q = search.trim();
+    if (!q) return null;
+    return getTechBadgeIcon(q);
+  }, [search]);
 
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -228,28 +218,38 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
     const trimmed = search.trim();
     if (!trimmed) return;
     const match = getTechBadgeIcon(trimmed);
-    const resolvedName = match.isOfficialBrand ? match.canonicalName : trimmed;
-
-    if (!selectedTags.includes(resolvedName)) {
-      onChange([...selectedTags, resolvedName]);
+    const tagName = match.canonicalName || trimmed;
+    if (!selectedTags.includes(tagName)) {
+      onChange([...selectedTags, tagName]);
     }
     setSearch('');
   };
 
-  const searchBadge = useMemo(() => {
-    if (!search.trim()) return null;
-    return getTechBadgeIcon(search.trim());
-  }, [search]);
+  const toggleCategory = (catName: string) => {
+    setCollapsedCategories((prev) => ({
+      ...prev,
+      [catName]: !prev[catName],
+    }));
+  };
+
+  const expandAll = () => setCollapsedCategories({});
+  const collapseAll = () => {
+    const next: Record<string, boolean> = {};
+    TECH_CATEGORIES.forEach((c) => {
+      next[c.category] = true;
+    });
+    setCollapsedCategories(next);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl h-[86vh] max-h-[720px] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent className="max-w-3xl h-[88vh] max-h-[720px] flex flex-col p-0 gap-0 overflow-hidden">
         {/* Header */}
         <DialogHeader className="p-5 sm:p-6 pb-4 border-b border-light-border dark:border-dark-border shrink-0">
-          <div className="flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-terracotta font-semibold uppercase tracking-widest flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5" />
+              <span className="font-mono text-xs text-terracotta font-semibold uppercase tracking-widest flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-ochre" />
                 Official Tech Stack Library
               </span>
               <span className="text-light-ink-subtle text-xs">·</span>
@@ -263,11 +263,11 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
 
             {/* Quick Expand / Collapse Actions */}
             {!search && (
-              <div className="flex items-center gap-1.5 text-[11px] font-mono">
+              <div className="flex items-center gap-1.5 text-xs font-mono">
                 <button
                   type="button"
                   onClick={expandAll}
-                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors px-1.5 py-0.5 rounded hover:bg-terracotta/10 cursor-pointer"
+                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors px-2 py-1 rounded hover:bg-terracotta/10 cursor-pointer"
                 >
                   Expand All
                 </button>
@@ -275,7 +275,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                 <button
                   type="button"
                   onClick={collapseAll}
-                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors px-1.5 py-0.5 rounded hover:bg-terracotta/10 cursor-pointer"
+                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors px-2 py-1 rounded hover:bg-terracotta/10 cursor-pointer"
                 >
                   Collapse All
                 </button>
@@ -306,6 +306,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                 }}
                 className="pl-9 pr-3 text-xs sm:text-sm w-full"
                 placeholder="Search official tech logos (e.g. PyTorch, Docker, Next.js, Rust, AWS, CUDA)…"
+                aria-label="Search official technology logos"
                 autoFocus
               />
             </div>
@@ -349,14 +350,14 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
               {selectedTags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-1 bg-light-surface dark:bg-[#16171D] border border-terracotta/40 rounded-md pr-1.5 shadow-2xs"
+                  className="inline-flex items-center gap-1 bg-light-surface dark:bg-dark-surface border border-terracotta/40 rounded-md pr-1.5 shadow-2xs"
                 >
                   <TechTag tag={tag} size="sm" className="border-0 shadow-none bg-transparent dark:bg-transparent" />
                   <button
                     type="button"
                     onClick={() => toggleTag(tag)}
                     className="text-light-ink-subtle hover:text-red-500 transition-colors p-0.5 cursor-pointer"
-                    title={`Remove ${tag}`}
+                    aria-label={`Remove ${tag}`}
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -384,11 +385,12 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                       <button
                         key={tag}
                         type="button"
+                        aria-pressed={isSelected}
                         onClick={() => toggleTag(tag)}
                         className={`group inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-terracotta/15 border-terracotta text-terracotta font-semibold shadow-xs'
-                            : 'bg-light-surface dark:bg-[#16171D] border-light-border dark:border-[#333640] text-light-ink dark:text-dark-ink hover:border-terracotta hover:text-terracotta'
+                            : 'bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta hover:text-terracotta'
                         }`}
                       >
                         <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0" />
@@ -431,8 +433,9 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                   {/* Collapsible Category Header Bar */}
                   <button
                     type="button"
+                    aria-expanded={!isCollapsed}
                     onClick={() => toggleCategory(cat.category)}
-                    className="w-full flex items-center justify-between p-3.5 sm:px-4 bg-light-surface-card dark:bg-[#171821] hover:bg-light-surface-raised dark:hover:bg-[#1f202b] transition-colors cursor-pointer select-none text-left"
+                    className="w-full flex items-center justify-between p-3.5 sm:px-4 bg-light-surface-card dark:bg-dark-surface-card hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-colors cursor-pointer select-none text-left"
                   >
                     <div className="flex items-center gap-2">
                       {isCollapsed ? (
@@ -467,11 +470,12 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                             <button
                               key={tag}
                               type="button"
+                              aria-pressed={isSelected}
                               onClick={() => toggleTag(tag)}
                               className={`group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer ${
                                 isSelected
                                   ? 'bg-terracotta/15 border-terracotta text-terracotta font-semibold shadow-xs'
-                                  : 'bg-light-surface dark:bg-[#16171D] border-light-border dark:border-[#333640] text-light-ink dark:text-dark-ink hover:border-terracotta hover:text-terracotta'
+                                  : 'bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta hover:text-terracotta'
                               }`}
                             >
                               <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0" />

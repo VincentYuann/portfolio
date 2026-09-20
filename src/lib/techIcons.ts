@@ -118,7 +118,7 @@ import {
 } from '@icons-pack/react-simple-icons';
 
 import {
-  Sparkles,
+  Bot,
   Cloud,
   Cpu,
 } from 'lucide-react';
@@ -152,7 +152,7 @@ export const TECH_ICON_REGISTRY: Record<string, { icon: TechIconComponent; name:
   llama: { icon: SiMeta, name: 'LLaMA' },
   meta: { icon: SiMeta, name: 'Meta' },
   metaai: { icon: SiMetaai, name: 'Meta AI' },
-  openai: { icon: Sparkles as unknown as TechIconComponent, name: 'OpenAI' },
+  openai: { icon: Bot as unknown as TechIconComponent, name: 'OpenAI' },
   pandas: { icon: SiPandas, name: 'Pandas' },
   numpy: { icon: SiNumpy, name: 'NumPy' },
   opencv: { icon: SiOpencv, name: 'OpenCV' },

@@ -1,6 +1,6 @@
 # Vincent Yuan — Distributed Systems & AI Engineer
 
-[![Live Site](https://img.shields.io/badge/Live_Portfolio-vincentyuann.github.io-B5482E?style=for-the-badge&logo=githubpages&logoColor=white)](https://vincentyuann.github.io/profolio)
+[![Live Site](https://img.shields.io/badge/Live_Portfolio-vincentyuann.github.io-B5482E?style=for-the-badge&logo=githubpages&logoColor=white)](https://vincentyuann.github.io/portfolio)
 [![React 18](https://img.shields.io/badge/React_18.3-Vite_6-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript_5.7-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -8,8 +8,8 @@
 
 A bespoke dual-theme engineering portfolio joining the architectural restraint of Japanese *Wabi-Sabi*, *Ma* (intentional negative space), and *Shokunin* craftsmanship with high-performance distributed systems engineering.
 
-Check out the live portfolio: [https://vincentyuann.github.io/profolio](https://vincentyuann.github.io/profolio)  
-Reach out or say hi: [https://vincentyuann.github.io/profolio/#/contact](https://vincentyuann.github.io/profolio/#/contact)
+Check out the live portfolio: [https://vincentyuann.github.io/portfolio](https://vincentyuann.github.io/portfolio)  
+Reach out or say hi: [https://vincentyuann.github.io/portfolio/#/contact](https://vincentyuann.github.io/portfolio/#/contact)
 
 ---
 

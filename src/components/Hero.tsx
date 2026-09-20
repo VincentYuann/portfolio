@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, FileText } from 'lucide-react';
 import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
 import { HankoStamp } from './HankoStamp';
@@ -122,7 +122,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               >
                 <span className="sm:hidden">View Resume</span>
                 <span className="hidden sm:inline">View Resume & CV</span>
-                <Sparkles className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:rotate-45" />
+                <FileText className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-0.5" />
               </a>
             </div>
 
