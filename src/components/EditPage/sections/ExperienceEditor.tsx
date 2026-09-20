@@ -45,9 +45,9 @@ const newEntry = (order: number = 0): ExperienceEntry => ({
   description: '',
   overview: '',
   bullets: [''],
-  tags: order === 0 ? ['C++', 'CUDA', 'TimescaleDB', 'React'] : ['Rust', 'PostgreSQL', 'TypeScript'],
+  tags: order === 0 ? ['TypeScript', 'React', 'Node.js', 'PostgreSQL'] : ['Python', 'System Architecture', 'APIs'],
   isActive: order === 0,
-  statusLabel: order === 0 ? 'ACTIVE / 現職' : '歴任 / COMPLETED',
+  statusLabel: order === 0 ? 'ACTIVE / 現職' : 'COMPLETED / 歴任',
   domainLabel: '',
   logoUrl: '',
   kanji: order === 0 ? '木' : order === 1 ? '墨' : order === 2 ? '明' : '原',
@@ -274,7 +274,7 @@ export const ExperienceEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Career Trajectory & Experience"
-        subtitle="Manage professional roles, engineering achievements, and technical milestones."
+        subtitle="Manage professional engineering roles, team contributions, and technical milestones."
         saveState={saveState}
         onSave={handleSaveAll}
         saveLabel="Save All Milestones"
@@ -295,15 +295,15 @@ export const ExperienceEditor: React.FC = () => {
               subtitle={`${exp.startDate || 'Start'} - ${exp.endDate || 'Present'}${exp.location ? ` · ${exp.location}` : ''}`}
               badge={
                 <span
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider ${
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-[11px] font-bold uppercase tracking-wider ${
                     exp.isActive
-                      ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63]'
+                      ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-[#ff7d63]'
                       : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'
                   }`}
                 >
                   <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      exp.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
+                    className={`w-2 h-2 rounded-full ${
+                      exp.isActive ? 'bg-terracotta' : 'bg-stone-400 dark:bg-neutral-500'
                     }`}
                   />
                   <span>{exp.isActive ? 'ACTIVE / 現職' : 'COMPLETED / 歴任'}</span>
@@ -347,7 +347,7 @@ export const ExperienceEditor: React.FC = () => {
                       id={`exp-${exp.id}-title`}
                       value={exp.title}
                       onChange={(e) => updateEntry(exp.id, { title: e.target.value })}
-                      placeholder="e.g. Full-Stack & AI Systems Engineer"
+                      placeholder="e.g. Full-Stack & Systems Engineer"
                       className="mt-1 text-xs"
                     />
                   </div>
@@ -362,13 +362,13 @@ export const ExperienceEditor: React.FC = () => {
                         id={`exp-${exp.id}-location`}
                         value={exp.location}
                         onChange={(e) => updateEntry(exp.id, { location: e.target.value })}
-                        placeholder="e.g. Tokyo / Remote"
+                        placeholder="e.g. Philadelphia, PA / Remote"
                         className="mt-1 text-xs"
                       />
                     </div>
 
                     <div className="flex flex-col justify-end">
-                      <label className="flex items-center gap-2 p-2 rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none">
+                      <label className="flex items-center gap-2 p-2 min-h-[38px] rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={exp.isActive}
@@ -471,7 +471,7 @@ export const ExperienceEditor: React.FC = () => {
         {experiences.length === 0 && (
           <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-xl bg-light-surface/30 dark:bg-dark-surface/30">
             <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-              No career milestones found. Click "+ New Milestone" above to add your first role.
+              No career milestones found. Click "+ Add Milestone" above to add your first role.
             </p>
           </div>
         )}

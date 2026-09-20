@@ -126,7 +126,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
 
         {/* Right: Actions Toolbar */}
         <div
-          className="flex items-center gap-1 shrink-0 sm:self-center self-end"
+          className="flex items-center gap-1.5 shrink-0 sm:self-center self-end"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Move Up */}
@@ -137,9 +137,9 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               onClick={onMoveUp}
               title="Move item up in display order"
               aria-label="Move item up"
-              className="min-w-[34px] min-h-[34px] sm:min-w-[30px] sm:min-h-[30px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
+              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
             >
-              <ArrowUp className="w-3.5 h-3.5" />
+              <ArrowUp className="w-4 h-4" />
             </button>
           )}
 
@@ -151,9 +151,9 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               onClick={onMoveDown}
               title="Move item down in display order"
               aria-label="Move item down"
-              className="min-w-[34px] min-h-[34px] sm:min-w-[30px] sm:min-h-[30px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
+              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
             >
-              <ArrowDown className="w-3.5 h-3.5" />
+              <ArrowDown className="w-4 h-4" />
             </button>
           )}
 
@@ -163,7 +163,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               <button
                 type="button"
                 onClick={handleDeleteClick}
-                className="px-2.5 py-1 text-xs font-mono font-semibold bg-red-600 hover:bg-red-700 text-white rounded-md shadow-xs transition-colors flex items-center gap-1 cursor-pointer min-h-[34px]"
+                className="px-3 py-1.5 text-xs font-mono font-semibold bg-red-600 hover:bg-red-700 text-white rounded-md shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer min-h-[38px]"
               >
                 <AlertTriangle className="w-3.5 h-3.5" />
                 <span>Confirm Delete</span>
@@ -171,7 +171,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               <button
                 type="button"
                 onClick={handleCancelDelete}
-                className="px-2 py-1 text-xs font-mono text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink rounded-md transition-colors cursor-pointer min-h-[34px]"
+                className="px-2.5 py-1.5 text-xs font-mono text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink rounded-md transition-colors cursor-pointer min-h-[38px]"
               >
                 Cancel
               </button>
@@ -182,9 +182,9 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               onClick={handleDeleteClick}
               title="Delete item"
               aria-label="Delete item"
-              className="min-w-[34px] min-h-[34px] sm:min-w-[30px] sm:min-h-[30px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 rounded-md hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
+              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 rounded-md hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
             >
-              <Trash2 className="w-3.5 h-3.5" />
+              <Trash2 className="w-4 h-4" />
             </button>
           )}
 
@@ -193,7 +193,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
             type="button"
             onClick={onToggleExpand}
             aria-label={isExpanded ? 'Collapse section' : 'Expand section'}
-            className="min-w-[34px] min-h-[34px] sm:min-w-[30px] sm:min-h-[30px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer ml-0.5"
+            className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer ml-0.5"
           >
             {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>

@@ -15,7 +15,6 @@ import { BulletListEditor } from '../shared/BulletListEditor';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
-import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs';
 import { toast } from 'sonner';
 
 export interface ProjectEntry {
@@ -60,8 +59,6 @@ const newProject = (order: number = 0): ProjectEntry => ({
   displayOrder: order,
 });
 
-type ProjectsTab = 'featured' | 'all';
-
 export const ProjectsEditor: React.FC = () => {
   const { projects: contextProjects, refresh } = useSiteData();
   const [projects, setProjects] = useState<ProjectEntry[]>(() => {
@@ -90,7 +87,6 @@ export const ProjectsEditor: React.FC = () => {
     return [];
   });
 
-  const [activeTab, setActiveTab] = useState<ProjectsTab>('all');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
 
@@ -196,7 +192,7 @@ export const ProjectsEditor: React.FC = () => {
     if (willBeFeatured) {
       const currentCount = projects.filter((p) => p.isFeatured).length;
       if (currentCount >= 3) {
-        toast.info('Maximum 3 featured projects allowed on the Home Page showcase.');
+        toast.info('Maximum 3 featured projects displayed on the homepage showcase.');
         return;
       }
     }
@@ -204,8 +200,8 @@ export const ProjectsEditor: React.FC = () => {
     updateProject(id, { isFeatured: willBeFeatured });
     toast.success(
       willBeFeatured
-        ? `Starred "${current.title || 'Project'}" for Featured Showcase`
-        : `Removed "${current.title || 'Project'}" from Featured Showcase`,
+        ? `Starred "${current.title || 'Project'}" for Homepage Showcase`
+        : `Removed "${current.title || 'Project'}" from Homepage Showcase`,
     );
   };
 
@@ -285,6 +281,7 @@ export const ProjectsEditor: React.FC = () => {
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
+
   const handleUploadImageFile = async (projectId: string, file: File): Promise<string | null> => {
     try {
       const url = await uploadProjectImage(file);
@@ -297,44 +294,25 @@ export const ProjectsEditor: React.FC = () => {
     }
   };
 
-  const displayedProjects =
-    activeTab === 'featured' ? projects.filter((p) => p.isFeatured) : projects;
+  const featuredCount = projects.filter((p) => p.isFeatured).length;
 
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Projects & Works"
-        subtitle="Curate systems, engineering case studies, and live demonstrations."
+        subtitle={`Manage portfolio projects, case study architecture, and star up to 3 to feature on the homepage (${featuredCount}/3 featured).`}
         saveState={saveState}
         onSave={handleSaveAll}
         saveLabel="Save All Projects"
         onAdd={addProject}
         addLabel="Add Project"
-        extraActions={
-          <Tabs
-            value={activeTab}
-            onValueChange={(val) => setActiveTab(val as ProjectsTab)}
-            className="w-auto shrink-0"
-          >
-            <TabsList className="h-9 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
-              <TabsTrigger value="all" className="text-xs px-3">
-                All ({projects.length})
-              </TabsTrigger>
-              <TabsTrigger value="featured" className="text-xs px-3 gap-1">
-                <Star className="w-3 h-3 text-ochre fill-current" />
-                Featured ({projects.filter((p) => p.isFeatured).length}/3)
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        }
       />
 
-      {/* Projects Card Stack */}
+      {/* Unified Projects Card Stack */}
       <div className="space-y-4 sm:space-y-5">
-        {displayedProjects.map((project) => {
+        {projects.map((project, originalIdx) => {
           const isExpanded = expandedId === project.id;
-          const originalIdx = projects.findIndex((p) => p.id === project.id);
 
           return (
             <EditorCardShell
@@ -350,27 +328,27 @@ export const ProjectsEditor: React.FC = () => {
                       e.stopPropagation();
                       toggleFeatured(project.id);
                     }}
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-mono text-[10px] font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-[11px] font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
                       project.isFeatured
                         ? 'bg-ochre/15 text-ochre border border-ochre/40'
-                        : 'bg-light-surface dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted border border-light-border dark:border-dark-border hover:text-ochre'
+                        : 'bg-light-surface dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted border border-light-border dark:border-dark-border hover:text-ochre hover:border-ochre/40'
                     }`}
-                    title={project.isFeatured ? 'Featured on Home Showcase' : 'Click to feature on Home'}
+                    title={project.isFeatured ? 'Featured on homepage showcase' : 'Click to feature on homepage'}
                   >
-                    <Star className={`w-3 h-3 ${project.isFeatured ? 'fill-ochre text-ochre' : ''}`} />
+                    <Star className={`w-3.5 h-3.5 ${project.isFeatured ? 'fill-ochre text-ochre' : ''}`} />
                     <span>{project.isFeatured ? 'Featured' : 'Archive'}</span>
                   </button>
 
                   <span
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-mono text-[10px] font-semibold uppercase tracking-wider ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-[11px] font-semibold uppercase tracking-wider ${
                       project.isActive
-                        ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63]'
+                        ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-[#ff7d63]'
                         : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'
                     }`}
                   >
                     <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        project.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
+                      className={`w-2 h-2 rounded-full ${
+                        project.isActive ? 'bg-terracotta' : 'bg-stone-400 dark:bg-neutral-500'
                       }`}
                     />
                     <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'}</span>
@@ -409,13 +387,13 @@ export const ProjectsEditor: React.FC = () => {
 
                   <div>
                     <Label htmlFor={`proj-${project.id}-sub`}>
-                      Subtitle / Technical Focus
+                      Subtitle / Focus Area
                     </Label>
                     <Input
                       id={`proj-${project.id}-sub`}
                       value={project.subtitle}
                       onChange={(e) => updateProject(project.id, { subtitle: e.target.value })}
-                      placeholder="e.g. Kyoto-Inspired Sensory Computing"
+                      placeholder="e.g. Sensory Computing & Systems Logic"
                       className="mt-1 text-xs"
                     />
                   </div>
@@ -423,7 +401,7 @@ export const ProjectsEditor: React.FC = () => {
                   {/* Dates & Active Status */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <Label htmlFor={`proj-${project.id}-start`} className="flex items-center gap-1">
+                      <Label htmlFor={`proj-${project.id}-start`} className="text-xs font-medium flex items-center gap-1">
                         <Calendar className="w-3 h-3 text-light-ink-muted" />
                         <span>Start Date</span>
                       </Label>
@@ -437,7 +415,7 @@ export const ProjectsEditor: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col justify-end">
-                      <label className="flex items-center gap-2 p-2 rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none">
+                      <label className="flex items-center gap-2 p-2 min-h-[38px] rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={project.isActive}
@@ -445,14 +423,14 @@ export const ProjectsEditor: React.FC = () => {
                           className="rounded text-terracotta focus:ring-terracotta h-4 w-4"
                         />
                         <span className="text-xs font-medium text-light-ink dark:text-dark-ink">
-                          Active / In Progress
+                          Active Project
                         </span>
                       </label>
                     </div>
                   </div>
 
                   <div>
-                    <Label htmlFor={`proj-${project.id}-end`} className="flex items-center gap-1">
+                    <Label htmlFor={`proj-${project.id}-end`} className="text-xs font-medium flex items-center gap-1">
                       <Calendar className="w-3 h-3 text-light-ink-muted" />
                       <span>End Date</span>
                     </Label>
@@ -469,7 +447,7 @@ export const ProjectsEditor: React.FC = () => {
                   {/* GitHub & Live Links */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <Label htmlFor={`proj-${project.id}-gh`} className="flex items-center gap-1">
+                      <Label htmlFor={`proj-${project.id}-gh`} className="text-xs font-medium flex items-center gap-1">
                         <Github className="w-3 h-3 text-light-ink-muted" />
                         <span>GitHub Link</span>
                       </Label>
@@ -484,7 +462,7 @@ export const ProjectsEditor: React.FC = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor={`proj-${project.id}-live`} className="flex items-center gap-1">
+                      <Label htmlFor={`proj-${project.id}-live`} className="text-xs font-medium flex items-center gap-1">
                         <ExternalLink className="w-3 h-3 text-light-ink-muted" />
                         <span>Live Demo URL</span>
                       </Label>
@@ -499,22 +477,22 @@ export const ProjectsEditor: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Universal Emblem & Kanji Selector */}
+                  {/* Universal Emblem & Media Artwork */}
                   <EmblemKanjiSelector
                     kanji={project.kanji}
                     logoUrl={project.image}
                     onKanjiChange={(char) => updateProject(project.id, { kanji: char })}
                     onLogoUrlChange={(url) => updateProject(project.id, { image: url })}
                     onUploadImage={(file) => handleUploadImageFile(project.id, file)}
-                    label="Project Emblem & Cover Artwork"
+                    label="Project Emblem & Cover Image"
                   />
                 </div>
 
                 {/* Right Column (Narrative & Architecture Highlights) */}
                 <div className="md:col-span-7 space-y-5">
                   <div>
-                    <Label htmlFor={`proj-${project.id}-desc`}>
-                      Executive Overview &amp; Narrative Summary
+                    <Label htmlFor={`proj-${project.id}-desc`} className="text-xs font-medium">
+                      Project Narrative Summary
                     </Label>
                     <Textarea
                       id={`proj-${project.id}-desc`}
@@ -535,7 +513,7 @@ export const ProjectsEditor: React.FC = () => {
                   <TechTagSelector
                     tags={project.techStacks}
                     onChange={(tags) => updateProject(project.id, { techStacks: tags })}
-                    label="Core Technologies & Substrates"
+                    label="Core Technologies & Stack"
                   />
 
                   {/* Universal Bullet List Editor for Architecture Highlights */}
@@ -551,12 +529,10 @@ export const ProjectsEditor: React.FC = () => {
           );
         })}
 
-        {displayedProjects.length === 0 && (
+        {projects.length === 0 && (
           <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-xl bg-light-surface/30 dark:bg-dark-surface/30">
             <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-              {activeTab === 'featured'
-                ? 'No featured projects selected. Star up to 3 projects from the "All" tab to showcase them.'
-                : 'No projects found. Click "+ New Project" above to create one.'}
+              No projects found. Click "+ Add Project" above to create one.
             </p>
           </div>
         )}

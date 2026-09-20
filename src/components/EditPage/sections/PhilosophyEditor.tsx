@@ -183,7 +183,6 @@ export const PhilosophyEditor: React.FC = () => {
         updated_at: new Date().toISOString(),
       }));
 
-      // Cache locally immediately for zero-lag consistency
       try {
         localStorage.setItem('portfolio_origin_story_override', JSON.stringify(originData));
         localStorage.setItem('portfolio_pillars_cache', JSON.stringify(rows));
@@ -249,7 +248,7 @@ export const PhilosophyEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Origin Trajectory & Philosophy"
-        subtitle="Manage your personal engineering journey and the 3 architectural pillars on the homepage."
+        subtitle="Manage your 4-phase personal engineering journey and the 3 architectural pillars on the homepage."
         saveState={saveState}
         onSave={handleSave}
         saveLabel="Save All Changes"
@@ -258,11 +257,12 @@ export const PhilosophyEditor: React.FC = () => {
       />
 
       {/* Collapsible Card 1: Origin Trajectory Narrative */}
-      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface shadow-xs classical-card-frame overflow-hidden transition-colors">
+      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] shadow-xs classical-card-frame overflow-hidden transition-colors">
+        <CornerBrackets size="sm" />
         <button
           type="button"
           onClick={() => toggle('origin')}
-          className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-light-surface/50 dark:hover:bg-dark-surface-raised/50 transition-colors cursor-pointer"
+          className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-light-surface/50 dark:hover:bg-dark-surface-raised/50 transition-colors cursor-pointer select-none"
           aria-expanded={!collapsed.origin}
         >
           <div className="flex items-center gap-3">
@@ -274,7 +274,7 @@ export const PhilosophyEditor: React.FC = () => {
                 Origin Trajectory &amp; Journey (原点と軌跡)
               </h3>
               <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
-                Milestones from high school logic and Pygame to full-stack systems and hospitality empathy.
+                4-phase engineering journey from logic puzzles and game loops to distributed systems and hospitality empathy.
               </p>
             </div>
           </div>
@@ -299,7 +299,7 @@ export const PhilosophyEditor: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={resetOriginToDefault}
-                className="text-[11px] font-mono h-7 text-light-ink-subtle hover:text-terracotta"
+                className="text-[11px] font-mono h-7 text-light-ink-subtle hover:text-terracotta cursor-pointer"
               >
                 <RotateCcw className="w-3 h-3 mr-1" /> Reset to Default Story
               </Button>
@@ -349,13 +349,13 @@ export const PhilosophyEditor: React.FC = () => {
                         value={milestone.era}
                         onChange={(e) => updateMilestone(idx, { era: e.target.value })}
                         placeholder={`PHASE 0${idx + 1}`}
-                        className="w-24 font-mono font-bold text-terracotta text-xs h-7 uppercase"
+                        className="w-28 font-mono font-bold text-terracotta text-xs h-8 uppercase"
                       />
                       <Input
                         value={milestone.tag || ''}
                         onChange={(e) => updateMilestone(idx, { tag: e.target.value })}
-                        placeholder="TAG"
-                        className="w-28 font-mono text-[10px] text-right h-7 uppercase"
+                        placeholder="ERA TAG"
+                        className="w-32 font-mono text-[11px] text-right h-8 uppercase"
                       />
                     </div>
 
@@ -370,14 +370,14 @@ export const PhilosophyEditor: React.FC = () => {
                         value={milestone.subtitle || ''}
                         onChange={(e) => updateMilestone(idx, { subtitle: e.target.value })}
                         placeholder="Subtitle (e.g. Technology or Context)"
-                        className="text-[11px] text-light-ink-muted dark:text-dark-ink-muted h-7"
+                        className="text-xs text-light-ink-muted dark:text-dark-ink-muted h-8"
                       />
                       <Textarea
                         rows={3}
                         value={milestone.description}
                         onChange={(e) => updateMilestone(idx, { description: e.target.value })}
                         placeholder="Milestone description…"
-                        className="text-xs leading-relaxed font-light min-h-[70px]"
+                        className="text-xs leading-relaxed font-light min-h-[75px]"
                       />
                     </div>
                   </div>
@@ -389,11 +389,12 @@ export const PhilosophyEditor: React.FC = () => {
       </div>
 
       {/* Collapsible Card 2: Core Philosophy Pillars */}
-      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface shadow-xs classical-card-frame overflow-hidden transition-colors">
+      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] shadow-xs classical-card-frame overflow-hidden transition-colors">
+        <CornerBrackets size="sm" />
         <button
           type="button"
           onClick={() => toggle('pillars')}
-          className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-light-surface/50 dark:hover:bg-dark-surface-raised/50 transition-colors cursor-pointer"
+          className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-light-surface/50 dark:hover:bg-dark-surface-raised/50 transition-colors cursor-pointer select-none"
           aria-expanded={!collapsed.pillars}
         >
           <div className="flex items-center gap-3">
@@ -410,6 +411,9 @@ export const PhilosophyEditor: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-light-ink-subtle px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+              {pillars.length}/3 PILLARS
+            </span>
             {!collapsed.pillars ? (
               <ChevronDown className="w-4 h-4 text-terracotta" />
             ) : (

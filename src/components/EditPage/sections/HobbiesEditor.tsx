@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import {
   Trash2,
   Plus,
-  RotateCcw,
-  Sparkles,
   Image as ImageIcon,
-  Tag,
   BookOpen,
   Upload,
   Loader2,
+  Check,
 } from 'lucide-react';
 import {
   supabase,
@@ -60,16 +58,9 @@ export const HobbiesEditor: React.FC = () => {
   });
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
-
-  // New image URL input state per hobby
   const [newImageUrls, setNewImageUrls] = useState<Record<string, string>>({});
-
-  // Uploading spinner tracker per hobby
   const [uploadingHobbyId, setUploadingHobbyId] = useState<string | null>(null);
-
-  // Kanji picker modal target hobby id
   const [kanjiPickerTargetId, setKanjiPickerTargetId] = useState<string | null>(null);
-
   const [saveState, setSaveState] = useState<SaveState>('idle');
 
   // Sync from context when context changes
@@ -153,13 +144,6 @@ export const HobbiesEditor: React.FC = () => {
     });
   };
 
-  // Reset to default 5 pursuits
-  const handleResetDefaults = () => {
-    notifyDirty();
-    setHobbies(DEFAULT_HOBBIES);
-    toast.info('Reset pursuits to default hobbies. Click Save to persist.');
-  };
-
   // Add image URL manually
   const handleAddImageUrl = (hobbyId: string) => {
     const url = (newImageUrls[hobbyId] || '').trim();
@@ -236,49 +220,22 @@ export const HobbiesEditor: React.FC = () => {
     );
   };
 
-  // Add metadata key-value pair
-  const handleAddMetadata = (hobbyId: string) => {
+  // Set image as main hero image (move to index 0)
+  const handleSetMainImage = (hobbyId: string, imgIndex: number) => {
+    if (imgIndex === 0) return;
     notifyDirty();
     setHobbies((prev) =>
       prev.map((h) => {
         if (h.id === hobbyId) {
-          const currentMeta = h.metadata || [];
-          return { ...h, metadata: [...currentMeta, { label: 'Interest', value: 'Details' }] };
+          const copy = [...h.images];
+          const [selected] = copy.splice(imgIndex, 1);
+          copy.unshift(selected);
+          return { ...h, images: copy };
         }
         return h;
       })
     );
-  };
-
-  // Update metadata item
-  const handleUpdateMetadata = (hobbyId: string, mIdx: number, patch: { label?: string; value?: string }) => {
-    notifyDirty();
-    setHobbies((prev) =>
-      prev.map((h) => {
-        if (h.id === hobbyId) {
-          const currentMeta = [...(h.metadata || [])];
-          if (currentMeta[mIdx]) {
-            currentMeta[mIdx] = { ...currentMeta[mIdx], ...patch };
-          }
-          return { ...h, metadata: currentMeta };
-        }
-        return h;
-      })
-    );
-  };
-
-  // Delete metadata item
-  const handleDeleteMetadata = (hobbyId: string, mIdx: number) => {
-    notifyDirty();
-    setHobbies((prev) =>
-      prev.map((h) => {
-        if (h.id === hobbyId) {
-          const currentMeta = (h.metadata || []).filter((_, idx) => idx !== mIdx);
-          return { ...h, metadata: currentMeta };
-        }
-        return h;
-      })
-    );
+    toast.success('Selected image set as main display photo.');
   };
 
   // Save to Supabase and LocalStorage
@@ -294,14 +251,12 @@ export const HobbiesEditor: React.FC = () => {
         displayOrder: idx + 1,
       }));
 
-      // Cache locally immediately for zero-lag consistency
       try {
         localStorage.setItem('portfolio_hobbies_override', JSON.stringify(cleanedHobbies));
       } catch {}
 
       await withTimeout(
         (async () => {
-          // Update hobbies column on profile table
           const { error } = await supabase
             .from('profile')
             .update({
@@ -341,10 +296,11 @@ export const HobbiesEditor: React.FC = () => {
     <div className="space-y-6 sm:space-y-8">
       {/* Universal Section Header */}
       <EditorSectionHeader
-        title="Pursuits & Hobbies Editor"
-        subtitle="Manage your personal pursuits, upload up to 5 pictures per hobby to Supabase Storage, and edit reflections"
+        title="Hobbies & Crafts"
+        subtitle="Manage personal pursuits, upload up to 5 photos per hobby to Supabase Storage, and articulate philosophical reflections."
         saveState={saveState}
         onSave={handleSave}
+        saveLabel="Save Pursuits"
         onAdd={handleAddHobby}
         addLabel="Add Pursuit"
       />
@@ -371,11 +327,11 @@ export const HobbiesEditor: React.FC = () => {
               badge={
                 <div className="flex items-center gap-1.5">
                   {hobby.category && (
-                    <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-light-surface-raised dark:bg-dark-surface-raised text-light-ink-muted border border-light-border dark:border-dark-border uppercase">
+                    <span className="font-mono text-[10px] sm:text-[11px] px-2 py-0.5 rounded-md bg-light-surface-raised dark:bg-dark-surface-raised text-light-ink-muted border border-light-border dark:border-dark-border uppercase">
                       {hobby.category}
                     </span>
                   )}
-                  <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-terracotta/10 text-terracotta border border-terracotta/20 font-medium">
+                  <span className="font-mono text-[10px] sm:text-[11px] px-2 py-0.5 rounded-md bg-terracotta/10 text-terracotta border border-terracotta/20 font-medium">
                     {imageCount}/{MAX_IMAGES_PER_HOBBY} Photos
                   </span>
                 </div>
@@ -388,7 +344,7 @@ export const HobbiesEditor: React.FC = () => {
               canMoveDown={index < hobbies.length - 1}
               onDelete={() => handleDeleteHobby(hobby.id)}
             >
-              <div className="space-y-6 pt-1">
+              <div className="space-y-5 pt-1">
                 {/* Row 1: Title, Kanji, Category */}
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
                   <div className="sm:col-span-6 space-y-1.5">
@@ -460,25 +416,25 @@ export const HobbiesEditor: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <ImageIcon className="w-4 h-4 text-terracotta" />
                       <span className="font-mono text-xs font-semibold text-light-ink dark:text-dark-ink uppercase tracking-wider">
-                        Supabase Photo Gallery ({imageCount}/{MAX_IMAGES_PER_HOBBY})
+                        Photo Gallery ({imageCount}/{MAX_IMAGES_PER_HOBBY})
                       </span>
                     </div>
 
                     {/* Direct File Upload Button */}
                     <label
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono border border-terracotta/40 text-terracotta bg-terracotta/5 hover:bg-terracotta/15 cursor-pointer transition-colors shadow-2xs ${
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono border border-terracotta/40 text-terracotta bg-terracotta/5 hover:bg-terracotta/15 cursor-pointer transition-colors shadow-2xs ${
                         !canAddMoreImages || isUploading ? 'opacity-50 pointer-events-none' : ''
                       }`}
                     >
                       {isUploading ? (
                         <>
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                          <span>Uploading to Supabase...</span>
+                          <span>Uploading...</span>
                         </>
                       ) : (
                         <>
                           <Upload className="w-3.5 h-3.5" />
-                          <span>Upload Picture (Max 5)</span>
+                          <span>Upload Photo</span>
                         </>
                       )}
                       <input
@@ -509,17 +465,26 @@ export const HobbiesEditor: React.FC = () => {
                           />
                           <div className="min-w-0 flex-1">
                             <span className="font-mono text-[10px] text-terracotta font-bold block">
-                              Photo {imgIdx + 1} {imgIdx === 0 && '· Main Display'}
+                              Photo 0{imgIdx + 1} {imgIdx === 0 && '· Main Display'}
                             </span>
                             <p className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted truncate">
                               {imgUrl}
                             </p>
+                            {imgIdx !== 0 && (
+                              <button
+                                type="button"
+                                onClick={() => handleSetMainImage(hobby.id, imgIdx)}
+                                className="text-[10px] font-mono text-terracotta hover:underline mt-0.5 flex items-center gap-1 cursor-pointer"
+                              >
+                                <Check className="w-2.5 h-2.5" /> Set as Main
+                              </button>
+                            )}
                           </div>
                           <button
                             type="button"
                             onClick={() => handleRemoveImage(hobby.id, imgIdx)}
                             className="p-1 rounded text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
-                            title="Remove picture"
+                            title="Remove photo"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -528,11 +493,11 @@ export const HobbiesEditor: React.FC = () => {
                     </div>
                   ) : (
                     <p className="text-xs font-mono text-light-ink-muted py-2 italic">
-                      No pictures added yet. Upload a picture or paste an image URL below.
+                      No photos added yet. Upload a photo or enter a URL below.
                     </p>
                   )}
 
-                  {/* Add Image URL Row (Optional URL input) */}
+                  {/* Add Image URL Row */}
                   {canAddMoreImages && (
                     <div className="flex items-center gap-2 pt-2">
                       <Input
@@ -565,78 +530,16 @@ export const HobbiesEditor: React.FC = () => {
 
                 {/* Row 4: Why I Do This Reflection Narrative */}
                 <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-terracotta" />
-                      "Why I Do This" Narrative Reflection
-                    </Label>
-                    <span className="text-[10px] font-mono text-light-ink-muted">
-                      Explain how this pursuit grounds your approach to software engineering
-                    </span>
-                  </div>
+                  <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted block">
+                    Philosophical Reflection ("Why I Do This")
+                  </Label>
                   <Textarea
                     rows={3}
                     value={hobby.whyDescription}
                     onChange={(e) => updateHobby(hobby.id, { whyDescription: e.target.value })}
-                    placeholder="Explain how this hobby grounds your thinking, creativity, or discipline..."
+                    placeholder="Explain how this hobby grounds your thinking, creativity, or engineering discipline..."
                     className="bg-light-surface dark:bg-dark-surface text-xs leading-relaxed"
                   />
-                </div>
-
-                {/* Row 5: Key-Value Metadata Tags Manager */}
-                <div className="space-y-3 p-4 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/60 dark:border-dark-border/60">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Tag className="w-4 h-4 text-terracotta" />
-                      <span className="font-mono text-xs font-semibold text-light-ink dark:text-dark-ink uppercase tracking-wider">
-                        Pursuit Details &amp; Specs ({(hobby.metadata || []).length})
-                      </span>
-                    </div>
-                    <Button
-                      type="button"
-                      onClick={() => handleAddMetadata(hobby.id)}
-                      variant="outline"
-                      size="sm"
-                      className="h-7 text-xs font-mono border-terracotta/40 text-terracotta hover:bg-terracotta/10 cursor-pointer"
-                    >
-                      <Plus className="w-3 h-3 mr-1" />
-                      Add Detail
-                    </Button>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                    {(hobby.metadata || []).map((meta, mIdx) => (
-                      <div
-                        key={mIdx}
-                        className="flex items-center gap-2 p-2 rounded bg-light-surface dark:bg-dark-surface border border-light-border/60 dark:border-dark-border/60"
-                      >
-                        <Input
-                          value={meta.label}
-                          onChange={(e) =>
-                            handleUpdateMetadata(hobby.id, mIdx, { label: e.target.value })
-                          }
-                          placeholder="Label (e.g. Focus)"
-                          className="w-1/3 text-xs font-medium"
-                        />
-                        <Input
-                          value={meta.value}
-                          onChange={(e) =>
-                            handleUpdateMetadata(hobby.id, mIdx, { value: e.target.value })
-                          }
-                          placeholder="Value (e.g. Discipline)"
-                          className="flex-1 text-xs"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteMetadata(hobby.id, mIdx)}
-                          className="p-1 rounded text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
-                          title="Delete detail"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </div>
             </EditorCardShell>
@@ -664,29 +567,6 @@ export const HobbiesEditor: React.FC = () => {
           setKanjiPickerTargetId(null);
         }}
       />
-
-      {/* Bottom Actions Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-light-border/70 dark:border-[#2D3039]/80">
-        <Button
-          type="button"
-          onClick={handleAddHobby}
-          variant="outline"
-          className="font-mono text-xs border-terracotta/50 text-terracotta hover:bg-terracotta/10 cursor-pointer"
-        >
-          <Plus className="w-4 h-4 mr-1.5" />
-          Add New Pursuit Card
-        </Button>
-
-        <Button
-          type="button"
-          onClick={handleResetDefaults}
-          variant="ghost"
-          className="font-mono text-xs text-light-ink-muted hover:text-terracotta cursor-pointer"
-        >
-          <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
-          Reset to Default Hobbies
-        </Button>
-      </div>
     </div>
   );
 };
