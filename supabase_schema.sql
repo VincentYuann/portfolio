@@ -27,8 +27,11 @@ GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated, anon;
 -- ==============================================================================
 -- 2. Cleanup Legacy / Unused Tables
 -- ==============================================================================
+DROP TABLE IF EXISTS public.profile_info CASCADE;
+DROP TABLE IF EXISTS public.admin_users CASCADE;
 DROP TABLE IF EXISTS public.categories CASCADE;
 DROP TABLE IF EXISTS public.project_categories CASCADE;
+DROP TABLE IF EXISTS public.contact_messages CASCADE;
 
 -- ==============================================================================
 -- 3. Tables & Schema Definitions
