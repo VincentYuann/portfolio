@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, User, Globe, Mail, Github, Linkedin } from 'lucide-react';
 import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
-import { useSiteData } from '../../../context/SiteDataContext';
+import { useSiteData, CapabilityPillar } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
+import { TechTagSelector } from '../shared/TechTagSelector';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
@@ -67,7 +68,13 @@ export const IntroEditor: React.FC = () => {
     setData((prev) => ({ ...prev, [key]: val }));
   };
 
-  const updatePillar = (idx: number, patch: Partial<{ label: string; items: string }>) => {
+  const getPillarTags = (pillar: CapabilityPillar): string[] => {
+    if (Array.isArray(pillar.tags) && pillar.tags.length > 0) return pillar.tags;
+    if (!pillar.items) return [];
+    return pillar.items.split(/[\s·,]+/).map((s) => s.trim()).filter(Boolean);
+  };
+
+  const updatePillar = (idx: number, patch: Partial<CapabilityPillar>) => {
     notifyDirty();
     setData((prev) => {
       const next = [...prev.capability_pillars];
@@ -83,7 +90,7 @@ export const IntroEditor: React.FC = () => {
       ...prev,
       capability_pillars: [
         ...prev.capability_pillars,
-        { label: 'NEW PILLAR', items: 'Technologies · Architecture' },
+        { label: 'SYSTEMS', items: 'Rust · Docker', tags: ['Rust', 'Docker'] },
       ],
     }));
   };
@@ -285,34 +292,50 @@ export const IntroEditor: React.FC = () => {
             )}
           </div>
 
-          <div className="space-y-2.5">
-            {data.capability_pillars.map((p, idx) => (
-              <div
-                key={idx}
-                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 p-2 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/70 dark:border-dark-border/70"
-              >
-                <Input
-                  value={p.label}
-                  onChange={(e) => updatePillar(idx, { label: e.target.value })}
-                  placeholder="DOMAIN (e.g. SYSTEMS)"
-                  className="w-full sm:w-44 font-mono uppercase text-xs h-8"
-                />
-                <Input
-                  value={p.items}
-                  onChange={(e) => updatePillar(idx, { items: e.target.value })}
-                  placeholder="Technologies (e.g. Rust · CUDA · Docker · TimescaleDB)"
-                  className="flex-1 text-xs h-8"
-                />
-                <button
-                  type="button"
-                  onClick={() => removePillar(idx)}
-                  className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded transition-colors cursor-pointer self-end sm:self-center"
-                  title="Remove domain"
+          <div className="space-y-3">
+            {data.capability_pillars.map((p, idx) => {
+              const currentTags = getPillarTags(p);
+              return (
+                <div
+                  key={idx}
+                  className="p-3.5 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/70 dark:border-dark-border/70 space-y-3"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex-1 max-w-sm">
+                      <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                        Domain Category
+                      </Label>
+                      <Input
+                        value={p.label}
+                        onChange={(e) => updatePillar(idx, { label: e.target.value.toUpperCase() })}
+                        placeholder="DOMAIN (e.g. SYSTEMS, CLOUD)"
+                        className="font-mono uppercase text-xs h-8"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removePillar(idx)}
+                      className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded transition-colors cursor-pointer self-end mb-0.5"
+                      title="Remove domain"
+                      aria-label="Remove domain"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <TechTagSelector
+                    tags={currentTags}
+                    onChange={(tags) =>
+                      updatePillar(idx, {
+                        tags,
+                        items: tags.join(' · '),
+                      })
+                    }
+                    label="Technologies & Substrates"
+                  />
+                </div>
+              );
+            })}
 
             {data.capability_pillars.length === 0 && (
               <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted italic py-1">

@@ -7,6 +7,7 @@ import { Project } from '../data/projects';
 export interface CapabilityPillar {
   label: string;
   items: string;
+  tags?: string[];
 }
 
 export interface SiteProfile {

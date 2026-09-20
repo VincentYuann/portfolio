@@ -3,6 +3,7 @@ import { ArrowRight, FileText } from 'lucide-react';
 import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
 import { HankoStamp } from './HankoStamp';
+import { TechTag } from './TechTag';
 import { useSiteData } from '../context/SiteDataContext';
 
 interface HeroProps {
@@ -128,24 +129,43 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
             {/* Tech Capabilities Ribbon */}
             {capabilityPillars.length > 0 && (
-              <div className="pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-light-ink-muted dark:text-dark-ink-muted">
-                <span className="font-sans text-[10px] font-semibold uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle mr-1 hidden sm:inline">
+              <div className="pt-2 flex flex-wrap items-center gap-2 sm:gap-2.5 text-light-ink-muted dark:text-dark-ink-muted">
+                <span className="font-sans text-[10px] font-semibold uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle mr-0.5 hidden sm:inline">
                   DOMAINS:
                 </span>
-                {capabilityPillars.map((pillar) => (
-                  <div
-                    key={pillar.label}
-                    className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md bg-light-surface-card dark:bg-dark-surface border border-light-border/80 dark:border-[#2D3039] hover:border-terracotta/40 transition-colors shadow-2xs"
-                  >
-                    <span className="font-mono text-[10px] font-semibold text-terracotta uppercase tracking-wider">
-                      {pillar.label}
-                    </span>
-                    <span className="text-light-ink-subtle dark:text-dark-ink-subtle text-xs">/</span>
-                    <span className="font-sans text-[11px] sm:text-xs text-light-ink dark:text-dark-ink font-medium">
-                      {pillar.items}
-                    </span>
-                  </div>
-                ))}
+                {capabilityPillars.map((pillar) => {
+                  const tags = Array.isArray(pillar.tags) && pillar.tags.length > 0
+                    ? pillar.tags
+                    : (pillar.items ? pillar.items.split(/[\s·,]+/).map((s) => s.trim()).filter(Boolean) : []);
+
+                  return (
+                    <div
+                      key={pillar.label}
+                      className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border/80 dark:border-[#2D3039] hover:border-terracotta/40 transition-colors shadow-2xs"
+                    >
+                      <span className="font-mono text-[10px] font-semibold text-terracotta uppercase tracking-wider shrink-0">
+                        {pillar.label}
+                      </span>
+                      <span className="text-light-ink-subtle/70 dark:text-dark-ink-subtle/70 text-xs shrink-0">/</span>
+                      {tags.length > 0 ? (
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {tags.map((tag) => (
+                            <TechTag
+                              key={tag}
+                              tag={tag}
+                              size="sm"
+                              className="border-light-border/50 dark:border-dark-border/50 bg-light-surface/70 dark:bg-dark-surface-card/70"
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="font-sans text-[11px] sm:text-xs text-light-ink dark:text-dark-ink font-medium">
+                          {pillar.items}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
