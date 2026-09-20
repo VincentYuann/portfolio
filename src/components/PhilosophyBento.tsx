@@ -4,7 +4,7 @@ import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
 import { CornerBrackets } from './CornerBrackets';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
-import { useSiteData } from '../context/SiteDataContext';
+import { useSiteData, DEFAULT_ORIGIN_STORY } from '../context/SiteDataContext';
 
 const PILLAR_CONFIGS = [
   {
@@ -48,10 +48,15 @@ const PILLAR_CONFIGS = [
 ];
 
 export const PhilosophyBento: React.FC = () => {
-  const { pillars: rawPillars } = useSiteData();
+  const { pillars: rawPillars, profile } = useSiteData();
   const displayPillars = Array.isArray(rawPillars) ? rawPillars : [];
+  const originStory = profile?.origin_story || DEFAULT_ORIGIN_STORY;
+  const milestones =
+    originStory.milestones && originStory.milestones.length > 0
+      ? originStory.milestones
+      : DEFAULT_ORIGIN_STORY.milestones!;
 
-  if (displayPillars.length === 0) {
+  if (displayPillars.length === 0 && (!originStory.milestones || originStory.milestones.length === 0)) {
     return null;
   }
 
@@ -118,37 +123,116 @@ export const PhilosophyBento: React.FC = () => {
       {/* Main Philosophy Bento Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
-        <div className="mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80">
+        <div className="mb-8 sm:mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80">
           <div className="max-w-3xl">
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">04 //</span>
               <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                ARCHITECTURAL PHILOSOPHY
+                ORIGIN &amp; ARCHITECTURAL PHILOSOPHY
               </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
-              Architectural Philosophy{' '}
+              Origin &amp; Philosophy{' '}
               <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
-                哲学
+                原点と哲学
               </span>
             </h2>
             <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
-              Software is not merely mechanical logic; it is a spatial environment where human minds dwell. I build
-              systems honoring three core tenets.
+              Software is not merely mechanical logic; it is a spatial environment shaped by curious exploration, system boundaries, and genuine human empathy.
             </p>
           </div>
         </div>
 
+        {/* 04.1 Origin Trajectory Bento Box */}
+        <div className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 transition-colors duration-300">
+          <CornerBrackets size="md" />
+
+          {/* Card Top Sub-Header */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
+              <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                {originStory.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider">
+              <span>PHILADELPHIA, PA</span>
+              <span className="opacity-40">·</span>
+              <span className="text-terracotta font-medium">SWE · SYSTEMS · FULL-STACK</span>
+            </div>
+          </div>
+
+          {/* Headline & Lead Narrative */}
+          <div className="max-w-3xl mb-6">
+            <h3 className="font-serif text-xl sm:text-2xl text-light-ink dark:text-dark-ink font-medium tracking-tight">
+              {originStory.headline || 'From Logic Puzzles to Full-Stack Systems'}
+            </h3>
+            <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-light">
+              {originStory.leadParagraph || DEFAULT_ORIGIN_STORY.leadParagraph}
+            </p>
+          </div>
+
+          {/* 4 Milestones Responsive Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+            {milestones.map((m, idx) => (
+              <div
+                key={idx}
+                className="p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between hover:bg-light-surface dark:hover:bg-dark-surface hover:border-terracotta/40 transition-all duration-200 group/node relative"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40">
+                    <span className="font-mono text-[10px] font-bold text-terracotta tracking-wider uppercase">
+                      {m.era || `PHASE 0${idx + 1}`}
+                    </span>
+                    {m.tag && (
+                      <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-subtle tracking-wider uppercase">
+                        {m.tag}
+                      </span>
+                    )}
+                  </div>
+                  <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink group-hover/node:text-terracotta transition-colors">
+                    {m.title}
+                  </h4>
+                  {m.subtitle && (
+                    <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-normal">
+                      {m.subtitle}
+                    </p>
+                  )}
+                  <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mt-2.5">
+                    {m.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 04.2 Core Architectural Pillars Subsection Divider */}
+        {displayPillars.length > 0 && (
+          <div className="mb-6 pt-2 pb-3 flex items-center justify-between border-b border-light-border/60 dark:border-[#2D3039]/60">
+            <div className="flex items-center gap-2">
+              <span className="font-serif text-terracotta text-sm">04.2 //</span>
+              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                THREE ARCHITECTURAL PILLARS · 三つの信条
+              </span>
+            </div>
+            <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle tracking-widest uppercase hidden sm:inline">
+              PRINCIPLES &amp; SYSTEM CRAFT
+            </span>
+          </div>
+        )}
+
         {/* Dynamic Philosophy Cards */}
-        <div
-          className={`grid grid-cols-1 ${
-            displayPillars.length === 1
-              ? 'max-w-xl mx-auto'
-              : displayPillars.length === 2
-              ? 'md:grid-cols-2 max-w-4xl mx-auto'
-              : 'md:grid-cols-3'
-          } gap-6 lg:gap-8`}
-        >
+        {displayPillars.length > 0 && (
+          <div
+            className={`grid grid-cols-1 ${
+              displayPillars.length === 1
+                ? 'max-w-xl mx-auto'
+                : displayPillars.length === 2
+                ? 'md:grid-cols-2 max-w-4xl mx-auto'
+                : 'md:grid-cols-3'
+            } gap-6 lg:gap-8`}
+          >
           {displayPillars.map((pillar, idx) => {
             const config = PILLAR_CONFIGS[idx % PILLAR_CONFIGS.length];
             const Icon = config.icon;
@@ -214,6 +298,7 @@ export const PhilosophyBento: React.FC = () => {
             );
           })}
         </div>
+        )}
       </div>
     </section>
   );

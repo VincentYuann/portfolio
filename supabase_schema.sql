@@ -62,12 +62,47 @@ CREATE TABLE IF NOT EXISTS public.profile (
       {"text": "静寂と簡素な調和", "label": "WA · 調和", "tooltip": "Silence and Simple Harmony (Wa)"},
       {"text": "職人の精緻な組手", "label": "CRAFT · 職人", "tooltip": "Artisan Precision and Joinery (Shokunin)"}
     ]
+  origin_story JSONB DEFAULT '{
+    "badge": "ORIGIN & TRAJECTORY · 原点と軌跡",
+    "headline": "From Logic Puzzles to Full-Stack Systems",
+    "leadParagraph": "My engineering path began not with grand architecture, but with genuine curiosity: discovering how logic turns static pixels into dynamic systems, mastering state through game mechanics, and bringing the human empathy of hospitality into every layer of software architecture.",
+    "milestones": [
+      {
+        "era": "PHASE 01",
+        "title": "The Spark & Logic",
+        "subtitle": "High School HTML / CSS / JS",
+        "tag": "WEB ROOTS",
+        "description": "Discovered coding in a high school class—seeing how a few lines of JavaScript could turn static markup into an interactive canvas. The thrill of transforming logic into visual response set the foundation."
+      },
+      {
+        "era": "PHASE 02",
+        "title": "Mechanics & State",
+        "subtitle": "Python OOP & Pygame",
+        "tag": "SYSTEM MECHANICS",
+        "description": "Majoring in CS in college, I explored game development with Python and Pygame. Writing game loops, state machines, tick rates, and collision mathematics from scratch forged my deep object-oriented foundation."
+      },
+      {
+        "era": "PHASE 03",
+        "title": "Beyond the Iceberg",
+        "subtitle": "Co-op & Full-Stack Systems",
+        "tag": "DATA FLOW & APIS",
+        "description": "Real-world software and co-ops revealed that frontend styling is only the tip of the iceberg. I became fascinated by what lives beneath: API contracts, relational schemas, caching, and resilient system data flow."
+      },
+      {
+        "era": "PHASE 04",
+        "title": "Hospitality Empathy",
+        "subtitle": "Service Industry to Code",
+        "tag": "USER-FIRST CRAFT",
+        "description": "Years as a barista and server in Philadelphia taught me active listening, anticipating user friction before it happens, and remaining calm during peak rushes—translating directly into human-centered software engineering."
+      }
+    ]
   }'::jsonb,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Ensure hanko_card column exists on existing profile tables
+-- Ensure hanko_card and origin_story columns exist on existing profile tables
 ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS hanko_card JSONB;
+ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS origin_story JSONB;
 
 -- Seed initial profile row
 INSERT INTO public.profile (id, name, email)

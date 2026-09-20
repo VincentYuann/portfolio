@@ -49,10 +49,10 @@ const getInitialView = (): ViewMode => {
 };
 
 const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => void }> = ({ onNavigate }) => {
-  const { experiences, projects, pillars } = useSiteData();
+  const { experiences, projects, pillars, profile } = useSiteData();
   const hasExperiences = Array.isArray(experiences) && experiences.length > 0;
   const hasProjects = Array.isArray(projects) && projects.length > 0;
-  const hasPillars = Array.isArray(pillars) && pillars.length > 0;
+  const hasPhilosophy = (Array.isArray(pillars) && pillars.length > 0) || Boolean(profile?.origin_story);
 
   return (
     <>
@@ -69,9 +69,9 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
           <ProjectsShowcase onNavigate={onNavigate} />
         </>
       )}
-      {hasPillars && (
+      {hasPhilosophy && (
         <>
-          <SectionDivider label="ARCHITECTURAL PHILOSOPHY · 哲学" shortLabel="PHILOSOPHY · 哲学" />
+          <SectionDivider label="ORIGIN & PHILOSOPHY · 原点と哲学" shortLabel="PHILOSOPHY · 哲学" />
           <PhilosophyBento />
         </>
       )}

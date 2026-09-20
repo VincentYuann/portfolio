@@ -54,6 +54,62 @@ export const DEFAULT_HANKO_CARD: HankoCardConfig = {
   ],
 };
 
+export interface OriginMilestone {
+  era: string;
+  title: string;
+  subtitle?: string;
+  tag?: string;
+  description: string;
+}
+
+export interface OriginStoryConfig {
+  badge?: string;
+  headline?: string;
+  leadParagraph?: string;
+  milestones?: OriginMilestone[];
+}
+
+export const DEFAULT_ORIGIN_STORY: OriginStoryConfig = {
+  badge: 'ORIGIN & TRAJECTORY · 原点と軌跡',
+  headline: 'From Logic Puzzles to Full-Stack Systems',
+  leadParagraph:
+    'My engineering path began not with grand architecture, but with genuine curiosity: discovering how logic turns static pixels into dynamic systems, mastering state through game mechanics, and bringing the human empathy of hospitality into every layer of software architecture.',
+  milestones: [
+    {
+      era: 'PHASE 01',
+      title: 'The Spark & Logic',
+      subtitle: 'High School HTML / CSS / JS',
+      tag: 'WEB ROOTS',
+      description:
+        'Discovered coding in a high school class—seeing how a few lines of JavaScript could turn static markup into an interactive canvas. The thrill of transforming logic into visual response set the foundation.',
+    },
+    {
+      era: 'PHASE 02',
+      title: 'Mechanics & State',
+      subtitle: 'Python OOP & Pygame',
+      tag: 'SYSTEM MECHANICS',
+      description:
+        'Majoring in CS in college, I explored game development with Python and Pygame. Writing game loops, state machines, tick rates, and collision mathematics from scratch forged my deep object-oriented foundation.',
+    },
+    {
+      era: 'PHASE 03',
+      title: 'Beyond the Iceberg',
+      subtitle: 'Co-op & Full-Stack Systems',
+      tag: 'DATA FLOW & APIS',
+      description:
+        'Real-world software and co-ops revealed that frontend styling is only the tip of the iceberg. I became fascinated by what lives beneath: API contracts, relational schemas, caching, and resilient system data flow.',
+    },
+    {
+      era: 'PHASE 04',
+      title: 'Hospitality Empathy',
+      subtitle: 'Service Industry to Code',
+      tag: 'USER-FIRST CRAFT',
+      description:
+        'Years as a barista and server in Philadelphia taught me active listening, anticipating user friction before it happens, and remaining calm during peak rushes—translating directly into human-centered software engineering.',
+    },
+  ],
+};
+
 export interface SiteProfile {
   name: string;
   headline: string;
@@ -64,6 +120,7 @@ export interface SiteProfile {
   role: string;
   capability_pillars: CapabilityPillar[];
   hanko_card?: HankoCardConfig;
+  origin_story?: OriginStoryConfig;
 }
 
 export interface PhilosophyPillar {
@@ -118,6 +175,7 @@ export const DEFAULT_PROFILE: SiteProfile = {
   role: '',
   capability_pillars: [],
   hanko_card: DEFAULT_HANKO_CARD,
+  origin_story: DEFAULT_ORIGIN_STORY,
 };
 
 export const DEFAULT_PILLARS: PhilosophyPillar[] = [];
@@ -203,7 +261,13 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (typeof window !== 'undefined') {
       try {
         const cached = localStorage.getItem('portfolio_profile_cache');
-        if (cached) return JSON.parse(cached);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (!parsed.origin_story) {
+            parsed.origin_story = DEFAULT_ORIGIN_STORY;
+          }
+          return parsed;
+        }
       } catch (e) {
         console.warn('Profile cache parse error', e);
       }
@@ -274,6 +338,18 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           ...(localHankoOverride || {}),
         };
 
+        let localOriginOverride: OriginStoryConfig | null = null;
+        try {
+          const cachedOrigin = localStorage.getItem('portfolio_origin_story_override');
+          if (cachedOrigin) localOriginOverride = JSON.parse(cachedOrigin);
+        } catch {}
+
+        const mappedOriginStory: OriginStoryConfig = {
+          ...DEFAULT_ORIGIN_STORY,
+          ...(row.origin_story && typeof row.origin_story === 'object' ? row.origin_story : {}),
+          ...(localOriginOverride || {}),
+        };
+
         const mappedProfile: SiteProfile = {
           name:     row.name     || '',
           headline: row.headline || '',
@@ -293,6 +369,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               })
             : [],
           hanko_card: mappedHankoCard,
+          origin_story: mappedOriginStory,
         };
         setProfile(mappedProfile);
         try {
