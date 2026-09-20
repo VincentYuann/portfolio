@@ -62,6 +62,8 @@ export const HobbiesEditor: React.FC = () => {
   const [uploadingHobbyId, setUploadingHobbyId] = useState<string | null>(null);
   const [kanjiPickerTargetId, setKanjiPickerTargetId] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
+  const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
   // Sync from context when context changes
   useEffect(() => {
@@ -78,6 +80,66 @@ export const HobbiesEditor: React.FC = () => {
 
   const notifyClean = () => {
     window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'hobbies' } }));
+  };
+
+  // Discard listener: resets state from context/defaults
+  useEffect(() => {
+    const handleDiscard = (e: Event) => {
+      const customEvent = e as CustomEvent<{ section?: string }>;
+      if (!customEvent.detail?.section || customEvent.detail.section === 'hobbies') {
+        if (Array.isArray(contextProfile?.hobbies) && contextProfile.hobbies.length > 0) {
+          setHobbies(contextProfile.hobbies);
+        } else if (Array.isArray(contextHobbies) && contextHobbies.length > 0) {
+          setHobbies(contextHobbies);
+        } else {
+          setHobbies(DEFAULT_HOBBIES);
+        }
+        notifyClean();
+      }
+    };
+
+    window.addEventListener('portfolio-admin-discard', handleDiscard);
+    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
+  }, [contextProfile, contextHobbies]);
+
+  // Drag and drop handlers
+  const handleDragStart = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    setDraggedIdx(idx);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', String(idx));
+  };
+
+  const handleDragOver = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverIdx !== idx) {
+      setDragOverIdx(idx);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIdx(null);
+    setDragOverIdx(null);
+  };
+
+  const handleDrop = (targetIdx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (draggedIdx === null || draggedIdx === targetIdx) {
+      setDraggedIdx(null);
+      setDragOverIdx(null);
+      return;
+    }
+
+    notifyDirty();
+    const copy = [...hobbies];
+    const [moved] = copy.splice(draggedIdx, 1);
+    copy.splice(targetIdx, 0, moved);
+
+    const reordered = copy.map((item, idx) => ({ ...item, displayOrder: idx + 1 }));
+    setHobbies(reordered);
+    setDraggedIdx(null);
+    setDragOverIdx(null);
+    toast.success(`Moved "${moved.title || 'Pursuit'}" to position #${targetIdx + 1}`);
   };
 
   // Keyboard save listener (Cmd+S / Ctrl+S)
@@ -343,6 +405,13 @@ export const HobbiesEditor: React.FC = () => {
               canMoveUp={index > 0}
               canMoveDown={index < hobbies.length - 1}
               onDelete={() => handleDeleteHobby(hobby.id)}
+              draggable={!isExpanded}
+              onDragStart={handleDragStart(index)}
+              onDragOver={handleDragOver(index)}
+              onDragEnd={handleDragEnd}
+              onDrop={handleDrop(index)}
+              isDragging={draggedIdx === index}
+              isOver={dragOverIdx === index}
             >
               <div className="space-y-5 pt-1">
                 {/* Row 1: Title, Kanji, Category */}

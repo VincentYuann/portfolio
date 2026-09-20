@@ -26,6 +26,14 @@ interface EditorCardShellProps {
   onDelete: () => void;
   children: React.ReactNode;
   className?: string;
+  // Drag and Drop props
+  draggable?: boolean;
+  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
+  isDragging?: boolean;
+  isOver?: boolean;
 }
 
 export const EditorCardShell: React.FC<EditorCardShellProps> = ({
@@ -43,6 +51,13 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
   onDelete,
   children,
   className = '',
+  draggable,
+  onDragStart,
+  onDragOver,
+  onDragEnd,
+  onDrop,
+  isDragging = false,
+  isOver = false,
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const deleteTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -74,12 +89,24 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
     setIsDeleting(false);
   };
 
+  // Only draggable when collapsed, undraggable when expanded
+  const canDrag = Boolean(draggable && !isExpanded);
+
   return (
     <div
+      draggable={canDrag}
+      onDragStart={canDrag ? onDragStart : undefined}
+      onDragOver={canDrag ? onDragOver : undefined}
+      onDragEnd={canDrag ? onDragEnd : undefined}
+      onDrop={canDrag ? onDrop : undefined}
       className={`relative rounded-xl border bg-light-surface-card dark:bg-[#181920] transition-all duration-200 classical-card-frame shadow-xs ${
         isExpanded
-          ? 'border-terracotta/40 dark:border-terracotta/40 ring-1 ring-terracotta/10 shadow-sm'
-          : 'border-light-border dark:border-dark-border hover:border-ochre/40'
+          ? 'border-terracotta/40 dark:border-terracotta/40 ring-1 ring-terracotta/10 shadow-sm cursor-default'
+          : canDrag
+          ? 'border-light-border dark:border-dark-border hover:border-terracotta/50 cursor-grab active:cursor-grabbing'
+          : 'border-light-border dark:border-dark-border hover:border-ochre/40 cursor-pointer'
+      } ${isDragging ? 'opacity-40 scale-[0.98] border-dashed border-terracotta' : ''} ${
+        isOver ? 'ring-2 ring-terracotta/60 border-terracotta scale-[1.01]' : ''
       } ${className}`}
     >
       <CornerBrackets size="sm" />
@@ -95,11 +122,18 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
             onToggleExpand();
           }
         }}
-        className="w-full flex flex-col sm:flex-row sm:items-center justify-between p-3.5 sm:p-5 gap-3 cursor-pointer select-none group"
+        className={`w-full flex flex-col sm:flex-row sm:items-center justify-between p-3.5 sm:p-5 gap-3 select-none group ${
+          !isExpanded && canDrag ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'
+        }`}
       >
         {/* Left: Drag Handle, Ordinal Badge, Emblem & Title */}
         <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1">
-          <div className="text-light-ink-subtle/50 dark:text-dark-ink-subtle/50 group-hover:text-terracotta transition-colors hidden sm:block shrink-0">
+          <div
+            title={canDrag ? 'Click and drag to reorder' : isExpanded ? 'Collapse card to reorder' : undefined}
+            className={`text-light-ink-subtle/50 dark:text-dark-ink-subtle/50 group-hover:text-terracotta transition-colors hidden sm:block shrink-0 ${
+              canDrag ? 'cursor-grab active:cursor-grabbing' : 'cursor-default opacity-40'
+            }`}
+          >
             <GripVertical className="w-4 h-4" />
           </div>
 

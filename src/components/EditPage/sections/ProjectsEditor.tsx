@@ -89,6 +89,8 @@ export const ProjectsEditor: React.FC = () => {
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
+  const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
   // Sync from context
   useEffect(() => {
@@ -124,6 +126,83 @@ export const ProjectsEditor: React.FC = () => {
 
   const notifyClean = () => {
     window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'projects' } }));
+  };
+
+  // Discard listener: resets state from context
+  useEffect(() => {
+    const handleDiscard = (e: Event) => {
+      const customEvent = e as CustomEvent<{ section?: string }>;
+      if (!customEvent.detail?.section || customEvent.detail.section === 'projects') {
+        if (contextProjects && contextProjects.length > 0) {
+          setProjects(
+            contextProjects.map((p, idx) => ({
+              id: p.id || crypto.randomUUID(),
+              title: p.title || '',
+              subtitle: p.subtitle || '',
+              startDate: p.startDate || '',
+              endDate: p.endDate || '',
+              isActive: typeof p.isActive === 'boolean' ? p.isActive : idx === 0,
+              statusLabel: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
+              summary: p.description || '',
+              overview: p.overview || p.description || '',
+              kanji: p.kanji || '案',
+              badge: p.badge || 'ENGINEERING ARCHIVE',
+              image: p.image || './images/sumi-os-workspace.jpg',
+              bullets: Array.isArray(p.bullets) && p.bullets.length > 0 ? p.bullets : [''],
+              techStacks: p.tags || [],
+              githubLink: p.links?.github || '',
+              liveLink: p.links?.live || '',
+              isFeatured: typeof p.isFeatured === 'boolean' ? p.isFeatured : idx < 3,
+              displayOrder: typeof p.displayOrder === 'number' ? p.displayOrder : idx,
+            })),
+          );
+        }
+        notifyClean();
+      }
+    };
+
+    window.addEventListener('portfolio-admin-discard', handleDiscard);
+    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
+  }, [contextProjects]);
+
+  // Drag and drop handlers
+  const handleDragStart = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    setDraggedIdx(idx);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', String(idx));
+  };
+
+  const handleDragOver = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverIdx !== idx) {
+      setDragOverIdx(idx);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIdx(null);
+    setDragOverIdx(null);
+  };
+
+  const handleDrop = (targetIdx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (draggedIdx === null || draggedIdx === targetIdx) {
+      setDraggedIdx(null);
+      setDragOverIdx(null);
+      return;
+    }
+
+    notifyDirty();
+    const copy = [...projects];
+    const [moved] = copy.splice(draggedIdx, 1);
+    copy.splice(targetIdx, 0, moved);
+
+    const reordered = copy.map((p, idx) => ({ ...p, displayOrder: idx }));
+    setProjects(reordered);
+    setDraggedIdx(null);
+    setDragOverIdx(null);
+    toast.success(`Moved "${moved.title || 'Project'}" to position #${targetIdx + 1}`);
   };
 
   // Keyboard save listener
@@ -367,6 +446,13 @@ export const ProjectsEditor: React.FC = () => {
               canMoveUp={originalIdx > 0}
               canMoveDown={originalIdx < projects.length - 1}
               onDelete={() => deleteProject(project.id)}
+              draggable={!isExpanded}
+              onDragStart={handleDragStart(originalIdx)}
+              onDragOver={handleDragOver(originalIdx)}
+              onDragEnd={handleDragEnd}
+              onDrop={handleDrop(originalIdx)}
+              isDragging={draggedIdx === originalIdx}
+              isOver={dragOverIdx === originalIdx}
             >
               {/* 2-Column Responsive Layout */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 pt-2">

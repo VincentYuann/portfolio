@@ -89,6 +89,8 @@ export const ExperienceEditor: React.FC = () => {
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
+  const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
   // Sync from context
   useEffect(() => {
@@ -128,6 +130,87 @@ export const ExperienceEditor: React.FC = () => {
 
   const notifyClean = () => {
     window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'experience' } }));
+  };
+
+  // Discard listener: resets state from context
+  useEffect(() => {
+    const handleDiscard = (e: Event) => {
+      const customEvent = e as CustomEvent<{ section?: string }>;
+      if (!customEvent.detail?.section || customEvent.detail.section === 'experience') {
+        if (contextExperiences && contextExperiences.length > 0) {
+          setExperiences(
+            contextExperiences.map((e, idx) => ({
+              id: e.id || crypto.randomUUID(),
+              title: e.title || '',
+              company: e.company || '',
+              location: e.location || '',
+              startDate: e.startDate || '',
+              endDate: e.endDate || '',
+              description: e.description || '',
+              overview: e.overview || e.description || '',
+              bullets:
+                Array.isArray(e.bullets) && e.bullets.length > 0
+                  ? e.bullets
+                  : e.description
+                  ? e.description.split(/(?<=[.!?])\s+/).filter(Boolean)
+                  : [''],
+              tags: e.tags || [],
+              isActive: typeof e.isActive === 'boolean' ? e.isActive : idx === 0,
+              statusLabel: e.statusLabel || (idx === 0 ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
+              domainLabel: e.domainLabel || '',
+              logoUrl: e.logoUrl || '',
+              kanji: e.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原'),
+              kanjiSubtitle: e.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS'),
+              displayOrder: typeof e.displayOrder === 'number' ? e.displayOrder : idx,
+            })),
+          );
+        }
+        notifyClean();
+      }
+    };
+
+    window.addEventListener('portfolio-admin-discard', handleDiscard);
+    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
+  }, [contextExperiences]);
+
+  // Drag and drop handlers
+  const handleDragStart = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    setDraggedIdx(idx);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', String(idx));
+  };
+
+  const handleDragOver = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverIdx !== idx) {
+      setDragOverIdx(idx);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIdx(null);
+    setDragOverIdx(null);
+  };
+
+  const handleDrop = (targetIdx: number) => (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (draggedIdx === null || draggedIdx === targetIdx) {
+      setDraggedIdx(null);
+      setDragOverIdx(null);
+      return;
+    }
+
+    notifyDirty();
+    const copy = [...experiences];
+    const [moved] = copy.splice(draggedIdx, 1);
+    copy.splice(targetIdx, 0, moved);
+
+    const reordered = copy.map((item, i) => ({ ...item, displayOrder: i }));
+    setExperiences(reordered);
+    setDraggedIdx(null);
+    setDragOverIdx(null);
+    toast.success(`Moved "${moved.company || moved.title || 'Milestone'}" to position #${targetIdx + 1}`);
   };
 
   // Keyboard save listener
@@ -321,6 +404,13 @@ export const ExperienceEditor: React.FC = () => {
               canMoveUp={idx > 0}
               canMoveDown={idx < experiences.length - 1}
               onDelete={() => deleteEntry(exp.id)}
+              draggable={!isExpanded}
+              onDragStart={handleDragStart(idx)}
+              onDragOver={handleDragOver(idx)}
+              onDragEnd={handleDragEnd}
+              onDrop={handleDrop(idx)}
+              isDragging={draggedIdx === idx}
+              isOver={dragOverIdx === idx}
             >
               {/* 2-Column Responsive Layout */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 pt-2">

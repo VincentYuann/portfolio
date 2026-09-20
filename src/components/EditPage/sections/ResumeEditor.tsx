@@ -159,6 +159,25 @@ export const ResumeEditor: React.FC = () => {
     window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'resume' } }));
   };
 
+  // Discard listener: resets uploaded file and reloads latex from DB
+  useEffect(() => {
+    const handleDiscard = (e: Event) => {
+      const customEvent = e as CustomEvent<{ section?: string }>;
+      if (!customEvent.detail?.section || customEvent.detail.section === 'resume') {
+        setUploadedFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        fetchResumeLatex().then((content) => {
+          if (content) setLatex(content);
+          else setLatex(DEFAULT_LATEX_CV);
+        });
+        notifyClean();
+      }
+    };
+
+    window.addEventListener('portfolio-admin-discard', handleDiscard);
+    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
+  }, []);
+
   // Global save listener
   useEffect(() => {
     const handleGlobalSave = () => handleSave();

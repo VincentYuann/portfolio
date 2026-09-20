@@ -14,6 +14,7 @@ import {
   FileText,
   ArrowLeft,
   Save,
+  RotateCcw,
   LucideIcon,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -282,6 +283,24 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
+              {activeSectionIsDirty && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const confirmed = window.confirm(`Discard unsaved changes in ${activeSectionObj?.label || 'this section'}?`);
+                    if (!confirmed) return;
+                    window.dispatchEvent(new CustomEvent('portfolio-admin-discard', { detail: { section: activeSection } }));
+                    setDirtySections((prev) => ({ ...prev, [activeSection]: false }));
+                    toast.info(`Discarded unsaved changes in ${activeSectionObj?.shortLabel || 'section'}`);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg bg-light-surface dark:bg-dark-surface hover:bg-stone-200 dark:hover:bg-neutral-800 text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink border border-light-border dark:border-dark-border font-sans text-xs font-medium shadow-xs transition-colors cursor-pointer"
+                  title="Discard changes in this section and revert to saved data"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 shrink-0" />
+                  <span className="hidden sm:inline">Discard</span>
+                </button>
+              )}
+
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('portfolio-admin-save'))}

@@ -107,6 +107,32 @@ export const PhilosophyEditor: React.FC = () => {
     window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'philosophy' } }));
   };
 
+  // Discard listener: resets state from context
+  useEffect(() => {
+    const handleDiscard = (e: Event) => {
+      const customEvent = e as CustomEvent<{ section?: string }>;
+      if (!customEvent.detail?.section || customEvent.detail.section === 'philosophy') {
+        setOriginData(contextProfile?.origin_story || DEFAULT_ORIGIN_STORY);
+        if (Array.isArray(contextPillars)) {
+          setPillars(
+            contextPillars.map((p) => ({
+              position: p.position,
+              kanji: p.kanji || '',
+              romaji: p.romaji || '',
+              title: p.title || '',
+              tag: p.tag || '',
+              description: p.description || '',
+            })),
+          );
+        }
+        notifyClean();
+      }
+    };
+
+    window.addEventListener('portfolio-admin-discard', handleDiscard);
+    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
+  }, [contextProfile, contextPillars]);
+
   // Keyboard save listener
   useEffect(() => {
     const handleGlobalSave = () => handleSave();

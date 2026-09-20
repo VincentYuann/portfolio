@@ -114,6 +114,32 @@ export const IntroEditor: React.FC = () => {
     window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'intro' } }));
   };
 
+  // Discard listener: resets state from context
+  useEffect(() => {
+    const handleDiscard = (e: Event) => {
+      const customEvent = e as CustomEvent<{ section?: string }>;
+      if (!customEvent.detail?.section || customEvent.detail.section === 'intro') {
+        setData({
+          name: contextProfile?.name || '',
+          role: contextProfile?.role || '',
+          headline: contextProfile?.headline || '',
+          tagline: contextProfile?.tagline || '',
+          email: contextProfile?.email || '',
+          github: contextProfile?.github || '',
+          linkedin: contextProfile?.linkedin || '',
+          capability_pillars: Array.isArray(contextProfile?.capability_pillars)
+            ? contextProfile.capability_pillars
+            : [],
+          hanko_card: contextProfile?.hanko_card || DEFAULT_HANKO_CARD,
+        });
+        notifyClean();
+      }
+    };
+
+    window.addEventListener('portfolio-admin-discard', handleDiscard);
+    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
+  }, [contextProfile]);
+
   // Global save listener
   useEffect(() => {
     const handleGlobalSave = () => handleSave();
