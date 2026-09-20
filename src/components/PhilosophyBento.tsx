@@ -128,7 +128,7 @@ export const PhilosophyBento: React.FC = () => {
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
               Architectural Philosophy{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2">
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
                 哲学
               </span>
             </h2>
@@ -157,9 +157,9 @@ export const PhilosophyBento: React.FC = () => {
             return (
               <div
                 key={pillar.position || idx}
-                className="interactive-card bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-hidden group hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-all duration-300 hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame min-h-[280px]"
+                className="interactive-card bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-all duration-300 hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame min-h-[280px]"
               >
-                {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered card */}
+                {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered card (overflow-visible allows full circle bloom) */}
                 <EnsoOrbital placement="top-left" size={112} hoverOnly={true} />
 
                 {/* Corner Hairline Brackets */}

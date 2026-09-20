@@ -159,7 +159,7 @@ export const PhilosophyEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Philosophy & Architectural Pillars"
-        subtitle="Up to 3 core tenets mapping directly to the Japanese Bento on the homepage."
+        subtitle="Up to 3 core tenets mapped directly to the Japanese Bento on the homepage."
         saveState={saveState}
         onSave={handleSave}
         saveLabel="Save Pillars"
@@ -206,8 +206,8 @@ export const PhilosophyEditor: React.FC = () => {
 
               {/* Title & Tag */}
               <div>
-                <Label htmlFor={`pillar-${pillar.position}-title`} className="text-xs font-medium">
-                  Pillar Title *
+                <Label htmlFor={`pillar-${pillar.position}-title`} required>
+                  Pillar Title
                 </Label>
                 <Input
                   id={`pillar-${pillar.position}-title`}

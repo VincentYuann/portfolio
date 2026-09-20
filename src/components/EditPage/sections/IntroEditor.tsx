@@ -125,7 +125,7 @@ export const IntroEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Intro & Profile Identity"
-        subtitle="Manage hero narrative headline, biography tagline, and global contact links."
+        subtitle="Manage hero narrative headline, biography statement, and social links."
         saveState={saveState}
         onSave={handleSave}
         saveLabel="Save Profile"
@@ -143,7 +143,7 @@ export const IntroEditor: React.FC = () => {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="intro-name" className="text-xs font-medium">Display Name *</Label>
+              <Label htmlFor="intro-name" required>Display Name</Label>
               <Input
                 id="intro-name"
                 type="text"
@@ -154,7 +154,7 @@ export const IntroEditor: React.FC = () => {
               />
             </div>
             <div>
-              <Label htmlFor="intro-role" className="text-xs font-medium">Role Headline / Craft Specialization</Label>
+              <Label htmlFor="intro-role">Role Headline / Craft Specialization</Label>
               <Input
                 id="intro-role"
                 type="text"

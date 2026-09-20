@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Search, ExternalLink, Github, Filter, Layers } from 'lucide-react';
+import { ArrowLeft, Search, ExternalLink, Github, Layers, Calendar } from 'lucide-react';
 import { Project } from '../data/projects';
 import { ProjectDetailModal } from './ProjectDetailModal';
 import { EnsoOrbital } from './EnsoOrbital';
@@ -13,10 +13,7 @@ interface ProjectsPageProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
 }
 
-const CATEGORIES = ['All', 'Distributed Systems', 'Generative AI', 'Creative Tech', 'Full-Stack'] as const;
-
 export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const { projects } = useSiteData();
@@ -24,13 +21,14 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
   const allProjects = projects && projects.length > 0 ? projects : [];
 
   const filteredProjects = allProjects.filter((project) => {
-    const matchesCategory = selectedCategory === 'All' || project.category === selectedCategory;
     const matchesSearch =
+      !searchQuery.trim() ||
       project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    return matchesCategory && matchesSearch;
+    return matchesSearch;
   });
 
   return (
@@ -55,68 +53,48 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
 
       <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Detail Modal */}
-      <ProjectDetailModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
+        <ProjectDetailModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
 
-      {/* Header Section */}
-      <div className="mb-10 pb-6 border-b border-light-border dark:border-dark-border">
-        <button
-          onClick={() => onNavigate?.('home')}
-          className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors mb-4"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-          <span>Return to Portfolio</span>
-        </button>
+        {/* Header Section */}
+        <div className="mb-10 pb-6 border-b border-light-border dark:border-dark-border">
+          <button
+            onClick={() => onNavigate?.('home')}
+            className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors mb-4"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
+            <span>Return to Portfolio</span>
+          </button>
 
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <div className="flex items-center gap-3">
-              <HankoStamp className="h-7 w-7" />
-              <h1 className="font-serif text-3xl sm:text-4xl text-light-ink dark:text-dark-ink">
-                All Engineering Works
-              </h1>
-              <span className="font-serif text-sm text-terracotta dark:text-ochre">作品全集</span>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-3">
+                <HankoStamp className="h-7 w-7" />
+                <h1 className="font-serif text-3xl sm:text-4xl text-light-ink dark:text-dark-ink">
+                  All Engineering Works
+                </h1>
+                <span className="font-serif text-sm text-terracotta dark:text-ochre">作品全集</span>
+              </div>
+              <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-2xl font-light">
+                Archive of distributed microservices, generative AI runtimes, and contemplative computing interfaces.
+              </p>
             </div>
-            <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-2xl font-light">
-              Archive of distributed microservices, generative AI runtimes, and contemplative computing interfaces.
-            </p>
-          </div>
 
-          {/* Search Input */}
-          <div className="relative w-full md:w-72">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-light-ink-muted dark:text-dark-ink-muted" />
-            <input
-              type="text"
-              placeholder="Search systems, tags, stack..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-lg text-xs font-sans text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta transition-colors"
-            />
+            {/* Search Input */}
+            <div className="relative w-full md:w-80">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-light-ink-muted dark:text-dark-ink-muted" />
+              <input
+                type="text"
+                placeholder="Search projects, technologies, systems..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-lg text-xs font-sans text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta transition-colors"
+              />
+            </div>
           </div>
         </div>
-
-        {/* Category Filters */}
-        <div className="mt-6 flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-sans font-medium uppercase tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle mr-2 flex items-center gap-1">
-            <Filter className="w-3 h-3" /> Filter:
-          </span>
-          {CATEGORIES.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-3 py-1.5 rounded-full text-xs font-sans transition-all duration-200 ${
-                selectedCategory === category
-                  ? 'bg-terracotta text-white font-medium shadow-xs'
-                  : 'bg-light-surface-muted/90 dark:bg-dark-surface/90 text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink border border-light-border dark:border-dark-border'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Projects Grid: Compact Widgets */}
       {filteredProjects.length === 0 ? (
@@ -126,16 +104,15 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             No projects matched your criteria
           </h3>
           <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
-            Try adjusting your search keywords or resetting the category filter.
+            Try adjusting your search keywords or clearing your query.
           </p>
           <button
             onClick={() => {
-              setSelectedCategory('All');
               setSearchQuery('');
             }}
-            className="mt-4 px-4 py-2 bg-terracotta text-white text-xs font-sans rounded-md"
+            className="mt-4 px-4 py-2 bg-terracotta hover:bg-terracotta/90 text-white text-xs font-sans rounded-md transition-colors"
           >
-            Reset Filters
+            Clear Search
           </button>
         </div>
       ) : (
@@ -173,10 +150,26 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                   </div>
                 </div>
 
-                {/* Category & Title */}
-                <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-terracotta font-semibold">
-                    {project.category}
+                {/* Timeline Strip: Dates + Active Status Badge */}
+                <div className="flex flex-wrap items-center justify-between gap-1.5 mb-2">
+                  <span className="font-mono text-[11px] text-terracotta font-semibold tracking-wider uppercase flex items-center gap-1">
+                    <Calendar className="w-3 h-3 text-terracotta" />
+                    {project.startDate || '2024'} — {project.endDate || (project.isActive ? 'Present' : 'Completed')}
+                  </span>
+
+                  <span
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-mono text-[9px] font-bold uppercase tracking-wider ${
+                      project.isActive
+                        ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-[#ff7d63]'
+                        : 'bg-stone-100 dark:bg-[#20222a] border border-stone-300 dark:border-[#383b47] text-stone-600 dark:text-stone-400'
+                    }`}
+                  >
+                    <span
+                      className={`w-1 h-1 rounded-full ${
+                        project.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
+                      }`}
+                    />
+                    <span>{project.isActive ? 'ACTIVE' : 'COMPLETED'}</span>
                   </span>
                 </div>
 
@@ -184,7 +177,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                   {project.title}
                 </h3>
 
-                <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed line-clamp-2 mt-2 mb-4 font-light">
+                <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed line-clamp-2 mt-1.5 mb-4 font-light">
                   {project.description}
                 </p>
               </div>

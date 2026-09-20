@@ -186,7 +186,7 @@ export const ResumeEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Resume & Curriculum Vitae"
-        subtitle="Upload your compiled PDF document or write and edit raw LaTeX source code."
+        subtitle="Manage compiled PDF documents and synchronize live LaTeX source code."
         saveState={saveState}
         onSave={handleSave}
         saveLabel={tab === 'upload' ? 'Save & Publish PDF' : 'Save LaTeX Code'}
@@ -230,7 +230,7 @@ export const ResumeEditor: React.FC = () => {
                   {uploadedFile.name}
                 </p>
                 <p className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5">
-                  {(uploadedFile.size / 1024).toFixed(1)} KB · Ready to save to Supabase Storage
+                  {(uploadedFile.size / 1024).toFixed(1)} KB · Ready to sync with Supabase Storage
                 </p>
               </div>
               <Button
@@ -263,17 +263,17 @@ export const ResumeEditor: React.FC = () => {
               <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta transition-colors" />
               <div className="text-center">
                 <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink font-medium">
-                  Click or drag your PDF / .tex file here
+                  Click or drag PDF / .tex file here
                 </p>
                 <p className="font-sans text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
-                  Accepts .pdf, .tex, .txt up to 10 MB (Stored in Supabase Storage)
+                  Accepts .pdf, .tex, .txt up to 10 MB
                 </p>
               </div>
             </div>
           )}
 
           <p className="mt-3.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-            Uploading a <code className="font-mono bg-light-surface dark:bg-dark-surface px-1 py-0.5 rounded border border-light-border dark:border-dark-border">.tex</code> file will populate the LaTeX editor for direct code modification.
+            Uploading a <code className="font-mono bg-light-surface dark:bg-dark-surface px-1 py-0.5 rounded border border-light-border dark:border-dark-border">.tex</code> file will populate the LaTeX editor directly.
           </p>
         </div>
       )}

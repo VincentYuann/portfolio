@@ -112,11 +112,21 @@ function mapRowToProject(row: any, index?: number): Project {
     ? row.display_order
     : (index ?? 0);
 
+  const isActive = typeof row.is_active === 'boolean'
+    ? row.is_active
+    : typeof row.isActive === 'boolean'
+    ? row.isActive
+    : (row.end_date?.toLowerCase().includes('present') || row.endDate?.toLowerCase().includes('present') || false);
+
+  const startDate = row.start_date || row.startDate || '';
+  const endDate = row.end_date || row.endDate || '';
+  const statusLabel = row.status_label || row.statusLabel || (isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了');
+
   return {
     id,
     title,
     kanji: row.kanji || '',
-    category: row.category || 'Distributed Systems',
+    category: row.category || undefined,
     badge: row.badge || '',
     subtitle: row.subtitle || summary,
     description: summary,
@@ -125,6 +135,10 @@ function mapRowToProject(row: any, index?: number): Project {
     metrics: Array.isArray(row.metrics) ? row.metrics : [],
     overview: row.overview || summary,
     bullets,
+    startDate,
+    endDate,
+    isActive,
+    statusLabel,
     links: {
       github: row.github_link || row.links?.github || '',
       live: row.live_link || row.links?.live || '',

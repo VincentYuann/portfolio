@@ -81,16 +81,16 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                 <ListChecks className="w-4 h-4 text-terracotta" />
                 <span>Key Architectural Highlights</span>
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {project.bullets.map((point, idx) => (
                   <li
                     key={idx}
-                    className="p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/50 dark:bg-dark-surface-card/50 flex items-start gap-3"
+                    className="p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/70 dark:bg-dark-surface-card/70 hover:border-terracotta/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-all flex items-start gap-3 shadow-2xs group"
                   >
-                    <span className="font-mono text-xs text-terracotta font-semibold shrink-0 mt-0.5">
+                    <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-terracotta dark:text-[#ff7d63] bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-0.5 shrink-0 select-none shadow-[0_0_8px_rgba(200,60,35,0.15)] mt-0.5">
                       #{String(idx + 1).padStart(2, '0')}
                     </span>
-                    <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed">
+                    <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
                       {point}
                     </span>
                   </li>

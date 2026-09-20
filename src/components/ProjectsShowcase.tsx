@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Project } from '../data/projects';
-import { ArrowRight, Layers, Github, ExternalLink } from 'lucide-react';
+import { ArrowRight, Layers, Github, ExternalLink, Calendar } from 'lucide-react';
 import { ProjectDetailModal } from './ProjectDetailModal';
 import { EnsoOrbital } from './EnsoOrbital';
 import { TechTag } from './TechTag';
 import { CornerBrackets } from './CornerBrackets';
+import { Badge } from './ui/badge';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { useSiteData } from '../context/SiteDataContext';
 
@@ -82,7 +83,10 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
               </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
-              Featured Works <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2">主な作品</span>
+              Featured Works{' '}
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
+                主な作品
+              </span>
             </h2>
           </div>
 
@@ -109,6 +113,8 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
         <div className="flex flex-col space-y-6 sm:space-y-8">
           {displayedProjects.map((project, index) => {
             const isAlternate = index % 2 === 1;
+            const isCurrent = typeof project.isActive === 'boolean' ? project.isActive : index === 0;
+
             return (
               <article
                 key={project.id}
@@ -150,12 +156,43 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       isAlternate ? 'lg:col-start-1' : ''
                     }`}
                   >
+                    {/* Unified Metadata Strip: Order + Date + Active Status Pill */}
                     <div>
-                      <div className="flex items-center justify-between gap-4 mb-2">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                        <Badge variant="terracotta" className="font-mono text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5">
+                          #{String(index + 1).padStart(2, '0')}
+                        </Badge>
+
+                        {(project.startDate || project.endDate) && (
+                          <span className="font-mono text-xs text-terracotta font-semibold tracking-wider uppercase flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-terracotta" />
+                            {project.startDate || '2024'} — {project.endDate || (isCurrent ? 'Present' : 'Completed')}
+                          </span>
+                        )}
+
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                            isCurrent
+                              ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63] dark:shadow-[0_0_10px_rgba(200,60,35,0.25)]'
+                              : 'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#20222a] dark:border-[#383b47] dark:text-stone-400'
+                          }`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              isCurrent
+                                ? 'bg-terracotta shadow-[0_0_6px_rgba(200,60,35,0.8)] animate-pulse'
+                                : 'bg-stone-400 dark:bg-neutral-500'
+                            }`}
+                          />
+                          <span>{isCurrent ? 'ACTIVE / 稼働中' : 'COMPLETED'}</span>
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-4 mb-1">
                         <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta transition-colors duration-200">
                           {project.title}
                         </h3>
-                        <span className="font-serif text-lg text-terracotta dark:text-ochre">
+                        <span className="font-serif text-lg text-terracotta dark:text-ochre shrink-0">
                           {project.kanji}
                         </span>
                       </div>

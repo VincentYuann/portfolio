@@ -3,6 +3,7 @@ import {
   Star,
   Github,
   ExternalLink,
+  Calendar,
 } from 'lucide-react';
 import { supabase, formatErrorMessage, uploadProjectImage } from '../../../lib/supabase';
 import { useSiteData } from '../../../context/SiteDataContext';
@@ -21,7 +22,10 @@ export interface ProjectEntry {
   id: string;
   title: string;
   subtitle: string;
-  category: string;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  statusLabel: string;
   summary: string;
   overview: string;
   kanji: string;
@@ -35,18 +39,14 @@ export interface ProjectEntry {
   displayOrder: number;
 }
 
-const CATEGORIES = [
-  'Distributed Systems',
-  'Generative AI',
-  'Creative Tech',
-  'Full-Stack',
-] as const;
-
 const newProject = (order: number = 0): ProjectEntry => ({
   id: crypto.randomUUID(),
   title: '',
   subtitle: '',
-  category: 'Distributed Systems',
+  startDate: '',
+  endDate: '',
+  isActive: order === 0,
+  statusLabel: order === 0 ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了',
   summary: '',
   overview: '',
   kanji: '案',
@@ -70,7 +70,10 @@ export const ProjectsEditor: React.FC = () => {
         id: p.id || crypto.randomUUID(),
         title: p.title || '',
         subtitle: p.subtitle || '',
-        category: p.category || 'Distributed Systems',
+        startDate: p.startDate || '',
+        endDate: p.endDate || '',
+        isActive: typeof p.isActive === 'boolean' ? p.isActive : idx === 0,
+        statusLabel: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
         summary: p.description || '',
         overview: p.overview || p.description || '',
         kanji: p.kanji || '案',
@@ -99,7 +102,10 @@ export const ProjectsEditor: React.FC = () => {
           id: p.id || crypto.randomUUID(),
           title: p.title || '',
           subtitle: p.subtitle || '',
-          category: p.category || 'Distributed Systems',
+          startDate: p.startDate || '',
+          endDate: p.endDate || '',
+          isActive: typeof p.isActive === 'boolean' ? p.isActive : idx === 0,
+          statusLabel: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
           summary: p.description || '',
           overview: p.overview || p.description || '',
           kanji: p.kanji || '案',
@@ -214,7 +220,10 @@ export const ProjectsEditor: React.FC = () => {
         id: p.id,
         title: p.title || `Project ${idx + 1}`,
         subtitle: p.subtitle || '',
-        category: p.category || 'Distributed Systems',
+        start_date: p.startDate || '',
+        end_date: p.endDate || '',
+        is_active: p.isActive,
+        status_label: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
         summary: p.summary || '',
         description: p.summary || '',
         overview: p.overview || p.summary || '',
@@ -247,7 +256,6 @@ export const ProjectsEditor: React.FC = () => {
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
-
   const handleUploadImageFile = async (projectId: string, file: File): Promise<string | null> => {
     try {
       const url = await uploadProjectImage(file);
@@ -268,7 +276,7 @@ export const ProjectsEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Projects & Works"
-        subtitle="Curate engineering projects, technical architectures, and live showcases."
+        subtitle="Curate systems, engineering case studies, and live demonstrations."
         saveState={saveState}
         onSave={handleSaveAll}
         saveLabel="Save All Projects"
@@ -304,7 +312,7 @@ export const ProjectsEditor: React.FC = () => {
               key={project.id}
               ordinal={originalIdx + 1}
               title={project.title}
-              subtitle={project.category ? `${project.category} · ${project.subtitle || 'No subtitle'}` : project.subtitle}
+              subtitle={`${project.startDate || 'Start'} — ${project.endDate || (project.isActive ? 'Present' : 'Completed')}${project.subtitle ? ` · ${project.subtitle}` : ''}`}
               badge={
                 <div className="flex items-center gap-1.5">
                   <button
@@ -323,8 +331,20 @@ export const ProjectsEditor: React.FC = () => {
                     <Star className={`w-3 h-3 ${project.isFeatured ? 'fill-ochre text-ochre' : ''}`} />
                     <span>{project.isFeatured ? 'Featured' : 'Archive'}</span>
                   </button>
-                  <span className="hidden sm:inline-block font-mono text-[10px] px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted border border-light-border dark:border-dark-border">
-                    {project.category}
+
+                  <span
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-mono text-[10px] font-semibold uppercase tracking-wider ${
+                      project.isActive
+                        ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63]'
+                        : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'
+                    }`}
+                  >
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        project.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
+                      }`}
+                    />
+                    <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED'}</span>
                   </span>
                 </div>
               }
@@ -341,13 +361,13 @@ export const ProjectsEditor: React.FC = () => {
               canMoveDown={originalIdx < projects.length - 1}
               onDelete={() => deleteProject(project.id)}
             >
-              {/* 2-Column Responsive Layout (md:grid-cols-12 for optimal tablet/desktop flow) */}
+              {/* 2-Column Responsive Layout */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 pt-2">
                 {/* Left Column (Metadata & Identity) */}
                 <div className="md:col-span-5 space-y-4">
                   <div>
-                    <Label htmlFor={`proj-${project.id}-title`} className="text-xs font-medium">
-                      Project Title *
+                    <Label htmlFor={`proj-${project.id}-title`} required>
+                      Project Title
                     </Label>
                     <Input
                       id={`proj-${project.id}-title`}
@@ -359,8 +379,8 @@ export const ProjectsEditor: React.FC = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor={`proj-${project.id}-sub`} className="text-xs font-medium">
-                      Subtitle / Role Headline
+                    <Label htmlFor={`proj-${project.id}-sub`}>
+                      Subtitle / Technical Focus
                     </Label>
                     <Input
                       id={`proj-${project.id}-sub`}
@@ -371,28 +391,56 @@ export const ProjectsEditor: React.FC = () => {
                     />
                   </div>
 
+                  {/* Dates & Active Status */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <Label htmlFor={`proj-${project.id}-start`} className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-light-ink-muted" />
+                        <span>Start Date</span>
+                      </Label>
+                      <Input
+                        id={`proj-${project.id}-start`}
+                        value={project.startDate}
+                        onChange={(e) => updateProject(project.id, { startDate: e.target.value })}
+                        placeholder="e.g. May 2024"
+                        className="mt-1 text-xs font-mono"
+                      />
+                    </div>
+
+                    <div className="flex flex-col justify-end">
+                      <label className="flex items-center gap-2 p-2 rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={project.isActive}
+                          onChange={(e) => updateProject(project.id, { isActive: e.target.checked })}
+                          className="rounded text-terracotta focus:ring-terracotta h-4 w-4"
+                        />
+                        <span className="text-xs font-medium text-light-ink dark:text-dark-ink">
+                          Active / In Progress
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+
                   <div>
-                    <Label htmlFor={`proj-${project.id}-cat`} className="text-xs font-medium">
-                      Category
+                    <Label htmlFor={`proj-${project.id}-end`} className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-light-ink-muted" />
+                      <span>End Date</span>
                     </Label>
-                    <select
-                      id={`proj-${project.id}-cat`}
-                      value={project.category}
-                      onChange={(e) => updateProject(project.id, { category: e.target.value })}
-                      className="mt-1 w-full h-8.5 px-3 rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink focus:border-terracotta focus:outline-none"
-                    >
-                      {CATEGORIES.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
+                    <Input
+                      id={`proj-${project.id}-end`}
+                      value={project.endDate}
+                      disabled={project.isActive}
+                      onChange={(e) => updateProject(project.id, { endDate: e.target.value })}
+                      placeholder={project.isActive ? 'Present (Active)' : 'e.g. Dec 2024'}
+                      className="mt-1 text-xs font-mono disabled:opacity-60"
+                    />
                   </div>
 
                   {/* GitHub & Live Links */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <Label htmlFor={`proj-${project.id}-gh`} className="text-xs font-medium flex items-center gap-1">
+                      <Label htmlFor={`proj-${project.id}-gh`} className="flex items-center gap-1">
                         <Github className="w-3 h-3 text-light-ink-muted" />
                         <span>GitHub Link</span>
                       </Label>
@@ -407,7 +455,7 @@ export const ProjectsEditor: React.FC = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor={`proj-${project.id}-live`} className="text-xs font-medium flex items-center gap-1">
+                      <Label htmlFor={`proj-${project.id}-live`} className="flex items-center gap-1">
                         <ExternalLink className="w-3 h-3 text-light-ink-muted" />
                         <span>Live Demo URL</span>
                       </Label>
@@ -436,7 +484,7 @@ export const ProjectsEditor: React.FC = () => {
                 {/* Right Column (Narrative & Architecture Highlights) */}
                 <div className="md:col-span-7 space-y-5">
                   <div>
-                    <Label htmlFor={`proj-${project.id}-desc`} className="text-xs font-medium">
+                    <Label htmlFor={`proj-${project.id}-desc`}>
                       Executive Overview &amp; Narrative Summary
                     </Label>
                     <Textarea
@@ -449,7 +497,7 @@ export const ProjectsEditor: React.FC = () => {
                           overview: e.target.value,
                         })
                       }
-                      placeholder="High-level engineering narrative explaining why this project was built and the core architectural problem solved…"
+                      placeholder="Concise overview of the system architecture, core engineering decisions, and problems solved…"
                       className="mt-1 text-xs leading-relaxed"
                     />
                   </div>

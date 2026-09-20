@@ -152,8 +152,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
               </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
-              Staff &amp; Principal Systems Milestones{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2">
+              Work &amp; Milestones{' '}
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
                 職歴
               </span>
             </h2>
@@ -378,16 +378,18 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                                   <ListChecks className="w-3.5 h-3.5 text-terracotta" />
                                   Engineering Contributions &amp; Quantified Impact
                                 </div>
-                                <ul className="space-y-2">
+                                <ul className="space-y-2.5">
                                   {bullets.map((pt, pIdx) => (
                                     <li
                                       key={pIdx}
-                                      className="flex items-start gap-2.5 font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal"
+                                      className="p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/60 dark:bg-dark-surface-card/60 hover:border-terracotta/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet"
                                     >
-                                      <span className="text-terracotta text-xs sm:text-sm select-none shrink-0 mt-0.5">
-                                        ⊘
+                                      <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-terracotta dark:text-[#ff7d63] bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-0.5 shrink-0 select-none shadow-[0_0_8px_rgba(200,60,35,0.15)] mt-0.5">
+                                        #{String(pIdx + 1).padStart(2, '0')}
                                       </span>
-                                      <span>{pt}</span>
+                                      <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
+                                        {pt}
+                                      </span>
                                     </li>
                                   ))}
                                 </ul>

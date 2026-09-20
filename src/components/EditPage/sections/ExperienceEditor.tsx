@@ -242,7 +242,7 @@ export const ExperienceEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Career Trajectory & Experience"
-        subtitle="Manage professional milestones, engineering achievements, and technical roles."
+        subtitle="Manage professional roles, engineering achievements, and technical milestones."
         saveState={saveState}
         onSave={handleSaveAll}
         saveLabel="Save All Milestones"
@@ -295,8 +295,8 @@ export const ExperienceEditor: React.FC = () => {
                 {/* Left Column (Role Metadata & Dates) */}
                 <div className="md:col-span-5 space-y-4">
                   <div>
-                    <Label htmlFor={`exp-${exp.id}-company`} className="text-xs font-medium">
-                      Company / Organization *
+                    <Label htmlFor={`exp-${exp.id}-company`} required>
+                      Company / Organization
                     </Label>
                     <Input
                       id={`exp-${exp.id}-company`}
@@ -308,8 +308,8 @@ export const ExperienceEditor: React.FC = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor={`exp-${exp.id}-title`} className="text-xs font-medium">
-                      Role Title *
+                    <Label htmlFor={`exp-${exp.id}-title`} required>
+                      Role Title
                     </Label>
                     <Input
                       id={`exp-${exp.id}-title`}
