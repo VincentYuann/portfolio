@@ -174,20 +174,20 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center p-0.5 rounded-full bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[10px] sm:text-[11px] select-none shrink-0 shadow-2xs">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
                 theme === 'day'
-                  ? 'bg-light-surface text-light-ink shadow-sm'
+                  ? 'bg-light-surface-raised text-light-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
               }`}
               title="Day Mode"
               aria-label="Switch to Day Mode"
             >
-              <Sun className="w-3 h-3" />
+              <Sun className={`w-3 h-3 transition-transform duration-300 ${theme === 'day' ? 'rotate-0 scale-105 text-ochre' : '-rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
               <span className="hidden sm:inline">DAY</span>
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
                 theme === 'night'
                   ? 'bg-dark-surface-raised text-dark-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -195,7 +195,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Night Mode"
               aria-label="Switch to Night Mode"
             >
-              <Moon className="w-3 h-3" />
+              <Moon className={`w-3 h-3 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 scale-105 text-terracotta' : 'rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
               <span className="hidden sm:inline">NIGHT</span>
             </button>
           </div>

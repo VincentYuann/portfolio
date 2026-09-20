@@ -259,19 +259,25 @@
   border-color: rgb(var(--color-terracotta-rgb) / 0.28);
 }
 
-/* Corner Hairline Brackets interactive highlights */
+/* Corner Hairline Brackets interactive highlights (supports both .interactive-card and .group) */
 .corner-bracket {
-  transition: border-color 0.35s ease, transform 0.35s ease;
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, border-color;
 }
 
-.interactive-card:hover .corner-bracket {
+.interactive-card:hover .corner-bracket,
+.group:hover .corner-bracket {
   border-color: rgb(var(--color-terracotta-rgb)) !important;
 }
 
-.interactive-card:hover .corner-bracket-tl { transform: translate(-2px, -2px); }
-.interactive-card:hover .corner-bracket-tr { transform: translate(2px, -2px); }
-.interactive-card:hover .corner-bracket-bl { transform: translate(-2px, 2px); }
-.interactive-card:hover .corner-bracket-br { transform: translate(2px, 2px); }
+.interactive-card:hover .corner-bracket-tl,
+.group:hover .corner-bracket-tl { transform: translate(-2px, -2px); }
+.interactive-card:hover .corner-bracket-tr,
+.group:hover .corner-bracket-tr { transform: translate(2px, -2px); }
+.interactive-card:hover .corner-bracket-bl,
+.group:hover .corner-bracket-bl { transform: translate(-2px, 2px); }
+.interactive-card:hover .corner-bracket-br,
+.group:hover .corner-bracket-br { transform: translate(2px, 2px); }
 
 /* Kanji Accent Glow on hover */
 .pillar-kanji {
@@ -478,6 +484,38 @@
 .yarl__thumbnails_thumbnail_active {
   border-color: #C83C23 !important;
   box-shadow: 0 0 0 2px rgba(200, 60, 35, 0.4) !important;
+}
+
+/* ==============================================================================
+   Zen View Transition (Smooth & Lightweight Continuity)
+   ============================================================================== */
+@keyframes view-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-view-enter {
+  animation: view-enter 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ==============================================================================
+   Accessibility: Reduced Motion Guard
+   ============================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 

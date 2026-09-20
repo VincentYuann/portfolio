@@ -83,22 +83,22 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="absolute right-1/2 bottom-12 w-1 h-1 rounded-full bg-light-ink-muted/30 dark:bg-[#edeae4]/35 mote-3 blur-[0.5px] z-20" />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Main Content Column (8 cols) */}
-          <div className="lg:col-span-8 flex flex-col space-y-6 pt-2">
-            {/* Display Headline */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink leading-[1.14] tracking-tight font-medium">
+          <div className="lg:col-span-8 flex flex-col space-y-5 sm:space-y-6 pt-1 sm:pt-2">
+            {/* Display Headline: Bold Editorial Serifs with High Contrast */}
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink leading-[1.14] sm:leading-[1.12] tracking-tight font-bold text-balance">
               {headline}
             </h1>
 
             {/* Narrative Paragraph */}
-            <p className="font-sans text-base sm:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed">
+            <p className="font-sans text-sm sm:text-base lg:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed font-light">
               {tagline}
             </p>
 
             {/* CTA Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
+            <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
               <a
                 href="#featured-works"
                 onClick={(e) => {
@@ -107,7 +107,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                     onNavigate('home', 'featured-works');
                   }
                 }}
-                className="btn-bloom group inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs sm:text-sm font-medium rounded-md shadow-sm transition-all duration-200 cursor-pointer"
+                className="btn-bloom group inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs sm:text-sm font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer shrink-0"
               >
                 <span className="sm:hidden">Explore Works</span>
                 <span className="hidden sm:inline">Explore Selected Works</span>
@@ -121,7 +121,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                     onNavigate('resume');
                   }
                 }}
-                className="group inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/40 text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-md shadow-xs transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                className="group inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-[#2D3039] hover:border-terracotta/40 text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-lg shadow-xs transition-all duration-200 hover:-translate-y-0.5 cursor-pointer shrink-0"
               >
                 <span className="sm:hidden">View Resume</span>
                 <span className="hidden sm:inline">View Resume & CV</span>
@@ -129,55 +129,62 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               </a>
             </div>
 
-            {/* Tech Capabilities Ribbon */}
+            {/* Tech Capabilities Ribbon: Bold Monospace Categories + Wrap on Mobile so Nothing is Hidden */}
             {capabilityPillars.length > 0 && (
-              <div className="pt-2 flex flex-wrap items-center gap-2 sm:gap-2.5 text-light-ink-muted dark:text-dark-ink-muted">
-                <span className="font-sans text-[10px] font-semibold uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle mr-0.5 hidden sm:inline">
-                  DOMAINS:
-                </span>
-                {capabilityPillars.map((pillar) => {
-                  const tags = parsePillarTags(pillar);
+              <div className="pt-2 sm:pt-3 w-full">
+                <div className="flex items-center gap-2 mb-2 sm:mb-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-terracotta animate-pulse" />
+                  <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle">
+                    CORE DOMAINS · 専門領域
+                  </span>
+                </div>
 
-                  return (
-                    <div
-                      key={pillar.label}
-                      className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border/80 dark:border-[#2D3039] hover:border-terracotta/40 transition-colors shadow-2xs"
-                    >
-                      <span className="font-mono text-[10px] font-semibold text-terracotta uppercase tracking-wider shrink-0">
-                        {pillar.label}
-                      </span>
-                      <span className="text-light-ink-subtle/70 dark:text-dark-ink-subtle/70 text-xs shrink-0">/</span>
-                      {tags.length > 0 ? (
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          {tags.map((tag) => (
-                            <TechTag
-                              key={tag}
-                              tag={tag}
-                              size="sm"
-                              className="border-light-border/50 dark:border-dark-border/50 bg-light-surface/70 dark:bg-dark-surface-card/70"
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <span className="font-sans text-[11px] sm:text-xs text-light-ink dark:text-dark-ink font-medium">
-                          {pillar.items}
+                {/* Clean Wrapping Ribbon on all screen sizes */}
+                <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                  {capabilityPillars.map((pillar) => {
+                    const tags = parsePillarTags(pillar);
+
+                    return (
+                      <div
+                        key={pillar.label}
+                        className="inline-flex flex-wrap items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-xs border border-light-border/80 dark:border-[#2D3039] hover:border-terracotta/40 transition-colors shadow-2xs"
+                      >
+                        <span className="font-mono text-[10px] sm:text-[11px] font-bold text-terracotta uppercase tracking-wider shrink-0">
+                          {pillar.label}
                         </span>
-                      )}
-                    </div>
-                  );
-                })}
+                        <span className="text-light-ink-subtle/50 dark:text-dark-ink-subtle/50 text-xs shrink-0 font-mono">/</span>
+                        {tags.length > 0 ? (
+                          <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
+                            {tags.map((tag) => (
+                              <TechTag
+                                key={tag}
+                                tag={tag}
+                                size="sm"
+                                className="border-light-border/40 dark:border-dark-border/40 bg-light-surface dark:bg-[#16171D] text-[10px]"
+                              />
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="font-sans text-[11px] sm:text-xs text-light-ink dark:text-dark-ink font-medium">
+                            {pillar.items}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
 
           {/* Right Column: Classical Seal Showcase Box (4 cols) with Double Hairline Frame & Ensō Background */}
-          <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-between self-stretch pt-4 sm:pt-6 lg:pt-0 relative">
+          <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-between self-stretch pt-2 sm:pt-4 lg:pt-0 relative">
             {/* Authentic Sumi-e Bamboo Art Floating Beside Seal Box with Gentle Sway */}
             <div className="absolute -left-14 -top-12 hidden lg:block pointer-events-none -z-0">
               <BambooArt className="w-40 h-56" sway={true} opacity={0.75} />
             </div>
 
-            <div className="relative z-10 w-full max-w-sm bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-md border border-light-border dark:border-dark-border classical-card-frame p-4 sm:p-6 rounded-xl shadow-sm hover:shadow-akari dark:hover:shadow-night-glow hover:border-terracotta/40 dark:hover:border-terracotta/40 flex flex-col items-center text-center transition-all duration-300 group overflow-visible">
+            <div className="relative z-10 w-full max-w-sm bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-md border border-light-border dark:border-dark-border classical-card-frame p-4 sm:p-5 lg:p-6 rounded-xl shadow-sm hover:shadow-akari dark:hover:shadow-night-glow hover:border-terracotta/40 dark:hover:border-terracotta/40 flex flex-col items-center text-center transition-all duration-300 group overflow-visible">
               {/* Celestial Ensō Orbital Circle */}
               <EnsoOrbital placement="top-left" size={136} interactive={true} />
 
@@ -216,19 +223,19 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 <div className="flex items-center justify-center gap-5 sm:gap-6 w-full">
                   <div
                     title={hankoLines[0].tooltip || hankoLines[0].label}
-                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-85 min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
+                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-85 min-h-[128px] sm:min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
                   >
                     {hankoLines[0].text}
                   </div>
                   <div
                     title={hankoLines[1].tooltip || hankoLines[1].label}
-                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-terracotta font-medium min-h-[148px] leading-relaxed hover:scale-105 transition-transform cursor-default whitespace-nowrap select-none"
+                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-terracotta font-medium min-h-[128px] sm:min-h-[148px] leading-relaxed hover:scale-105 transition-transform cursor-default whitespace-nowrap select-none"
                   >
                     {hankoLines[1].text}
                   </div>
                   <div
                     title={hankoLines[2].tooltip || hankoLines[2].label}
-                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-70 min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
+                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-70 min-h-[128px] sm:min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
                   >
                     {hankoLines[2].text}
                   </div>
@@ -238,11 +245,11 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                   <span>{hankoLines[1].label}</span>
                   <span>{hankoLines[2].label}</span>
                 </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 };
