@@ -20,8 +20,13 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleRemove = (tagToRemove: string) => {
-    onChange(tags.filter((t) => t !== tagToRemove));
+  // Clean and filter out corrupt Unicode replacement characters (U+FFFD), empty tokens, or punctuation
+  const cleanTags = tags.filter(
+    (t) => Boolean(t && t.trim() && !t.includes('\uFFFD') && !/^[\s·,・•|/]+$/.test(t))
+  );
+
+  const handleRemove = (indexToRemove: number) => {
+    onChange(cleanTags.filter((_, idx) => idx !== indexToRemove));
   };
 
   return (
@@ -44,15 +49,15 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
       </div>
 
       <div className="flex flex-wrap gap-1.5 min-h-[38px] p-2.5 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border dark:border-dark-border items-center">
-        {tags.map((tag) => (
+        {cleanTags.map((tag, idx) => (
           <span
-            key={tag}
+            key={`${tag}-${idx}`}
             className="inline-flex items-center gap-1 group bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/50 rounded-md pr-1.5 shadow-2xs transition-colors"
           >
             <TechTag tag={tag} size="sm" className="border-0 shadow-none bg-transparent dark:bg-transparent" />
             <button
               type="button"
-              onClick={() => handleRemove(tag)}
+              onClick={() => handleRemove(idx)}
               className="text-light-ink-subtle hover:text-red-500 transition-colors p-0.5 cursor-pointer"
               aria-label={`Remove ${tag}`}
             >
@@ -61,7 +66,7 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
           </span>
         ))}
 
-        {tags.length === 0 && (
+        {cleanTags.length === 0 && (
           <button
             type="button"
             onClick={() => setModalOpen(true)}

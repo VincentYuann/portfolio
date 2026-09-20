@@ -4,7 +4,7 @@ import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
 import { HankoStamp } from './HankoStamp';
 import { TechTag } from './TechTag';
-import { useSiteData } from '../context/SiteDataContext';
+import { useSiteData, parsePillarTags } from '../context/SiteDataContext';
 
 interface HeroProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
@@ -134,9 +134,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                   DOMAINS:
                 </span>
                 {capabilityPillars.map((pillar) => {
-                  const tags = Array.isArray(pillar.tags) && pillar.tags.length > 0
-                    ? pillar.tags
-                    : (pillar.items ? pillar.items.split(/[\s·,]+/).map((s) => s.trim()).filter(Boolean) : []);
+                  const tags = parsePillarTags(pillar);
 
                   return (
                     <div
@@ -206,15 +204,31 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               </div>
 
               {/* Vertical Tategaki Japanese Prose snippet */}
-              <div className="w-full mt-3 sm:mt-4 pt-3 sm:pt-4 bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70 rounded-md p-3 sm:p-4 flex items-center justify-center gap-5 sm:gap-6 group-hover:border-terracotta/30 transition-colors duration-300 relative z-10">
-                <div className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-85 h-28 sm:h-32 leading-relaxed hover:opacity-100 transition-opacity cursor-default">
-                  間と余白の美学
+              <div className="w-full mt-3 sm:mt-4 pt-3 sm:pt-4 bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70 rounded-md p-3 sm:p-4 flex flex-col items-center justify-center group-hover:border-terracotta/30 transition-colors duration-300 relative z-10">
+                <div className="flex items-center justify-center gap-5 sm:gap-6 w-full">
+                  <div
+                    title="Aesthetics of Negative Space (Ma)"
+                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-85 min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
+                  >
+                    間と余白の美学
+                  </div>
+                  <div
+                    title="Silence and Simple Harmony (Wa)"
+                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-terracotta font-medium min-h-[148px] leading-relaxed hover:scale-105 transition-transform cursor-default whitespace-nowrap select-none"
+                  >
+                    静寂と簡素な調和
+                  </div>
+                  <div
+                    title="Artisan Precision and Joinery (Shokunin)"
+                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-70 min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
+                  >
+                    職人の精緻な組手
+                  </div>
                 </div>
-                <div className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-terracotta font-medium h-28 sm:h-32 leading-relaxed hover:scale-105 transition-transform cursor-default">
-                  静寂と簡素な調和
-                </div>
-                <div className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-70 h-28 sm:h-32 leading-relaxed hover:opacity-100 transition-opacity cursor-default">
-                  職人の精緻な組手
+                <div className="mt-2.5 pt-2 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[10px] font-mono tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle uppercase px-1">
+                  <span>MA · 間</span>
+                  <span>WA · 調和</span>
+                  <span>CRAFT · 職人</span>
                 </div>
               </div>
             </div>

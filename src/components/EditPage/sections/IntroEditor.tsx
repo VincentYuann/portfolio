@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, User, Globe, Mail, Github, Linkedin } from 'lucide-react';
 import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
-import { useSiteData, CapabilityPillar } from '../../../context/SiteDataContext';
+import { useSiteData, CapabilityPillar, parsePillarTags } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { TechTagSelector } from '../shared/TechTagSelector';
@@ -69,9 +69,7 @@ export const IntroEditor: React.FC = () => {
   };
 
   const getPillarTags = (pillar: CapabilityPillar): string[] => {
-    if (Array.isArray(pillar.tags) && pillar.tags.length > 0) return pillar.tags;
-    if (!pillar.items) return [];
-    return pillar.items.split(/[\s·,]+/).map((s) => s.trim()).filter(Boolean);
+    return parsePillarTags(pillar);
   };
 
   const updatePillar = (idx: number, patch: Partial<CapabilityPillar>) => {

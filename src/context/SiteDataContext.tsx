@@ -10,6 +10,24 @@ export interface CapabilityPillar {
   tags?: string[];
 }
 
+/**
+ * Robustly sanitizes and extracts technology tags from a capability pillar,
+ * removing any corrupted Unicode replacement bytes (U+FFFD) and splitting across
+ * whitespace, middle dots, commas, bullets, and slashes.
+ */
+export function parsePillarTags(pillar: { items?: string; tags?: string[] }): string[] {
+  if (Array.isArray(pillar.tags) && pillar.tags.length > 0) {
+    return pillar.tags.filter((t) => Boolean(t && t.trim() && !t.includes('\uFFFD') && !/^[\s·,・•|/]+$/.test(t)));
+  }
+  if (!pillar.items) return [];
+  return pillar.items
+    .replace(/\uFFFD/g, ' ')
+    .replace(/[·・•|/]+/g, ' ')
+    .split(/\s+/)
+    .map((s) => s.trim())
+    .filter((s) => Boolean(s.length > 0 && !s.includes('\uFFFD') && !/^[\s·,・•|/]+$/.test(s)));
+}
+
 export interface SiteProfile {
   name: string;
   headline: string;
@@ -225,7 +243,14 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           linkedin: row.linkedin || '',
           role:     row.role     || '',
           capability_pillars: Array.isArray(row.capability_pillars)
-            ? row.capability_pillars
+            ? row.capability_pillars.map((p: any) => {
+                const tags = parsePillarTags(p);
+                return {
+                  label: (p.label || '').trim(),
+                  tags,
+                  items: tags.join(' · ') || (p.items || '').replace(/\uFFFD/g, ' · ').trim(),
+                };
+              })
             : [],
         };
         setProfile(mappedProfile);
