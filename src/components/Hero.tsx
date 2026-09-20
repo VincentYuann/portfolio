@@ -88,7 +88,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           {/* Main Content Column (8 cols) */}
           <div className="lg:col-span-8 flex flex-col space-y-6 pt-2">
             {/* Display Headline */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink leading-[1.14] tracking-tight font-normal">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink leading-[1.14] tracking-tight font-medium">
               {headline}
             </h1>
 

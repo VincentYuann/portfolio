@@ -193,7 +193,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       </div>
 
                       <div className="flex items-center justify-between gap-4 mb-1">
-                        <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta transition-colors duration-200">
+                        <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-medium tracking-tight group-hover:text-terracotta transition-colors duration-200">
                           {project.title}
                         </h3>
                         <span className="font-serif text-lg text-terracotta dark:text-ochre shrink-0">
