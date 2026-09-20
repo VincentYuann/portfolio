@@ -4,6 +4,7 @@ import { EnsoOrbital } from './EnsoOrbital';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { useSiteData, HobbyItem } from '../context/SiteDataContext';
 import { Sparkles, Image as ImageIcon, ArrowRight, Layers } from 'lucide-react';
+import { ViewMode } from '../App';
 
 interface HobbyCardProps {
   hobby: HobbyItem;
@@ -152,7 +153,7 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
 };
 
 interface HobbiesSectionProps {
-  onNavigate?: (view: any, sectionId?: string) => void;
+  onNavigate?: (view: ViewMode, sectionId?: string) => void;
 }
 
 export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) => {

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Code2, Download, Copy, Check, ExternalLink, ArrowLeft } from 'lucide-react';
 import { tokenizeLatexLine, getTokenClassName } from '../lib/latexHighlight';
-import { HankoStamp } from './HankoStamp';
 import { CornerBrackets } from './CornerBrackets';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { getResumePdfUrl, fetchResumeLatex } from '../lib/supabase';
 
+import { ViewMode } from '../App';
+
 interface ResumePageProps {
-  onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
+  onNavigate?: (view: ViewMode, sectionId?: string) => void;
 }
 
 const DEFAULT_RESUME_TEX = `%-------------------------
@@ -197,27 +198,36 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
       />
 
       <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Top Breadcrumb & Header */}
-      <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-light-border dark:border-dark-border">
-        <div>
+        {/* Back navigation button */}
+        <div className="mb-6 sm:mb-8">
           <button
             onClick={() => onNavigate?.('home')}
-            className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors mb-3"
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors group cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Return to Portfolio</span>
           </button>
-          <div className="flex items-center gap-3">
-            <HankoStamp className="h-7 w-7" />
-            <h1 className="font-serif text-3xl sm:text-4xl text-light-ink dark:text-dark-ink">
-              Curriculum Vitae
-            </h1>
-            <span className="font-serif text-sm text-terracotta dark:text-ochre">履歴書</span>
-          </div>
-          <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-xl">
-            Complete technical qualifications, research background, and systems engineering experience of Vincent Yuan.
-          </p>
         </div>
+
+        {/* Top Header Section */}
+        <div className="mb-8 sm:mb-10 pb-8 border-b border-light-border/70 dark:border-[#2D3039]/80 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>
+              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                CURRICULUM VITAE · 履歴書
+              </span>
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
+              Curriculum Vitae{' '}
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
+                履歴書
+              </span>
+            </h1>
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 max-w-2xl font-light leading-relaxed">
+              Complete technical qualifications, research background, and systems engineering experience of Vincent Yuan.
+            </p>
+          </div>
 
         {/* Action Controls & Format Switcher */}
         <div className="flex flex-wrap items-center gap-2.5">

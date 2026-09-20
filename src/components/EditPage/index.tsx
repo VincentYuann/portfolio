@@ -8,11 +8,12 @@ import { ResumeEditor } from './sections/ResumeEditor';
 import { VerticalMarginWidget, MARGIN_PRESETS } from '../VerticalMarginWidget';
 import { ArrowLeft, Layers, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { ViewMode } from '../../App';
 
 type EditSection = 'intro' | 'experience' | 'projects' | 'philosophy' | 'hobbies' | 'resume';
 
 interface EditPageProps {
-  onNavigate: (view: 'home' | 'projects' | 'resume' | 'login' | 'edit') => void;
+  onNavigate: (view: ViewMode) => void;
 }
 
 const SECTIONS: { id: EditSection; label: string; num: string; shortLabel?: string }[] = [

@@ -4,9 +4,10 @@ import { useSiteData, HobbyItem } from '../context/SiteDataContext';
 import { EnsoOrbital } from './EnsoOrbital';
 import { CornerBrackets } from './CornerBrackets';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
+import { ViewMode } from '../App';
 
 interface HobbiesPageProps {
-  onNavigate?: (view: 'home' | 'projects' | 'resume' | 'hobbies', sectionId?: string) => void;
+  onNavigate?: (view: ViewMode, sectionId?: string) => void;
 }
 
 export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ hobby, index }) => {

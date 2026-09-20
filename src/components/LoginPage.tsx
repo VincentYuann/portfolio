@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { supabase, formatErrorMessage, getOAuthRedirectUrl } from '../lib/supabase';
 import { HankoStamp } from './HankoStamp';
 import { CornerBrackets } from './CornerBrackets';
 import { toast } from 'sonner';
+import { ViewMode } from '../App';
 
 interface LoginPageProps {
-  onNavigate: (view: 'home' | 'projects' | 'resume' | 'login' | 'edit') => void;
+  onNavigate: (view: ViewMode) => void;
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
@@ -83,9 +85,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
         <button
           onClick={() => onNavigate('home')}
-          className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors text-center cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors group cursor-pointer"
         >
-          ← Back to portfolio
+          <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
+          <span>Return to Portfolio</span>
         </button>
       </div>
     </div>
