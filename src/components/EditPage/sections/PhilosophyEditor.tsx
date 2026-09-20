@@ -116,11 +116,11 @@ export const PhilosophyEditor: React.FC = () => {
 
       const rows = pillars.map((p, idx) => ({
         position: idx + 1,
-        kanji: p.kanji,
-        romaji: p.romaji,
-        title: p.title,
-        tag: p.tag,
-        description: p.description,
+        kanji: p.kanji || '',
+        romaji: p.romaji || '',
+        title: p.title || '',
+        tag: p.tag || '',
+        description: p.description || '',
         updated_at: new Date().toISOString(),
       }));
 

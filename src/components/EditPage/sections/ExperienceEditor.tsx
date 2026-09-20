@@ -212,6 +212,9 @@ export const ExperienceEditor: React.FC = () => {
           kanji: e.kanji || '木',
           kanji_subtitle: e.kanjiSubtitle || '',
           tags: e.tags || [],
+          overview: e.overview || '',
+          bullets: cleanBullets,
+          domain_label: e.domainLabel || '',
           description: combinedDescription,
           updated_at: new Date().toISOString(),
         };

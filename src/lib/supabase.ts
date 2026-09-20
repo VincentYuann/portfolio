@@ -237,7 +237,7 @@ export async function saveResumeLatex(content: string) {
 
   const { error } = await supabase
     .from('resume_latex')
-    .upsert({ id: 1, content, updated_at: new Date().toISOString() });
+    .upsert({ id: 1, content: content || '', updated_at: new Date().toISOString() });
 
   if (error) {
     throw new Error(formatErrorMessage(error));

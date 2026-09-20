@@ -162,7 +162,19 @@ ALTER TABLE public.projects
   ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT false,
   ADD COLUMN IF NOT EXISTS status_label TEXT DEFAULT '',
   ADD COLUMN IF NOT EXISTS display_order INT DEFAULT 0,
-  ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT false;
+  ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT false,
+  ADD COLUMN IF NOT EXISTS bullets TEXT[] DEFAULT ARRAY[]::TEXT[];
+
+-- Drop NOT NULL constraints and redundant unique constraints that can trigger save failures
+ALTER TABLE public.projects ALTER COLUMN category DROP NOT NULL;
+ALTER TABLE public.projects ALTER COLUMN category SET DEFAULT '';
+ALTER TABLE public.projects ALTER COLUMN subtitle DROP NOT NULL;
+ALTER TABLE public.projects ALTER COLUMN subtitle SET DEFAULT '';
+ALTER TABLE public.projects ALTER COLUMN description DROP NOT NULL;
+ALTER TABLE public.projects ALTER COLUMN description SET DEFAULT '';
+ALTER TABLE public.projects ALTER COLUMN title DROP NOT NULL;
+ALTER TABLE public.projects ALTER COLUMN title SET DEFAULT 'Untitled Project';
+ALTER TABLE public.projects DROP CONSTRAINT IF EXISTS projects_title_key;
 
 ALTER TABLE public.experience 
   ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT false,
@@ -172,6 +184,20 @@ ALTER TABLE public.experience
   ADD COLUMN IF NOT EXISTS kanji TEXT DEFAULT '木',
   ADD COLUMN IF NOT EXISTS kanji_subtitle TEXT DEFAULT '',
   ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT ARRAY[]::TEXT[];
+
+ALTER TABLE public.experience ALTER COLUMN title DROP NOT NULL;
+ALTER TABLE public.experience ALTER COLUMN title SET DEFAULT 'Untitled Role';
+ALTER TABLE public.experience ALTER COLUMN company DROP NOT NULL;
+ALTER TABLE public.experience ALTER COLUMN company SET DEFAULT '';
+ALTER TABLE public.experience DROP CONSTRAINT IF EXISTS experience_title_company_key;
+ALTER TABLE public.experience DROP CONSTRAINT IF EXISTS experience_title_company_unique;
+
+ALTER TABLE public.philosophy_pillars ALTER COLUMN kanji DROP NOT NULL;
+ALTER TABLE public.philosophy_pillars ALTER COLUMN kanji SET DEFAULT '';
+ALTER TABLE public.philosophy_pillars ALTER COLUMN romaji DROP NOT NULL;
+ALTER TABLE public.philosophy_pillars ALTER COLUMN romaji SET DEFAULT '';
+ALTER TABLE public.philosophy_pillars ALTER COLUMN title DROP NOT NULL;
+ALTER TABLE public.philosophy_pillars ALTER COLUMN title SET DEFAULT '';
 
 -- ==============================================================================
 -- 5. Grants: Expose Tables & Routines to PostgREST Data API

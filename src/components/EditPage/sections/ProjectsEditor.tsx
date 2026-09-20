@@ -220,6 +220,7 @@ export const ProjectsEditor: React.FC = () => {
         id: p.id,
         title: p.title || `Project ${idx + 1}`,
         subtitle: p.subtitle || '',
+        category: '',
         start_date: p.startDate || '',
         end_date: p.endDate || '',
         is_active: Boolean(p.isActive),
@@ -231,6 +232,8 @@ export const ProjectsEditor: React.FC = () => {
         badge: p.badge || 'ENGINEERING ARCHIVE',
         image: p.image || './images/sumi-os-workspace.jpg',
         tech_stacks: p.techStacks || [],
+        tags: p.techStacks || [],
+        bullets: p.bullets.filter(Boolean),
         sections: [
           {
             heading: 'Key Architectural Highlights',
@@ -238,7 +241,9 @@ export const ProjectsEditor: React.FC = () => {
           },
         ],
         github_link: p.githubLink || '',
+        github_url: p.githubLink || '',
         live_link: p.liveLink || '',
+        live_url: p.liveLink || '',
         display_order: typeof p.displayOrder === 'number' ? p.displayOrder : idx,
         is_featured: Boolean(p.isFeatured),
         updated_at: new Date().toISOString(),
@@ -246,22 +251,22 @@ export const ProjectsEditor: React.FC = () => {
 
       await withTimeout(
         (async () => {
-          // 1. Prune removed projects in Supabase
-          const { data: existing } = await supabase.from('projects').select('title');
+          // 1. Prune removed projects in Supabase by primary key 'id'
+          const { data: existing } = await supabase.from('projects').select('id');
           if (existing && existing.length > 0) {
-            const currentTitleSet = new Set(updates.map((u) => u.title));
+            const currentIdSet = new Set(updates.map((u) => u.id));
             const toDelete = existing
-              .filter((row) => !currentTitleSet.has(row.title))
-              .map((row) => row.title);
+              .filter((row) => !currentIdSet.has(row.id))
+              .map((row) => row.id);
             if (toDelete.length > 0) {
-              const { error: delErr } = await supabase.from('projects').delete().in('title', toDelete);
+              const { error: delErr } = await supabase.from('projects').delete().in('id', toDelete);
               if (delErr) console.warn('Could not prune removed projects:', delErr);
             }
           }
 
-          // 2. Upsert current projects
+          // 2. Upsert current projects by primary key 'id'
           if (updates.length > 0) {
-            const { error } = await supabase.from('projects').upsert(updates, { onConflict: 'title' });
+            const { error } = await supabase.from('projects').upsert(updates, { onConflict: 'id' });
             if (error) throw error;
           }
         })(),
