@@ -144,11 +144,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & Standardized Layout */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80 gap-6">
-          <div>
+          <div className="max-w-3xl">
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">02 //</span>
               <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                CAREER TRAJECTORY
+                CAREER TRAJECTORY · 職歴
               </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
@@ -157,9 +157,12 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                 職歴
               </span>
             </h2>
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
+              A chronology of software engineering roles, full-stack systems development, and real-world impact.
+            </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
             {/* Global Expand All / Collapse All */}
             <button
               type="button"

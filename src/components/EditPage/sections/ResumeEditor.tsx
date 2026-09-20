@@ -65,7 +65,7 @@ const DEFAULT_LATEX_CV = `% -- Vincent Yuan: Curriculum Vitae ------------------
 %----------HEADING----------
 \\begin{center}
     \\textbf{\\Huge \\scshape Vincent Yuan} \\\\ \\vspace{1pt}
-    \\small Distributed Systems $\\cdot$ Generative AI $\\cdot$ Creative Technologist \\\\ \\vspace{1pt}
+    \\small Full-Stack Software Engineer $\\cdot$ Systems Architecture \\& AI $\\cdot$ Philadelphia, PA \\\\ \\vspace{1pt}
     \\href{mailto:vincentyuan1020@gmail.com}{\\underline{vincentyuan1020@gmail.com}} $|$ 
     \\href{https://github.com/VincentYuann}{\\underline{github.com/VincentYuann}} $|$
     \\href{https://linkedin.com}{\\underline{linkedin.com}}
@@ -74,19 +74,64 @@ const DEFAULT_LATEX_CV = `% -- Vincent Yuan: Curriculum Vitae ------------------
 %-----------EDUCATION-----------
 \\section{Education}
   \\resumeSubheading
-      {University of Waterloo}{Waterloo, ON, Canada}
-      {Bachelor of Applied Science in Computer Engineering}{Sept 2020 -- Apr 2025}
+      {Drexel University}{Philadelphia, PA}
+      {Bachelor of Science in Computer Science}{Sept 2021 - June 2026}
+      \\resumeItemListStart
+        \\resumeItem{Concentrations: Systems Architecture, Artificial Intelligence}
+        \\resumeItem{Relevant Coursework: Data Structures \\& Algorithms, Systems Architecture, Web Development, Object-Oriented Programming, Database Systems}
+      \\resumeItemListEnd
 
 %-----------EXPERIENCE-----------
 \\section{Experience}
   \\resumeSubheading
-      {Full-Stack \\& AI Systems Engineer}{Remote}
-      {Sumi Intelligence Studio}{May 2024 -- Present}
+      {Software Engineering Intern}{Remote}
+      {Dakdan Worldwide}{June 2023 - Sept 2023}
+      \\resumeItemListStart
+        \\resumeItem{Collaborated in agile sprint cycles to maintain web applications, streamline data flow, and improve frontend responsiveness.}
+        \\resumeItem{Assisted in backend REST API integration, debugging client-side rendering bottlenecks, and optimizing assets.}
+      \\resumeItemListEnd
+
+  \\resumeSubheading
+      {Hospitality \\& Team Lead}{Philadelphia, PA}
+      {Service \\& Hospitality Roots}{2021 - Present}
+      \\resumeItemListStart
+        \\resumeItem{Cultivated rapid active listening, cross-functional team communication, and calm operational focus during high-stress peak rushes.}
+        \\resumeItem{Applied user-first empathy to anticipate customer friction points, directly translating into human-centered UI/UX design.}
+      \\resumeItemListEnd
 
 %-----------PROJECTS-----------
 \\section{Featured Engineering Projects}
   \\resumeProjectHeading
-      {\\textbf{Sumi OS \\& Workspace} $|$ \\emph{React, Next.js, Python, Docker, Llama-3, WebSockets}}{}
+      {\\textbf{AnimY} $|$ \\emph{React, TypeScript, Node.js, REST APIs, Tailwind CSS}}{}
+      \\resumeItemListStart
+        \\resumeItem{Engineered a modern anime tracking and discovery platform featuring dynamic search, debounced filtering, and personalized watchlists.}
+        \\resumeItem{Designed responsive Japanese-aesthetic UI with persistent state management and fast caching layers.}
+      \\resumeItemListEnd
+
+  \\resumeProjectHeading
+      {\\textbf{FoodFinder} $|$ \\emph{React, JavaScript, Map APIs, Node.js, CSS Modules}}{}
+      \\resumeItemListStart
+        \\resumeItem{Built an intuitive restaurant exploration application with location-based filtering, interactive menus, and smart food search.}
+        \\resumeItem{Integrated third-party geolocation and place details APIs to deliver streamlined dining recommendations.}
+      \\resumeItemListEnd
+
+  \\resumeProjectHeading
+      {\\textbf{Portfolio Website} $|$ \\emph{React, TypeScript, Supabase, Tailwind CSS, Vite}}{}
+      \\resumeItemListStart
+        \\resumeItem{Crafted a high-performance personal engineering platform inspired by Japanese Sumi-e brushwork and Wabi-Sabi aesthetics.}
+        \\resumeItem{Implemented an administrative CMS dashboard with Supabase auth, live preview, and deterministic state sync.}
+      \\resumeItemListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\\section{Technical Skills}
+ \\begin{itemize}[leftmargin=0.15in, label={}]
+    \\small{\\item{
+     \\textbf{Languages}{: TypeScript, JavaScript, Python, C/C++, HTML5, CSS3, SQL} \\\\
+     \\textbf{Frameworks \\& Libraries}{: React, Next.js, Node.js, Express, Tailwind CSS, Vite} \\\\
+     \\textbf{Databases \\& Cloud}{: PostgreSQL, Supabase, Docker, RESTful APIs, Git, GitHub Actions, Linux} \\\\
+     \\textbf{Core Competencies}{: Systems Architecture, Full-Stack Web Development, UI/UX Design, State Management}
+    }}
+ \\end{itemize}
 
 \\end{document}
 `;

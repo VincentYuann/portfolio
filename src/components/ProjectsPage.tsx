@@ -120,7 +120,8 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-xl overflow-visible p-5 shadow-akari dark:shadow-night-glow hover:border-terracotta/40 transition-all duration-300 flex flex-col justify-between classical-card-frame"
+              onClick={() => setSelectedProject(project)}
+              className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-xl overflow-visible p-5 shadow-akari dark:shadow-night-glow hover:border-terracotta/40 transition-all duration-300 flex flex-col justify-between classical-card-frame cursor-pointer"
             >
               {/* Ensō Bloom: Top-left only on hover */}
               <EnsoOrbital
@@ -206,7 +207,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                     <span>→</span>
                   </button>
 
-                  <div className="flex items-center gap-2 text-light-ink-muted dark:text-dark-ink-muted">
+                  <div className="flex items-center gap-2 text-light-ink-muted dark:text-dark-ink-muted" onClick={(e) => e.stopPropagation()}>
                     {project.links.github && (
                       <a
                         href={project.links.github}

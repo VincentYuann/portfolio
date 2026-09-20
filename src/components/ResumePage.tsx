@@ -12,7 +12,7 @@ interface ResumePageProps {
 
 const DEFAULT_RESUME_TEX = `%-------------------------
 % Vincent Yuan - Professional Curriculum Vitae
-% Wabi-Sabi Craft & Distributed Systems Engineering
+% Full-Stack Software Engineering & Systems Architecture
 %-------------------------
 
 \\documentclass[letterpaper,11pt]{article}
@@ -56,61 +56,71 @@ const DEFAULT_RESUME_TEX = `%-------------------------
 %----------HEADING----------
 \\begin{center}
     \\textbf{\\Huge \\scshape Vincent Yuan} \\\\ \\vspace{1pt}
-    \\small Distributed Systems $\\cdot$ Generative AI $\\cdot$ Creative Technologist \\\\ \\vspace{1pt}
+    \\small Full-Stack Software Engineer $\\cdot$ Systems Architecture \\& AI $\\cdot$ Philadelphia, PA \\\\ \\vspace{1pt}
     \\href{mailto:vincentyuan1020@gmail.com}{\\underline{vincentyuan1020@gmail.com}} $|$ 
-    \\href{https://github.com}{\\underline{github.com/vincentyuan}} $|$
-    \\href{https://linkedin.com}{\\underline{linkedin.com/in/vincentyuan}}
+    \\href{https://github.com/VincentYuann}{\\underline{github.com/VincentYuann}} $|$
+    \\href{https://linkedin.com}{\\underline{linkedin.com}}
 \\end{center}
 
 %-----------EDUCATION-----------
 \\section{Education}
   \\resumeSubheading
-      {University of Waterloo}{Waterloo, ON, Canada}
-      {Bachelor of Applied Science in Computer Engineering}{Sept 2020 -- Apr 2025}
+      {Drexel University}{Philadelphia, PA}
+      {Bachelor of Science in Computer Science}{Sept 2021 - June 2026}
       \\resumeItemListStart
-        \\resumeItem{Relevant Coursework: Distributed Systems, Compilers, Deep Learning, Operating Systems}
+        \\resumeItem{Concentrations: Systems Architecture, Artificial Intelligence}
+        \\resumeItem{Relevant Coursework: Data Structures \\& Algorithms, Systems Architecture, Web Development, Object-Oriented Programming, Database Systems}
       \\resumeItemListEnd
 
 %-----------EXPERIENCE-----------
 \\section{Experience}
   \\resumeSubheading
-      {Full-Stack \\& AI Systems Engineer}{Tokyo / Remote}
-      {Sumi Intelligence Studio}{May 2024 -- Present}
+      {Software Engineering Intern}{Remote}
+      {Dakdan Worldwide}{June 2023 - Sept 2023}
       \\resumeItemListStart
-        \\resumeItem{Architected local low-latency inference runtimes with custom C++ \\texttt{llama.cpp} socket daemons, achieving sub-18ms time-to-first-token.}
-        \\resumeItem{Engineered distributed WebSocket state synchronization engine processing 12,000 telemetry events/sec with TimescaleDB hypertables.}
-        \\resumeItem{Designed Japanese minimalist Wabi-Sabi interaction design system with 60 FPS WebGL GPU shaders and zero layout shifts.}
+        \\resumeItem{Collaborated in agile sprint cycles to maintain web applications, streamline data flow, and improve frontend responsiveness.}
+        \\resumeItem{Assisted in backend REST API integration, debugging client-side rendering bottlenecks, and optimizing assets.}
       \\resumeItemListEnd
 
   \\resumeSubheading
-      {Software Engineering Intern}{San Francisco, CA}
-      {Autonomous Infrastructure Labs}{Jan 2023 -- Aug 2023}
+      {Hospitality \\& Team Lead}{Philadelphia, PA}
+      {Service \\& Hospitality Roots}{2021 - Present}
       \\resumeItemListStart
-        \\resumeItem{Implemented high-throughput distributed message queues with Apache Kafka and Rust microservices, cutting end-to-end ingestion latency by 42\\%.}
-        \\resumeItem{Optimized React client render trees and Web Workers for real-time telemetry dashboards serving 100k+ active concurrent sessions.}
+        \\resumeItem{Cultivated rapid active listening, cross-functional team communication, and calm operational focus during high-stress peak rushes.}
+        \\resumeItem{Applied user-first empathy to anticipate customer friction points, directly translating into human-centered UI/UX design.}
       \\resumeItemListEnd
 
 %-----------PROJECTS-----------
 \\section{Featured Engineering Projects}
   \\resumeProjectHeading
-      {\\textbf{Sumi OS \\& Workspace} $|$ \\emph{React, Next.js, Python, Docker, Llama-3, WebSockets}}{}
+      {\\textbf{AnimY} $|$ \\emph{React, TypeScript, Node.js, REST APIs, Tailwind CSS}}{}
       \\resumeItemListStart
-        \\resumeItem{Contemplative digital environment with e-paper emulation, off-main-thread input cadence, and privacy-first local embedding stores.}
+        \\resumeItem{Engineered a modern anime tracking and discovery platform featuring dynamic search, debounced filtering, and personalized watchlists.}
+        \\resumeItem{Designed responsive Japanese-aesthetic UI with persistent state management and fast caching layers.}
       \\resumeItemListEnd
 
   \\resumeProjectHeading
-      {\\textbf{Komorebi Living Architecture} $|$ \\emph{FastAPI, PyTorch, Three.js, WebGL, TimescaleDB}}{}
+      {\\textbf{FoodFinder} $|$ \\emph{React, JavaScript, Map APIs, Node.js, CSS Modules}}{}
       \\resumeItemListStart
-        \\resumeItem{Generative audio-visual telemetry synthesizer translating architectural CO2, sunlight, and acoustics into reactive ambient art.}
+        \\resumeItem{Built an intuitive restaurant exploration application with location-based filtering, interactive menus, and smart food search.}
+        \\resumeItem{Integrated third-party geolocation and place details APIs to deliver streamlined dining recommendations.}
+      \\resumeItemListEnd
+
+  \\resumeProjectHeading
+      {\\textbf{Portfolio Website} $|$ \\emph{React, TypeScript, Supabase, Tailwind CSS, Vite}}{}
+      \\resumeItemListStart
+        \\resumeItem{Crafted a high-performance personal engineering platform inspired by Japanese Sumi-e brushwork and Wabi-Sabi aesthetics.}
+        \\resumeItem{Implemented an administrative CMS dashboard with Supabase auth, live preview, and deterministic state sync.}
       \\resumeItemListEnd
 
 %-----------TECHNICAL SKILLS-----------
 \\section{Technical Skills}
  \\begin{itemize}[leftmargin=0.15in, label={}]
     \\small{\\item{
-     \\textbf{Languages}{: TypeScript, JavaScript, Python, C/C++, Rust, Go, SQL, HTML/CSS, LaTeX} \\\\
-     \\textbf{Frameworks}{: React, Next.js, Node.js, FastAPI, PyTorch, Three.js, TailwindCSS} \\\\
-     \\textbf{Infrastructure}{: Docker, Kubernetes, AWS, GCP, Supabase, PostgreSQL, Redis, Kafka, Linux}
+     \\textbf{Languages}{: TypeScript, JavaScript, Python, C/C++, HTML5, CSS3, SQL} \\\\
+     \\textbf{Frameworks \\& Libraries}{: React, Next.js, Node.js, Express, Tailwind CSS, Vite} \\\\
+     \\textbf{Databases \\& Cloud}{: PostgreSQL, Supabase, Docker, RESTful APIs, Git, GitHub Actions, Linux} \\\\
+     \\textbf{Core Competencies}{: Systems Architecture, Full-Stack Web Development, UI/UX Design, State Management}
     }}
  \\end{itemize}
 

@@ -31,12 +31,20 @@ export const Header: React.FC<HeaderProps> = ({
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
       if (currentView !== 'home') return;
-      const sections = ['home', 'experience', 'featured-works', 'philosophy', 'contact'];
+      
+      // If reached bottom of page, highlight contact
+      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 60) {
+        setActiveSection('contact');
+        return;
+      }
+
+      const scrollPosition = window.scrollY + 220;
+      const sections = ['contact', 'philosophy', 'featured-works', 'experience', 'home'];
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
         if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 160 && rect.bottom >= 160) {
+          const top = el.offsetTop;
+          if (scrollPosition >= top) {
             setActiveSection(sectionId);
             break;
           }

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, Github, Linkedin, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Mail, Github, Linkedin, Send, CheckCircle2, AlertCircle, Copy, Check } from 'lucide-react';
 import { sendContactMessage } from '../lib/supabase';
 import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
-import { HankoStamp } from './HankoStamp';
 import { CornerBrackets } from './CornerBrackets';
 import { useSiteData } from '../context/SiteDataContext';
 
@@ -13,6 +12,7 @@ export const ContactSection: React.FC = () => {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,9 +47,16 @@ export const ContactSection: React.FC = () => {
   };
 
   const { profile } = useSiteData();
-  const contactEmail = profile?.email || '';
-  const contactGithub = profile?.github || '';
-  const contactLinkedin = profile?.linkedin || '';
+  const contactEmail = profile?.email || 'vincentyuan1020@gmail.com';
+  const contactGithub = profile?.github || 'https://github.com/VincentYuann';
+  const contactLinkedin = profile?.linkedin || 'https://linkedin.com';
+
+  const handleCopyEmail = () => {
+    if (!contactEmail) return;
+    navigator.clipboard.writeText(contactEmail);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2500);
+  };
 
   const mailtoHref = contactEmail ? `mailto:${contactEmail}?subject=${encodeURIComponent(
     `[Portfolio Dialogue] ${name.trim() || 'Direct Inquiry'}`
@@ -119,16 +126,18 @@ export const ContactSection: React.FC = () => {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             {/* Left Column: Narrative & Direct Links */}
             <div className="lg:col-span-6 flex flex-col space-y-6">
-              <div className="flex items-center gap-2.5">
-                <HankoStamp className="h-6 w-6 animate-seal-breathe" />
+              <div className="flex items-center gap-2 mb-2">
                 <span className="font-serif text-terracotta text-sm">05 //</span>
                 <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                  INITIATE A DIALOGUE
+                  DIALOGUE &amp; CORRESPONDENCE · 対話と通信
                 </span>
               </div>
 
-              <h2 className="font-serif text-2xl sm:text-4xl text-light-ink dark:text-dark-ink leading-tight font-normal">
-                Interested in building something deliberate together?
+              <h2 className="font-serif text-2xl sm:text-4xl text-light-ink dark:text-dark-ink leading-tight font-normal tracking-tight">
+                Initiate Dialogue{' '}
+                <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-xl sm:text-3xl ml-2 whitespace-nowrap inline-block">
+                  対話
+                </span>
               </h2>
 
               <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
@@ -139,13 +148,34 @@ export const ContactSection: React.FC = () => {
               {(contactEmail || contactGithub || contactLinkedin) && (
                 <div className="pt-2 flex flex-wrap items-center gap-3">
                   {contactEmail && (
-                    <a
-                      href={mailtoHref}
-                      className="btn-bloom inline-flex items-center gap-2 px-6 py-3.5 bg-terracotta hover:bg-terracotta-hover text-white font-sans text-xs uppercase tracking-widest rounded-lg shadow-sm"
-                    >
-                      <Mail className="w-4 h-4" />
-                      <span>{contactEmail}</span>
-                    </a>
+                    <>
+                      <a
+                        href={mailtoHref}
+                        className="btn-bloom inline-flex items-center gap-2 px-5 sm:px-6 py-3 bg-terracotta hover:bg-terracotta-hover text-white font-sans text-xs uppercase tracking-widest rounded-lg shadow-sm"
+                      >
+                        <Mail className="w-4 h-4" />
+                        <span>{contactEmail}</span>
+                      </a>
+
+                      <button
+                        type="button"
+                        onClick={handleCopyEmail}
+                        className="inline-flex items-center gap-1.5 px-4 py-3 bg-light-surface-raised dark:bg-[#1B1C22] border border-light-border dark:border-[#2D3039] hover:bg-light-surface dark:hover:bg-[#252831] hover:border-ochre/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200 cursor-pointer"
+                        title="Copy email to clipboard"
+                      >
+                        {copiedEmail ? (
+                          <>
+                            <Check className="w-4 h-4 text-bamboo" />
+                            <span className="text-bamboo font-medium">Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-4 h-4 text-light-ink-muted" />
+                            <span>Copy Email</span>
+                          </>
+                        )}
+                      </button>
+                    </>
                   )}
 
                   {contactGithub && (
@@ -153,7 +183,7 @@ export const ContactSection: React.FC = () => {
                       href={contactGithub}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-3.5 bg-light-surface-raised dark:bg-[#1B1C22] border border-light-border dark:border-[#2D3039] hover:bg-light-surface dark:hover:bg-[#252831] hover:border-ochre/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200"
+                      className="inline-flex items-center gap-2 px-4 py-3 bg-light-surface-raised dark:bg-[#1B1C22] border border-light-border dark:border-[#2D3039] hover:bg-light-surface dark:hover:bg-[#252831] hover:border-ochre/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200"
                     >
                       <Github className="w-4 h-4" />
                       <span className="tracking-widest">Github</span>
@@ -165,7 +195,7 @@ export const ContactSection: React.FC = () => {
                       href={contactLinkedin}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-3.5 bg-light-surface-raised dark:bg-[#1B1C22] border border-light-border dark:border-[#2D3039] hover:bg-light-surface dark:hover:bg-[#252831] hover:border-ochre/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200"
+                      className="inline-flex items-center gap-2 px-4 py-3 bg-light-surface-raised dark:bg-[#1B1C22] border border-light-border dark:border-[#2D3039] hover:bg-light-surface dark:hover:bg-[#252831] hover:border-ochre/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200"
                     >
                       <Linkedin className="w-4 h-4" />
                       <span className="tracking-widest">Linkedin</span>
