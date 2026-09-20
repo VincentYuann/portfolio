@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Search, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Search, Sparkles, Image as ImageIcon, Maximize2 } from 'lucide-react';
 import { useSiteData, HobbyItem } from '../context/SiteDataContext';
 import { EnsoOrbital } from './EnsoOrbital';
 import { CornerBrackets } from './CornerBrackets';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
+import { ImageLightboxModal } from './ImageLightboxModal';
 import { ViewMode } from '../App';
 
 interface HobbiesPageProps {
@@ -13,6 +14,7 @@ interface HobbiesPageProps {
 export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ hobby, index }) => {
   const images = Array.isArray(hobby.images) && hobby.images.length > 0 ? hobby.images : [];
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
   const heroImage = images[activeImageIndex] || images[0] || '';
 
@@ -55,24 +57,56 @@ export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ h
         {images.length > 0 && (
           <div className="relative w-full mb-5">
             {images.length === 1 ? (
-              <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60">
+              <div
+                onClick={() => setIsLightboxOpen(true)}
+                className="relative aspect-[16/10] overflow-hidden rounded-lg bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 cursor-zoom-in group/hero"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setIsLightboxOpen(true);
+                  }
+                }}
+                aria-label={`Open full size view for ${hobby.title}`}
+              >
                 <img
                   src={images[0]}
                   alt={hobby.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover/hero:scale-105"
                   loading="lazy"
                 />
+                <div className="absolute top-2 right-2 px-2 py-1 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono flex items-center gap-1 opacity-0 group-hover/hero:opacity-100 transition-opacity pointer-events-none">
+                  <Maximize2 className="w-3 h-3 text-terracotta" />
+                  <span>Expand</span>
+                </div>
               </div>
             ) : (
               <div className="flex flex-col md:grid md:grid-cols-3 gap-2 md:aspect-[16/10] overflow-hidden rounded-lg bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 p-1.5">
                 {/* 1 Big Main Display Photo (Spans 2 columns on desktop, aspect-[16/10] on mobile) */}
-                <div className="relative aspect-[16/10] md:aspect-auto md:col-span-2 md:h-full overflow-hidden rounded bg-light-surface dark:bg-dark-surface group/hero">
+                <div
+                  onClick={() => setIsLightboxOpen(true)}
+                  className="relative aspect-[16/10] md:aspect-auto md:col-span-2 md:h-full overflow-hidden rounded bg-light-surface dark:bg-dark-surface group/hero cursor-zoom-in"
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setIsLightboxOpen(true);
+                    }
+                  }}
+                  aria-label={`Open full size view for ${hobby.title} photo ${activeImageIndex + 1}`}
+                >
                   <img
                     src={heroImage}
                     alt={`${hobby.title} main view`}
                     className="w-full h-full object-cover transition-all duration-500 group-hover/hero:scale-105"
                     loading="lazy"
                   />
+                  <div className="absolute top-2 right-2 px-2 py-1 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono flex items-center gap-1 opacity-0 group-hover/hero:opacity-100 transition-opacity pointer-events-none">
+                    <Maximize2 className="w-3 h-3 text-terracotta" />
+                    <span>Expand</span>
+                  </div>
                   <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-light-surface/90 dark:bg-dark-surface/90 backdrop-blur-sm border border-light-border/40 dark:border-dark-border/40 text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider flex items-center gap-1">
                     <ImageIcon className="w-2.5 h-2.5 text-terracotta" />
                     <span>Photo {activeImageIndex + 1} of {images.length}</span>
@@ -104,7 +138,7 @@ export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ h
 
             {/* Gallery Hint & Photo Count */}
             <div className="flex items-center justify-between text-[11px] text-light-ink-muted/80 dark:text-dark-ink-muted/80 mt-1.5 px-0.5 font-mono">
-              <span className="text-[10px] opacity-70">Click side thumbnails to display in main frame</span>
+              <span className="text-[10px] opacity-70">Click main photo to expand · click thumbnails to switch</span>
               <span className="text-[10px] text-terracotta font-medium">{images.length} photos</span>
             </div>
           </div>
@@ -137,6 +171,19 @@ export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ h
             </div>
           ))}
         </div>
+      )}
+
+      {/* Interactive Full-Screen Image Lightbox Modal */}
+      {images.length > 0 && (
+        <ImageLightboxModal
+          isOpen={isLightboxOpen}
+          onClose={() => setIsLightboxOpen(false)}
+          images={images}
+          currentIndex={activeImageIndex}
+          onIndexChange={setActiveImageIndex}
+          title={hobby.title}
+          kanji={hobby.kanji}
+        />
       )}
     </article>
   );
