@@ -187,7 +187,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                   {hanko.headerLabel || 'SEAL / 認印'}
                 </span>
                 <span className="font-sans text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest text-[10px] font-mono">
-                  {hanko.locationArchive || 'KYOTO ARCHIVE'}
+                  {hanko.locationArchive || 'PHILADELPHIA, PA'}
                 </span>
               </div>
 

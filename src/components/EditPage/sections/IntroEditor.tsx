@@ -76,10 +76,10 @@ export const IntroEditor: React.FC = () => {
 
   const [saveState, setSaveState] = useState<SaveState>('idle');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({
-    identity: false,
-    social: false,
-    domains: false,
-    hanko: false,
+    identity: true,
+    social: true,
+    domains: true,
+    hanko: true,
   });
 
   const toggle = (section: string) => {

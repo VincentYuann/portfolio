@@ -44,9 +44,9 @@ export interface HankoCardConfig {
 
 export const DEFAULT_HANKO_CARD: HankoCardConfig = {
   headerLabel: 'SEAL / 認印',
-  locationArchive: 'KYOTO ARCHIVE',
+  locationArchive: 'PHILADELPHIA, PA',
   stampCharacter: '原',
-  statusBadge: '',
+  statusBadge: 'OPEN TO ROLES · FULL-STACK',
   lines: [
     { text: '間と余白の美学', label: 'MA · 間', tooltip: 'Aesthetics of Negative Space (Ma)' },
     { text: '静寂と簡素な調和', label: 'WA · 調和', tooltip: 'Silence and Simple Harmony (Wa)' },
