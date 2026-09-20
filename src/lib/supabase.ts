@@ -205,6 +205,7 @@ export async function uploadAssetImage(file: File, folder: string = 'projects'):
 
 export const uploadProjectImage = (file: File) => uploadAssetImage(file, 'projects');
 export const uploadExperienceLogo = (file: File) => uploadAssetImage(file, 'experience');
+export const uploadHobbyImage = (file: File) => uploadAssetImage(file, 'hobbies');
 
 /**
  * Loads the LaTeX source content from the Supabase resume_latex table.

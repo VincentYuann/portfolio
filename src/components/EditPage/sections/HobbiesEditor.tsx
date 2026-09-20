@@ -11,8 +11,15 @@ import {
   ArrowDown,
   Tag,
   BookOpen,
+  Upload,
+  Loader2,
 } from 'lucide-react';
-import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
+import {
+  supabase,
+  formatErrorMessage,
+  withTimeout,
+  uploadHobbyImage,
+} from '../../../lib/supabase';
 import { useSiteData, HobbyItem, DEFAULT_HOBBIES } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
@@ -24,19 +31,21 @@ import { Badge } from '../../ui/badge';
 import { Button } from '../../ui/button';
 import { toast } from 'sonner';
 
+const MAX_IMAGES_PER_HOBBY = 5;
+
 const newHobbyTemplate = (pos: number): HobbyItem => ({
   id: `hobby-${Date.now()}`,
-  title: 'New Craft Pursuit',
+  title: 'New Pursuit',
   kanji: '技',
   category: 'Craft',
-  subtitle: 'Physical discipline and meditative practice',
+  subtitle: 'Personal discipline and creative focus',
   images: [
     'https://lh3.googleusercontent.com/aida-public/AB6AXuBIQr3bTk3yvKCBXiAYi_kPdrzrSDIS4QJkYLWaCRKFOh_Iyvqgn2IkCe1PeeRqs_ScybEjUyNSBVPfSoqCDoXz-iTNgSOXxxNxKheHSrcnFQZE-bhBwH5mmkRJxXWbCWlus4MxGuYXevVL7oTqwrTcvbKPWwGtZj2VEYvaUrcisA4rRI0jgNhTBKtJgVQFJ86vzJ-h43U6tuThqzyw2TBz0s1ypULVS2GnMSJ5B4Q19cWnTVqag0yRHw',
   ],
   whyDescription:
-    'Practicing this craft cultivates patience and intentional precision that translates directly into robust software architecture.',
+    'Practicing this pursuit cultivates the discipline, patience, and deliberate focus that translates directly into robust software architecture.',
   metadata: [
-    { label: 'Focus', value: 'Precision & Patience' },
+    { label: 'Focus', value: 'Discipline & Balance' },
   ],
   displayOrder: pos,
 });
@@ -72,6 +81,9 @@ export const HobbiesEditor: React.FC = () => {
 
   // New image URL input state per hobby
   const [newImageUrls, setNewImageUrls] = useState<Record<string, string>>({});
+
+  // Uploading spinner tracker per hobby
+  const [uploadingHobbyId, setUploadingHobbyId] = useState<string | null>(null);
 
   // Kanji picker modal target hobby id
   const [kanjiPickerTargetId, setKanjiPickerTargetId] = useState<string | null>(null);
@@ -141,7 +153,7 @@ export const HobbiesEditor: React.FC = () => {
   // Delete hobby
   const handleDeleteHobby = (id: string) => {
     if (hobbies.length <= 1) {
-      toast.error('You must keep at least 1 craft pursuit.');
+      toast.error('You must keep at least 1 pursuit card.');
       return;
     }
     notifyDirty();
@@ -149,31 +161,73 @@ export const HobbiesEditor: React.FC = () => {
     toast.info('Pursuit card removed. Click Save to persist.');
   };
 
-  // Reset to default 4 pursuits
+  // Reset to default 5 pursuits
   const handleResetDefaults = () => {
     notifyDirty();
     setHobbies(DEFAULT_HOBBIES);
-    toast.info('Reset pursuits to default 4 crafts. Click Save to persist.');
+    toast.info('Reset pursuits to Vincent\'s 5 default hobbies. Click Save to persist.');
   };
 
-  // Add image to a hobby
-  const handleAddImage = (hobbyId: string) => {
+  // Add image URL manually
+  const handleAddImageUrl = (hobbyId: string) => {
     const url = (newImageUrls[hobbyId] || '').trim();
     if (!url) {
       toast.error('Please enter a valid image URL.');
       return;
     }
+
+    const currentHobby = hobbies.find((h) => h.id === hobbyId);
+    if (currentHobby && currentHobby.images.length >= MAX_IMAGES_PER_HOBBY) {
+      toast.error(`Maximum ${MAX_IMAGES_PER_HOBBY} pictures allowed per pursuit.`);
+      return;
+    }
+
     notifyDirty();
     setHobbies((prev) =>
       prev.map((h) => {
         if (h.id === hobbyId) {
-          return { ...h, images: [...h.images, url] };
+          return { ...h, images: [...h.images, url].slice(0, MAX_IMAGES_PER_HOBBY) };
         }
         return h;
       })
     );
     setNewImageUrls((prev) => ({ ...prev, [hobbyId]: '' }));
     toast.success('Image added to gallery.');
+  };
+
+  // Upload image file directly to Supabase Storage
+  const handleFileUpload = async (hobbyId: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const currentHobby = hobbies.find((h) => h.id === hobbyId);
+    if (currentHobby && currentHobby.images.length >= MAX_IMAGES_PER_HOBBY) {
+      toast.error(`Maximum ${MAX_IMAGES_PER_HOBBY} pictures allowed per pursuit.`);
+      if (e.target) e.target.value = '';
+      return;
+    }
+
+    setUploadingHobbyId(hobbyId);
+    try {
+      const url = await uploadHobbyImage(file);
+      if (url) {
+        notifyDirty();
+        setHobbies((prev) =>
+          prev.map((h) => {
+            if (h.id === hobbyId) {
+              return { ...h, images: [...h.images, url].slice(0, MAX_IMAGES_PER_HOBBY) };
+            }
+            return h;
+          })
+        );
+        toast.success('Picture uploaded to Supabase Storage!');
+      }
+    } catch (err: unknown) {
+      toast.error('Failed to upload picture: ' + formatErrorMessage(err));
+    } finally {
+      setUploadingHobbyId(null);
+      if (e.target) e.target.value = '';
+    }
   };
 
   // Remove image from a hobby
@@ -197,7 +251,7 @@ export const HobbiesEditor: React.FC = () => {
       prev.map((h) => {
         if (h.id === hobbyId) {
           const currentMeta = h.metadata || [];
-          return { ...h, metadata: [...currentMeta, { label: 'Tool', value: 'Specification' }] };
+          return { ...h, metadata: [...currentMeta, { label: 'Interest', value: 'Details' }] };
         }
         return h;
       })
@@ -279,7 +333,7 @@ export const HobbiesEditor: React.FC = () => {
       await refresh();
       notifyClean();
       setSaveState('success');
-      toast.success('Pursuits & Crafts saved and synced to homepage!');
+      toast.success('Pursuits & Crafts saved and dynamically synced!');
       setTimeout(() => setSaveState('idle'), 4000);
     } catch (err: unknown) {
       setSaveState('error');
@@ -295,8 +349,8 @@ export const HobbiesEditor: React.FC = () => {
     <div className="space-y-6 sm:space-y-8">
       {/* Universal Section Header */}
       <EditorSectionHeader
-        title="Pursuits & Craft Editor"
-        subtitle="Manage your offline disciplines, Discord-style photo galleries, and engineering reflection narratives"
+        title="Pursuits & Hobbies Editor"
+        subtitle="Manage your 5 personal pursuits, upload up to 5 pictures per hobby to Supabase Storage, and edit reflections"
         saveState={saveState}
         onSave={handleSave}
         onAdd={handleAddHobby}
@@ -307,6 +361,9 @@ export const HobbiesEditor: React.FC = () => {
       <div className="space-y-4 sm:space-y-5">
         {hobbies.map((hobby, index) => {
           const isCollapsed = collapsed[hobby.id] ?? true;
+          const isUploading = uploadingHobbyId === hobby.id;
+          const imageCount = hobby.images.length;
+          const canAddMoreImages = imageCount < MAX_IMAGES_PER_HOBBY;
 
           return (
             <div
@@ -351,9 +408,13 @@ export const HobbiesEditor: React.FC = () => {
                       {hobby.category}
                     </span>
                   )}
+
+                  <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-terracotta/10 text-terracotta border border-terracotta/20">
+                    {imageCount}/{MAX_IMAGES_PER_HOBBY} Photos
+                  </span>
                 </div>
 
-                {/* Right controls: Move up/down, Delete, Collapse toggle */}
+                {/* Right controls: Move up/down, Delete */}
                 <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     type="button"
@@ -396,7 +457,7 @@ export const HobbiesEditor: React.FC = () => {
                       <Input
                         value={hobby.title}
                         onChange={(e) => updateHobby(hobby.id, { title: e.target.value })}
-                        placeholder="e.g. Sashimono Woodworking"
+                        placeholder="e.g. Anime & Visual Storytelling"
                         className="bg-light-surface dark:bg-dark-surface text-sm"
                       />
                     </div>
@@ -409,7 +470,7 @@ export const HobbiesEditor: React.FC = () => {
                         <Input
                           value={hobby.kanji || ''}
                           onChange={(e) => updateHobby(hobby.id, { kanji: e.target.value })}
-                          placeholder="木工"
+                          placeholder="鑑賞"
                           className="bg-light-surface dark:bg-dark-surface font-serif text-sm w-20 text-center"
                         />
                         <Button
@@ -433,7 +494,7 @@ export const HobbiesEditor: React.FC = () => {
                       <Input
                         value={hobby.category || ''}
                         onChange={(e) => updateHobby(hobby.id, { category: e.target.value })}
-                        placeholder="e.g. Woodcraft"
+                        placeholder="e.g. Storytelling, Interactive, Discipline"
                         className="bg-light-surface dark:bg-dark-surface text-sm"
                       />
                     </div>
@@ -442,92 +503,123 @@ export const HobbiesEditor: React.FC = () => {
                   {/* Row 2: Subtitle */}
                   <div className="space-y-1.5">
                     <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
-                      Subtitle / Material Summary
+                      Subtitle / Focus Summary
                     </Label>
                     <Input
                       value={hobby.subtitle || ''}
                       onChange={(e) => updateHobby(hobby.id, { subtitle: e.target.value })}
-                      placeholder="e.g. Hand-planed Hinoki & Precision Joinery"
+                      placeholder="e.g. Character Arcs, World-Building & Sakuga Animation"
                       className="bg-light-surface dark:bg-dark-surface text-sm"
                     />
                   </div>
 
-                  {/* Row 3: Discord-Style Multi-Image Gallery Manager */}
+                  {/* Row 3: Supabase Storage Multi-Image Gallery Manager (Up to 5 pictures) */}
                   <div className="space-y-3 p-4 rounded-lg bg-light-surface-raised/70 dark:bg-dark-surface-raised/70 border border-light-border/60 dark:border-dark-border/60">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <ImageIcon className="w-4 h-4 text-terracotta" />
                         <span className="font-mono text-xs font-semibold text-light-ink dark:text-dark-ink uppercase tracking-wider">
-                          Discord-Style Multi-Image Gallery ({hobby.images.length})
+                          Supabase Photo Gallery ({imageCount}/{MAX_IMAGES_PER_HOBBY})
                         </span>
                       </div>
-                      <span className="text-[10px] font-mono text-light-ink-muted">
-                        First image is default main preview
-                      </span>
+
+                      {/* Direct File Upload Button */}
+                      <label
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono border border-terracotta/40 text-terracotta bg-terracotta/5 hover:bg-terracotta/15 cursor-pointer transition-colors shadow-2xs ${
+                          !canAddMoreImages || isUploading ? 'opacity-50 pointer-events-none' : ''
+                        }`}
+                      >
+                        {isUploading ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Uploading to Supabase...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>Upload Picture (Max 5)</span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          disabled={isUploading || !canAddMoreImages}
+                          onChange={(e) => handleFileUpload(hobby.id, e)}
+                        />
+                      </label>
                     </div>
 
                     {/* Image URL Thumbnails List */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
-                      {hobby.images.map((imgUrl, imgIdx) => (
-                        <div
-                          key={imgIdx}
-                          className="relative p-2 rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border/60 dark:border-dark-border/60 flex items-center gap-3 group/img"
-                        >
-                          <img
-                            src={imgUrl}
-                            alt={`Preview ${imgIdx + 1}`}
-                            className="w-12 h-12 rounded object-cover border border-light-border/40 dark:border-dark-border/40 shrink-0"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.opacity = '0.3';
-                            }}
-                          />
-                          <div className="min-w-0 flex-1">
-                            <span className="font-mono text-[10px] text-terracotta font-bold block">
-                              Photo {imgIdx + 1} {imgIdx === 0 && '· Main'}
-                            </span>
-                            <p className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted truncate">
-                              {imgUrl}
-                            </p>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveImage(hobby.id, imgIdx)}
-                            className="p-1 rounded text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
-                            title="Remove photo"
+                    {imageCount > 0 ? (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+                        {hobby.images.map((imgUrl, imgIdx) => (
+                          <div
+                            key={imgIdx}
+                            className="relative p-2 rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border/60 dark:border-dark-border/60 flex items-center gap-3 group/img shadow-2xs"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
+                            <img
+                              src={imgUrl}
+                              alt={`Preview ${imgIdx + 1}`}
+                              className="w-12 h-12 rounded object-cover border border-light-border/40 dark:border-dark-border/40 shrink-0"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.opacity = '0.3';
+                              }}
+                            />
+                            <div className="min-w-0 flex-1">
+                              <span className="font-mono text-[10px] text-terracotta font-bold block">
+                                Photo {imgIdx + 1} {imgIdx === 0 && '· Main Display'}
+                              </span>
+                              <p className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted truncate">
+                                {imgUrl}
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImage(hobby.id, imgIdx)}
+                              className="p-1 rounded text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
+                              title="Remove picture"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs font-mono text-light-ink-muted py-2 italic">
+                        No pictures added yet. Upload a picture or paste an image URL below.
+                      </p>
+                    )}
 
-                    {/* Add Image URL Row */}
-                    <div className="flex items-center gap-2 pt-2">
-                      <Input
-                        value={newImageUrls[hobby.id] || ''}
-                        onChange={(e) =>
-                          setNewImageUrls((prev) => ({ ...prev, [hobby.id]: e.target.value }))
-                        }
-                        placeholder="Paste image URL (https://...)"
-                        className="bg-light-surface dark:bg-dark-surface text-xs font-mono flex-1"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            handleAddImage(hobby.id);
+                    {/* Add Image URL Row (Optional URL input) */}
+                    {canAddMoreImages && (
+                      <div className="flex items-center gap-2 pt-2">
+                        <Input
+                          value={newImageUrls[hobby.id] || ''}
+                          onChange={(e) =>
+                            setNewImageUrls((prev) => ({ ...prev, [hobby.id]: e.target.value }))
                           }
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        onClick={() => handleAddImage(hobby.id)}
-                        variant="outline"
-                        size="sm"
-                        className="font-mono text-xs border-terracotta/40 text-terracotta hover:bg-terracotta/10 shrink-0 cursor-pointer"
-                      >
-                        <Plus className="w-3.5 h-3.5 mr-1" />
-                        Add Image
-                      </Button>
-                    </div>
+                          placeholder="Or paste external image URL (https://...)"
+                          className="bg-light-surface dark:bg-dark-surface text-xs font-mono flex-1"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleAddImageUrl(hobby.id);
+                            }
+                          }}
+                        />
+                        <Button
+                          type="button"
+                          onClick={() => handleAddImageUrl(hobby.id)}
+                          variant="outline"
+                          size="sm"
+                          className="font-mono text-xs border-terracotta/40 text-terracotta hover:bg-terracotta/10 shrink-0 cursor-pointer"
+                        >
+                          <Plus className="w-3.5 h-3.5 mr-1" />
+                          Add URL
+                        </Button>
+                      </div>
+                    )}
                   </div>
 
                   {/* Row 4: Why I Do This Reflection Narrative */}
@@ -538,14 +630,14 @@ export const HobbiesEditor: React.FC = () => {
                         "Why I Do This" Narrative Reflection
                       </Label>
                       <span className="text-[10px] font-mono text-light-ink-muted">
-                        Connect physical craft to software engineering rigor
+                        Explain how this pursuit grounds your approach to software engineering
                       </span>
                     </div>
                     <Textarea
                       rows={3}
                       value={hobby.whyDescription}
                       onChange={(e) => updateHobby(hobby.id, { whyDescription: e.target.value })}
-                      placeholder="Explain how this craft grounds your approach to software architecture..."
+                      placeholder="Explain how this hobby grounds your thinking, creativity, or discipline..."
                       className="bg-light-surface dark:bg-dark-surface text-sm leading-relaxed"
                     />
                   </div>
@@ -556,7 +648,7 @@ export const HobbiesEditor: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <Tag className="w-4 h-4 text-terracotta" />
                         <span className="font-mono text-xs font-semibold text-light-ink dark:text-dark-ink uppercase tracking-wider">
-                          Craft Metadata Specs ({(hobby.metadata || []).length})
+                          Pursuit Details & Specs ({(hobby.metadata || []).length})
                         </span>
                       </div>
                       <Button
@@ -567,7 +659,7 @@ export const HobbiesEditor: React.FC = () => {
                         className="h-7 text-xs font-mono border-terracotta/40 text-terracotta hover:bg-terracotta/10 cursor-pointer"
                       >
                         <Plus className="w-3 h-3 mr-1" />
-                        Add Spec
+                        Add Detail
                       </Button>
                     </div>
 
@@ -582,7 +674,7 @@ export const HobbiesEditor: React.FC = () => {
                             onChange={(e) =>
                               handleUpdateMetadata(hobby.id, mIdx, { label: e.target.value })
                             }
-                            placeholder="Label (e.g. Material)"
+                            placeholder="Label (e.g. Favorite Genre)"
                             className="w-1/3 text-xs font-medium"
                           />
                           <Input
@@ -590,14 +682,14 @@ export const HobbiesEditor: React.FC = () => {
                             onChange={(e) =>
                               handleUpdateMetadata(hobby.id, mIdx, { value: e.target.value })
                             }
-                            placeholder="Value (e.g. Kiso Hinoki)"
+                            placeholder="Value (e.g. Psychological, Sci-Fi)"
                             className="flex-1 text-xs"
                           />
                           <button
                             type="button"
                             onClick={() => handleDeleteMetadata(hobby.id, mIdx)}
                             className="p-1 rounded text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
-                            title="Delete spec"
+                            title="Delete detail"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -644,7 +736,7 @@ export const HobbiesEditor: React.FC = () => {
           className="font-mono text-xs text-light-ink-muted hover:text-terracotta cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
-          Reset to Default 4 Crafts
+          Reset to Vincent's 5 Hobbies
         </Button>
       </div>
     </div>
