@@ -89,7 +89,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
   const allOpen = list.every((exp, idx) => expandedCards[exp.id || idx]);
 
   return (
-    <section id="experience" className="relative w-full overflow-hidden py-10 sm:py-14 lg:py-20">
+    <section id="experience" className="relative w-full overflow-hidden py-16 lg:py-24">
       {/* Subtle Japanese Sumi-e Arts in Left & Right Empty Margins */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
         {/* Left Margin Flank Bamboo */}
@@ -141,41 +141,34 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
         stampChar="道"
       />
 
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-        {/* Section Header */}
-        <header className="mb-10 sm:mb-14 flex flex-col md:flex-row md:items-end justify-between gap-5 border-l-2 border-terracotta/80 pl-4 sm:pl-5 py-1">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        {/* Section Header with Classical Wabi-Sabi Numerals & Standardized Layout */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 text-[10px] sm:text-xs font-mono tracking-widest text-ochre uppercase mb-1.5">
-              <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse inline-block" />
-              02 // CAREER TRAJECTORY &amp; ARCHITECTURAL MILESTONES
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-serif text-terracotta text-sm">02 //</span>
+              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                CAREER TRAJECTORY
+              </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-medium text-light-ink dark:text-dark-ink tracking-tight">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
               Staff &amp; Principal Systems Milestones{' '}
-              <span className="text-lg sm:text-2xl font-light text-light-ink-muted dark:text-dark-ink-muted ml-1.5 font-serif">
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2">
                 職歴
               </span>
             </h2>
-            <p className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted mt-1.5 tracking-wider uppercase font-light">
-              SYSTEM CADENCE · DISTRIBUTED FABRIC · ARTISANAL SHADER RUNTIMES
-            </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div className="flex flex-wrap items-center gap-3">
             {/* Global Expand All / Collapse All */}
             <button
               type="button"
               onClick={toggleAll}
-              className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 border cursor-pointer ${
-                allOpen
-                  ? 'bg-terracotta text-white border-terracotta shadow-xs font-medium'
-                  : 'bg-light-surface-card dark:bg-[#181920] text-light-ink-muted dark:text-neutral-300 border-light-border dark:border-[#282a36] hover:border-terracotta/60 hover:text-terracotta'
-              }`}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
               title="Expand or collapse all career milestone details"
             >
-              <Layers className="w-3.5 h-3.5" />
-              <span className="tracking-wider uppercase font-medium">
-                {allOpen ? 'Collapse All' : 'Expand All'}
-              </span>
+              <Layers className="w-3.5 h-3.5 text-terracotta" />
+              <span>{allOpen ? 'Collapse All' : 'Expand All'}</span>
             </button>
 
             {/* Resume Link */}
@@ -187,15 +180,15 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                   onNavigate('resume');
                 }
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg border border-light-border dark:border-[#282a36] bg-light-surface-card dark:bg-[#181920] text-light-ink-muted dark:text-neutral-300 hover:border-terracotta/60 hover:text-terracotta transition-colors"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
             >
               <Briefcase className="w-3.5 h-3.5 text-terracotta" />
               <span className="hidden sm:inline">Curriculum Vitae</span>
               <span className="sm:hidden">CV</span>
-              <ArrowRight className="w-3 h-3 text-terracotta" />
+              <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-1" />
             </a>
           </div>
-        </header>
+        </div>
 
         {/* Timeline Container */}
         <div className="relative timeline-container">
@@ -271,15 +264,6 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                     {/* Corner Hairline Brackets */}
                     <CornerBrackets size="sm" />
-
-                    {/* Top-Right Architectural Ribbon (Rendered for Active Roles) */}
-                    {isCurrent && (
-                      <div className="absolute top-0 right-0 overflow-hidden w-28 h-28 pointer-events-none z-20">
-                        <div className="absolute transform rotate-45 bg-gradient-to-r from-terracotta to-[#d4482b] text-white font-mono text-[10px] font-bold tracking-widest uppercase py-0.5 sm:py-1 right-[-32px] top-[16px] sm:top-[18px] w-[130px] text-center shadow-xs border-b border-ochre/40 select-none">
-                          * ACTIVE // {String(idx + 1).padStart(2, '0')}
-                        </div>
-                      </div>
-                    )}
 
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                       {/* Left: Clean Square Emblem (Custom Logo Image or Default Japanese Hanko Seal) */}

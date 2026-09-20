@@ -25,7 +25,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
   }
 
   return (
-    <section id="featured-works" className="relative w-full overflow-hidden py-14 lg:py-20">
+    <section id="featured-works" className="relative w-full overflow-hidden py-16 lg:py-24">
       {/* Subtle Japanese Sumi-e Arts in Left & Right Empty Margins */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
         {/* Left Margin Flank Bamboo */}
@@ -82,7 +82,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
               </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
-              Featured Works <span className="text-xl sm:text-2xl font-light text-light-ink-muted dark:text-dark-ink-muted ml-2">主な作品</span>
+              Featured Works <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2">主な作品</span>
             </h2>
           </div>
 

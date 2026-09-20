@@ -116,25 +116,27 @@ export const PhilosophyBento: React.FC = () => {
       />
 
       {/* Main Philosophy Bento Content */}
-      <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
-        <div className="max-w-2xl mb-10 border-b border-light-border/60 dark:border-[#2D3039]/60 pb-6">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-terracotta font-serif text-sm">04 //</span>
-            <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-              GUIDING PRINCIPLES
-            </span>
+        <div className="mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-serif text-terracotta text-sm">04 //</span>
+              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                GUIDING PRINCIPLES
+              </span>
+            </div>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
+              Architectural Philosophy{' '}
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2">
+                哲学
+              </span>
+            </h2>
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
+              Software is not merely mechanical logic; it is a spatial environment where human minds dwell. I build
+              systems honoring three core tenets.
+            </p>
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
-            Architectural Philosophy{' '}
-            <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2">
-              哲学
-            </span>
-          </h2>
-          <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
-            Software is not merely mechanical logic; it is a spatial environment where human minds dwell. I build
-            systems honoring three core tenets.
-          </p>
         </div>
 
         {/* Dynamic Philosophy Cards */}

@@ -180,7 +180,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
 
   return (
     <div
-      className={`relative w-full max-w-7xl mx-auto px-4 sm:px-6 my-10 sm:my-16 flex flex-col items-center justify-center select-none ${className}`}
+      className={`relative w-full max-w-7xl mx-auto px-4 sm:px-6 my-6 sm:my-10 flex flex-col items-center justify-center select-none ${className}`}
     >
       {/* Top Seigaiha Wave Arch Motif */}
       <div className="mb-2 sm:mb-2.5 flex items-center justify-center pointer-events-none">
