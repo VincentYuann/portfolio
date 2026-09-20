@@ -17,6 +17,7 @@ import { ThemedToaster } from './components/ThemedToaster';
 // Route-level code-splitting for non-critical views (drastically reduces initial bundle size)
 const ProjectsPage = lazy(() => import('./components/ProjectsPage').then((m) => ({ default: m.ProjectsPage })));
 const ResumePage = lazy(() => import('./components/ResumePage').then((m) => ({ default: m.ResumePage })));
+const HobbiesPage = lazy(() => import('./components/HobbiesPage').then((m) => ({ default: m.HobbiesPage })));
 const LoginPage = lazy(() => import('./components/LoginPage').then((m) => ({ default: m.LoginPage })));
 const EditPage = lazy(() => import('./components/EditPage').then((m) => ({ default: m.EditPage })));
 
@@ -37,13 +38,14 @@ const RouteLoadingFallback: React.FC = () => (
   </div>
 );
 
-export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit';
+export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies';
 
 const getInitialView = (): ViewMode => {
   if (typeof window === 'undefined') return 'home';
   const hash = window.location.hash.toLowerCase();
   if (hash === '#resume' || hash === '#cv') return 'resume';
   if (hash === '#all-projects' || hash === '#projects' || hash === '#archive') return 'projects';
+  if (hash === '#all-hobbies' || hash === '#hobbies-archive') return 'hobbies';
   if (hash === '#login') return 'login';
   if (hash === '#edit') return 'edit';
   return 'home';
@@ -80,7 +82,7 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
       {hasHobbies && (
         <>
           <SectionDivider label="PURSUITS & CRAFTS · 余白と手仕事" shortLabel="CRAFTS · 余白" />
-          <HobbiesSection />
+          <HobbiesSection onNavigate={onNavigate} />
         </>
       )}
       <SectionDivider label="INITIATE A DIALOGUE · 対話" shortLabel="DIALOGUE · 対話" />
@@ -201,6 +203,9 @@ export const App: React.FC = () => {
       } else if (hash === '#all-projects' || hash === '#projects' || hash === '#archive') {
         setViewRef.current('projects');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#all-hobbies' || hash === '#hobbies-archive') {
+        setViewRef.current('hobbies');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (hash === '#login') {
         setViewRef.current('login');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -238,6 +243,9 @@ export const App: React.FC = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (view === 'projects') {
       window.location.hash = '#all-projects';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (view === 'hobbies') {
+      window.location.hash = '#all-hobbies';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (view === 'login') {
       window.location.hash = '#login';
@@ -308,6 +316,10 @@ export const App: React.FC = () => {
 
               {currentView === 'projects' && (
                 <ProjectsPage onNavigate={handleNavigate} />
+              )}
+
+              {currentView === 'hobbies' && (
+                <HobbiesPage onNavigate={handleNavigate} />
               )}
 
               {currentView === 'home' && (

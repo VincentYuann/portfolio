@@ -1,37 +1,27 @@
 import React, { useState } from 'react';
-import { CornerBrackets } from './CornerBrackets';
-import { EnsoOrbital } from './EnsoOrbital';
-import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
+import { ArrowLeft, Search, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { useSiteData, HobbyItem } from '../context/SiteDataContext';
-import { Sparkles, Image as ImageIcon, ArrowRight, Layers } from 'lucide-react';
+import { EnsoOrbital } from './EnsoOrbital';
+import { CornerBrackets } from './CornerBrackets';
+import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 
-interface HobbyCardProps {
-  hobby: HobbyItem;
-  index: number;
+interface HobbiesPageProps {
+  onNavigate?: (view: 'home' | 'projects' | 'resume' | 'hobbies', sectionId?: string) => void;
 }
 
-const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
+export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ hobby, index }) => {
   const images = Array.isArray(hobby.images) && hobby.images.length > 0 ? hobby.images : [];
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
 
   const heroImage = images[activeImageIndex] || images[0] || '';
 
   // Get other images for side thumbnails (all images except the currently active one, up to 4 thumbnails)
-  const sideThumbnails = images
-    .map((img, idx) => ({ img, idx }))
-    .filter((item) => item.idx !== activeImageIndex)
-    .slice(0, 4);
+  const sideThumbnails = images.map((img, idx) => ({ img, idx })).filter((item) => item.idx !== activeImageIndex).slice(0, 4);
 
   return (
-    <article
-      className="bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-7 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 dark:hover:border-terracotta/40 transition-all duration-300 flex flex-col justify-between"
-    >
+    <article className="bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-7 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 dark:hover:border-terracotta/40 transition-all duration-300 flex flex-col justify-between">
       {/* Top-Left Celestial Ensō Orbital Circle on Hover */}
-      <EnsoOrbital
-        placement="top-left"
-        size={96}
-        hoverOnly={true}
-      />
+      <EnsoOrbital placement="top-left" size={96} hoverOnly={true} />
       <CornerBrackets size="md" />
 
       {/* Card Header (Clean: No red dot) */}
@@ -119,7 +109,7 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
           </div>
         )}
 
-        {/* Why I Do This / Grounded Reflection Block */}
+        {/* Why I Do This Narrative Reflection Block */}
         <div className="space-y-2 pt-3 border-t border-light-border/60 dark:border-[#2D3039]/60">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-terracotta" />
@@ -133,7 +123,7 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
         </div>
       </div>
 
-      {/* Metadata Tags / Chips */}
+      {/* Metadata Details & Specs */}
       {Array.isArray(hobby.metadata) && hobby.metadata.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 pt-4 mt-4 border-t border-light-border/40 dark:border-dark-border/40 relative z-10">
           {hobby.metadata.map((meta, mIdx) => (
@@ -151,125 +141,99 @@ const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
   );
 };
 
-interface HobbiesSectionProps {
-  onNavigate?: (view: any, sectionId?: string) => void;
-}
-
-export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) => {
+export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
   const { hobbies: rawHobbies } = useSiteData();
   const hobbies = Array.isArray(rawHobbies) ? rawHobbies : [];
+  const [searchQuery, setSearchQuery] = useState('');
 
-  if (hobbies.length === 0) {
-    return null;
-  }
-
-  // Display top 2 hobbies on homepage, hide remaining in hobbies archive page
-  const displayedHobbies = hobbies.slice(0, 2);
+  const filteredHobbies = hobbies.filter((hobby) => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return true;
+    return (
+      hobby.title.toLowerCase().includes(q) ||
+      (hobby.subtitle && hobby.subtitle.toLowerCase().includes(q)) ||
+      (hobby.category && hobby.category.toLowerCase().includes(q)) ||
+      (hobby.whyDescription && hobby.whyDescription.toLowerCase().includes(q))
+    );
+  });
 
   return (
-    <section id="hobbies" className="relative w-full overflow-hidden py-16 lg:py-24">
-      {/* Full-Bleed Atmospheric Background Behind Hobbies Cards */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
-        <img
-          src="./images/hero-sumie-landscape-banner.jpg"
-          alt="Sumi-e landscape behind pursuits section"
-          className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen dark:invert"
-          style={{
-            maskImage: 'radial-gradient(ellipse 90% 75% at 50% 50%, black 25%, transparent 85%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 90% 75% at 50% 50%, black 25%, transparent 85%)',
-          }}
-        />
-
-        {/* Top & Bottom seamless gradient transitions */}
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-light-canvas via-light-canvas/80 to-transparent dark:from-dark-canvas dark:via-dark-canvas/80 z-10 pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-light-canvas via-light-canvas/80 to-transparent dark:from-dark-canvas dark:via-dark-canvas/80 z-10 pointer-events-none" />
-      </div>
-
-      {/* Left Empty Margin Japanese Vertical Floating Widget */}
+    <div className="relative w-full min-h-screen overflow-x-clip">
+      {/* Floating Vertical Margins in Left & Right Empty Spaces */}
       <VerticalMarginWidget
         side="left"
-        top="top-1/2 -translate-y-1/2"
+        top="top-72"
         {...MARGIN_PRESETS.shokuninCraft}
       />
-
-      {/* Right Empty Margin Japanese Vertical Floating Widget */}
       <VerticalMarginWidget
         side="right"
-        top="top-1/2 -translate-y-1/2"
+        top="top-96"
         {...MARGIN_PRESETS.akariSimplicity}
       />
 
-      {/* Main Hobbies Content Container */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        {/* Section Header */}
-        <div className="mb-8 sm:mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-serif text-terracotta text-sm">05 //</span>
-                <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                  PURSUITS &amp; CRAFTS · 余白と手仕事
-                </span>
-              </div>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
-                Disciplines of Quiet Focus{' '}
-                <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
-                  余白と技芸
-                </span>
-              </h2>
-              <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
-                Bridging the physical and digital. Creative storytelling, interactive mechanics, athletic discipline, and quantitative execution cultivate the patience, tactile rigor, and structural humility essential to resilient software systems.
-              </p>
-            </div>
+      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Back navigation button */}
+        <div className="mb-6 sm:mb-8">
+          <button
+            onClick={() => onNavigate?.('home', 'hobbies')}
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors group cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
+            <span>Return to Portfolio Overview</span>
+          </button>
+        </div>
 
-            {/* Complete Archive Navigation Action */}
-            {hobbies.length > 2 && (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 shrink-0">
-                <a
-                  href="#all-hobbies"
-                  onClick={(e) => {
-                    if (onNavigate) {
-                      e.preventDefault();
-                      onNavigate('hobbies');
-                    }
-                  }}
-                  className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
-                >
-                  <Layers className="w-3.5 h-3.5 text-terracotta" />
-                  <span className="sm:hidden">All Pursuits ({hobbies.length})</span>
-                  <span className="hidden sm:inline">View Complete Pursuits Archive ({hobbies.length})</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-1" />
-                </a>
-              </div>
-            )}
+        {/* Header Title Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-light-border/70 dark:border-[#2D3039]/80 mb-8 sm:mb-10">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>
+              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                PURSUITS &amp; CRAFTS · 余白と手仕事
+              </span>
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
+              Pursuits Beyond the Terminal{' '}
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
+                余白と手仕事
+              </span>
+            </h1>
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed max-w-3xl">
+              A collection of offline disciplines, creative storytelling, physical training, and quantitative execution that shape how I approach software architecture.
+            </p>
+          </div>
+
+          {/* Search bar */}
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-light-ink-muted" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search pursuits..."
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60"
+            />
           </div>
         </div>
 
-        {/* 2-Column Responsive Hobbies Grid (Top 2 on Homepage) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-          {displayedHobbies.map((hobby, idx) => (
-            <HobbyCard
-              key={hobby.id || idx}
-              hobby={hobby}
-              index={idx}
-            />
-          ))}
-        </div>
-
-        {/* Bottom CTA for Complete Archive */}
-        {hobbies.length > 2 && (
-          <div className="mt-10 sm:mt-12 text-center">
-            <button
-              type="button"
-              onClick={() => onNavigate?.('hobbies')}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface hover:border-terracotta text-light-ink dark:text-dark-ink hover:text-terracotta font-sans text-xs uppercase tracking-widest shadow-2xs transition-all duration-300 group cursor-pointer"
-            >
-              <span>Explore All Pursuits &amp; Crafts ({hobbies.length})</span>
-              <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
+        {/* Pursuits Grid */}
+        {filteredHobbies.length > 0 ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+            {filteredHobbies.map((hobby, idx) => (
+              <HobbyCardItem key={hobby.id || idx} hobby={hobby} index={idx} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 border border-dashed border-light-border dark:border-dark-border rounded-xl">
+            <p className="font-serif text-lg text-light-ink dark:text-dark-ink mb-1">
+              No pursuits found matching your search.
+            </p>
+            <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+              Try a different keyword or return to the main overview.
+            </p>
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };

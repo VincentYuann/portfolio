@@ -3,7 +3,7 @@ import { useTheme } from '../context/ThemeContext';
 import { X, Sun, Moon } from 'lucide-react';
 import { HankoStamp } from './HankoStamp';
 
-export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit';
+export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies';
 
 interface HeaderProps {
   onOpenContact?: () => void;
@@ -141,6 +141,8 @@ export const Header: React.FC<HeaderProps> = ({
                 ? item.id === 'resume'
                 : currentView === 'projects'
                 ? item.id === 'featured-works'
+                : currentView === 'hobbies'
+                ? item.id === 'hobbies'
                 : activeSection === item.id;
 
             return (
@@ -296,6 +298,8 @@ export const Header: React.FC<HeaderProps> = ({
                   ? item.id === 'resume'
                   : currentView === 'projects'
                   ? item.id === 'featured-works'
+                  : currentView === 'hobbies'
+                  ? item.id === 'hobbies'
                   : activeSection === item.id;
 
               return (
