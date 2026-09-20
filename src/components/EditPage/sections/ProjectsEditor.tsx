@@ -5,7 +5,7 @@ import {
   ExternalLink,
   Calendar,
 } from 'lucide-react';
-import { supabase, formatErrorMessage, uploadProjectImage } from '../../../lib/supabase';
+import { supabase, formatErrorMessage, uploadProjectImage, withTimeout } from '../../../lib/supabase';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { EditorCardShell } from '../shared/EditorCardShell';
@@ -135,7 +135,7 @@ export const ProjectsEditor: React.FC = () => {
     const handleGlobalSave = () => handleSaveAll();
     window.addEventListener('portfolio-admin-save', handleGlobalSave);
     return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  });
+  }, [projects]);
 
   const updateProject = (id: string, patch: Partial<ProjectEntry>) => {
     notifyDirty();
@@ -222,7 +222,7 @@ export const ProjectsEditor: React.FC = () => {
         subtitle: p.subtitle || '',
         start_date: p.startDate || '',
         end_date: p.endDate || '',
-        is_active: p.isActive,
+        is_active: Boolean(p.isActive),
         status_label: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
         summary: p.summary || '',
         description: p.summary || '',
@@ -239,11 +239,35 @@ export const ProjectsEditor: React.FC = () => {
         ],
         github_link: p.githubLink || '',
         live_link: p.liveLink || '',
+        display_order: typeof p.displayOrder === 'number' ? p.displayOrder : idx,
+        is_featured: Boolean(p.isFeatured),
         updated_at: new Date().toISOString(),
       }));
 
-      const { error } = await supabase.from('projects').upsert(updates, { onConflict: 'title' });
-      if (error) throw error;
+      await withTimeout(
+        (async () => {
+          // 1. Prune removed projects in Supabase
+          const { data: existing } = await supabase.from('projects').select('title');
+          if (existing && existing.length > 0) {
+            const currentTitleSet = new Set(updates.map((u) => u.title));
+            const toDelete = existing
+              .filter((row) => !currentTitleSet.has(row.title))
+              .map((row) => row.title);
+            if (toDelete.length > 0) {
+              const { error: delErr } = await supabase.from('projects').delete().in('title', toDelete);
+              if (delErr) console.warn('Could not prune removed projects:', delErr);
+            }
+          }
+
+          // 2. Upsert current projects
+          if (updates.length > 0) {
+            const { error } = await supabase.from('projects').upsert(updates, { onConflict: 'title' });
+            if (error) throw error;
+          }
+        })(),
+        15000,
+        'Save request timed out. Please check your network and try again.'
+      );
 
       await refresh();
       notifyClean();

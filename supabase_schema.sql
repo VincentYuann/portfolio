@@ -5,6 +5,7 @@
 -- ==============================================================================
 
 -- 1. Helper function: verifies whether the calling JWT belongs to the admin owner
+-- Supports email authentication and GitHub OAuth logins (even with private email)
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE sql
@@ -13,7 +14,10 @@ SET search_path = public
 STABLE
 AS $$
   SELECT COALESCE(
-    (auth.jwt() ->> 'email') = 'vincentyuan1020@gmail.com',
+    LOWER(COALESCE(auth.jwt() ->> 'email', '')) = 'vincentyuan1020@gmail.com'
+    OR LOWER(COALESCE(auth.jwt() -> 'user_metadata' ->> 'email', '')) = 'vincentyuan1020@gmail.com'
+    OR LOWER(COALESCE(auth.jwt() -> 'user_metadata' ->> 'user_name', '')) = 'vincentyuann'
+    OR LOWER(COALESCE(auth.jwt() ->> 'preferred_username', '')) = 'vincentyuann',
     false
   );
 $$;
@@ -72,7 +76,7 @@ VALUES
   (3, '職人', 'Shokunin', 'Obsessive Craftsmanship', 'Deep Code Integrity & Care', 'The craftsman''s obligation to perform one''s best work for the social welfare. Rigorous test coverage, deterministic API contracts, and fine joinery in every line of TypeScript and Python.')
 ON CONFLICT (position) DO NOTHING;
 
--- Experience Table
+-- Experience Table (Career Trajectory & Milestones)
 CREATE TABLE IF NOT EXISTS public.experience (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   title TEXT NOT NULL,
@@ -81,13 +85,19 @@ CREATE TABLE IF NOT EXISTS public.experience (
   start_date TEXT DEFAULT '',
   end_date TEXT DEFAULT '',
   is_active BOOLEAN DEFAULT false,
+  status_label TEXT DEFAULT '',
+  display_order INT DEFAULT 0,
+  logo_url TEXT DEFAULT '',
+  kanji TEXT DEFAULT '木',
+  kanji_subtitle TEXT DEFAULT '',
+  tags TEXT[] DEFAULT ARRAY[]::TEXT[],
   description TEXT DEFAULT '',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   CONSTRAINT experience_title_company_unique UNIQUE (title, company)
 );
 
--- Projects Table (Unified date and active status model)
+-- Projects Table (Works & Systems Architecture Archive)
 CREATE TABLE IF NOT EXISTS public.projects (
   title TEXT PRIMARY KEY,
   id TEXT,
@@ -100,6 +110,8 @@ CREATE TABLE IF NOT EXISTS public.projects (
   end_date TEXT DEFAULT '',
   is_active BOOLEAN DEFAULT false,
   status_label TEXT DEFAULT '',
+  display_order INT DEFAULT 0,
+  is_featured BOOLEAN DEFAULT false,
   image TEXT DEFAULT './images/sumi-os-workspace.jpg',
   tech_stacks TEXT[] DEFAULT ARRAY[]::TEXT[],
   sections JSONB DEFAULT '[]'::jsonb,
@@ -122,15 +134,9 @@ INSERT INTO public.resume_latex (id, content)
 VALUES (1, '% Vincent Yuan Resume LaTeX Source')
 ON CONFLICT (id) DO NOTHING;
 
--- Contact Messages Table
-CREATE TABLE IF NOT EXISTS public.contact_messages (
-  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  topic TEXT DEFAULT 'General Inquiry',
-  message TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+-- Contact Messages Cleanup (Replaced by Resend + Supabase Edge Function 'send-contact-email')
+-- Contact messages are no longer saved to the database.
+DROP TABLE IF EXISTS public.contact_messages CASCADE;
 
 -- ==============================================================================
 -- 4. Schema Upgrades for Existing Databases (Idempotent ALTERS)
@@ -140,10 +146,18 @@ ALTER TABLE public.projects
   ADD COLUMN IF NOT EXISTS start_date TEXT DEFAULT '',
   ADD COLUMN IF NOT EXISTS end_date TEXT DEFAULT '',
   ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT false,
-  ADD COLUMN IF NOT EXISTS status_label TEXT DEFAULT '';
+  ADD COLUMN IF NOT EXISTS status_label TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS display_order INT DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT false;
 
 ALTER TABLE public.experience 
-  ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT false;
+  ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT false,
+  ADD COLUMN IF NOT EXISTS status_label TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS display_order INT DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS logo_url TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS kanji TEXT DEFAULT '木',
+  ADD COLUMN IF NOT EXISTS kanji_subtitle TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT ARRAY[]::TEXT[];
 
 -- ==============================================================================
 -- 5. Grants: Expose Tables & Routines to PostgREST Data API
@@ -167,10 +181,9 @@ ALTER TABLE public.philosophy_pillars ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.experience ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.resume_latex ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
 
 -- ==============================================================================
--- 7. Policies: Public Read Access (All Visitors)
+-- 7. Policies: Public Read Access (All Visitors Can ONLY View)
 -- ==============================================================================
 
 DROP POLICY IF EXISTS "Allow public read on profile" ON public.profile;
@@ -198,13 +211,8 @@ CREATE POLICY "Allow public read on resume_latex"
   ON public.resume_latex FOR SELECT
   USING (true);
 
-DROP POLICY IF EXISTS "Allow public insert on contact_messages" ON public.contact_messages;
-CREATE POLICY "Allow public insert on contact_messages"
-  ON public.contact_messages FOR INSERT
-  WITH CHECK (true);
-
 -- ==============================================================================
--- 8. Policies: Strict Admin Write Access (Only vincentyuan1020@gmail.com)
+-- 8. Policies: Strict Admin Write Access (ONLY Vincent Yuan Can Edit)
 -- ==============================================================================
 
 DROP POLICY IF EXISTS "Allow authenticated admin full access on profile" ON public.profile;
@@ -246,13 +254,6 @@ CREATE POLICY "Allow only admin to write resume_latex"
   TO authenticated
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
-
-DROP POLICY IF EXISTS "Allow authenticated admin read on contact_messages" ON public.contact_messages;
-DROP POLICY IF EXISTS "Allow only admin to read contact_messages" ON public.contact_messages;
-CREATE POLICY "Allow only admin to read contact_messages"
-  ON public.contact_messages FOR SELECT
-  TO authenticated
-  USING (public.is_admin());
 
 -- ==============================================================================
 -- 9. Storage Security Policies for 'portfolio-assets' Bucket

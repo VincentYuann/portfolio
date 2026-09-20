@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
-import { supabase, formatErrorMessage } from '../../../lib/supabase';
+import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
@@ -75,7 +75,7 @@ export const PhilosophyEditor: React.FC = () => {
     const handleGlobalSave = () => handleSave();
     window.addEventListener('portfolio-admin-save', handleGlobalSave);
     return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  });
+  }, [pillars]);
 
   const update = (pos: number, patch: Partial<PillarEntry>) => {
     notifyDirty();
@@ -85,32 +85,26 @@ export const PhilosophyEditor: React.FC = () => {
   };
 
   const addPillar = () => {
-    if (pillars.length >= 3) return;
+    if (pillars.length >= 3) {
+      toast.info('Maximum 3 philosophy pillars allowed for homepage layout.');
+      return;
+    }
     notifyDirty();
-    setPillars((prev) => [...prev, newPillar(prev.length + 1)]);
+    const created = newPillar(pillars.length + 1);
+    setPillars((prev) => [...prev, created]);
   };
 
   const deletePillar = (pos: number) => {
-    const originalList = [...pillars];
-    const next = pillars
+    if (pillars.length <= 1) {
+      toast.error('You must keep at least 1 philosophy pillar.');
+      return;
+    }
+    notifyDirty();
+    const remaining = pillars
       .filter((p) => p.position !== pos)
       .map((p, idx) => ({ ...p, position: idx + 1 }));
-
-    setPillars(next);
-    notifyDirty();
-
-    toast(`Deleted Pillar #${pos}`, {
-      description: 'Click undo to restore.',
-      duration: 6000,
-      action: {
-        label: 'Undo',
-        onClick: () => {
-          setPillars(originalList);
-          notifyDirty();
-          toast.success(`Restored Pillar #${pos}`);
-        },
-      },
-    });
+    setPillars(remaining);
+    toast.success('Pillar removed. Click Save to persist.');
   };
 
   const handleSave = async () => {
@@ -130,17 +124,24 @@ export const PhilosophyEditor: React.FC = () => {
         updated_at: new Date().toISOString(),
       }));
 
-      await supabase
-        .from('philosophy_pillars')
-        .delete()
-        .gt('position', rows.length);
+      await withTimeout(
+        (async () => {
+          const { error: delErr } = await supabase
+            .from('philosophy_pillars')
+            .delete()
+            .gt('position', rows.length);
+          if (delErr) console.warn('Could not prune removed pillars:', delErr);
 
-      if (rows.length > 0) {
-        const { error } = await supabase
-          .from('philosophy_pillars')
-          .upsert(rows, { onConflict: 'position' });
-        if (error) throw error;
-      }
+          if (rows.length > 0) {
+            const { error } = await supabase
+              .from('philosophy_pillars')
+              .upsert(rows, { onConflict: 'position' });
+            if (error) throw error;
+          }
+        })(),
+        15000,
+        'Save request timed out. Please check your network and try again.'
+      );
 
       await refresh();
       notifyClean();

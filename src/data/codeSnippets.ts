@@ -113,21 +113,20 @@ ON public.project_memories
 USING hnsw (embedding vector_cosine_ops)
 WITH (m = 16, ef_construction = 64);
 
--- Inquiries log with RLS for public submissions
-CREATE TABLE IF NOT EXISTS public.contact_messages (
+-- Temporal telemetry audit log with row-level security
+CREATE TABLE IF NOT EXISTS public.system_audit_events (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(120) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    message TEXT NOT NULL,
-    topic VARCHAR(80) DEFAULT 'General Inquiry',
-    created_at TIMESTAMPTZ DEFAULT now()
+    event_type VARCHAR(64) NOT NULL,
+    actor_id UUID REFERENCES auth.users(id),
+    payload JSONB DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ DEFAULT clock_timestamp()
 );
 
-ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.system_audit_events ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Allow anonymous message submission"
-ON public.contact_messages FOR INSERT
-TO anon
-WITH CHECK (true);`,
+CREATE POLICY "Allow authenticated read on telemetry"
+ON public.system_audit_events FOR SELECT
+TO authenticated
+USING (true);`,
   },
 ];

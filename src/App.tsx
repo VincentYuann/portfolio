@@ -100,7 +100,14 @@ export const App: React.FC = () => {
       return true;
     }
     const email = session?.user?.email?.toLowerCase()?.trim();
-    return !!email && email === ADMIN_EMAIL;
+    const metaEmail = session?.user?.user_metadata?.email?.toLowerCase()?.trim();
+    const userName = (session?.user?.user_metadata?.user_name || session?.user?.user_metadata?.preferred_username || '')?.toLowerCase()?.trim();
+
+    return (
+      (!!email && email === ADMIN_EMAIL) ||
+      (!!metaEmail && metaEmail === ADMIN_EMAIL) ||
+      (!!userName && userName === 'vincentyuann')
+    );
   };
 
   /* ── Supabase auth listener — single subscription, strict admin verification ── */

@@ -13,6 +13,7 @@ import {
   fetchResumeLatex,
   saveResumeLatex,
   formatErrorMessage,
+  withTimeout,
 } from '../../../lib/supabase';
 import { toast } from 'sonner';
 import { CornerBrackets } from '../../CornerBrackets';
@@ -118,7 +119,7 @@ export const ResumeEditor: React.FC = () => {
     const handleGlobalSave = () => handleSave();
     window.addEventListener('portfolio-admin-save', handleGlobalSave);
     return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  });
+  }, [latex, uploadedFile, tab]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -159,13 +160,19 @@ export const ResumeEditor: React.FC = () => {
     try {
       if (!supabase) throw new Error('Supabase client is not configured.');
 
-      // 1. If a PDF is uploaded, push it to the S3-backed Supabase Storage bucket
-      if (tab === 'upload' && uploadedFile && uploadedFile.name.toLowerCase().endsWith('.pdf')) {
-        await uploadResumePdf(uploadedFile);
-      }
+      await withTimeout(
+        (async () => {
+          // 1. If a PDF is uploaded, push it to the S3-backed Supabase Storage bucket
+          if (tab === 'upload' && uploadedFile && uploadedFile.name.toLowerCase().endsWith('.pdf')) {
+            await uploadResumePdf(uploadedFile);
+          }
 
-      // 2. Persist current LaTeX source to database
-      await saveResumeLatex(latex);
+          // 2. Persist current LaTeX source to database
+          await saveResumeLatex(latex);
+        })(),
+        20000,
+        'Save request timed out. Please check your network and try again.'
+      );
 
       notifyClean();
       setSaveState('success');

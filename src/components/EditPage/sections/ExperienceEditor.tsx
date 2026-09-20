@@ -3,7 +3,7 @@ import {
   MapPin,
   Calendar,
 } from 'lucide-react';
-import { supabase, formatErrorMessage, uploadExperienceLogo } from '../../../lib/supabase';
+import { supabase, formatErrorMessage, uploadExperienceLogo, withTimeout } from '../../../lib/supabase';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { EditorCardShell } from '../shared/EditorCardShell';
@@ -135,7 +135,7 @@ export const ExperienceEditor: React.FC = () => {
     const handleGlobalSave = () => handleSaveAll();
     window.addEventListener('portfolio-admin-save', handleGlobalSave);
     return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  });
+  }, [experiences]);
 
   const updateEntry = (id: string, patch: Partial<ExperienceEntry>) => {
     notifyDirty();
@@ -205,13 +205,42 @@ export const ExperienceEditor: React.FC = () => {
           location: e.location || '',
           start_date: e.startDate || '',
           end_date: e.endDate || '',
+          is_active: Boolean(e.isActive),
+          status_label: e.statusLabel || (e.isActive ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
+          display_order: typeof e.displayOrder === 'number' ? e.displayOrder : idx,
+          logo_url: e.logoUrl || '',
+          kanji: e.kanji || '木',
+          kanji_subtitle: e.kanjiSubtitle || '',
+          tags: e.tags || [],
           description: combinedDescription,
           updated_at: new Date().toISOString(),
         };
       });
 
-      const { error } = await supabase.from('experience').upsert(updates, { onConflict: 'id' });
-      if (error) throw error;
+      await withTimeout(
+        (async () => {
+          // 1. Prune removed experiences in Supabase
+          const { data: existing } = await supabase.from('experience').select('id');
+          if (existing && existing.length > 0) {
+            const currentIdSet = new Set(updates.map((u) => u.id));
+            const toDelete = existing
+              .filter((row) => !currentIdSet.has(row.id))
+              .map((row) => row.id);
+            if (toDelete.length > 0) {
+              const { error: delErr } = await supabase.from('experience').delete().in('id', toDelete);
+              if (delErr) console.warn('Could not prune removed experiences:', delErr);
+            }
+          }
+
+          // 2. Upsert current experiences
+          if (updates.length > 0) {
+            const { error } = await supabase.from('experience').upsert(updates, { onConflict: 'id' });
+            if (error) throw error;
+          }
+        })(),
+        15000,
+        'Save request timed out. Please check your network and try again.'
+      );
 
       await refresh();
       notifyClean();

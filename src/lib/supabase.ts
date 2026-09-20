@@ -72,6 +72,22 @@ export function formatErrorMessage(err: unknown): string {
 }
 
 /**
+ * Wraps any promise with a timeout to prevent unresponsive saves and hanging async requests.
+ */
+export function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs = 15000,
+  errorMsg = 'Operation timed out. Please check your network and try again.'
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(errorMsg)), timeoutMs)
+    ),
+  ]);
+}
+
+/**
  * Returns the public URL for the resume PDF from the Supabase 'portfolio-assets' bucket (or S3 endpoint).
  */
 export function getResumePdfUrl(): string {
@@ -233,7 +249,7 @@ export interface ContactMessage {
   email: string;
   message: string;
   topic?: string;
-  created_at?: string;
+  honeypot?: string;
 }
 
 export async function sendContactMessage(payload: ContactMessage) {
@@ -243,26 +259,28 @@ export async function sendContactMessage(payload: ContactMessage) {
   }
 
   try {
-    const { data, error } = await supabase
-      .from('contact_messages')
-      .insert([
-        {
-          name: payload.name,
-          email: payload.email,
-          message: payload.message,
-          topic: payload.topic || 'General Inquiry',
-          created_at: new Date().toISOString(),
-        },
-      ]);
+    const { data, error } = await supabase.functions.invoke('send-contact-email', {
+      body: {
+        name: payload.name,
+        email: payload.email,
+        message: payload.message,
+        topic: payload.topic || 'General Inquiry',
+        honeypot: payload.honeypot || '',
+      },
+    });
 
     if (error) {
-      console.error('Supabase contact insert error:', error);
-      return { success: true, simulated: true, error: formatErrorMessage(error) };
+      console.error('Supabase Edge Function invocation error:', error);
+      return { success: false, error: formatErrorMessage(error) };
+    }
+
+    if (data && data.error) {
+      return { success: false, error: data.error };
     }
 
     return { success: true, data };
   } catch (err) {
     console.error('Failed to submit contact message:', err);
-    return { success: true, simulated: true, error: formatErrorMessage(err) };
+    return { success: false, error: formatErrorMessage(err) };
   }
 }

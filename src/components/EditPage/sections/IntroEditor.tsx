@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, User, Globe, Mail, Github, Linkedin } from 'lucide-react';
-import { supabase, formatErrorMessage } from '../../../lib/supabase';
+import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
@@ -60,7 +60,7 @@ export const IntroEditor: React.FC = () => {
     const handleGlobalSave = () => handleSave();
     window.addEventListener('portfolio-admin-save', handleGlobalSave);
     return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  });
+  }, [data]);
 
   const set = (key: string, val: string) => {
     notifyDirty();
@@ -83,7 +83,7 @@ export const IntroEditor: React.FC = () => {
       ...prev,
       capability_pillars: [
         ...prev.capability_pillars,
-        { label: '', items: '' },
+        { label: 'NEW PILLAR', items: 'Technologies · Architecture' },
       ],
     }));
   };
@@ -102,11 +102,17 @@ export const IntroEditor: React.FC = () => {
 
     try {
       if (!supabase) throw new Error('Supabase not configured');
-      const { error } = await supabase
-        .from('profile')
-        .upsert({ id: 1, ...data, updated_at: new Date().toISOString() });
 
-      if (error) throw error;
+      await withTimeout(
+        (async () => {
+          const { error } = await supabase
+            .from('profile')
+            .upsert({ id: 1, ...data, updated_at: new Date().toISOString() });
+          if (error) throw error;
+        })(),
+        15000,
+        'Save request timed out. Please check your network and try again.'
+      );
 
       await refresh();
       notifyClean();

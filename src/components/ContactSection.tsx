@@ -42,6 +42,7 @@ export const ContactSection: React.FC = () => {
     const formName = (formData.get('name') as string) || name;
     const formEmail = (formData.get('email') as string) || email;
     const formMessage = (formData.get('message') as string) || message;
+    const formHoneypot = (formData.get('website_check') as string) || '';
     const defaultTopic = `[Portfolio Contact] - ${formName.trim() || 'Inquiry'}`;
 
     if (!formName || !formEmail || !formMessage) return;
@@ -52,6 +53,7 @@ export const ContactSection: React.FC = () => {
       email: formEmail,
       topic: defaultTopic,
       message: formMessage,
+      honeypot: formHoneypot,
     });
 
     if (res.success) {
@@ -207,14 +209,26 @@ export const ContactSection: React.FC = () => {
                 <div role="status" aria-live="polite" className="p-5 rounded bg-bamboo/10 border border-bamboo/30 text-center space-y-2">
                   <CheckCircle2 className="w-8 h-8 text-bamboo mx-auto" />
                   <h4 className="font-serif text-base text-light-ink dark:text-dark-ink">
-                    Thank You for Reaching Out
+                    Message Delivered Directly
                   </h4>
                   <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-                    Your transmission was received with care. Vincent will respond promptly.
+                    Your transmission was delivered directly to Vincent's inbox. He will review it and respond promptly.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                  {/* Honeypot field for bot protection - invisible to human visitors */}
+                  <div className="absolute opacity-0 -z-10 select-none pointer-events-none w-0 h-0 overflow-hidden" aria-hidden="true">
+                    <label htmlFor="website_check">Leave this field blank</label>
+                    <input
+                      id="website_check"
+                      type="text"
+                      name="website_check"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="contact-name" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
