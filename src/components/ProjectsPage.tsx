@@ -174,7 +174,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                           project.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
                         }`}
                       />
-                      <span>{project.isActive ? 'ACTIVE' : 'COMPLETED'}</span>
+                      <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'}</span>
                     </span>
                   </div>
 

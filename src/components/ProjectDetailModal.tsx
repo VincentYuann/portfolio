@@ -37,24 +37,6 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
               {project.badge || 'ENGINEERING ARCHIVE'}
             </span>
           </div>
-
-          {/* Desktop/Tablet Compact Status Pill in Top Bar (Hidden on small mobile to avoid crowding) */}
-          <div className="hidden sm:flex items-center gap-2 shrink-0">
-            <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider ${
-                project.isActive
-                  ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-[#ff7d63]'
-                  : 'bg-stone-100 dark:bg-[#20222a] border border-stone-300 dark:border-[#383b47] text-stone-600 dark:text-stone-400'
-              }`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  project.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
-                }`}
-              />
-              <span>{project.isActive ? 'ACTIVE' : 'COMPLETED'}</span>
-            </span>
-          </div>
         </div>
 
         {/* Scrollable Content: Mobile-First Single Column & Desktop 2-Column Split */}
@@ -68,16 +50,16 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                 {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
               </span>
 
-              {/* Mobile-visible Status Badge */}
+              {/* Status Badge with Japanese subtitle across all viewports */}
               <span
-                className={`inline-flex sm:hidden items-center gap-1 px-2 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider ${
                   project.isActive
                     ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-[#ff7d63]'
                     : 'bg-stone-100 dark:bg-[#20222a] border border-stone-300 dark:border-[#383b47] text-stone-600 dark:text-stone-400'
                 }`}
               >
                 <span
-                  className={`w-1 h-1 rounded-full ${
+                  className={`w-1.5 h-1.5 rounded-full ${
                     project.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
                   }`}
                 />
