@@ -119,11 +119,11 @@ export const ProjectsEditor: React.FC = () => {
   }, [contextProjects]);
 
   const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { dirty: true } }));
+    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'projects', dirty: true } }));
   };
 
   const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean'));
+    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'projects' } }));
   };
 
   // Keyboard save listener

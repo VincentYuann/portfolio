@@ -73,11 +73,11 @@ export const HobbiesEditor: React.FC = () => {
   }, [contextProfile, contextHobbies]);
 
   const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { dirty: true } }));
+    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'hobbies', dirty: true } }));
   };
 
   const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean'));
+    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'hobbies' } }));
   };
 
   // Keyboard save listener (Cmd+S / Ctrl+S)

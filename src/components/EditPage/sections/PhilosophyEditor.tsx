@@ -100,11 +100,11 @@ export const PhilosophyEditor: React.FC = () => {
   }, [contextPillars]);
 
   const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { dirty: true } }));
+    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'philosophy', dirty: true } }));
   };
 
   const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean'));
+    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'philosophy' } }));
   };
 
   // Keyboard save listener
