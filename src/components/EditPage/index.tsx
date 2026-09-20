@@ -148,17 +148,18 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
             ))}
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0 pl-2">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 pl-1 sm:pl-2">
             {isDirty && (
-              <span className="hidden md:inline-flex items-center gap-1.5 font-mono text-[11px] text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-md font-medium">
-                <AlertCircle className="w-3.5 h-3.5" />
-                Unsaved edits
+              <span className="inline-flex items-center gap-1 sm:gap-1.5 font-mono text-[10px] sm:text-[11px] text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 sm:px-2.5 py-1 rounded-md font-medium shrink-0 animate-in fade-in duration-200">
+                <AlertCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span className="hidden sm:inline">Unsaved edits</span>
+                <span className="sm:hidden">Unsaved</span>
               </span>
             )}
 
             <button
               onClick={handleExit}
-              className="inline-flex items-center gap-1.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors whitespace-nowrap cursor-pointer py-1.5 px-3 min-h-[40px] rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised"
+              className="inline-flex items-center gap-1 sm:gap-1.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors whitespace-nowrap cursor-pointer py-1.5 px-2 sm:px-3 min-h-[40px] rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised shrink-0"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Return to Portfolio</span>
