@@ -58,121 +58,127 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
         <span>{label}</span>
       </Label>
 
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center p-3.5 rounded-lg bg-light-surface/40 dark:bg-dark-surface/40 border border-light-border dark:border-dark-border">
-        {/* Square Visual Preview Box (64px) */}
-        <div className="relative shrink-0 flex items-center justify-center w-16 h-16 rounded-xl border border-terracotta/70 bg-light-surface dark:bg-dark-surface overflow-hidden shadow-inner mx-auto sm:mx-0">
-          {hasLogo ? (
-            <img
-              src={logoUrl}
-              alt="Emblem preview"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-dark-surface/40">
-              <span className="font-serif font-black text-terracotta text-2xl sm:text-3xl leading-none tracking-normal">
-                {kanji || '木'}
-              </span>
-              {kanjiSubtitle && (
-                <span className="text-[10px] font-mono tracking-wider text-ochre uppercase font-bold leading-none mt-1">
-                  {kanjiSubtitle}
+      <div className="p-3 sm:p-4 rounded-xl bg-light-surface/50 dark:bg-dark-surface/50 border border-light-border dark:border-dark-border space-y-3">
+        {/* Top Header: Seal Box + Kanji Browse & Romaji Subtitle Stack */}
+        <div className="flex items-start gap-3">
+          {/* Visual Seal Preview Box */}
+          <div className="relative shrink-0 flex items-center justify-center w-14 h-14 rounded-xl border border-terracotta/70 bg-light-surface dark:bg-dark-surface overflow-hidden shadow-inner">
+            {hasLogo ? (
+              <img
+                src={logoUrl}
+                alt="Emblem preview"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-dark-surface/40">
+                <span className="font-serif font-black text-terracotta text-2xl leading-none tracking-normal">
+                  {kanji || '木'}
                 </span>
-              )}
-            </div>
-          )}
-        </div>
+                {kanjiSubtitle && (
+                  <span className="text-[10px] font-mono tracking-wider text-ochre uppercase font-bold leading-none mt-1 truncate max-w-[48px]">
+                    {kanjiSubtitle}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
 
-        {/* Action Controls & Inputs */}
-        <div className="flex-1 w-full space-y-2.5">
-          {/* Kanji Picker Row */}
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Controls Column */}
+          <div className="flex-1 min-w-0 space-y-2">
+            {/* Browse Kanji Button */}
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={() => setKanjiModalOpen(true)}
-              className="text-xs h-8 border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta cursor-pointer"
+              className="w-full text-xs h-8 px-2.5 border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta cursor-pointer justify-start font-medium"
             >
-              <BookOpen className="w-3.5 h-3.5 mr-1.5 text-ochre" />
-              <span>Browse Kanji Library ({kanji || 'None'})</span>
+              <BookOpen className="w-3.5 h-3.5 mr-1.5 text-ochre shrink-0" />
+              <span className="truncate">Kanji: {kanji || 'None'}</span>
             </Button>
 
+            {/* Romaji Subtitle Input */}
             {onKanjiSubtitleChange && (
-              <div className="flex items-center gap-1.5 flex-1 min-w-[140px]">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase shrink-0 font-medium">
+                  Tag:
+                </span>
                 <Input
                   type="text"
                   value={kanjiSubtitle}
                   onChange={(e) => onKanjiSubtitleChange(e.target.value)}
-                  placeholder="Subtitle (e.g. AI, SYS)"
-                  className="text-xs h-8 font-mono uppercase"
-                  maxLength={8}
+                  placeholder="ROMAJI"
+                  className="text-xs h-7.5 font-mono uppercase flex-1 min-w-0 text-center"
+                  maxLength={10}
+                  title="Romaji / Subtitle Tag"
                 />
               </div>
             )}
           </div>
+        </div>
 
-          {/* Logo URL / File Upload Row */}
-          {showLogoOption && onLogoUrlChange && (
-            <div className="space-y-1.5 pt-1 border-t border-light-border/40 dark:border-dark-border/40">
-              <div className="flex items-center gap-2">
-                <Input
-                  type="url"
-                  value={logoUrl}
-                  onChange={(e) => onLogoUrlChange(e.target.value)}
-                  placeholder="Custom Logo Image URL (e.g. https://... or ./images/...)"
-                  className="text-xs font-mono h-8 flex-1"
-                />
+        {/* Logo URL / File Upload Row (when logo option enabled) */}
+        {showLogoOption && onLogoUrlChange && (
+          <div className="space-y-1.5 pt-2.5 border-t border-light-border/40 dark:border-dark-border/40">
+            <div className="flex items-center gap-1.5">
+              <Input
+                type="url"
+                value={logoUrl}
+                onChange={(e) => onLogoUrlChange(e.target.value)}
+                placeholder="Logo URL (e.g. https://...)"
+                className="text-xs font-mono h-8 flex-1 min-w-0"
+              />
 
-                {onUploadImage && (
-                  <>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={uploading}
-                      className="text-xs h-8 px-2.5 shrink-0 border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta cursor-pointer"
-                      title="Upload image file"
-                    >
-                      {uploading ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      ) : (
-                        <>
-                          <Upload className="w-3.5 h-3.5 mr-1 text-ochre" />
-                          <span>Upload</span>
-                        </>
-                      )}
-                    </Button>
-                  </>
-                )}
-
-                {hasLogo && (
+              {onUploadImage && (
+                <>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
                   <Button
                     type="button"
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
-                    onClick={() => onLogoUrlChange('')}
-                    className="text-xs h-8 px-2 text-light-ink-muted hover:text-red-500 cursor-pointer"
-                    title="Clear logo image to use Kanji character"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="text-xs h-8 px-2.5 shrink-0 border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta cursor-pointer"
+                    title="Upload image file"
                   >
-                    <X className="w-3.5 h-3.5" />
+                    {uploading ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <>
+                        <Upload className="w-3.5 h-3.5 sm:mr-1 text-ochre" />
+                        <span className="hidden sm:inline">Upload</span>
+                      </>
+                    )}
                   </Button>
-                )}
-              </div>
-              <p className="font-sans text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle">
-                {hasLogo
-                  ? 'Custom logo active. Clear URL to revert to the Japanese Kanji seal.'
-                  : 'Displaying Kanji seal. Enter a URL or upload an image to use a company/brand logo.'}
-              </p>
+                </>
+              )}
+
+              {hasLogo && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onLogoUrlChange('')}
+                  className="text-xs h-8 px-2 text-light-ink-muted hover:text-red-500 cursor-pointer shrink-0"
+                  title="Clear logo image to use Kanji character"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </Button>
+              )}
             </div>
-          )}
-        </div>
+            <p className="font-sans text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle leading-tight">
+              {hasLogo
+                ? 'Custom logo active. Clear URL to revert to Japanese Kanji seal.'
+                : 'Displaying Kanji seal. Enter URL or upload image to override with custom logo.'}
+            </p>
+          </div>
+        )}
       </div>
 
       <KanjiPickerModal

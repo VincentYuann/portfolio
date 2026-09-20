@@ -245,7 +245,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-3xl h-[88vh] max-h-[720px] flex flex-col p-0 gap-0 overflow-hidden">
         {/* Header */}
-        <DialogHeader className="p-5 sm:p-6 pb-4 border-b border-light-border dark:border-dark-border shrink-0">
+        <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs text-terracotta font-semibold uppercase tracking-widest flex items-center gap-1.5">
@@ -283,14 +283,14 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
             )}
           </div>
 
-          <DialogTitle className="mt-1">Select Official Technology Badges</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="mt-1 text-lg sm:text-xl">Select Official Technology Badges</DialogTitle>
+          <DialogDescription className="text-xs sm:text-sm">
             High-fidelity brand logos automatically linked without version number clutter.
           </DialogDescription>
         </DialogHeader>
 
         {/* Search Input Bar */}
-        <div className="p-3.5 sm:p-4 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface/50 dark:bg-dark-surface-muted/30 shrink-0">
+        <div className="p-3 sm:p-4 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface/50 dark:bg-dark-surface-muted/30 shrink-0">
           <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-light-ink-subtle pointer-events-none" />

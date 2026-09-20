@@ -95,11 +95,11 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
             onToggleExpand();
           }
         }}
-        className="w-full flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 gap-3.5 cursor-pointer select-none group"
+        className="w-full flex flex-col sm:flex-row sm:items-center justify-between p-3.5 sm:p-5 gap-3 cursor-pointer select-none group"
       >
         {/* Left: Drag Handle, Ordinal Badge, Emblem & Title */}
-        <div className="flex items-center gap-3.5 min-w-0 flex-1">
-          <div className="text-light-ink-subtle/50 dark:text-dark-ink-subtle/50 group-hover:text-terracotta transition-colors hidden sm:block">
+        <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1">
+          <div className="text-light-ink-subtle/50 dark:text-dark-ink-subtle/50 group-hover:text-terracotta transition-colors hidden sm:block shrink-0">
             <GripVertical className="w-4 h-4" />
           </div>
 
@@ -126,7 +126,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
 
         {/* Right: Actions Toolbar */}
         <div
-          className="flex items-center gap-1.5 shrink-0 sm:self-center self-end"
+          className="flex items-center gap-1 shrink-0 sm:self-center self-end"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Move Up */}
@@ -137,7 +137,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               onClick={onMoveUp}
               title="Move item up in display order"
               aria-label="Move item up"
-              className="p-1.5 text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta disabled:opacity-20 disabled:pointer-events-none rounded hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
+              className="min-w-[34px] min-h-[34px] sm:min-w-[30px] sm:min-h-[30px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
             >
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
@@ -151,7 +151,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               onClick={onMoveDown}
               title="Move item down in display order"
               aria-label="Move item down"
-              className="p-1.5 text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta disabled:opacity-20 disabled:pointer-events-none rounded hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
+              className="min-w-[34px] min-h-[34px] sm:min-w-[30px] sm:min-h-[30px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
             >
               <ArrowDown className="w-3.5 h-3.5" />
             </button>
@@ -163,15 +163,15 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               <button
                 type="button"
                 onClick={handleDeleteClick}
-                className="px-2.5 py-1 text-xs font-mono font-semibold bg-red-600 hover:bg-red-700 text-white rounded-md shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
+                className="px-2.5 py-1 text-xs font-mono font-semibold bg-red-600 hover:bg-red-700 text-white rounded-md shadow-xs transition-colors flex items-center gap-1 cursor-pointer min-h-[34px]"
               >
-                <AlertTriangle className="w-3 h-3" />
-                <span>Confirm Delete?</span>
+                <AlertTriangle className="w-3.5 h-3.5" />
+                <span>Confirm?</span>
               </button>
               <button
                 type="button"
                 onClick={handleCancelDelete}
-                className="px-2 py-1 text-xs font-mono text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink rounded-md transition-colors cursor-pointer"
+                className="px-2 py-1 text-xs font-mono text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink rounded-md transition-colors cursor-pointer min-h-[34px]"
               >
                 Cancel
               </button>
@@ -182,7 +182,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               onClick={handleDeleteClick}
               title="Delete item"
               aria-label="Delete item"
-              className="p-1.5 text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 rounded hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
+              className="min-w-[34px] min-h-[34px] sm:min-w-[30px] sm:min-h-[30px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 rounded-md hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
@@ -193,7 +193,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
             type="button"
             onClick={onToggleExpand}
             aria-label={isExpanded ? 'Collapse section' : 'Expand section'}
-            className="p-1.5 text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta rounded hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer ml-1"
+            className="min-w-[34px] min-h-[34px] sm:min-w-[30px] sm:min-h-[30px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer ml-0.5"
           >
             {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
@@ -202,7 +202,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
 
       {/* Expanded Content Drawer */}
       {isExpanded && (
-        <div className="p-4 sm:p-7 pt-2 sm:pt-3 border-t border-light-border/60 dark:border-dark-border/60 space-y-6 animate-in fade-in duration-200">
+        <div className="p-3.5 sm:p-6 pt-2 sm:pt-3 border-t border-light-border/60 dark:border-dark-border/60 space-y-5 animate-in fade-in duration-200">
           {children}
         </div>
       )}

@@ -10,10 +10,7 @@ export interface Project {
   tags: string[];
   metrics: { label: string; value: string }[];
   overview: string;
-  architectureDetails: {
-    title: string;
-    points: string[];
-  }[];
+  bullets?: string[];
   links: {
     github?: string;
     live?: string;

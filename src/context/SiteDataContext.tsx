@@ -94,13 +94,14 @@ function mapRowToProject(row: any, index?: number): Project {
   const id = row.id || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const summary = row.summary || row.description || '';
   
-  // Format architectureDetails from sections
-  let architectureDetails: { title: string; points: string[] }[] = [];
-  if (Array.isArray(row.sections) && row.sections.length > 0) {
-    architectureDetails = row.sections.map((s: any) => ({
-      title: s.heading || s.title || '',
-      points: Array.isArray(s.bullets) ? s.bullets : Array.isArray(s.points) ? s.points : [],
-    }));
+  // Format key engineering highlights & bullets
+  let bullets: string[] = [];
+  if (Array.isArray(row.bullets) && row.bullets.length > 0) {
+    bullets = row.bullets;
+  } else if (Array.isArray(row.sections) && row.sections.length > 0) {
+    bullets = row.sections.flatMap((s: any) =>
+      Array.isArray(s.bullets) ? s.bullets : Array.isArray(s.points) ? s.points : [],
+    );
   }
 
   const isFeatured = typeof row.is_featured === 'boolean' 
@@ -123,7 +124,7 @@ function mapRowToProject(row: any, index?: number): Project {
     tags: Array.isArray(row.tech_stacks) ? row.tech_stacks : Array.isArray(row.tags) ? row.tags : [],
     metrics: Array.isArray(row.metrics) ? row.metrics : [],
     overview: row.overview || summary,
-    architectureDetails,
+    bullets,
     links: {
       github: row.github_link || row.links?.github || '',
       live: row.live_link || row.links?.live || '',

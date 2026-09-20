@@ -136,14 +136,14 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
 
       {/* Sub Navbar — sticks just below main header with smooth horizontal scrolling */}
       <div className="sticky top-20 z-40 bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-13 flex items-center justify-between gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden relative">
           <div
             role="tablist"
             aria-label="Editor sections"
-            className="flex items-center gap-1.5 sm:gap-2 shrink-0"
+            className="flex items-center gap-1.5 sm:gap-2 shrink-0 py-1"
           >
             {/* Badge */}
-            <span className="font-mono text-[10px] text-terracotta border border-terracotta/40 rounded px-2 py-0.5 uppercase tracking-widest shrink-0 select-none flex items-center gap-1.5 font-semibold">
+            <span className="font-mono text-[10px] text-terracotta border border-terracotta/40 rounded-md px-2 py-1 uppercase tracking-widest shrink-0 select-none flex items-center gap-1.5 font-semibold">
               <Layers className="w-3 h-3" />
               EDITOR
             </span>
@@ -157,7 +157,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
                 aria-controls={`panel-${s.id}`}
                 aria-selected={activeSection === s.id}
                 onClick={() => handleSelectSection(s.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg font-sans text-xs whitespace-nowrap transition-all duration-150 shrink-0 cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[38px] rounded-lg font-sans text-xs whitespace-nowrap transition-all duration-150 shrink-0 cursor-pointer ${
                   activeSection === s.id
                     ? 'bg-terracotta/15 text-terracotta border border-terracotta/40 font-semibold shadow-xs'
                     : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-transparent'
@@ -170,7 +170,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
             ))}
           </div>
 
-          <div className="flex items-center gap-3 shrink-0 pl-2">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 pl-2">
             {isDirty && (
               <span className="hidden md:inline-flex items-center gap-1 font-mono text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-full animate-pulse">
                 <AlertCircle className="w-3 h-3" />
@@ -180,7 +180,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
 
             <button
               onClick={handleExit}
-              className="inline-flex items-center gap-1 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors whitespace-nowrap cursor-pointer py-1.5 px-3 min-h-[34px] rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised"
+              className="inline-flex items-center gap-1 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors whitespace-nowrap cursor-pointer py-1.5 px-3 min-h-[38px] rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Back to Portfolio</span>
@@ -191,7 +191,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Section Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
         <div role="tabpanel" id={`panel-${activeSection}`} aria-labelledby={`tab-${activeSection}`}>
           {activeSection === 'intro' && <IntroEditor />}
           {activeSection === 'experience' && <ExperienceEditor />}

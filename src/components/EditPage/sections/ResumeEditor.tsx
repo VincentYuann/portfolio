@@ -258,21 +258,21 @@ export const ResumeEditor: React.FC = () => {
                   fileInputRef.current?.click();
                 }
               }}
-              className="w-full flex flex-col items-center gap-3 py-12 sm:py-16 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-xl hover:border-terracotta hover:bg-terracotta/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta"
+              className="w-full flex flex-col items-center gap-2.5 sm:gap-3 py-8 sm:py-14 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-xl hover:border-terracotta hover:bg-terracotta/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta"
             >
-              <Upload className="w-10 h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta transition-colors" />
+              <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta transition-colors" />
               <div className="text-center">
-                <p className="font-sans text-sm text-light-ink dark:text-dark-ink font-medium">
+                <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink font-medium">
                   Click or drag your PDF / .tex file here
                 </p>
-                <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
-                  Accepts .pdf, .tex, .txt up to 10 MB (Stored in Supabase S3-compatible storage)
+                <p className="font-sans text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
+                  Accepts .pdf, .tex, .txt up to 10 MB (Stored in Supabase Storage)
                 </p>
               </div>
             </div>
           )}
 
-          <p className="mt-4 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+          <p className="mt-3.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
             Uploading a <code className="font-mono bg-light-surface dark:bg-dark-surface px-1 py-0.5 rounded border border-light-border dark:border-dark-border">.tex</code> file will populate the LaTeX editor for direct code modification.
           </p>
         </div>
@@ -283,17 +283,17 @@ export const ResumeEditor: React.FC = () => {
         <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs overflow-hidden classical-card-frame">
           <CornerBrackets size="md" />
           {/* Editor Header Bar */}
-          <div className="flex items-center justify-between px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5">
+          <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <div className="flex items-center gap-1.5 shrink-0">
                 <FileCode2 className="w-3.5 h-3.5 text-terracotta" />
                 <span className="font-mono text-xs text-light-ink font-medium dark:text-dark-ink">
                   resume.tex
                 </span>
               </div>
               <span className="text-light-ink-subtle text-xs">·</span>
-              <span className="font-mono text-[10px] text-light-ink-muted dark:text-dark-ink-muted">
-                {lineCount} lines · {charCount} characters
+              <span className="font-mono text-[10px] text-light-ink-muted dark:text-dark-ink-muted truncate">
+                {lineCount} lines · {charCount} chars
               </span>
             </div>
             <Button

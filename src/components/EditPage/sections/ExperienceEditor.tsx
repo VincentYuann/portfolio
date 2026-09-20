@@ -195,28 +195,22 @@ export const ExperienceEditor: React.FC = () => {
     try {
       if (!supabase) throw new Error('Supabase not configured');
 
-      const updates = experiences.map((e, idx) => ({
-        id: e.id,
-        title: e.title || `Role ${idx + 1}`,
-        company: e.company || 'Company',
-        location: e.location || '',
-        start_date: e.startDate || '',
-        end_date: e.endDate || '',
-        description: e.description || e.overview || '',
-        overview: e.overview || e.description || '',
-        bullets: e.bullets.filter(Boolean),
-        tags: e.tags,
-        is_active: e.isActive,
-        status_label: e.isActive ? 'ACTIVE / 現職' : '歴任 / COMPLETED',
-        domain_label: e.domainLabel,
-        logo_url: e.logoUrl,
-        kanji: e.kanji,
-        kanji_subtitle: e.kanjiSubtitle,
-        display_order: idx,
-        updated_at: new Date().toISOString(),
-      }));
+      const updates = experiences.map((e, idx) => {
+        const cleanBullets = e.bullets.filter(Boolean);
+        const combinedDescription = cleanBullets.join(' ') || e.overview || e.description || '';
+        return {
+          id: e.id,
+          title: e.title || `Role ${idx + 1}`,
+          company: e.company || 'Company',
+          location: e.location || '',
+          start_date: e.startDate || '',
+          end_date: e.endDate || '',
+          description: combinedDescription,
+          updated_at: new Date().toISOString(),
+        };
+      });
 
-      const { error } = await supabase.from('experience').upsert(updates);
+      const { error } = await supabase.from('experience').upsert(updates, { onConflict: 'id' });
       if (error) throw error;
 
       await refresh();
@@ -297,9 +291,9 @@ export const ExperienceEditor: React.FC = () => {
               onDelete={() => deleteEntry(exp.id)}
             >
               {/* 2-Column Responsive Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 pt-2">
                 {/* Left Column (Role Metadata & Dates) */}
-                <div className="lg:col-span-5 space-y-4">
+                <div className="md:col-span-5 space-y-4">
                   <div>
                     <Label htmlFor={`exp-${exp.id}-company`} className="text-xs font-medium">
                       Company / Organization *
@@ -402,7 +396,7 @@ export const ExperienceEditor: React.FC = () => {
                 </div>
 
                 {/* Right Column (Overview & Engineering Impact Bullets) */}
-                <div className="lg:col-span-7 space-y-5">
+                <div className="md:col-span-7 space-y-5">
                   <div>
                     <Label htmlFor={`exp-${exp.id}-overview`} className="text-xs font-medium">
                       Executive Overview &amp; Role Context

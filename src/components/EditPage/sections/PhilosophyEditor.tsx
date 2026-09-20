@@ -168,25 +168,25 @@ export const PhilosophyEditor: React.FC = () => {
       />
 
       {/* Pillars Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-7">
         {pillars.map((pillar) => (
           <div
             key={pillar.position}
-            className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] p-5 sm:p-6 space-y-4 shadow-xs classical-card-frame flex flex-col justify-between"
+            className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] p-5 sm:p-6 space-y-4 shadow-xs classical-card-frame flex flex-col justify-between overflow-hidden"
           >
             <CornerBrackets size="sm" />
 
-            <div className="space-y-4">
+            <div className="space-y-4.5">
               {/* Header Pill & Delete */}
               <div className="flex items-center justify-between">
-                <Badge variant="terracotta" className="font-mono text-xs px-2 py-0.5">
+                <Badge variant="terracotta" className="font-mono text-xs px-2.5 py-0.5 font-semibold">
                   PILLAR 0{pillar.position}
                 </Badge>
                 {pillars.length > 1 && (
                   <button
                     type="button"
                     onClick={() => deletePillar(pillar.position)}
-                    className="p-1 text-light-ink-subtle hover:text-red-500 rounded transition-colors cursor-pointer"
+                    className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
                     title="Delete pillar"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -237,11 +237,11 @@ export const PhilosophyEditor: React.FC = () => {
                 </Label>
                 <Textarea
                   id={`pillar-${pillar.position}-desc`}
-                  rows={4}
+                  rows={5}
                   value={pillar.description}
                   onChange={(e) => update(pillar.position, { description: e.target.value })}
                   placeholder="Explain how this Japanese aesthetic principle informs your engineering and software craft…"
-                  className="mt-1 text-xs leading-relaxed"
+                  className="mt-1 text-xs leading-relaxed min-h-[96px]"
                 />
               </div>
             </div>

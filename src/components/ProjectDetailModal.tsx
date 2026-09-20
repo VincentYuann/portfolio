@@ -1,6 +1,6 @@
 import React from 'react';
 import { Project } from '../data/projects';
-import { ExternalLink, Github, CheckCircle2, Layers } from 'lucide-react';
+import { ExternalLink, Github, ListChecks, Layers } from 'lucide-react';
 import { TechTag } from './TechTag';
 import { CornerBrackets } from './CornerBrackets';
 import {
@@ -74,36 +74,30 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
             </p>
           </div>
 
-          {/* Deep Architectural Details */}
-          <div className="space-y-4">
-            <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink font-normal">
-              System Highlights &amp; Engineering Principles
-            </h3>
+          {/* Key Architectural Highlights & Engineering Principles */}
+          {project.bullets && project.bullets.length > 0 && (
             <div className="space-y-3">
-              {project.architectureDetails.map((section, idx) => (
-                <div
-                  key={idx}
-                  className="p-3.5 sm:p-4 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/60 dark:bg-dark-surface-card/60 relative"
-                >
-                  <h4 className="font-sans text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink mb-1.5 flex items-center gap-1.5">
-                    <span className="text-terracotta font-mono text-xs">§</span>
-                    <span>{section.title}</span>
-                  </h4>
-                  <ul className="space-y-1.5">
-                    {section.points.map((pt, pIdx) => (
-                      <li
-                        key={pIdx}
-                        className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted flex items-start gap-2 leading-relaxed font-light"
-                      >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-terracotta shrink-0 mt-0.5" />
-                        <span>{pt}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink font-normal flex items-center gap-2">
+                <ListChecks className="w-4 h-4 text-terracotta" />
+                <span>Key Architectural Highlights</span>
+              </h3>
+              <ul className="space-y-2">
+                {project.bullets.map((point, idx) => (
+                  <li
+                    key={idx}
+                    className="p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/50 dark:bg-dark-surface-card/50 flex items-start gap-3"
+                  >
+                    <span className="font-mono text-xs text-terracotta font-semibold shrink-0 mt-0.5">
+                      #{String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed">
+                      {point}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
+          )}
 
           {/* Tech Tags */}
           <div>

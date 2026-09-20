@@ -155,7 +155,7 @@ export const PhilosophyBento: React.FC = () => {
             return (
               <div
                 key={pillar.position || idx}
-                className="interactive-card bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-all duration-300 hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame"
+                className="interactive-card bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-hidden group hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-all duration-300 hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame min-h-[280px]"
               >
                 {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered card */}
                 <EnsoOrbital placement="top-left" size={112} hoverOnly={true} />
@@ -166,11 +166,11 @@ export const PhilosophyBento: React.FC = () => {
                 {/* Top Accent Kanji & Icon */}
                 <div className="space-y-3 sm:space-y-4 relative z-10">
                   <div className="flex items-center justify-between border-b border-light-border/60 dark:border-[#2D3039]/60 pb-3 sm:pb-4">
-                    <span className="pillar-kanji font-serif text-4xl sm:text-6xl text-terracotta font-light leading-none inline-block pl-1 sm:pl-2">
+                    <span className="pillar-kanji font-serif text-4xl sm:text-6xl text-terracotta font-light leading-none inline-block pl-1 sm:pl-2 select-none">
                       {pillar.kanji}
                     </span>
                     <div className="flex items-center gap-2">
-                      <span className="font-sans text-[10px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                      <span className="font-mono text-[10px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                         {num}
                       </span>
                       <div className="w-7 h-7 rounded-full bg-light-surface-raised dark:bg-[#14151A] border border-light-border dark:border-[#2D3039] flex items-center justify-center">
@@ -180,7 +180,7 @@ export const PhilosophyBento: React.FC = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-serif text-lg sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta transition-colors">
+                    <h3 className="font-serif text-lg sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta transition-colors break-words">
                       {pillar.romaji}
                       {pillar.title && (
                         <span className="font-sans text-xs sm:text-sm font-light text-light-ink-muted dark:text-dark-ink-muted ml-2 block sm:inline">
@@ -188,7 +188,7 @@ export const PhilosophyBento: React.FC = () => {
                         </span>
                       )}
                     </h3>
-                    <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 leading-relaxed font-light">
+                    <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 leading-relaxed font-light break-words">
                       {pillar.description}
                     </p>
                   </div>
@@ -198,14 +198,16 @@ export const PhilosophyBento: React.FC = () => {
                 {pillar.tag && (
                   <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-[#2D3039]/40 flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
                     <span className="w-1.5 h-1.5 rounded-full bg-terracotta" />
-                    <span className="font-sans text-[10px] uppercase tracking-[0.18em] font-medium">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] font-medium truncate">
                       {pillar.tag}
                     </span>
                   </div>
                 )}
 
                 {/* Thematic Watermark Motif behind card content */}
-                {config.watermark}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-xl">
+                  {config.watermark}
+                </div>
               </div>
             );
           })}

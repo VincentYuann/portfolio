@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Plus,
   Star,
   Github,
   ExternalLink,
-  Layers,
-  Trash2,
 } from 'lucide-react';
 import { supabase, formatErrorMessage, uploadProjectImage } from '../../../lib/supabase';
 import { useSiteData } from '../../../context/SiteDataContext';
@@ -17,15 +14,8 @@ import { BulletListEditor } from '../shared/BulletListEditor';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
-import { Button } from '../../ui/button';
 import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs';
 import { toast } from 'sonner';
-
-export interface ProjectSection {
-  id: string;
-  heading: string;
-  bullets: string[];
-}
 
 export interface ProjectEntry {
   id: string;
@@ -37,7 +27,7 @@ export interface ProjectEntry {
   kanji: string;
   badge: string;
   image: string;
-  sections: ProjectSection[];
+  bullets: string[];
   techStacks: string[];
   githubLink: string;
   liveLink: string;
@@ -52,12 +42,6 @@ const CATEGORIES = [
   'Full-Stack',
 ] as const;
 
-const newSection = (): ProjectSection => ({
-  id: crypto.randomUUID(),
-  heading: '',
-  bullets: [''],
-});
-
 const newProject = (order: number = 0): ProjectEntry => ({
   id: crypto.randomUUID(),
   title: '',
@@ -68,7 +52,7 @@ const newProject = (order: number = 0): ProjectEntry => ({
   kanji: '案',
   badge: 'ENGINEERING ARCHIVE',
   image: '',
-  sections: [newSection()],
+  bullets: [''],
   techStacks: [],
   githubLink: '',
   liveLink: '',
@@ -92,14 +76,7 @@ export const ProjectsEditor: React.FC = () => {
         kanji: p.kanji || '案',
         badge: p.badge || 'ENGINEERING ARCHIVE',
         image: p.image || './images/sumi-os-workspace.jpg',
-        sections:
-          p.architectureDetails && p.architectureDetails.length > 0
-            ? p.architectureDetails.map((a) => ({
-                id: crypto.randomUUID(),
-                heading: a.title,
-                bullets: a.points || [''],
-              }))
-            : [newSection()],
+        bullets: Array.isArray(p.bullets) && p.bullets.length > 0 ? p.bullets : [''],
         techStacks: p.tags || [],
         githubLink: p.links?.github || '',
         liveLink: p.links?.live || '',
@@ -128,14 +105,7 @@ export const ProjectsEditor: React.FC = () => {
           kanji: p.kanji || '案',
           badge: p.badge || 'ENGINEERING ARCHIVE',
           image: p.image || './images/sumi-os-workspace.jpg',
-          sections:
-            p.architectureDetails && p.architectureDetails.length > 0
-              ? p.architectureDetails.map((a) => ({
-                  id: crypto.randomUUID(),
-                  heading: a.title,
-                  bullets: a.points || [''],
-                }))
-              : [newSection()],
+          bullets: Array.isArray(p.bullets) && p.bullets.length > 0 ? p.bullets : [''],
           techStacks: p.tags || [],
           githubLink: p.links?.github || '',
           liveLink: p.links?.live || '',
@@ -243,25 +213,27 @@ export const ProjectsEditor: React.FC = () => {
       const updates = projects.map((p, idx) => ({
         id: p.id,
         title: p.title || `Project ${idx + 1}`,
-        subtitle: p.subtitle,
-        category: p.category,
-        summary: p.summary,
-        description: p.summary,
-        overview: p.overview || p.summary,
-        kanji: p.kanji,
-        badge: p.badge,
-        image_url: p.image,
-        sections: p.sections,
-        tech_stacks: p.techStacks,
-        tags: p.techStacks,
-        github_url: p.githubLink,
-        live_url: p.liveLink,
-        is_featured: p.isFeatured,
-        display_order: idx,
+        subtitle: p.subtitle || '',
+        category: p.category || 'Distributed Systems',
+        summary: p.summary || '',
+        description: p.summary || '',
+        overview: p.overview || p.summary || '',
+        kanji: p.kanji || '案',
+        badge: p.badge || 'ENGINEERING ARCHIVE',
+        image: p.image || './images/sumi-os-workspace.jpg',
+        tech_stacks: p.techStacks || [],
+        sections: [
+          {
+            heading: 'Key Architectural Highlights',
+            bullets: p.bullets.filter(Boolean),
+          },
+        ],
+        github_link: p.githubLink || '',
+        live_link: p.liveLink || '',
         updated_at: new Date().toISOString(),
       }));
 
-      const { error } = await supabase.from('projects').upsert(updates);
+      const { error } = await supabase.from('projects').upsert(updates, { onConflict: 'title' });
       if (error) throw error;
 
       await refresh();
@@ -369,10 +341,10 @@ export const ProjectsEditor: React.FC = () => {
               canMoveDown={originalIdx < projects.length - 1}
               onDelete={() => deleteProject(project.id)}
             >
-              {/* 2-Column Responsive Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+              {/* 2-Column Responsive Layout (md:grid-cols-12 for optimal tablet/desktop flow) */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 pt-2">
                 {/* Left Column (Metadata & Identity) */}
-                <div className="lg:col-span-5 space-y-4">
+                <div className="md:col-span-5 space-y-4">
                   <div>
                     <Label htmlFor={`proj-${project.id}-title`} className="text-xs font-medium">
                       Project Title *
@@ -461,8 +433,8 @@ export const ProjectsEditor: React.FC = () => {
                   />
                 </div>
 
-                {/* Right Column (Narrative & Architecture Deep Dives) */}
-                <div className="lg:col-span-7 space-y-5">
+                {/* Right Column (Narrative & Architecture Highlights) */}
+                <div className="md:col-span-7 space-y-5">
                   <div>
                     <Label htmlFor={`proj-${project.id}-desc`} className="text-xs font-medium">
                       Executive Overview &amp; Narrative Summary
@@ -489,76 +461,13 @@ export const ProjectsEditor: React.FC = () => {
                     label="Core Technologies & Substrates"
                   />
 
-                  {/* Architecture Deep Dive Sections */}
-                  <div className="space-y-4 pt-2 border-t border-light-border/50 dark:border-dark-border/50">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-xs font-medium text-light-ink dark:text-dark-ink flex items-center gap-1.5">
-                        <Layers className="w-3.5 h-3.5 text-ochre" />
-                        <span>Technical Architecture Deep-Dive Sections</span>
-                      </Label>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() =>
-                          updateProject(project.id, {
-                            sections: [...project.sections, newSection()],
-                          })
-                        }
-                        className="text-terracotta hover:text-terracotta hover:bg-terracotta/10 text-xs h-7 px-2 cursor-pointer"
-                      >
-                        <Plus className="w-3.5 h-3.5 mr-1" />
-                        Add Section
-                      </Button>
-                    </div>
-
-                    <div className="space-y-4">
-                      {project.sections.map((section, sIdx) => (
-                        <div
-                          key={section.id || sIdx}
-                          className="p-4 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/80 dark:border-dark-border/80 space-y-3"
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs text-terracotta font-semibold">§</span>
-                            <Input
-                              value={section.heading}
-                              onChange={(e) => {
-                                const next = [...project.sections];
-                                next[sIdx] = { ...section, heading: e.target.value };
-                                updateProject(project.id, { sections: next });
-                              }}
-                              placeholder="Section Heading (e.g. Local Inference Runtime & Token Cache)"
-                              className="text-xs font-medium h-8 flex-1"
-                            />
-                            {project.sections.length > 1 && (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const next = project.sections.filter((_, i) => i !== sIdx);
-                                  updateProject(project.id, { sections: next });
-                                }}
-                                className="p-1.5 text-light-ink-muted hover:text-red-500 rounded transition-colors cursor-pointer"
-                                title="Remove section"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
-                            )}
-                          </div>
-
-                          <BulletListEditor
-                            bullets={section.bullets}
-                            onChange={(bullets) => {
-                              const next = [...project.sections];
-                              next[sIdx] = { ...section, bullets };
-                              updateProject(project.id, { sections: next });
-                            }}
-                            label="Key Engineering Highlights"
-                            placeholder="Describe a key technical architectural decision or performance benchmark…"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  {/* Universal Bullet List Editor for Architecture Highlights */}
+                  <BulletListEditor
+                    bullets={project.bullets}
+                    onChange={(bullets) => updateProject(project.id, { bullets })}
+                    label="Key Architectural Highlights & Contributions"
+                    placeholder="e.g. Implemented zero-copy shared memory ring buffer reducing message latency to <12μs…"
+                  />
                 </div>
               </div>
             </EditorCardShell>

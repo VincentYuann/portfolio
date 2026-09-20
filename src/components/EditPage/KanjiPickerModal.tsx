@@ -76,7 +76,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-2xl h-[86vh] max-h-[680px] flex flex-col p-0 gap-0 overflow-hidden">
         {/* Header */}
-        <DialogHeader className="p-5 sm:p-6 pb-4 border-b border-light-border dark:border-dark-border shrink-0">
+        <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0">
           <div className="flex items-center gap-2 mb-1">
             <span className="font-mono text-xs text-terracotta font-semibold uppercase tracking-widest flex items-center gap-1.5">
               <BookOpen className="w-3.5 h-3.5 text-ochre" />
@@ -87,38 +87,38 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
               {KANJI_PRESETS.length} Available
             </Badge>
           </div>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-lg sm:text-xl">{title}</DialogTitle>
+          <DialogDescription className="text-xs sm:text-sm">
             Select a symbolic character representing your philosophy, role, or project architecture.
           </DialogDescription>
         </DialogHeader>
 
         {/* Currently Selected Banner */}
-        <div className="px-5 py-3 bg-terracotta/5 dark:bg-terracotta/10 border-b border-light-border/60 dark:border-dark-border/60 flex items-center justify-between gap-3 shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg border border-terracotta/40 bg-light-surface dark:bg-dark-surface-card flex items-center justify-center font-serif text-2xl font-black text-terracotta select-none shadow-2xs">
+        <div className="px-4 py-2.5 sm:py-3 bg-terracotta/5 dark:bg-terracotta/10 border-b border-light-border/60 dark:border-dark-border/60 flex items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-terracotta/40 bg-light-surface dark:bg-dark-surface-card flex items-center justify-center font-serif text-xl sm:text-2xl font-black text-terracotta select-none shadow-2xs shrink-0">
               {selectedChar || '—'}
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="font-serif text-sm font-semibold text-light-ink dark:text-dark-ink">
+                <span className="font-serif text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink truncate">
                   {activePreset ? `${activePreset.char} · ${activePreset.romaji}` : (selectedChar ? `${selectedChar} (Custom Symbol)` : 'No Kanji Selected')}
                 </span>
                 {activePreset && (
-                  <Badge variant="secondary" className="text-[10px] py-0 px-1.5 font-mono">
+                  <Badge variant="secondary" className="text-[10px] py-0 px-1.5 font-mono hidden xs:inline-flex">
                     {activePreset.category}
                   </Badge>
                 )}
               </div>
-              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-0.5">
-                {activePreset ? activePreset.meaning : 'Pick from curated presets below or enter a custom character.'}
+              <p className="font-sans text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted mt-0.5 truncate">
+                {activePreset ? activePreset.meaning : 'Pick from presets below or enter custom.'}
               </p>
             </div>
           </div>
         </div>
 
         {/* Search & Category Filter Bar */}
-        <div className="p-3.5 sm:p-4 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface/40 dark:bg-dark-surface-muted/20 space-y-2.5 shrink-0">
+        <div className="p-3 sm:p-4 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface/40 dark:bg-dark-surface-muted/20 space-y-2 shrink-0">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-light-ink-subtle pointer-events-none" />

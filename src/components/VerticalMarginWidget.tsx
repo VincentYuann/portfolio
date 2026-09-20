@@ -107,7 +107,7 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
   return (
     <aside
       aria-hidden="true"
-      className={`${positionClass} ${sideClass} ${top} hidden xl:flex flex-col items-center gap-3 text-light-ink-muted/70 dark:text-dark-ink-muted/60 pointer-events-none select-none z-20 ${className}`}
+      className={`${positionClass} ${sideClass} ${top} hidden 2xl:flex flex-col items-center gap-3 text-light-ink-muted/70 dark:text-dark-ink-muted/60 pointer-events-none select-none z-20 ${className}`}
     >
       {type === 'minimal' ? (
         <>

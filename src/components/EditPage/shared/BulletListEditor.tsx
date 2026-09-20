@@ -1,7 +1,7 @@
 import React from 'react';
 import { Plus, X, ListChecks } from 'lucide-react';
 import { Button } from '../../ui/button';
-import { Input } from '../../ui/input';
+import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
 
 interface BulletListEditorProps {
@@ -45,8 +45,8 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
     }
   };
 
-  const handleKeyDown = (idx: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleKeyDown = (idx: number, e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       addBullet(idx);
     } else if (e.key === 'Backspace' && safeBullets[idx] === '' && safeBullets.length > 1) {
@@ -74,23 +74,24 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
         </Button>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2.5">
         {safeBullets.map((bullet, idx) => (
-          <div key={idx} className="flex items-center gap-2 group">
-            <span className="font-mono text-[11px] text-terracotta/70 select-none w-5 text-right shrink-0">
-              {idx + 1}.
+          <div key={idx} className="flex items-start gap-2 group">
+            <span className="font-mono text-[11px] text-terracotta font-semibold select-none w-5 text-right shrink-0 mt-2">
+              {String(idx + 1).padStart(2, '0')}.
             </span>
-            <Input
+            <Textarea
+              rows={2}
               value={bullet}
               onChange={(e) => updateBullet(idx, e.target.value)}
               onKeyDown={(e) => handleKeyDown(idx, e)}
               placeholder={placeholder}
-              className="text-xs h-8.5 font-sans"
+              className="text-xs font-sans resize-none py-2 px-3 leading-relaxed flex-1 min-h-[52px]"
             />
             <button
               type="button"
               onClick={() => removeBullet(idx)}
-              className="text-light-ink-subtle hover:text-red-500 p-1 rounded hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer shrink-0"
+              className="text-light-ink-subtle hover:text-red-500 p-1.5 rounded hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer shrink-0 mt-1"
               title="Remove this point"
               aria-label={`Remove point ${idx + 1}`}
             >
@@ -100,7 +101,7 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
         ))}
       </div>
       <p className="font-sans text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle">
-        Tip: Press <kbd className="font-mono px-1 py-0.5 bg-light-surface dark:bg-dark-surface border rounded text-[10px]">Enter</kbd> to add a new point, or <kbd className="font-mono px-1 py-0.5 bg-light-surface dark:bg-dark-surface border rounded text-[10px]">Backspace</kbd> on an empty line to remove.
+        Tip: Press <kbd className="font-mono px-1 py-0.5 bg-light-surface dark:bg-dark-surface border rounded text-[10px]">Enter</kbd> to create a new point, <kbd className="font-mono px-1 py-0.5 bg-light-surface dark:bg-dark-surface border rounded text-[10px]">Shift+Enter</kbd> for a line break, or <kbd className="font-mono px-1 py-0.5 bg-light-surface dark:bg-dark-surface border rounded text-[10px]">Backspace</kbd> on an empty item to delete.
       </p>
     </div>
   );
