@@ -300,7 +300,7 @@ const SiteDataContext = createContext<SiteData>({
   profile: DEFAULT_PROFILE,
   pillars: DEFAULT_PILLARS,
   projects: [],
-  experiences: DEFAULT_EXPERIENCES,
+  experiences: [],
   hobbies: DEFAULT_HOBBIES,
   loading: true,
   refresh: async () => {},
@@ -426,7 +426,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Experience cache parse error', e);
       }
     }
-    return DEFAULT_EXPERIENCES;
+    return [];
   });
 
   const [loading, setLoading] = useState(true);
@@ -548,7 +548,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setPillars([]);
       }
 
-      if (projectsRes.data) {
+      if (projectsRes.data && projectsRes.data.length > 0) {
         const mapped = projectsRes.data.map((row: any, idx: number) => {
           return mapRowToProject(row, idx);
         });
@@ -563,7 +563,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setProjects([]);
       }
 
-      if (expRes.data) {
+      if (expRes.data && expRes.data.length > 0) {
         const mappedExp: ExperienceRecord[] = expRes.data.map((row: any, idx: number) => {
           const isCurrent =
             row.is_active ??

@@ -13,6 +13,10 @@ import { VerticalMarginWidget } from './VerticalMarginWidget';
 import { useSiteData } from '../context/SiteDataContext';
 import { TechTag } from './TechTag';
 import { Badge } from './ui/badge';
+import { MarginBambooFlanks } from './shared/MarginBambooFlanks';
+import { SectionHeading } from './shared/SectionHeading';
+import { StatusBadge } from './shared/StatusBadge';
+import { handleImageError } from '../lib/constants';
 
 interface ExperienceSectionProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
@@ -188,37 +192,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
   return (
     <section id="experience" className="relative w-full overflow-hidden py-16 lg:py-24">
       {/* Subtle Japanese Sumi-e Arts in Left & Right Empty Margins */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
-        {/* Left Margin Flank Bamboo */}
-        <div className="absolute -left-6 xl:left-2 bottom-12 top-24 w-32 xl:w-48 pointer-events-none z-0 hidden lg:block">
-          <img
-            src="./images/sumie-tall-vertical-bamboo.jpg"
-            alt="Sumi-e bamboo margin accent"
-            className="w-full h-full object-contain object-bottom opacity-30 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen dark:invert animate-bamboo-sway"
-            style={{
-              maskImage: 'radial-gradient(ellipse 85% 85% at 30% 60%, black 35%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 30% 60%, black 35%, transparent 85%)',
-            }}
-          />
-        </div>
-
-        {/* Right Margin Flank Bamboo */}
-        <div className="absolute -right-6 xl:right-2 bottom-12 top-24 w-32 xl:w-48 pointer-events-none z-0 hidden lg:block">
-          <img
-            src="./images/sumie-tall-vertical-bamboo.jpg"
-            alt="Sumi-e bamboo margin accent"
-            className="w-full h-full object-contain object-bottom opacity-30 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen dark:invert scale-x-[-1]"
-            style={{
-              maskImage: 'radial-gradient(ellipse 85% 85% at 70% 60%, black 35%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 70% 60%, black 35%, transparent 85%)',
-            }}
-          />
-        </div>
-
-        {/* Top and Bottom Fades */}
-        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/70 z-10 pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/70 z-10 pointer-events-none" />
-      </div>
+      <MarginBambooFlanks />
 
       {/* Floating Vertical Margins on Widescreen */}
       <VerticalMarginWidget
@@ -240,55 +214,44 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & Standardized Layout */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80 gap-6">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-terracotta text-sm">02 //</span>
-              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                CAREER TRAJECTORY · 職歴
-              </span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
-              Work &amp; Milestones{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
-                職歴
-              </span>
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
-              A chronology of software engineering roles, full-stack systems development, and real-world impact.
-            </p>
-          </div>
+        <SectionHeading
+          numeral="02 //"
+          categoryTag="CAREER TRAJECTORY · 職歴"
+          title="Work & Milestones"
+          kanjiSubtitle="職歴"
+          description="A chronology of software engineering roles, full-stack systems development, and real-world impact."
+          actions={
+            <>
+              {/* Global Expand All / Collapse All */}
+              <button
+                type="button"
+                onClick={toggleAll}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
+                title="Expand or collapse all career milestone details"
+              >
+                <Layers className="w-3.5 h-3.5 text-terracotta" />
+                <span>{allOpen ? 'Collapse All' : 'Expand All'}</span>
+              </button>
 
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            {/* Global Expand All / Collapse All */}
-            <button
-              type="button"
-              onClick={toggleAll}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
-              title="Expand or collapse all career milestone details"
-            >
-              <Layers className="w-3.5 h-3.5 text-terracotta" />
-              <span>{allOpen ? 'Collapse All' : 'Expand All'}</span>
-            </button>
-
-            {/* Resume Link */}
-            <a
-              href="#resume"
-              onClick={(e) => {
-                if (onNavigate) {
-                  e.preventDefault();
-                  onNavigate('resume');
-                }
-              }}
-              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
-            >
-              <Briefcase className="w-3.5 h-3.5 text-terracotta" />
-              <span className="hidden sm:inline">Curriculum Vitae</span>
-              <span className="sm:hidden">CV</span>
-              <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-1" />
-            </a>
-          </div>
-        </div>
+              {/* Resume Link */}
+              <a
+                href="#resume"
+                onClick={(e) => {
+                  if (onNavigate) {
+                    e.preventDefault();
+                    onNavigate('resume');
+                  }
+                }}
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
+              >
+                <Briefcase className="w-3.5 h-3.5 text-terracotta" />
+                <span className="hidden sm:inline">Curriculum Vitae</span>
+                <span className="sm:hidden">CV</span>
+                <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-1" />
+              </a>
+            </>
+          }
+        />
 
         {/* Timeline Container */}
         <div className="relative timeline-container">
@@ -370,6 +333,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             alt={`${exp.company} emblem`}
                             className="w-full h-full object-cover"
                             loading="lazy"
+                            onError={handleImageError}
                           />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
@@ -399,22 +363,15 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           </span>
 
                           {/* High-Contrast Themed Status Badge */}
-                          <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                              isCurrent
-                                ? `${theme.badgeBg} ${theme.badgeBorder} ${theme.badgeText} border shadow-xs`
-                                : 'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#20222a] dark:border-[#383b47] dark:text-stone-400'
-                            }`}
-                          >
-                            <span
-                              className={`w-1.5 h-1.5 rounded-full ${
-                                isCurrent
-                                  ? `${theme.nodeActiveBg} shadow-xs animate-pulse`
-                                  : 'bg-stone-400 dark:bg-neutral-500'
-                              }`}
-                            />
-                            <span>{isCurrent ? 'ACTIVE / 現職' : '歴任 / COMPLETED'}</span>
-                          </span>
+                          <StatusBadge
+                            isActive={isCurrent}
+                            activeLabel="ACTIVE / 現職"
+                            completedLabel="歴任 / COMPLETED"
+                            activeBgClass={theme.badgeBg}
+                            activeBorderClass={theme.badgeBorder}
+                            activeTextClass={theme.badgeText}
+                            activeDotBgClass={theme.nodeActiveBg}
+                          />
 
                           {/* Optional Domain Category Tag */}
                           {exp.domainLabel && (

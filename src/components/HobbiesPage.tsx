@@ -1,233 +1,41 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Search, Sparkles, Image as ImageIcon, Maximize2 } from 'lucide-react';
-import { useSiteData, HobbyItem } from '../context/SiteDataContext';
-import { EnsoOrbital } from './EnsoOrbital';
-import { CornerBrackets } from './CornerBrackets';
+import { ArrowLeft, Search, Layers } from 'lucide-react';
+import { useSiteData } from '../context/SiteDataContext';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
-import { ImageLightboxModal } from './ImageLightboxModal';
 import { ViewMode } from '../App';
+import { HobbyCard } from './shared/HobbyCard';
 
 interface HobbiesPageProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
 }
 
-const getCategoryStyle = (category?: string, idx: number = 0) => {
-  const cat = (category || '').toLowerCase();
-  if (cat.includes('food') || cat.includes('culinary') || cat.includes('tea') || cat.includes('coffee') || cat.includes('plant')) {
-    return 'bg-bamboo/10 dark:bg-bamboo/20 border-bamboo/30 text-bamboo dark:text-[#87A889]';
-  }
-  if (cat.includes('anime') || cat.includes('visual') || cat.includes('art') || cat.includes('story')) {
-    return 'bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 text-terracotta dark:text-[#ff7d63]';
-  }
-  if (cat.includes('craft') || cat.includes('wood') || cat.includes('build') || cat.includes('hardware')) {
-    return 'bg-ochre/10 dark:bg-ochre/20 border-ochre/30 text-ochre dark:text-[#E5B88F]';
-  }
-  if (cat.includes('music') || cat.includes('sound') || cat.includes('photo') || cat.includes('camera')) {
-    return 'bg-[#3B4E6B]/10 dark:bg-[#3B4E6B]/25 border-[#3B4E6B]/30 text-[#3B4E6B] dark:text-[#8EA8C3]';
-  }
-  const fallbacks = [
-    'bg-bamboo/10 dark:bg-bamboo/20 border-bamboo/30 text-bamboo dark:text-[#87A889]',
-    'bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 text-terracotta dark:text-[#ff7d63]',
-    'bg-ochre/10 dark:bg-ochre/20 border-ochre/30 text-ochre dark:text-[#E5B88F]',
-    'bg-[#3B4E6B]/10 dark:bg-[#3B4E6B]/25 border-[#3B4E6B]/30 text-[#3B4E6B] dark:text-[#8EA8C3]',
-  ];
-  return fallbacks[idx % fallbacks.length];
-};
-
-export const HobbyCardItem: React.FC<{ hobby: HobbyItem; index: number }> = ({ hobby, index }) => {
-  const images = Array.isArray(hobby.images) && hobby.images.length > 0 ? hobby.images : [];
-  const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
-  const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
-
-  const heroImage = images[activeImageIndex] || images[0] || '';
-
-  // Get other images for side thumbnails (all images except the currently active one, up to 4 thumbnails)
-  const sideThumbnails = images.map((img, idx) => ({ img, idx })).filter((item) => item.idx !== activeImageIndex).slice(0, 4);
-  const categoryStyle = getCategoryStyle(hobby.category, index);
-
-  return (
-    <article className="bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-7 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 dark:hover:border-terracotta/40 transition-all duration-300 flex flex-col justify-between">
-      {/* Top-Left Celestial Ensō Orbital Circle on Hover */}
-      <EnsoOrbital placement="top-left" size={96} hoverOnly={true} />
-      <CornerBrackets size="md" />
-
-      {/* Card Header (Clean: No red dot) */}
-      <div className="relative z-10">
-        <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-mono text-[10px] font-bold text-terracotta tracking-wider uppercase">
-                {`0${index + 1}`} · {hobby.kanji || '工芸'}
-              </span>
-            </div>
-            <h3 className="font-serif text-xl sm:text-2xl text-light-ink dark:text-dark-ink font-medium tracking-tight group-hover:text-terracotta transition-colors">
-              {hobby.title}
-            </h3>
-            {hobby.subtitle && (
-              <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-light">
-                {hobby.subtitle}
-              </p>
-            )}
-          </div>
-
-          {hobby.category && (
-            <span className={`font-mono text-[10px] px-2.5 py-1 rounded border uppercase tracking-wider shrink-0 select-none ${categoryStyle}`}>
-              {hobby.category}
-            </span>
-          )}
-        </div>
-
-        {/* Discord-style Multi-Image Interactive Gallery (1 Big Picture + Up to 4 Side Pictures) */}
-        {images.length > 0 && (
-          <div className="relative w-full mb-5">
-            {images.length === 1 ? (
-              <div
-                onClick={() => setIsLightboxOpen(true)}
-                className="relative aspect-[16/10] overflow-hidden rounded-lg bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 cursor-zoom-in group/hero"
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setIsLightboxOpen(true);
-                  }
-                }}
-                aria-label={`Open full size view for ${hobby.title}`}
-              >
-                <img
-                  src={images[0]}
-                  alt={hobby.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover/hero:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute top-2 right-2 px-2 py-1 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono flex items-center gap-1 opacity-0 group-hover/hero:opacity-100 transition-opacity pointer-events-none">
-                  <Maximize2 className="w-3 h-3 text-terracotta" />
-                  <span>Expand</span>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col md:grid md:grid-cols-3 gap-2 md:aspect-[16/10] overflow-hidden rounded-lg bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 p-1.5">
-                {/* 1 Big Main Display Photo (Spans 2 columns on desktop, aspect-[16/10] on mobile) */}
-                <div
-                  onClick={() => setIsLightboxOpen(true)}
-                  className="relative aspect-[16/10] md:aspect-auto md:col-span-2 md:h-full overflow-hidden rounded bg-light-surface dark:bg-dark-surface group/hero cursor-zoom-in"
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setIsLightboxOpen(true);
-                    }
-                  }}
-                  aria-label={`Open full size view for ${hobby.title} photo ${activeImageIndex + 1}`}
-                >
-                  <img
-                    src={heroImage}
-                    alt={`${hobby.title} main view`}
-                    className="w-full h-full object-cover transition-all duration-500 group-hover/hero:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute top-2 right-2 px-2 py-1 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono flex items-center gap-1 opacity-0 group-hover/hero:opacity-100 transition-opacity pointer-events-none">
-                    <Maximize2 className="w-3 h-3 text-terracotta" />
-                    <span>Expand</span>
-                  </div>
-                  <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-light-surface/90 dark:bg-dark-surface/90 backdrop-blur-sm border border-light-border/40 dark:border-dark-border/40 text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider flex items-center gap-1">
-                    <ImageIcon className="w-2.5 h-2.5 text-terracotta" />
-                    <span>Photo {activeImageIndex + 1} of {images.length}</span>
-                  </div>
-                </div>
-
-                {/* Up to 4 Side/Bottom Thumbnails (Vertical stack on desktop, horizontal scrollable row on mobile) */}
-                <div className="flex md:flex-col gap-1.5 md:h-full overflow-x-auto md:overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden pt-0.5 md:pt-0">
-                  {sideThumbnails.map(({ img, idx }) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setActiveImageIndex(idx)}
-                      className="relative flex-1 min-w-[68px] h-14 sm:h-16 md:min-w-0 md:h-auto overflow-hidden rounded border border-light-border/60 dark:border-dark-border/60 opacity-80 hover:opacity-100 hover:border-terracotta transition-all duration-200 cursor-pointer group/thumb shrink-0 md:shrink"
-                      title={`Click to show photo ${idx + 1} in main frame`}
-                      aria-label={`Show photo ${idx + 1} for ${hobby.title}`}
-                    >
-                      <img
-                        src={img}
-                        alt={`${hobby.title} side thumbnail ${idx + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-105"
-                        loading="lazy"
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Gallery Hint & Photo Count */}
-            <div className="flex items-center justify-between text-[11px] text-light-ink-muted/80 dark:text-dark-ink-muted/80 mt-1.5 px-0.5 font-mono">
-              <span className="text-[10px] opacity-70">Click main photo to expand · click thumbnails to switch</span>
-              <span className="text-[10px] text-terracotta font-medium">{images.length} photos</span>
-            </div>
-          </div>
-        )}
-
-        {/* What I Enjoy / Personal Notes Block */}
-        <div className="space-y-2 pt-3 border-t border-light-border/60 dark:border-[#2D3039]/60">
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="w-3 h-3 text-terracotta" />
-            <span className="font-mono text-[10px] font-semibold text-terracotta tracking-wider uppercase">
-              WHAT I ENJOY · 趣味の魅力
-            </span>
-          </div>
-          <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
-            {hobby.whyDescription}
-          </p>
-        </div>
-      </div>
-
-      {/* Metadata Details & Specs */}
-      {Array.isArray(hobby.metadata) && hobby.metadata.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 pt-4 mt-4 border-t border-light-border/40 dark:border-dark-border/40 relative z-10">
-          {hobby.metadata.map((meta, mIdx) => (
-            <div
-              key={mIdx}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 text-[11px] font-sans text-light-ink-muted dark:text-dark-ink-muted"
-            >
-              <strong className="font-medium text-light-ink dark:text-dark-ink">{meta.label}:</strong>
-              <span>{meta.value}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Interactive Full-Screen Image Lightbox Modal */}
-      {images.length > 0 && (
-        <ImageLightboxModal
-          isOpen={isLightboxOpen}
-          onClose={() => setIsLightboxOpen(false)}
-          images={images}
-          currentIndex={activeImageIndex}
-          onIndexChange={setActiveImageIndex}
-          title={hobby.title}
-          subtitle={hobby.subtitle}
-          kanji={hobby.kanji}
-        />
-      )}
-    </article>
-  );
-};
-
 export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
-  const { hobbies: rawHobbies } = useSiteData();
-  const hobbies = Array.isArray(rawHobbies) ? rawHobbies : [];
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const { profile } = useSiteData();
+  const hobbies = Array.isArray(profile.hobbies) ? profile.hobbies : [];
+
+  // Extract unique categories for pill filter bar
+  const categories: string[] = ['all', ...Array.from(new Set(hobbies.map((h) => h.category).filter((c): c is string => Boolean(c))))];
 
   const filteredHobbies = hobbies.filter((hobby) => {
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) return true;
-    return (
-      hobby.title.toLowerCase().includes(q) ||
-      (hobby.subtitle && hobby.subtitle.toLowerCase().includes(q)) ||
-      (hobby.category && hobby.category.toLowerCase().includes(q)) ||
-      (hobby.whyDescription && hobby.whyDescription.toLowerCase().includes(q))
-    );
+    const matchesSearch =
+      !searchQuery.trim() ||
+      hobby.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (hobby.subtitle && hobby.subtitle.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      hobby.whyDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (hobby.category && hobby.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (hobby.metadata &&
+        hobby.metadata.some(
+          (m) =>
+            m.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            m.value.toLowerCase().includes(searchQuery.toLowerCase())
+        ));
+
+    const matchesCategory =
+      selectedCategory === 'all' || (hobby.category && hobby.category.toLowerCase() === selectedCategory.toLowerCase());
+
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -243,6 +51,12 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
         top="top-96"
         {...MARGIN_PRESETS.akariSimplicity}
       />
+      <VerticalMarginWidget
+        side="left"
+        top="top-[68%]"
+        type="minimal"
+        stampChar="遊"
+      />
 
       <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Back navigation button */}
@@ -252,7 +66,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
             className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors group cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-            <span>Return to Portfolio Overview</span>
+            <span>Return to Portfolio</span>
           </button>
         </div>
 
@@ -262,48 +76,82 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>
               <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                HOBBIES &amp; INTERESTS · 趣味と日常
+                PERSONAL PURSUITS · 趣味の記録
               </span>
             </div>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
-              Hobbies &amp; Interests{' '}
+              Hobbies &amp; Life{' '}
               <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
-                趣味と日常
+                日常と趣味
               </span>
             </h1>
             <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed max-w-3xl">
-              What I love doing outside of coding: anime, gaming with friends, fitness, market trading, and sharing good meals.
+              A gallery of interests, creative outlets, and passions outside of software engineering: anime, gaming, fitness, market trading, and dining.
             </p>
           </div>
 
-          {/* Search bar */}
+          {/* Search Input */}
           <div className="relative w-full sm:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-light-ink-muted" />
             <input
               type="text"
+              placeholder="Search passions, shows, workouts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search hobbies..."
               className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60"
             />
           </div>
         </div>
 
-        {/* Hobbies Grid */}
-        {filteredHobbies.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-            {filteredHobbies.map((hobby, idx) => (
-              <HobbyCardItem key={hobby.id || idx} hobby={hobby} index={idx} />
+        {/* Filter Pills */}
+        {categories.length > 2 && (
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  selectedCategory.toLowerCase() === cat.toLowerCase()
+                    ? 'bg-terracotta text-white shadow-xs'
+                    : 'bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50'
+                }`}
+              >
+                {cat === 'all' ? 'All Passions' : cat}
+              </button>
             ))}
           </div>
+        )}
+
+        {/* Hobbies Grid */}
+        {filteredHobbies.length === 0 ? (
+          <div className="p-16 text-center rounded-xl bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border">
+            <Layers className="w-10 h-10 text-light-ink-subtle dark:text-dark-ink-subtle mx-auto mb-3" />
+            <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink">
+              No hobbies matched your criteria
+            </h3>
+            <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
+              Try adjusting your search query or selecting "All Passions".
+            </p>
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+              }}
+              className="mt-4 px-4 py-2 bg-terracotta hover:bg-terracotta/90 text-white text-xs font-sans rounded-md transition-colors cursor-pointer"
+            >
+              Reset Filters
+            </button>
+          </div>
         ) : (
-          <div className="text-center py-20 border border-dashed border-light-border dark:border-dark-border rounded-xl">
-            <p className="font-serif text-lg text-light-ink dark:text-dark-ink mb-1">
-              No hobbies found matching your search.
-            </p>
-            <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-              Try a different keyword or return to the main overview.
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+            {filteredHobbies.map((hobby, idx) => (
+              <HobbyCard
+                key={hobby.id || idx}
+                hobby={hobby}
+                index={idx}
+              />
+            ))}
           </div>
         )}
       </div>

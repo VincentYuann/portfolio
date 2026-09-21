@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Plus,
   Trash2,
@@ -24,6 +24,7 @@ import { HankoStamp } from '../../HankoStamp';
 import { CornerBrackets } from '../../CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { TechTagSelector } from '../shared/TechTagSelector';
+import { useAdminDirty } from '../shared/useAdminDirty';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
@@ -57,22 +58,36 @@ const HANKO_PRESETS = [
   },
 ];
 
+interface IntroData {
+  name: string;
+  role: string;
+  headline: string;
+  tagline: string;
+  email: string;
+  github: string;
+  linkedin: string;
+  capability_pillars: CapabilityPillar[];
+  hanko_card: HankoCardConfig;
+}
+
+const mapProfileToIntroData = (profile: any): IntroData => ({
+  name: profile?.name || '',
+  role: profile?.role || '',
+  headline: profile?.headline || '',
+  tagline: profile?.tagline || '',
+  email: profile?.email || '',
+  github: profile?.github || '',
+  linkedin: profile?.linkedin || '',
+  capability_pillars:
+    Array.isArray(profile?.capability_pillars)
+      ? profile.capability_pillars
+      : [],
+  hanko_card: profile?.hanko_card || DEFAULT_HANKO_CARD,
+});
+
 export const IntroEditor: React.FC = () => {
   const { profile: contextProfile, refresh } = useSiteData();
-  const [data, setData] = useState(() => ({
-    name: contextProfile?.name || '',
-    role: contextProfile?.role || '',
-    headline: contextProfile?.headline || '',
-    tagline: contextProfile?.tagline || '',
-    email: contextProfile?.email || '',
-    github: contextProfile?.github || '',
-    linkedin: contextProfile?.linkedin || '',
-    capability_pillars:
-      Array.isArray(contextProfile?.capability_pillars)
-        ? contextProfile.capability_pillars
-        : [],
-    hanko_card: contextProfile?.hanko_card || DEFAULT_HANKO_CARD,
-  }));
+  const [data, setData] = useState(() => mapProfileToIntroData(contextProfile));
 
   const [saveState, setSaveState] = useState<SaveState>('idle');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({
@@ -86,66 +101,22 @@ export const IntroEditor: React.FC = () => {
     setCollapsed((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
-  // Sync from context
-  useEffect(() => {
+  const resetIntro = useCallback(() => {
     if (contextProfile) {
-      setData({
-        name: contextProfile.name || '',
-        role: contextProfile.role || '',
-        headline: contextProfile.headline || '',
-        tagline: contextProfile.tagline || '',
-        email: contextProfile.email || '',
-        github: contextProfile.github || '',
-        linkedin: contextProfile.linkedin || '',
-        capability_pillars:
-          Array.isArray(contextProfile.capability_pillars)
-            ? contextProfile.capability_pillars
-            : [],
-        hanko_card: contextProfile.hanko_card || DEFAULT_HANKO_CARD,
-      });
+      setData(mapProfileToIntroData(contextProfile));
     }
   }, [contextProfile]);
 
-  const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'intro', dirty: true } }));
-  };
-
-  const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'intro' } }));
-  };
-
-  // Discard listener: resets state from context
+  // Sync from context
   useEffect(() => {
-    const handleDiscard = (e: Event) => {
-      const customEvent = e as CustomEvent<{ section?: string }>;
-      if (!customEvent.detail?.section || customEvent.detail.section === 'intro') {
-        setData({
-          name: contextProfile?.name || '',
-          role: contextProfile?.role || '',
-          headline: contextProfile?.headline || '',
-          tagline: contextProfile?.tagline || '',
-          email: contextProfile?.email || '',
-          github: contextProfile?.github || '',
-          linkedin: contextProfile?.linkedin || '',
-          capability_pillars: Array.isArray(contextProfile?.capability_pillars)
-            ? contextProfile.capability_pillars
-            : [],
-          hanko_card: contextProfile?.hanko_card || DEFAULT_HANKO_CARD,
-        });
-        notifyClean();
-      }
-    };
+    resetIntro();
+  }, [resetIntro]);
 
-    window.addEventListener('portfolio-admin-discard', handleDiscard);
-    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
-  }, [contextProfile]);
+  const handleSaveRef = useRef<() => void>(() => {});
 
-  // Global save listener
-  useEffect(() => {
-    const handleGlobalSave = () => handleSave();
-    window.addEventListener('portfolio-admin-save', handleGlobalSave);
-    return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  }, [data]);
+  const { notifyDirty, notifyClean } = useAdminDirty('intro', resetIntro, () => {
+    handleSaveRef.current();
+  });
 
   const set = (key: string, val: string) => {
     notifyDirty();
@@ -259,6 +230,8 @@ export const IntroEditor: React.FC = () => {
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
+
+  handleSaveRef.current = handleSave;
 
   const hankoData = data.hanko_card || DEFAULT_HANKO_CARD;
 

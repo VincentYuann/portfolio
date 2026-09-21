@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Upload,
   FileText,
@@ -18,6 +18,7 @@ import {
 import { toast } from 'sonner';
 import { CornerBrackets } from '../../CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
+import { useAdminDirty } from '../shared/useAdminDirty';
 import { Button } from '../../ui/button';
 import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs';
 
@@ -74,62 +75,75 @@ const DEFAULT_LATEX_CV = `% -- Vincent Yuan: Curriculum Vitae ------------------
 %-----------EDUCATION-----------
 \\section{Education}
   \\resumeSubheading
-      {Drexel University}{Philadelphia, PA}
-      {Bachelor of Science in Computer Science}{Sept 2021 - June 2026}
+      {Drexel University -- College of Computing \\& Informatics}{Philadelphia, PA}
+      {Bachelor of Science in Computer Science $|$ GPA: 3.69/4.0}{Anticipated Graduation: June 2029}
       \\resumeItemListStart
-        \\resumeItem{Concentrations: Systems Architecture, Artificial Intelligence}
-        \\resumeItem{Relevant Coursework: Data Structures \\& Algorithms, Systems Architecture, Web Development, Object-Oriented Programming, Database Systems}
-      \\resumeItemListEnd
-
-%-----------EXPERIENCE-----------
-\\section{Experience}
-  \\resumeSubheading
-      {Software Engineering Intern}{Remote}
-      {Dakdan Worldwide}{June 2023 - Sept 2023}
-      \\resumeItemListStart
-        \\resumeItem{Collaborated in agile sprint cycles to maintain web applications, streamline data flow, and improve frontend responsiveness.}
-        \\resumeItem{Assisted in backend REST API integration, debugging client-side rendering bottlenecks, and optimizing assets.}
-      \\resumeItemListEnd
-
-  \\resumeSubheading
-      {Hospitality \\& Team Lead}{Philadelphia, PA}
-      {Service \\& Hospitality Roots}{2021 - Present}
-      \\resumeItemListStart
-        \\resumeItem{Cultivated rapid active listening, cross-functional team communication, and calm operational focus during high-stress peak rushes.}
-        \\resumeItem{Applied user-first empathy to anticipate customer friction points, directly translating into human-centered UI/UX design.}
+        \\resumeItem{Relevant Coursework: Computing \\& Informatics Design I--III, Computer Programming I \\& II, Calculus I--IV, Linear Algebra, Physics I \\& II}
       \\resumeItemListEnd
 
 %-----------PROJECTS-----------
-\\section{Featured Engineering Projects}
+\\section{Projects}
   \\resumeProjectHeading
-      {\\textbf{AnimY} $|$ \\emph{React, TypeScript, Node.js, REST APIs, Tailwind CSS}}{}
+      {\\textbf{Ascension} $|$ \\emph{Python, Pygame, Git, GitLab, Thonny}}{Jan 2025 -- June 2025}
       \\resumeItemListStart
-        \\resumeItem{Engineered a modern anime tracking and discovery platform featuring dynamic search, debounced filtering, and personalized watchlists.}
-        \\resumeItem{Designed responsive Japanese-aesthetic UI with persistent state management and fast caching layers.}
+        \\resumeItem{Contribute to level design, gameplay mechanics, character animations, and sound integration for a 2D Foddian-style platformer developed by a team of four.}
+        \\resumeItem{Apply object-oriented programming in Python and Pygame to encapsulate complex functionality, improve readability, and create reusable blueprints in the code design.}
+        \\resumeItem{Practice Agile development by setting weekly goals, conducting team meetings to review progress, resolve challenges, and plan upcoming iterations.}
+        \\resumeItem{Use GitLab for version control and collaboration, maintain a Kanban board for task management and a wiki page to document team progress.}
       \\resumeItemListEnd
 
   \\resumeProjectHeading
-      {\\textbf{FoodFinder} $|$ \\emph{React, JavaScript, Map APIs, Node.js, CSS Modules}}{}
+      {\\textbf{Virtual Pet Machine} $|$ \\emph{Tranquility, HTML, CSS, Linux}}{Dec 2024}
       \\resumeItemListStart
-        \\resumeItem{Built an intuitive restaurant exploration application with location-based filtering, interactive menus, and smart food search.}
-        \\resumeItem{Integrated third-party geolocation and place details APIs to deliver streamlined dining recommendations.}
+        \\resumeItem{Developed a web-based virtual pet using a finite state machine model that responds to user clicks with varied behaviors.}
+        \\resumeItem{Used SSH to connect to Drexel's Tux server, performing file management and editing directly in the Linux terminal.}
+        \\resumeItem{Programmed nested and timed logic structures in Tranquility to simulate complex pet state transitions.}
       \\resumeItemListEnd
 
   \\resumeProjectHeading
-      {\\textbf{Portfolio Website} $|$ \\emph{React, TypeScript, Supabase, Tailwind CSS, Vite}}{}
+      {\\textbf{John's Farmer Market} $|$ \\emph{JavaScript, HTML, CSS, Replit}}{Mar 2023 -- Apr 2023}
       \\resumeItemListStart
-        \\resumeItem{Crafted a high-performance personal engineering platform inspired by Japanese Sumi-e brushwork and Wabi-Sabi aesthetics.}
-        \\resumeItem{Implemented an administrative CMS dashboard with Supabase auth, live preview, and deterministic state sync.}
+        \\resumeItem{Developed a simulated online food market on Replit in a team of three, contributing to user login, checkout functionality, and coupon-based discounts.}
+        \\resumeItem{Coded JavaScript logic for a static login system with preset credentials and limited coupon validation, triggering a UI transition upon successful authentication.}
+        \\resumeItem{Structured and styled a visually appealing login interface using HTML and CSS.}
+      \\resumeItemListEnd
+
+  \\resumeProjectHeading
+      {\\textbf{Card Game} $|$ \\emph{JavaScript, HTML, CSS, Replit}}{Dec 2022 -- Jan 2023}
+      \\resumeItemListStart
+        \\resumeItem{Created a narrative card game with branching story paths driven by player choices and conditional logic.}
+        \\resumeItem{Programmed dynamic stat tracking (e.g., health, currency) and game-over conditions using JavaScript.}
+        \\resumeItem{Designed intuitive UI elements to present story, cards, and decisions using HTML and CSS.}
+      \\resumeItemListEnd
+
+%-----------EXPERIENCE-----------
+\\section{Work Experiences}
+  \\resumeSubheading
+      {Kung Fu Tea}{Philadelphia, PA}
+      {Barista \\& Cashier}{Aug 2022 -- Present}
+      \\resumeItemListStart
+        \\resumeItem{Prepare and customize a variety of beverages while ensuring consistent and high-quality standards.}
+        \\resumeItem{Handle cash and card transactions using POS system, managing high volume sales with accuracy.}
+        \\resumeItem{Provide exceptional customer service by addressing inquiries and assisting with orders.}
+      \\resumeItemListEnd
+
+  \\resumeSubheading
+      {Hung Vuong Supermarket}{Philadelphia, PA}
+      {Stocker}{June 2020 -- Dec 2020}
+      \\resumeItemListStart
+        \\resumeItem{Maintained optimal on-shelf product availability across high-traffic aisles, rapidly replenishing stock during peak shopping periods with meticulous attention to detail.}
+        \\resumeItem{Streamlined warehouse staging and backroom inventory operations by unloading incoming freight shipments, organizing pallet storage, and practicing strict FIFO rotation.}
+        \\resumeItem{Upheld rigorous store safety, hazard prevention, and sanitation standards to maintain an organized, clean, and accessible shopping environment for hundreds of daily customers.}
       \\resumeItemListEnd
 
 %-----------TECHNICAL SKILLS-----------
-\\section{Technical Skills}
+\\section{Skills}
  \\begin{itemize}[leftmargin=0.15in, label={}]
     \\small{\\item{
-     \\textbf{Languages}{: TypeScript, JavaScript, Python, C/C++, HTML5, CSS3, SQL} \\\\
-     \\textbf{Frameworks \\& Libraries}{: React, Next.js, Node.js, Express, Tailwind CSS, Vite} \\\\
-     \\textbf{Databases \\& Cloud}{: PostgreSQL, Supabase, Docker, RESTful APIs, Git, GitHub Actions, Linux} \\\\
-     \\textbf{Core Competencies}{: Systems Architecture, Full-Stack Web Development, UI/UX Design, State Management}
+     \\textbf{Languages}{: JavaScript, TypeScript, Python, HTML/CSS, SQL, C/C++, Java} \\\\
+     \\textbf{Frameworks}{: React, Next.js, Node.js, Tailwind CSS, Express, Fastify, Pygame} \\\\
+     \\textbf{Developer Tools}{: Git, GitHub, GitLab, Docker, Supabase, PostgreSQL, Linux, VS Code} \\\\
+     \\textbf{Libraries}{: Three.js, Lucide Icons, Framer Motion, TanStack Query, Radix UI}
     }}
  \\end{itemize}
 
@@ -151,39 +165,20 @@ export const ResumeEditor: React.FC = () => {
     });
   }, []);
 
-  const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'resume', dirty: true } }));
-  };
-
-  const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'resume' } }));
-  };
-
-  // Discard listener: resets uploaded file and reloads latex from DB
-  useEffect(() => {
-    const handleDiscard = (e: Event) => {
-      const customEvent = e as CustomEvent<{ section?: string }>;
-      if (!customEvent.detail?.section || customEvent.detail.section === 'resume') {
-        setUploadedFile(null);
-        if (fileInputRef.current) fileInputRef.current.value = '';
-        fetchResumeLatex().then((content) => {
-          if (content) setLatex(content);
-          else setLatex(DEFAULT_LATEX_CV);
-        });
-        notifyClean();
-      }
-    };
-
-    window.addEventListener('portfolio-admin-discard', handleDiscard);
-    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
+  const resetResume = useCallback(() => {
+    setUploadedFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    fetchResumeLatex().then((content) => {
+      if (content) setLatex(content);
+      else setLatex(DEFAULT_LATEX_CV);
+    });
   }, []);
 
-  // Global save listener
-  useEffect(() => {
-    const handleGlobalSave = () => handleSave();
-    window.addEventListener('portfolio-admin-save', handleGlobalSave);
-    return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  }, [latex, uploadedFile, tab]);
+  const handleSaveRef = useRef<() => void>(() => {});
+
+  const { notifyDirty, notifyClean } = useAdminDirty('resume', resetResume, () => {
+    handleSaveRef.current();
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -248,6 +243,8 @@ export const ResumeEditor: React.FC = () => {
       setTimeout(() => setSaveState('idle'), 8000);
     }
   };
+
+  handleSaveRef.current = handleSave;
 
   const lineCount = latex.split('\n').length;
   const charCount = latex.length;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Trash2,
   Plus,
@@ -18,6 +18,7 @@ import { useSiteData, HobbyItem, DEFAULT_HOBBIES } from '../../../context/SiteDa
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { EditorCardShell } from '../shared/EditorCardShell';
 import { KanjiPickerModal } from '../KanjiPickerModal';
+import { useAdminDirty } from '../shared/useAdminDirty';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
@@ -25,6 +26,16 @@ import { Button } from '../../ui/button';
 import { toast } from 'sonner';
 
 const MAX_IMAGES_PER_HOBBY = 5;
+
+const getHobbiesFromData = (profileHobbies?: HobbyItem[], siteHobbies?: HobbyItem[]): HobbyItem[] => {
+  if (Array.isArray(profileHobbies) && profileHobbies.length > 0) {
+    return profileHobbies;
+  }
+  if (Array.isArray(siteHobbies) && siteHobbies.length > 0) {
+    return siteHobbies;
+  }
+  return DEFAULT_HOBBIES;
+};
 
 const newHobbyTemplate = (pos: number): HobbyItem => ({
   id: `hobby-${Date.now()}`,
@@ -47,15 +58,9 @@ export const HobbiesEditor: React.FC = () => {
   const { hobbies: contextHobbies, profile: contextProfile, refresh } = useSiteData();
 
   // Local state for list of hobbies
-  const [hobbies, setHobbies] = useState<HobbyItem[]>(() => {
-    if (Array.isArray(contextProfile?.hobbies) && contextProfile.hobbies.length > 0) {
-      return contextProfile.hobbies;
-    }
-    if (Array.isArray(contextHobbies) && contextHobbies.length > 0) {
-      return contextHobbies;
-    }
-    return DEFAULT_HOBBIES;
-  });
+  const [hobbies, setHobbies] = useState<HobbyItem[]>(() =>
+    getHobbiesFromData(contextProfile?.hobbies, contextHobbies)
+  );
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [newImageUrls, setNewImageUrls] = useState<Record<string, string>>({});
@@ -65,42 +70,20 @@ export const HobbiesEditor: React.FC = () => {
   const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
+  const resetHobbies = useCallback(() => {
+    setHobbies(getHobbiesFromData(contextProfile?.hobbies, contextHobbies));
+  }, [contextProfile?.hobbies, contextHobbies]);
+
   // Sync from context when context changes
   useEffect(() => {
-    if (Array.isArray(contextProfile?.hobbies) && contextProfile.hobbies.length > 0) {
-      setHobbies(contextProfile.hobbies);
-    } else if (Array.isArray(contextHobbies) && contextHobbies.length > 0) {
-      setHobbies(contextHobbies);
-    }
-  }, [contextProfile, contextHobbies]);
+    resetHobbies();
+  }, [resetHobbies]);
 
-  const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'hobbies', dirty: true } }));
-  };
+  const handleSaveRef = useRef<() => void>(() => {});
 
-  const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'hobbies' } }));
-  };
-
-  // Discard listener: resets state from context/defaults
-  useEffect(() => {
-    const handleDiscard = (e: Event) => {
-      const customEvent = e as CustomEvent<{ section?: string }>;
-      if (!customEvent.detail?.section || customEvent.detail.section === 'hobbies') {
-        if (Array.isArray(contextProfile?.hobbies) && contextProfile.hobbies.length > 0) {
-          setHobbies(contextProfile.hobbies);
-        } else if (Array.isArray(contextHobbies) && contextHobbies.length > 0) {
-          setHobbies(contextHobbies);
-        } else {
-          setHobbies(DEFAULT_HOBBIES);
-        }
-        notifyClean();
-      }
-    };
-
-    window.addEventListener('portfolio-admin-discard', handleDiscard);
-    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
-  }, [contextProfile, contextHobbies]);
+  const { notifyDirty, notifyClean } = useAdminDirty('hobbies', resetHobbies, () => {
+    handleSaveRef.current();
+  });
 
   // Drag and drop handlers
   const handleDragStart = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
@@ -350,6 +333,8 @@ export const HobbiesEditor: React.FC = () => {
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
+
+  handleSaveRef.current = handleSave;
 
   const activePickerChar =
     hobbies.find((h) => h.id === kanjiPickerTargetId)?.kanji || '';

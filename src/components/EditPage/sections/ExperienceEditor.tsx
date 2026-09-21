@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   MapPin,
   Calendar,
 } from 'lucide-react';
 import { supabase, formatErrorMessage, uploadExperienceLogo, withTimeout } from '../../../lib/supabase';
-import { useSiteData } from '../../../context/SiteDataContext';
+import { useSiteData, ExperienceRecord } from '../../../context/SiteDataContext';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { EditorCardShell } from '../shared/EditorCardShell';
 import { TechTagSelector } from '../shared/TechTagSelector';
 import { EmblemKanjiSelector } from '../shared/EmblemKanjiSelector';
 import { BulletListEditor } from '../shared/BulletListEditor';
+import { useAdminDirty } from '../shared/useAdminDirty';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
@@ -35,6 +36,33 @@ export interface ExperienceEntry {
   displayOrder: number;
 }
 
+const mapExperiencesFromContext = (contextExperiences: ExperienceRecord[]): ExperienceEntry[] => {
+  return contextExperiences.map((e, idx) => ({
+    id: e.id || crypto.randomUUID(),
+    title: e.title || '',
+    company: e.company || '',
+    location: e.location || '',
+    startDate: e.startDate || '',
+    endDate: e.endDate || '',
+    description: e.description || '',
+    overview: e.overview || e.description || '',
+    bullets:
+      Array.isArray(e.bullets) && e.bullets.length > 0
+        ? e.bullets
+        : e.description
+        ? e.description.split(/(?<=[.!?])\s+/).filter(Boolean)
+        : [''],
+    tags: e.tags || [],
+    isActive: typeof e.isActive === 'boolean' ? e.isActive : idx === 0,
+    statusLabel: e.statusLabel || (idx === 0 ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
+    domainLabel: e.domainLabel || '',
+    logoUrl: e.logoUrl || '',
+    kanji: e.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原'),
+    kanjiSubtitle: e.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS'),
+    displayOrder: typeof e.displayOrder === 'number' ? e.displayOrder : idx,
+  }));
+};
+
 const newEntry = (order: number = 0): ExperienceEntry => ({
   id: crypto.randomUUID(),
   title: '',
@@ -59,30 +87,7 @@ export const ExperienceEditor: React.FC = () => {
   const { experiences: contextExperiences, refresh } = useSiteData();
   const [experiences, setExperiences] = useState<ExperienceEntry[]>(() => {
     if (contextExperiences && contextExperiences.length > 0) {
-      return contextExperiences.map((e, idx) => ({
-        id: e.id || crypto.randomUUID(),
-        title: e.title || '',
-        company: e.company || '',
-        location: e.location || '',
-        startDate: e.startDate || '',
-        endDate: e.endDate || '',
-        description: e.description || '',
-        overview: e.overview || e.description || '',
-        bullets:
-          Array.isArray(e.bullets) && e.bullets.length > 0
-            ? e.bullets
-            : e.description
-            ? e.description.split(/(?<=[.!?])\s+/).filter(Boolean)
-            : [''],
-        tags: e.tags || [],
-        isActive: typeof e.isActive === 'boolean' ? e.isActive : idx === 0,
-        statusLabel: e.statusLabel || (idx === 0 ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
-        domainLabel: e.domainLabel || '',
-        logoUrl: e.logoUrl || '',
-        kanji: e.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原'),
-        kanjiSubtitle: e.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS'),
-        displayOrder: typeof e.displayOrder === 'number' ? e.displayOrder : idx,
-      }));
+      return mapExperiencesFromContext(contextExperiences);
     }
     return [];
   });
@@ -92,86 +97,22 @@ export const ExperienceEditor: React.FC = () => {
   const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
-  // Sync from context
-  useEffect(() => {
+  const resetExperiences = useCallback(() => {
     if (contextExperiences && contextExperiences.length > 0) {
-      setExperiences(
-        contextExperiences.map((e, idx) => ({
-          id: e.id || crypto.randomUUID(),
-          title: e.title || '',
-          company: e.company || '',
-          location: e.location || '',
-          startDate: e.startDate || '',
-          endDate: e.endDate || '',
-          description: e.description || '',
-          overview: e.overview || e.description || '',
-          bullets:
-            Array.isArray(e.bullets) && e.bullets.length > 0
-              ? e.bullets
-              : e.description
-              ? e.description.split(/(?<=[.!?])\s+/).filter(Boolean)
-              : [''],
-          tags: e.tags || [],
-          isActive: typeof e.isActive === 'boolean' ? e.isActive : idx === 0,
-          statusLabel: e.statusLabel || (idx === 0 ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
-          domainLabel: e.domainLabel || '',
-          logoUrl: e.logoUrl || '',
-          kanji: e.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原'),
-          kanjiSubtitle: e.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS'),
-          displayOrder: typeof e.displayOrder === 'number' ? e.displayOrder : idx,
-        })),
-      );
+      setExperiences(mapExperiencesFromContext(contextExperiences));
     }
   }, [contextExperiences]);
 
-  const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'experience', dirty: true } }));
-  };
-
-  const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'experience' } }));
-  };
-
-  // Discard listener: resets state from context
+  // Sync from context
   useEffect(() => {
-    const handleDiscard = (e: Event) => {
-      const customEvent = e as CustomEvent<{ section?: string }>;
-      if (!customEvent.detail?.section || customEvent.detail.section === 'experience') {
-        if (contextExperiences && contextExperiences.length > 0) {
-          setExperiences(
-            contextExperiences.map((e, idx) => ({
-              id: e.id || crypto.randomUUID(),
-              title: e.title || '',
-              company: e.company || '',
-              location: e.location || '',
-              startDate: e.startDate || '',
-              endDate: e.endDate || '',
-              description: e.description || '',
-              overview: e.overview || e.description || '',
-              bullets:
-                Array.isArray(e.bullets) && e.bullets.length > 0
-                  ? e.bullets
-                  : e.description
-                  ? e.description.split(/(?<=[.!?])\s+/).filter(Boolean)
-                  : [''],
-              tags: e.tags || [],
-              isActive: typeof e.isActive === 'boolean' ? e.isActive : idx === 0,
-              statusLabel: e.statusLabel || (idx === 0 ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
-              domainLabel: e.domainLabel || '',
-              logoUrl: e.logoUrl || '',
-              kanji: e.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原'),
-              kanjiSubtitle: e.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS'),
-              displayOrder: typeof e.displayOrder === 'number' ? e.displayOrder : idx,
-            })),
-          );
-        }
-        notifyClean();
-      }
-    };
+    resetExperiences();
+  }, [resetExperiences]);
 
-    window.addEventListener('portfolio-admin-discard', handleDiscard);
-    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
-  }, [contextExperiences]);
+  const handleSaveRef = useRef<() => void>(() => {});
+
+  const { notifyDirty, notifyClean } = useAdminDirty('experience', resetExperiences, () => {
+    handleSaveRef.current();
+  });
 
   // Drag and drop handlers
   const handleDragStart = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
@@ -212,13 +153,6 @@ export const ExperienceEditor: React.FC = () => {
     setDragOverIdx(null);
     toast.success(`Moved "${moved.company || moved.title || 'Milestone'}" to position #${targetIdx + 1}`);
   };
-
-  // Keyboard save listener
-  useEffect(() => {
-    const handleGlobalSave = () => handleSaveAll();
-    window.addEventListener('portfolio-admin-save', handleGlobalSave);
-    return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  }, [experiences]);
 
   const updateEntry = (id: string, patch: Partial<ExperienceEntry>) => {
     notifyDirty();
@@ -339,6 +273,8 @@ export const ExperienceEditor: React.FC = () => {
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
+
+  handleSaveRef.current = handleSaveAll;
 
   const handleUploadLogoFile = async (entryId: string, file: File): Promise<string | null> => {
     try {

@@ -5,8 +5,10 @@ import { ProjectDetailModal } from './ProjectDetailModal';
 import { EnsoOrbital } from './EnsoOrbital';
 import { TechTag } from './TechTag';
 import { CornerBrackets } from './CornerBrackets';
-import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { useSiteData } from '../context/SiteDataContext';
+import { StatusBadge } from './shared/StatusBadge';
+import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
+import { handleImageError } from '../lib/constants';
 import { ViewMode } from '../App';
 
 interface ProjectsPageProps {
@@ -144,9 +146,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                       alt={project.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = './images/sumi-os-workspace.jpg';
-                      }}
+                      onError={handleImageError()}
                     />
                     {/* Subtle watermark stamp */}
                     <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-xs text-[11px] font-serif text-white/90">
@@ -161,20 +161,12 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                       {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
                     </span>
 
-                    <span
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider ${
-                        project.isActive
-                          ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-[#ff7d63]'
-                          : 'bg-stone-100 dark:bg-[#20222a] border border-stone-300 dark:border-[#383b47] text-stone-600 dark:text-stone-400'
-                      }`}
-                    >
-                      <span
-                        className={`w-1 h-1 rounded-full ${
-                          project.isActive ? 'bg-terracotta animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
-                        }`}
-                      />
-                      <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'}</span>
-                    </span>
+                    <StatusBadge
+                      isActive={project.isActive}
+                      activeLabel="ACTIVE / 稼働中"
+                      completedLabel="COMPLETED / 完了"
+                      size="sm"
+                    />
                   </div>
 
                   <h3 className="font-serif text-lg font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta transition-colors line-clamp-1">

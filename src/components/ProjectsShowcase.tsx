@@ -8,6 +8,10 @@ import { CornerBrackets } from './CornerBrackets';
 import { Badge } from './ui/badge';
 import { VerticalMarginWidget, MARGIN_PRESETS } from './VerticalMarginWidget';
 import { useSiteData } from '../context/SiteDataContext';
+import { MarginBambooFlanks } from './shared/MarginBambooFlanks';
+import { SectionHeading } from './shared/SectionHeading';
+import { StatusBadge } from './shared/StatusBadge';
+import { handleImageError } from '../lib/constants';
 
 interface ProjectsShowcaseProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
@@ -25,40 +29,28 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
     return null;
   }
 
+  const archiveAction = (
+    <a
+      href="#all-projects"
+      onClick={(e) => {
+        if (onNavigate) {
+          e.preventDefault();
+          onNavigate('projects');
+        }
+      }}
+      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
+    >
+      <Layers className="w-3.5 h-3.5 text-terracotta" />
+      <span className="sm:hidden">All Projects ({projects?.length || 0})</span>
+      <span className="hidden sm:inline">View All Projects ({projects?.length || 0})</span>
+      <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-1" />
+    </a>
+  );
+
   return (
     <section id="featured-works" className="relative w-full overflow-hidden py-16 lg:py-24">
       {/* Subtle Japanese Sumi-e Arts in Left & Right Empty Margins */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
-        {/* Left Margin Flank Bamboo */}
-        <div className="absolute -left-6 xl:left-2 bottom-12 top-24 w-32 xl:w-48 pointer-events-none z-0 hidden lg:block">
-          <img
-            src="./images/sumie-tall-vertical-bamboo.jpg"
-            alt="Sumi-e bamboo margin accent"
-            className="w-full h-full object-contain object-bottom opacity-30 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen dark:invert animate-bamboo-sway"
-            style={{
-              maskImage: 'radial-gradient(ellipse 85% 85% at 30% 60%, black 35%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 30% 60%, black 35%, transparent 85%)',
-            }}
-          />
-        </div>
-
-        {/* Right Margin Flank Bamboo */}
-        <div className="absolute -right-6 xl:right-2 bottom-12 top-24 w-32 xl:w-48 pointer-events-none z-0 hidden lg:block">
-          <img
-            src="./images/sumie-tall-vertical-bamboo.jpg"
-            alt="Sumi-e bamboo margin accent"
-            className="w-full h-full object-contain object-bottom opacity-30 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen dark:invert scale-x-[-1]"
-            style={{
-              maskImage: 'radial-gradient(ellipse 85% 85% at 70% 60%, black 35%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 70% 60%, black 35%, transparent 85%)',
-            }}
-          />
-        </div>
-
-        {/* Top and Bottom Fades */}
-        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/70 z-10 pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/70 z-10 pointer-events-none" />
-      </div>
+      <MarginBambooFlanks />
 
       {/* Floating Vertical Margins */}
       <VerticalMarginWidget
@@ -74,43 +66,14 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & View All Action */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80 gap-6">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-terracotta text-sm">03 //</span>
-              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                SELECTED PORTFOLIO · 作品
-              </span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
-              Featured Works{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
-                主な作品
-              </span>
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
-              Production-grade web platforms, interactive applications, and scalable architectures crafted with disciplined full-stack precision.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 shrink-0">
-            <a
-              href="#all-projects"
-              onClick={(e) => {
-                if (onNavigate) {
-                  e.preventDefault();
-                  onNavigate('projects');
-                }
-              }}
-              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
-            >
-              <Layers className="w-3.5 h-3.5 text-terracotta" />
-              <span className="sm:hidden">All Projects ({projects?.length || 0})</span>
-              <span className="hidden sm:inline">View All Projects ({projects?.length || 0})</span>
-              <ArrowRight className="w-3.5 h-3.5 text-terracotta transition-transform duration-200 group-hover:translate-x-1" />
-            </a>
-          </div>
-        </div>
+        <SectionHeading
+          numeral="03 //"
+          categoryTag="SELECTED PORTFOLIO · 作品"
+          title="Featured Works"
+          kanjiSubtitle="主な作品"
+          description="Production-grade web platforms, interactive applications, and scalable architectures crafted with disciplined full-stack precision."
+          action={archiveAction}
+        />
 
         {/* Alternating Editorial Project Cards Stack (Top 3 on Home) */}
         <div className="flex flex-col space-y-6 sm:space-y-8">
@@ -146,9 +109,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         alt={project.title}
                         className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700 ease-out"
                         loading="lazy"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = './images/sumi-os-workspace.jpg';
-                        }}
+                        onError={handleImageError()}
                       />
                     </div>
                   </div>
@@ -173,22 +134,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                           </span>
                         )}
 
-                        <span
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                            isCurrent
-                              ? 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63] dark:shadow-[0_0_10px_rgba(200,60,35,0.25)]'
-                              : 'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#20222a] dark:border-[#383b47] dark:text-stone-400'
-                          }`}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              isCurrent
-                                ? 'bg-terracotta shadow-[0_0_6px_rgba(200,60,35,0.8)] animate-pulse'
-                                : 'bg-stone-400 dark:bg-neutral-500'
-                            }`}
-                          />
-                          <span>{isCurrent ? 'ACTIVE / 稼働中' : 'COMPLETED'}</span>
-                        </span>
+                        <StatusBadge isActive={isCurrent} />
                       </div>
 
                       <div className="flex items-center justify-between gap-4 mb-1">
@@ -262,13 +208,13 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
             );
           })}
         </div>
-
-        {/* Project Detail Case Study Modal */}
-        <ProjectDetailModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
       </div>
+
+      {/* Case Study Detail Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </section>
   );
 };

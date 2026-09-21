@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Star,
   Github,
@@ -7,11 +7,13 @@ import {
 } from 'lucide-react';
 import { supabase, formatErrorMessage, uploadProjectImage, withTimeout } from '../../../lib/supabase';
 import { useSiteData } from '../../../context/SiteDataContext';
+import { Project } from '../../../data/projects';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { EditorCardShell } from '../shared/EditorCardShell';
 import { TechTagSelector } from '../shared/TechTagSelector';
 import { EmblemKanjiSelector } from '../shared/EmblemKanjiSelector';
 import { BulletListEditor } from '../shared/BulletListEditor';
+import { useAdminDirty } from '../shared/useAdminDirty';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
@@ -38,6 +40,29 @@ export interface ProjectEntry {
   displayOrder: number;
 }
 
+const mapProjectsFromContext = (contextProjects: Project[]): ProjectEntry[] => {
+  return contextProjects.map((p, idx) => ({
+    id: p.id || crypto.randomUUID(),
+    title: p.title || '',
+    subtitle: p.subtitle || '',
+    startDate: p.startDate || '',
+    endDate: p.endDate || '',
+    isActive: typeof p.isActive === 'boolean' ? p.isActive : idx === 0,
+    statusLabel: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
+    summary: p.description || '',
+    overview: p.overview || p.description || '',
+    kanji: p.kanji || '案',
+    badge: p.badge || 'ENGINEERING ARCHIVE',
+    image: p.image || './images/sumi-os-workspace.jpg',
+    bullets: Array.isArray(p.bullets) && p.bullets.length > 0 ? p.bullets : [''],
+    techStacks: p.tags || [],
+    githubLink: p.links?.github || '',
+    liveLink: p.links?.live || '',
+    isFeatured: typeof p.isFeatured === 'boolean' ? p.isFeatured : idx < 3,
+    displayOrder: typeof p.displayOrder === 'number' ? p.displayOrder : idx,
+  }));
+};
+
 const newProject = (order: number = 0): ProjectEntry => ({
   id: crypto.randomUUID(),
   title: '',
@@ -63,26 +88,7 @@ export const ProjectsEditor: React.FC = () => {
   const { projects: contextProjects, refresh } = useSiteData();
   const [projects, setProjects] = useState<ProjectEntry[]>(() => {
     if (contextProjects && contextProjects.length > 0) {
-      return contextProjects.map((p, idx) => ({
-        id: p.id || crypto.randomUUID(),
-        title: p.title || '',
-        subtitle: p.subtitle || '',
-        startDate: p.startDate || '',
-        endDate: p.endDate || '',
-        isActive: typeof p.isActive === 'boolean' ? p.isActive : idx === 0,
-        statusLabel: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
-        summary: p.description || '',
-        overview: p.overview || p.description || '',
-        kanji: p.kanji || '案',
-        badge: p.badge || 'ENGINEERING ARCHIVE',
-        image: p.image || './images/sumi-os-workspace.jpg',
-        bullets: Array.isArray(p.bullets) && p.bullets.length > 0 ? p.bullets : [''],
-        techStacks: p.tags || [],
-        githubLink: p.links?.github || '',
-        liveLink: p.links?.live || '',
-        isFeatured: typeof p.isFeatured === 'boolean' ? p.isFeatured : idx < 3,
-        displayOrder: typeof p.displayOrder === 'number' ? p.displayOrder : idx,
-      }));
+      return mapProjectsFromContext(contextProjects);
     }
     return [];
   });
@@ -92,78 +98,25 @@ export const ProjectsEditor: React.FC = () => {
   const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
-  // Sync from context
-  useEffect(() => {
+  const resetProjects = useCallback(() => {
     if (contextProjects && contextProjects.length > 0) {
-      setProjects(
-        contextProjects.map((p, idx) => ({
-          id: p.id || crypto.randomUUID(),
-          title: p.title || '',
-          subtitle: p.subtitle || '',
-          startDate: p.startDate || '',
-          endDate: p.endDate || '',
-          isActive: typeof p.isActive === 'boolean' ? p.isActive : idx === 0,
-          statusLabel: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
-          summary: p.description || '',
-          overview: p.overview || p.description || '',
-          kanji: p.kanji || '案',
-          badge: p.badge || 'ENGINEERING ARCHIVE',
-          image: p.image || './images/sumi-os-workspace.jpg',
-          bullets: Array.isArray(p.bullets) && p.bullets.length > 0 ? p.bullets : [''],
-          techStacks: p.tags || [],
-          githubLink: p.links?.github || '',
-          liveLink: p.links?.live || '',
-          isFeatured: typeof p.isFeatured === 'boolean' ? p.isFeatured : idx < 3,
-          displayOrder: typeof p.displayOrder === 'number' ? p.displayOrder : idx,
-        })),
-      );
+      setProjects(mapProjectsFromContext(contextProjects));
     }
   }, [contextProjects]);
 
-  const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'projects', dirty: true } }));
-  };
-
-  const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'projects' } }));
-  };
-
-  // Discard listener: resets state from context
+  // Sync from context
   useEffect(() => {
-    const handleDiscard = (e: Event) => {
-      const customEvent = e as CustomEvent<{ section?: string }>;
-      if (!customEvent.detail?.section || customEvent.detail.section === 'projects') {
-        if (contextProjects && contextProjects.length > 0) {
-          setProjects(
-            contextProjects.map((p, idx) => ({
-              id: p.id || crypto.randomUUID(),
-              title: p.title || '',
-              subtitle: p.subtitle || '',
-              startDate: p.startDate || '',
-              endDate: p.endDate || '',
-              isActive: typeof p.isActive === 'boolean' ? p.isActive : idx === 0,
-              statusLabel: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
-              summary: p.description || '',
-              overview: p.overview || p.description || '',
-              kanji: p.kanji || '案',
-              badge: p.badge || 'ENGINEERING ARCHIVE',
-              image: p.image || './images/sumi-os-workspace.jpg',
-              bullets: Array.isArray(p.bullets) && p.bullets.length > 0 ? p.bullets : [''],
-              techStacks: p.tags || [],
-              githubLink: p.links?.github || '',
-              liveLink: p.links?.live || '',
-              isFeatured: typeof p.isFeatured === 'boolean' ? p.isFeatured : idx < 3,
-              displayOrder: typeof p.displayOrder === 'number' ? p.displayOrder : idx,
-            })),
-          );
-        }
-        notifyClean();
-      }
-    };
+    resetProjects();
+  }, [resetProjects]);
 
-    window.addEventListener('portfolio-admin-discard', handleDiscard);
-    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
-  }, [contextProjects]);
+  const projectsRef = useRef(projects);
+  projectsRef.current = projects;
+
+  const handleSaveRef = useRef<() => void>(() => {});
+
+  const { notifyDirty, notifyClean } = useAdminDirty('projects', resetProjects, () => {
+    handleSaveRef.current();
+  });
 
   // Drag and drop handlers
   const handleDragStart = (idx: number) => (e: React.DragEvent<HTMLDivElement>) => {
@@ -204,13 +157,6 @@ export const ProjectsEditor: React.FC = () => {
     setDragOverIdx(null);
     toast.success(`Moved "${moved.title || 'Project'}" to position #${targetIdx + 1}`);
   };
-
-  // Keyboard save listener
-  useEffect(() => {
-    const handleGlobalSave = () => handleSaveAll();
-    window.addEventListener('portfolio-admin-save', handleGlobalSave);
-    return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  }, [projects]);
 
   const updateProject = (id: string, patch: Partial<ProjectEntry>) => {
     notifyDirty();
@@ -360,6 +306,8 @@ export const ProjectsEditor: React.FC = () => {
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
+
+  handleSaveRef.current = handleSaveAll;
 
   const handleUploadImageFile = async (projectId: string, file: File): Promise<string | null> => {
     try {

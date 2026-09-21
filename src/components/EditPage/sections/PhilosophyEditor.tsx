@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Trash2,
   ChevronDown,
@@ -17,6 +17,7 @@ import {
 import { CornerBrackets } from '../../CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { EmblemKanjiSelector } from '../shared/EmblemKanjiSelector';
+import { useAdminDirty } from '../shared/useAdminDirty';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
@@ -32,6 +33,20 @@ interface PillarEntry {
   tag: string;
   description: string;
 }
+
+const mapPillarsFromContext = (contextPillars: any[]): PillarEntry[] => {
+  if (Array.isArray(contextPillars) && contextPillars.length > 0) {
+    return contextPillars.map((p) => ({
+      position: p.position,
+      kanji: p.kanji || '',
+      romaji: p.romaji || '',
+      title: p.title || '',
+      tag: p.tag || '',
+      description: p.description || '',
+    }));
+  }
+  return [];
+};
 
 const newPillar = (pos: number): PillarEntry => ({
   position: pos,
@@ -62,83 +77,26 @@ export const PhilosophyEditor: React.FC = () => {
 
   // Pillars state
   const [pillars, setPillars] = useState<PillarEntry[]>(() => {
-    if (Array.isArray(contextPillars) && contextPillars.length > 0) {
-      return contextPillars.map((p) => ({
-        position: p.position,
-        kanji: p.kanji || '',
-        romaji: p.romaji || '',
-        title: p.title || '',
-        tag: p.tag || '',
-        description: p.description || '',
-      }));
-    }
-    return [];
+    return mapPillarsFromContext(contextPillars);
   });
 
   const [saveState, setSaveState] = useState<SaveState>('idle');
 
+  const resetPhilosophy = useCallback(() => {
+    setOriginData(contextProfile?.origin_story || DEFAULT_ORIGIN_STORY);
+    setPillars(mapPillarsFromContext(contextPillars));
+  }, [contextProfile?.origin_story, contextPillars]);
+
   // Sync from context
   useEffect(() => {
-    if (contextProfile?.origin_story) {
-      setOriginData(contextProfile.origin_story);
-    }
-  }, [contextProfile]);
+    resetPhilosophy();
+  }, [resetPhilosophy]);
 
-  useEffect(() => {
-    if (Array.isArray(contextPillars)) {
-      setPillars(
-        contextPillars.map((p) => ({
-          position: p.position,
-          kanji: p.kanji || '',
-          romaji: p.romaji || '',
-          title: p.title || '',
-          tag: p.tag || '',
-          description: p.description || '',
-        })),
-      );
-    }
-  }, [contextPillars]);
+  const handleSaveRef = useRef<() => void>(() => {});
 
-  const notifyDirty = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-dirty', { detail: { section: 'philosophy', dirty: true } }));
-  };
-
-  const notifyClean = () => {
-    window.dispatchEvent(new CustomEvent('portfolio-admin-clean', { detail: { section: 'philosophy' } }));
-  };
-
-  // Discard listener: resets state from context
-  useEffect(() => {
-    const handleDiscard = (e: Event) => {
-      const customEvent = e as CustomEvent<{ section?: string }>;
-      if (!customEvent.detail?.section || customEvent.detail.section === 'philosophy') {
-        setOriginData(contextProfile?.origin_story || DEFAULT_ORIGIN_STORY);
-        if (Array.isArray(contextPillars)) {
-          setPillars(
-            contextPillars.map((p) => ({
-              position: p.position,
-              kanji: p.kanji || '',
-              romaji: p.romaji || '',
-              title: p.title || '',
-              tag: p.tag || '',
-              description: p.description || '',
-            })),
-          );
-        }
-        notifyClean();
-      }
-    };
-
-    window.addEventListener('portfolio-admin-discard', handleDiscard);
-    return () => window.removeEventListener('portfolio-admin-discard', handleDiscard);
-  }, [contextProfile, contextPillars]);
-
-  // Keyboard save listener
-  useEffect(() => {
-    const handleGlobalSave = () => handleSave();
-    window.addEventListener('portfolio-admin-save', handleGlobalSave);
-    return () => window.removeEventListener('portfolio-admin-save', handleGlobalSave);
-  }, [pillars, originData]);
+  const { notifyDirty, notifyClean } = useAdminDirty('philosophy', resetPhilosophy, () => {
+    handleSaveRef.current();
+  });
 
   // Origin Story updaters
   const updateOrigin = (patch: Partial<OriginStoryConfig>) => {
@@ -266,6 +224,8 @@ export const PhilosophyEditor: React.FC = () => {
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
+
+  handleSaveRef.current = handleSave;
 
   const milestoneList = originData.milestones || DEFAULT_ORIGIN_STORY.milestones!;
 
