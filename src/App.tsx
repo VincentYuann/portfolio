@@ -20,6 +20,7 @@ import {
   ResumePageSkeleton,
   AdminStudioSkeleton,
   LoginPageSkeleton,
+  DefaultPageSkeleton,
 } from './components/common/Skeletons';
 
 // Route-level code-splitting for non-critical views (drastically reduces initial bundle size)
@@ -44,22 +45,7 @@ const RouteLoadingFallback: React.FC<{ currentView?: ViewMode }> = ({ currentVie
     case 'login':
       return <LoginPageSkeleton />;
     default:
-      return (
-        <div
-          className="min-h-[70vh] flex flex-col items-center justify-center gap-4 text-light-ink-muted dark:text-dark-ink-muted animate-in fade-in duration-300"
-          role="status"
-          aria-live="polite"
-          aria-label="Loading view"
-        >
-          <div className="relative flex items-center justify-center">
-            <div className="w-10 h-10 rounded-full border border-terracotta/20 dark:border-terracotta/30 animate-ping absolute" />
-            <div className="w-7 h-7 rounded-full border-2 border-terracotta/30 border-t-terracotta animate-spin" />
-          </div>
-          <span className="font-mono text-xs uppercase tracking-widest text-light-ink-muted/80 dark:text-dark-ink-muted/80">
-            Loading · 読み込み中
-          </span>
-        </div>
-      );
+      return <DefaultPageSkeleton />;
   }
 };
 

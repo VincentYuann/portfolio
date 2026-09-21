@@ -279,3 +279,34 @@ export const LoginPageSkeleton: React.FC = () => {
     </div>
   );
 };
+
+/**
+ * Generic View Skeleton Loader for Route Transitions
+ */
+export const DefaultPageSkeleton: React.FC = () => {
+  return (
+    <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto animate-in fade-in duration-300">
+      <div className="space-y-4 mb-12">
+        <Skeleton className="h-4 w-32 rounded" />
+        <Skeleton className="h-10 sm:h-12 w-64 rounded-lg" />
+        <Skeleton className="h-4 w-full max-w-md rounded" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div
+            key={i}
+            className="bg-light-surface-card/90 dark:bg-dark-surface/90 border border-light-border dark:border-dark-border rounded-xl p-6 relative min-h-[260px] flex flex-col justify-between"
+          >
+            <CornerBrackets size="sm" />
+            <Skeleton className="h-32 w-full rounded-lg mb-4" />
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-3/4 rounded" />
+              <Skeleton className="h-3.5 w-full rounded" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
