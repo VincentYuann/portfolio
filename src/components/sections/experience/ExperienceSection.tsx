@@ -333,6 +333,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             alt={`${exp.company} emblem`}
                             className="w-full h-full object-cover"
                             loading="lazy"
+                            decoding="async"
                             onError={handleImageError}
                           />
                         ) : (

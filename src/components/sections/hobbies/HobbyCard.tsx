@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { Image as ImageIcon, Maximize2 } from 'lucide-react';
 import { HobbyItem } from '../../../context/SiteDataContext';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { CornerBrackets } from '../../common/CornerBrackets';
-import { ImageLightboxModal } from '../../common/ImageLightboxModal';
 import { getCategoryStyle } from '../../../lib/hobbyTheme';
+
+// Lazy-load Lightbox module so yet-another-react-lightbox isn't in initial bundle
+const ImageLightboxModal = lazy(() =>
+  import('../../common/ImageLightboxModal').then((m) => ({ default: m.ImageLightboxModal }))
+);
 
 export interface HobbyCardProps {
   hobby: HobbyItem;
@@ -80,6 +84,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                   className="w-full h-full object-cover group-hover/hero:scale-103 transition-transform duration-500 cursor-pointer"
                   onClick={() => setIsLightboxOpen(true)}
                   loading="lazy"
+                  decoding="async"
                 />
 
                 {/* Enlarge Trigger Button */}
@@ -122,6 +127,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                         alt={`${hobby.title} thumbnail ${idx + 1}`}
                         className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-300"
                         loading="lazy"
+                        decoding="async"
                       />
                     </button>
                   ))}
@@ -138,9 +144,13 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
 
         {/* Metadata Key-Value Badges (Compact & Adaptable Horizontal Pills) */}
         {hobby.metadata && hobby.metadata.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-light-border/40 dark:border-dark-border/40">
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-light-border/40 dark:border-dark-border/40">
             {hobby.metadata.map((item, mIdx) => {
-              const labelText = item.label.endsWith(':') ? item.label : `${item.label}:`;
+              const rawLabel = (item as any).label || (item as any).key || '';
+              const labelText = rawLabel.includes('(')
+                ? rawLabel.split('(')[0].trim()
+                : rawLabel.toUpperCase();
+
               return (
                 <div
                   key={mIdx}
@@ -159,16 +169,21 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
         )}
       </div>
 
-      {/* Lightbox Modal */}
-      <ImageLightboxModal
-        images={images}
-        currentIndex={activeImageIndex}
-        onIndexChange={setActiveImageIndex}
-        isOpen={isLightboxOpen}
-        onClose={() => setIsLightboxOpen(false)}
-        title={hobby.title}
-        subtitle={hobby.subtitle}
-      />
+      {/* Lightbox Modal (Loaded dynamically on-demand) */}
+      {isLightboxOpen && (
+        <Suspense fallback={null}>
+          <ImageLightboxModal
+            images={images}
+            currentIndex={activeImageIndex}
+            onIndexChange={setActiveImageIndex}
+            isOpen={isLightboxOpen}
+            onClose={() => setIsLightboxOpen(false)}
+            title={hobby.title}
+            subtitle={hobby.subtitle}
+            kanji={hobby.kanji}
+          />
+        </Suspense>
+      )}
     </article>
   );
 };

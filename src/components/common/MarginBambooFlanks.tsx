@@ -18,6 +18,8 @@ export const MarginBambooFlanks: React.FC<MarginBambooFlanksProps> = ({
           src={imageSrc}
           alt="Sumi-e bamboo margin accent"
           className="w-full h-full object-contain object-bottom opacity-30 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen dark:invert animate-bamboo-sway"
+          loading="lazy"
+          decoding="async"
           style={{
             maskImage: 'radial-gradient(ellipse 85% 85% at 30% 60%, black 35%, transparent 85%)',
             WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 30% 60%, black 35%, transparent 85%)',
@@ -31,6 +33,8 @@ export const MarginBambooFlanks: React.FC<MarginBambooFlanksProps> = ({
           src={imageSrc}
           alt="Sumi-e bamboo margin accent"
           className="w-full h-full object-contain object-bottom opacity-30 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen dark:invert scale-x-[-1]"
+          loading="lazy"
+          decoding="async"
           style={{
             maskImage: 'radial-gradient(ellipse 85% 85% at 70% 60%, black 35%, transparent 85%)',
             WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 70% 60%, black 35%, transparent 85%)',

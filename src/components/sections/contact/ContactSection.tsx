@@ -72,6 +72,8 @@ export const ContactSection: React.FC = () => {
             src="./images/sumie-tall-vertical-bamboo.jpg"
             alt="Sumi-e bamboo contact flank"
             className="w-full h-full object-contain object-bottom opacity-35 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen dark:invert animate-bamboo-sway"
+            loading="lazy"
+            decoding="async"
             style={{
               maskImage: 'radial-gradient(ellipse 85% 85% at 40% 60%, black 40%, transparent 85%)',
               WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 40% 60%, black 40%, transparent 85%)',
@@ -85,6 +87,8 @@ export const ContactSection: React.FC = () => {
             src="./images/sumie-tall-vertical-bamboo.jpg"
             alt="Sumi-e bamboo contact flank"
             className="w-full h-full object-contain object-bottom opacity-35 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen dark:invert scale-x-[-1]"
+            loading="lazy"
+            decoding="async"
             style={{
               maskImage: 'radial-gradient(ellipse 85% 85% at 60% 60%, black 40%, transparent 85%)',
               WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 60% 60%, black 40%, transparent 85%)',
@@ -111,6 +115,8 @@ export const ContactSection: React.FC = () => {
               src="./images/komorebi-spatial.jpg"
               alt="Komorebi Japanese landscape backdrop"
               className="w-full h-full object-cover object-[65%_center]"
+              loading="lazy"
+              decoding="async"
               style={{
                 maskImage: 'radial-gradient(ellipse 95% 90% at 35% 50%, black 55%, transparent 95%)',
                 WebkitMaskImage: 'radial-gradient(ellipse 95% 90% at 35% 50%, black 55%, transparent 95%)',

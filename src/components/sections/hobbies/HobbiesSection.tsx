@@ -45,6 +45,8 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
           src="./images/hero-sumie-landscape-banner.jpg"
           alt="Sumi-e landscape behind hobbies section"
           className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen dark:invert"
+          loading="lazy"
+          decoding="async"
           style={{
             maskImage: 'radial-gradient(ellipse 90% 75% at 50% 50%, black 25%, transparent 85%)',
             WebkitMaskImage: 'radial-gradient(ellipse 90% 75% at 50% 50%, black 25%, transparent 85%)',

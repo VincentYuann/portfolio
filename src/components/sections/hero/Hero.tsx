@@ -33,6 +33,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           src="./images/hero-sumie-landscape-bamboo-banner.jpg"
           alt="Panoramic sumi-e landscape and bamboo ink wash painting backdrop"
           className="absolute inset-0 w-full h-full object-cover object-left sm:object-center opacity-85 dark:opacity-50 mix-blend-multiply dark:mix-blend-screen dark:invert animate-gentle-drift"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
           style={{
             maskImage: 'radial-gradient(ellipse 98% 90% at 50% 50%, black 50%, transparent 95%)',
             WebkitMaskImage: 'radial-gradient(ellipse 98% 90% at 50% 50%, black 50%, transparent 95%)',
@@ -45,6 +48,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             src="./images/sumie-pine-tree-left.jpg"
             alt="Sumi-e pine tree art"
             className="w-full h-full object-contain object-bottom-left opacity-80 dark:opacity-55 mix-blend-multiply dark:mix-blend-screen dark:invert transition-opacity duration-300"
+            loading="lazy"
+            decoding="async"
             style={{
               maskImage: 'radial-gradient(ellipse 92% 90% at 35% 65%, black 50%, transparent 90%)',
               WebkitMaskImage: 'radial-gradient(ellipse 92% 90% at 35% 65%, black 50%, transparent 90%)',
@@ -58,6 +63,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             src="./images/sumie-bamboo-bg.jpg"
             alt="Sumi-e bamboo background"
             className="w-full h-full object-contain object-bottom opacity-55 dark:opacity-35 mix-blend-multiply dark:mix-blend-screen dark:invert"
+            loading="lazy"
+            decoding="async"
             style={{
               maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 85%)',
               WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 85%)',

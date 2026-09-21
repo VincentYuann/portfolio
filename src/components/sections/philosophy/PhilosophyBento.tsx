@@ -71,6 +71,8 @@ const PILLAR_CONFIGS = [
           src="./images/sumie-pine-tree-left.jpg"
           alt="Pine motif"
           className="w-full h-full object-contain object-bottom-right mix-blend-multiply dark:mix-blend-screen dark:invert"
+          loading="lazy"
+          decoding="async"
         />
       </div>
     ),
@@ -112,6 +114,8 @@ export const PhilosophyBento: React.FC = () => {
           src="./images/hero-sumie-landscape-bamboo-banner.jpg"
           alt="Sumi-e landscape behind philosophy cards"
           className="absolute inset-0 w-full h-full object-cover opacity-25 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen dark:invert"
+          loading="lazy"
+          decoding="async"
           style={{
             maskImage: 'radial-gradient(ellipse 92% 80% at 50% 50%, black 30%, transparent 88%)',
             WebkitMaskImage: 'radial-gradient(ellipse 92% 80% at 50% 50%, black 30%, transparent 88%)',
@@ -124,6 +128,8 @@ export const PhilosophyBento: React.FC = () => {
             src="./images/sumie-tall-vertical-bamboo.jpg"
             alt="Sumi-e bamboo art left flank"
             className="w-full h-full object-contain object-bottom opacity-40 dark:opacity-25 mix-blend-multiply dark:mix-blend-screen dark:invert animate-bamboo-sway"
+            loading="lazy"
+            decoding="async"
             style={{
               maskImage: 'radial-gradient(ellipse 85% 85% at 40% 60%, black 40%, transparent 88%)',
               WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 40% 60%, black 40%, transparent 88%)',
@@ -137,6 +143,8 @@ export const PhilosophyBento: React.FC = () => {
             src="./images/sumie-tall-vertical-bamboo.jpg"
             alt="Sumi-e bamboo art right flank"
             className="w-full h-full object-contain object-bottom opacity-40 dark:opacity-25 mix-blend-multiply dark:mix-blend-screen dark:invert scale-x-[-1]"
+            loading="lazy"
+            decoding="async"
             style={{
               maskImage: 'radial-gradient(ellipse 85% 85% at 60% 60%, black 40%, transparent 88%)',
               WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 60% 60%, black 40%, transparent 88%)',

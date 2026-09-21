@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { Project } from '../../../data/projects';
 import { ArrowRight, Layers, Github, ExternalLink, Calendar } from 'lucide-react';
-import { ProjectDetailModal } from './ProjectDetailModal';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
@@ -12,6 +11,10 @@ import { MarginBambooFlanks } from '../../common/MarginBambooFlanks';
 import { SectionHeading } from '../../common/SectionHeading';
 import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
+
+const ProjectDetailModal = lazy(() =>
+  import('./ProjectDetailModal').then((m) => ({ default: m.ProjectDetailModal }))
+);
 
 interface ProjectsShowcaseProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
@@ -109,6 +112,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         alt={project.title}
                         className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700 ease-out"
                         loading="lazy"
+                        decoding="async"
                         onError={handleImageError()}
                       />
                     </div>
@@ -210,11 +214,15 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
         </div>
       </div>
 
-      {/* Case Study Detail Modal */}
-      <ProjectDetailModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
+      {/* Case Study Detail Modal (Loaded dynamically on-demand) */}
+      {selectedProject && (
+        <Suspense fallback={null}>
+          <ProjectDetailModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        </Suspense>
+      )}
     </section>
   );
 };

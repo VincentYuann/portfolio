@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { ArrowLeft, Search, ExternalLink, Github, Layers, Calendar } from 'lucide-react';
 import { Project } from '../../../data/projects';
-import { ProjectDetailModal } from './ProjectDetailModal';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
@@ -10,6 +9,10 @@ import { StatusBadge } from '../../common/StatusBadge';
 import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
 import { handleImageError } from '../../../lib/constants';
 import { ViewMode } from '../../../App';
+
+const ProjectDetailModal = lazy(() =>
+  import('./ProjectDetailModal').then((m) => ({ default: m.ProjectDetailModal }))
+);
 
 interface ProjectsPageProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -54,11 +57,15 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
       />
 
       <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Detail Modal */}
-        <ProjectDetailModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
+        {/* Detail Modal (Loaded dynamically on-demand) */}
+        {selectedProject && (
+          <Suspense fallback={null}>
+            <ProjectDetailModal
+              project={selectedProject}
+              onClose={() => setSelectedProject(null)}
+            />
+          </Suspense>
+        )}
 
         {/* Back navigation button */}
         <div className="mb-6 sm:mb-8">
@@ -146,6 +153,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                       alt={project.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
+                      decoding="async"
                       onError={handleImageError()}
                     />
                     {/* Subtle watermark stamp */}

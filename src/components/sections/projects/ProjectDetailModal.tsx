@@ -88,6 +88,8 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = './images/sumi-os-workspace.jpg';
                   }}
