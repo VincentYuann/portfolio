@@ -14,7 +14,7 @@ import {
   withTimeout,
   uploadHobbyImage,
 } from '../../../lib/supabase';
-import { useSiteData, HobbyItem, DEFAULT_HOBBIES } from '../../../context/SiteDataContext';
+import { useSiteData, HobbyItem } from '../../../context/SiteDataContext';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { EditorCardShell } from '../shared/EditorCardShell';
 import { KanjiPickerModal } from '../modals/KanjiPickerModal';
@@ -34,7 +34,7 @@ const getHobbiesFromData = (profileHobbies?: HobbyItem[], siteHobbies?: HobbyIte
   if (Array.isArray(siteHobbies) && siteHobbies.length > 0) {
     return siteHobbies;
   }
-  return DEFAULT_HOBBIES;
+  return [];
 };
 
 const newHobbyTemplate = (pos: number): HobbyItem => ({

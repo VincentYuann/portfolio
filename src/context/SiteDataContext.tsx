@@ -42,18 +42,6 @@ export interface HankoCardConfig {
   lines?: HankoCardLine[];
 }
 
-export const DEFAULT_HANKO_CARD: HankoCardConfig = {
-  headerLabel: 'SEAL / 認印',
-  locationArchive: 'PHILADELPHIA, PA',
-  stampCharacter: '原',
-  statusBadge: 'OPEN TO ROLES · FULL-STACK',
-  lines: [
-    { text: '間と余白の美学', label: 'MA · 間', tooltip: 'Aesthetics of Negative Space (Ma)' },
-    { text: '静寂と簡素な調和', label: 'WA · 調和', tooltip: 'Silence and Simple Harmony (Wa)' },
-    { text: '職人の精緻な組手', label: 'CRAFT · 職人', tooltip: 'Artisan Precision and Joinery (Shokunin)' },
-  ],
-};
-
 export interface OriginMilestone {
   era: string;
   title: string;
@@ -69,47 +57,6 @@ export interface OriginStoryConfig {
   milestones?: OriginMilestone[];
 }
 
-export const DEFAULT_ORIGIN_STORY: OriginStoryConfig = {
-  badge: 'ORIGIN & TRAJECTORY · 原点と軌跡',
-  headline: 'From Logic Puzzles to Full-Stack Systems',
-  leadParagraph:
-    'My engineering path began not with grand architecture, but with genuine curiosity: discovering how logic turns static pixels into dynamic systems, mastering state through game mechanics, and bringing the human empathy of hospitality into every layer of software architecture.',
-  milestones: [
-    {
-      era: 'PHASE 01',
-      title: 'The Spark & Logic',
-      subtitle: 'High School HTML / CSS / JS',
-      tag: 'WEB ROOTS',
-      description:
-        'Discovered coding in a high school class: seeing how a few lines of JavaScript could turn static markup into an interactive canvas. The thrill of transforming logic into visual response set the foundation.',
-    },
-    {
-      era: 'PHASE 02',
-      title: 'Mechanics & State',
-      subtitle: 'Python OOP & Pygame',
-      tag: 'SYSTEM MECHANICS',
-      description:
-        'Majoring in CS in college, I explored game development with Python and Pygame. Writing game loops, state machines, tick rates, and collision mathematics from scratch forged my deep object-oriented foundation.',
-    },
-    {
-      era: 'PHASE 03',
-      title: 'Beyond the Iceberg',
-      subtitle: 'Co-op & Full-Stack Systems',
-      tag: 'DATA FLOW & APIS',
-      description:
-        'Real-world software and co-ops revealed that frontend styling is only the tip of the iceberg. I became fascinated by what lives beneath: API contracts, relational schemas, caching, and resilient system data flow.',
-    },
-    {
-      era: 'PHASE 04',
-      title: 'Hospitality Empathy',
-      subtitle: 'Service Industry to Code',
-      tag: 'USER-FIRST CRAFT',
-      description:
-        'Years as a barista and server in Philadelphia taught me active listening, anticipating user friction before it happens, and remaining calm during peak rushes, translating directly into human-centered software engineering.',
-    },
-  ],
-};
-
 export interface HobbyItem {
   id: string;
   title: string;
@@ -121,101 +68,6 @@ export interface HobbyItem {
   metadata?: { label: string; value: string }[];
   displayOrder?: number;
 }
-
-export const DEFAULT_HOBBIES: HobbyItem[] = [
-  {
-    id: 'anime-storytelling',
-    title: 'Anime & Animation',
-    kanji: '鑑賞',
-    category: 'Anime',
-    subtitle: 'Favorite Shows, Story Arcs & Great Animation',
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBNUbl-6saHrZBnNOQEft_44ErmBzcNf2_3GgN4Xh2hxYnrVyHmx0Kz7DBGAQU30hv1C56hMzEkMbUvzMsgiiQJO5-JOSAYbf_MTlCsxqsG6oYp2JOG6zBceu8-bSXRVljpncu6N9vfbZ1ELq___5JJUl5KKRHtAYdMHHOco-rVkrLgjawbqtRYqfqTWnnGG7IsPoXWB1Y7Rep0IHev5pbIs2-M31bmqSw0CJhNHoyX_8cvun5BWnCorQ',
-      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879980878-1000025253.png',
-      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879575417-gemini_generated_image_fg6i8ufg6i8ufg6i.jpg',
-    ],
-    whyDescription:
-      'I love getting immersed in compelling anime series with great world-building, emotional character journeys, and incredible sakuga animation. It is one of my favorite ways to unwind and get inspired after a long week.',
-    metadata: [
-      { label: 'Favorite Genres', value: 'Shonen, Sci-Fi, Psychological' },
-      { label: 'Go-To Shows', value: 'Hunter x Hunter, Steins;Gate' },
-    ],
-    displayOrder: 1,
-  },
-  {
-    id: 'gaming-mechanics',
-    title: 'Gaming with Friends',
-    kanji: '遊戯',
-    category: 'Gaming',
-    subtitle: 'Co-op Adventures, Tactical Matches & Fun Strategy',
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuA1W78vnIMUOZKe7hIAoZsWy9lJceC1GpqMkqCmJ0zjjhiQRCMfeO5ejXeEFDH10cv9VQ-v34kBBbp7myZGbKDV_4cTYbwZkD7my_EJIz0AaigAKuxHxLaqbPY3rz0uyQRh3VXovKJ0q8mi47qszpp4XFdiWdzRtPHfxCANH_mlPFejUqNlRNslttdcVZcNUKICTpcQjiwuDY__vaTUy4XZJu7pWzO6fZFAOcVs98n4WD37JYOW7sBiRA',
-      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879973432-1000025251.jpg',
-      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879579761-day_and_nigh_theme.png',
-    ],
-    whyDescription:
-      'Gaming has always been a fun way to team up with friends, test strategies, and enjoy great games. Whether it is grinding competitive matches or exploring immersive RPGs, I love the shared excitement and friendly banter.',
-    metadata: [
-      { label: 'Favorite Genres', value: 'RPGs, Shooters & Strategy' },
-      { label: 'Play Style', value: 'Team Play & Fun Challenges' },
-    ],
-    displayOrder: 2,
-  },
-  {
-    id: 'fitness-gym',
-    title: 'Fitness & Gym',
-    kanji: '鍛錬',
-    category: 'Fitness',
-    subtitle: 'Weight Training & Staying Healthy',
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBIQr3bTk3yvKCBXiAYi_kPdrzrSDIS4QJkYLWaCRKFOh_Iyvqgn2IkCe1PeeRqs_ScybEjUyNSBVPfSoqCDoXz-iTNgSOXxxNxKheHSrcnFQZE-bhBwH5mmkRJxXWbCWlus4MxGuYXevVL7oTqwrTcvbKPWwGtZj2VEYvaUrcisA4rRI0jgNhTBKtJgVQFJ86vzJ-h43U6tuThqzyw2TBz0s1ypULVS2GnMSJ5B4Q19cWnTVqag0yRHw',
-      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879977164-1000025250.jpg',
-    ],
-    whyDescription:
-      'Hitting the gym regularly keeps me energized, healthy, and focused. There is something really rewarding about putting in consistent effort each week, tracking progress, and clearing my head after hours of screen time.',
-    metadata: [
-      { label: 'Routine', value: 'Strength & Hypertrophy Training' },
-      { label: 'Schedule', value: '4-5 Days a Week' },
-    ],
-    displayOrder: 3,
-  },
-  {
-    id: 'nasdaq-day-trading',
-    title: 'Market & Day Trading',
-    kanji: '相場',
-    category: 'Trading',
-    subtitle: 'Nasdaq Price Action & Market Flow',
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBg-wZeKdlcgCrJC9erSQCxG7UvapQqbvhrt6rKGTVp7-eZT8s7AeO6dMKSPvrleqxjpYga7NSq0euWrBCozfTAv5vckRlEL_2P1HrawliMAIhTgvS9tgflMmTvNVKa8XvFTeb-cWOUTUzO1TiSVwgJwDrxMCivMlme4gOAbjrPE9ae2jR37V4v19KzIpP4Y4Sxt9cZKg7wkd-TpIoL5wKoV2fOBnnMgOOw44llnc8BfNRz0xLmforWM_fP63iZA9ibRq8',
-      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879932755-1000025280.jpg',
-    ],
-    whyDescription:
-      'I find market dynamics and price action fascinating. Day trading Nasdaq futures and equities teaches me patience, emotional discipline, and risk management. It is a thrilling challenge to analyze patterns in real-time.',
-    metadata: [
-      { label: 'Markets', value: 'Nasdaq (QQQ / NQ)' },
-      { label: 'Approach', value: 'Price Action & Strict Risk Control' },
-    ],
-    displayOrder: 4,
-  },
-  {
-    id: 'food-friends',
-    title: 'Food & Dining Out',
-    kanji: '美食',
-    category: 'Food & Dining',
-    subtitle: 'Exploring Good Food & Hanging with Friends',
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuA2pdPd8CnVOnZYPBQsr47gzJPGBsD3Umny072KbSji2j8ByvSS5A2-4M5CKznNCanIim2LRBVzRaf_28DBhgqM1X1_fbkE3X7dghJAIkJb9tX9tr00QGf-THZVPfzovWMXnTtc0KxqMwgS1VytvsKGr5i21bjMvHx3rCqyCMRxI6qYe6EoxHRSKV8H68eVRi3jxO07zcRfBfovYmvVzqiFCBWzOxspiFqqJeStUOjb7KmxZ8gfXabqaA',
-      'https://pqowefuwzxcrfzmnubvo.supabase.co/storage/v1/object/public/portfolio-assets/hobbies/1789879579761-day_and_nigh_theme.png',
-    ],
-    whyDescription:
-      'I am a huge foodie who loves finding delicious new restaurants, trying authentic dishes, and catching up with friends over good meals. Good food and great company are the best ways to spend the weekend.',
-    metadata: [
-      { label: 'Favorite Eats', value: 'Ramen, Sushi, Dim Sum & Hotpot' },
-      { label: 'Vibe', value: 'Good Food & Great Conversations' },
-    ],
-    displayOrder: 5,
-  },
-];
 
 export interface SiteProfile {
   name: string;
@@ -270,38 +122,27 @@ export interface SiteData {
   refresh: () => Promise<void>;
 }
 
-/* ─── Defaults (empty when Supabase has no data) ──────────────── */
+/* ─── Initial Empty Profile ────────────────────────────────────────── */
 
-export const DEFAULT_EXPERIENCES: ExperienceRecord[] = [];
-
-export const DEFAULT_PROFILE: SiteProfile = {
-  name: 'Vincent Yuan',
-  headline: 'Crafting disciplined software systems with full-stack precision, algorithmic clarity, and Japanese wabi-sabi harmony.',
-  tagline: 'Computer Science student with Systems Architecture & AI concentrations based in Philadelphia. Bringing curiosity from game mechanics and logic puzzles into scalable backend architecture, intuitive user interfaces, and the user-first empathy of hospitality.',
-  email: 'vincentyuan1020@gmail.com',
-  github: 'https://github.com/VincentYuann',
-  linkedin: 'https://linkedin.com',
-  role: 'Software Engineer · Full-Stack & Systems',
-  capability_pillars: [
-    { label: 'SYSTEMS & ARCHITECTURE', items: 'TypeScript · Python · Docker · Linux', tags: ['TypeScript', 'Python', 'Docker', 'Linux'] },
-    { label: 'FULL-STACK & DATA', items: 'React · Next.js · Node.js · PostgreSQL · Tailwind CSS', tags: ['React', 'Next.js', 'Node.js', 'PostgreSQL', 'Tailwind CSS'] },
-    { label: 'AI & RUNTIMES', items: 'PyTorch · Local LLMs · REST APIs · Git', tags: ['PyTorch', 'Local LLMs', 'REST APIs', 'Git'] },
-  ],
-  hanko_card: DEFAULT_HANKO_CARD,
-  origin_story: DEFAULT_ORIGIN_STORY,
-  hobbies: DEFAULT_HOBBIES,
+export const INITIAL_PROFILE: SiteProfile = {
+  name: '',
+  headline: '',
+  tagline: '',
+  email: '',
+  github: '',
+  linkedin: '',
+  role: '',
+  capability_pillars: [],
 };
-
-export const DEFAULT_PILLARS: PhilosophyPillar[] = [];
 
 /* ─── Context ─────────────────────────────────────────────────────── */
 
 const SiteDataContext = createContext<SiteData>({
-  profile: DEFAULT_PROFILE,
-  pillars: DEFAULT_PILLARS,
+  profile: INITIAL_PROFILE,
+  pillars: [],
   projects: [],
   experiences: [],
-  hobbies: DEFAULT_HOBBIES,
+  hobbies: [],
   loading: true,
   refresh: async () => {},
 });
@@ -377,20 +218,13 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       try {
         const cached = localStorage.getItem('portfolio_profile_cache');
         if (cached) {
-          const parsed = JSON.parse(cached);
-          if (!parsed.origin_story) {
-            parsed.origin_story = DEFAULT_ORIGIN_STORY;
-          }
-          if (!parsed.hobbies || !Array.isArray(parsed.hobbies) || parsed.hobbies.length === 0) {
-            parsed.hobbies = DEFAULT_HOBBIES;
-          }
-          return parsed;
+          return JSON.parse(cached);
         }
       } catch (e) {
         console.warn('Profile cache parse error', e);
       }
     }
-    return DEFAULT_PROFILE;
+    return INITIAL_PROFILE;
   });
 
   const [pillars, setPillars] = useState<PhilosophyPillar[]>(() => {
@@ -402,7 +236,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Pillars cache parse error', e);
       }
     }
-    return DEFAULT_PILLARS;
+    return [];
   });
 
   const [projects, setProjects] = useState<Project[]>(() => {
@@ -444,45 +278,37 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       if (profileRes.data) {
         const row = profileRes.data;
-        const dbHanko = row.hanko_card && typeof row.hanko_card === 'object' ? row.hanko_card : null;
+        const dbHanko = row.hanko_card && typeof row.hanko_card === 'object' ? row.hanko_card : undefined;
         let localHankoOverride: HankoCardConfig | null = null;
         try {
           const cached = localStorage.getItem('portfolio_hanko_card_override');
           if (cached) localHankoOverride = JSON.parse(cached);
         } catch {}
 
-        const mappedHankoCard: HankoCardConfig = {
-          ...DEFAULT_HANKO_CARD,
-          ...(localHankoOverride || {}),
-          ...(dbHanko || {}),
-        };
+        const mappedHankoCard: HankoCardConfig | undefined = dbHanko || localHankoOverride || undefined;
 
-        const dbOrigin = row.origin_story && typeof row.origin_story === 'object' ? row.origin_story : null;
+        const dbOrigin = row.origin_story && typeof row.origin_story === 'object' ? row.origin_story : undefined;
         let localOriginOverride: OriginStoryConfig | null = null;
         try {
           const cachedOrigin = localStorage.getItem('portfolio_origin_story_override');
           if (cachedOrigin) localOriginOverride = JSON.parse(cachedOrigin);
         } catch {}
 
-        const mappedOriginStory: OriginStoryConfig = {
-          ...DEFAULT_ORIGIN_STORY,
-          ...(localOriginOverride || {}),
-          ...(dbOrigin || {}),
-        };
+        const mappedOriginStory: OriginStoryConfig | undefined = dbOrigin || localOriginOverride || undefined;
 
-        const dbHobbies = Array.isArray(row.hobbies) && row.hobbies.length > 0 ? row.hobbies : null;
+        const dbHobbies = Array.isArray(row.hobbies) ? row.hobbies : null;
         let localHobbiesOverride: HobbyItem[] | null = null;
         try {
           const cachedHobbies = localStorage.getItem('portfolio_hobbies_override');
           if (cachedHobbies) localHobbiesOverride = JSON.parse(cachedHobbies);
         } catch {}
 
-        // Cloud database always wins over stale browser cache; fallback to local cache then default
+        // Cloud database always wins over stale browser cache; fallback to local cache then empty array
         const mappedHobbies: HobbyItem[] =
           dbHobbies ||
-          (localHobbiesOverride && Array.isArray(localHobbiesOverride) && localHobbiesOverride.length > 0
+          (localHobbiesOverride && Array.isArray(localHobbiesOverride)
             ? localHobbiesOverride
-            : DEFAULT_HOBBIES);
+            : []);
 
         // Keep local cache in sync with cloud database
         if (dbHobbies) {
@@ -528,7 +354,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           localStorage.setItem('portfolio_profile_cache', JSON.stringify(mappedProfile));
         } catch {}
       } else {
-        setProfile(DEFAULT_PROFILE);
+        setProfile(INITIAL_PROFILE);
       }
 
       if (pillarsRes.data) {
@@ -678,7 +504,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         pillars,
         projects,
         experiences,
-        hobbies: profile.hobbies || DEFAULT_HOBBIES,
+        hobbies: profile.hobbies || [],
         loading,
         refresh: fetchAll,
       }}

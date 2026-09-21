@@ -4,7 +4,7 @@ import { BambooArt } from '../../common/BambooArt';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { HankoStamp } from '../../common/HankoStamp';
 import { TechTag } from '../../common/TechTag';
-import { useSiteData, parsePillarTags, DEFAULT_HANKO_CARD } from '../../../context/SiteDataContext';
+import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 
 interface HeroProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
@@ -15,14 +15,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
   const headline = profile?.headline || '';
   const tagline = profile?.tagline || '';
-  const displayName = profile?.name || '';
-  const displayRole = profile?.role || '';
+  const displayName = profile?.name || 'Vincent Yuan';
+  const displayRole = profile?.role || 'Software Engineer';
   const capabilityPillars =
     Array.isArray(profile?.capability_pillars) && profile.capability_pillars.length > 0
       ? profile.capability_pillars
       : [];
-  const hanko = profile?.hanko_card || DEFAULT_HANKO_CARD;
-  const hankoLines = (hanko.lines && hanko.lines.length === 3) ? hanko.lines : DEFAULT_HANKO_CARD.lines!;
+  const hanko = profile?.hanko_card;
+  const hankoLines = (hanko?.lines && Array.isArray(hanko.lines)) ? hanko.lines : [];
 
   return (
     <section id="home" className="relative w-full overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24">
@@ -198,17 +198,17 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               {/* Box Header */}
               <div className="w-full flex items-center justify-between pb-2 mb-3 sm:mb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
                 <span className="font-sans font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase text-[10px] tracking-wider">
-                  {hanko.headerLabel || 'SEAL / 認印'}
+                  {hanko?.headerLabel || 'SEAL / 認印'}
                 </span>
                 <span className="font-sans text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest text-[10px] font-mono">
-                  {hanko.locationArchive || 'PHILADELPHIA, PA'}
+                  {hanko?.locationArchive || 'PHILADELPHIA, PA'}
                 </span>
               </div>
 
               {/* Hanko Seal Mark with Breathing Pulse */}
               <div className="relative p-1.5 sm:p-2 flex flex-col items-center justify-center animate-seal-breathe z-10">
-                <HankoStamp char={hanko.stampCharacter || '原'} className="w-16 h-16 sm:w-20 sm:h-20 transition-transform duration-300 group-hover:scale-105" />
-                {hanko.statusBadge && (
+                <HankoStamp char={hanko?.stampCharacter || '原'} className="w-16 h-16 sm:w-20 sm:h-20 transition-transform duration-300 group-hover:scale-105" />
+                {hanko?.statusBadge && (
                   <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-light-surface/90 dark:bg-dark-surface-raised border border-light-border/80 dark:border-dark-border text-[10px] font-mono font-medium text-terracotta tracking-wider uppercase shadow-2xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-terracotta animate-pulse" />
                     <span>{hanko.statusBadge}</span>
@@ -226,33 +226,30 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               </div>
 
               {/* Vertical Tategaki Japanese Prose snippet */}
-              <div className="w-full mt-3 sm:mt-4 pt-3 sm:pt-4 bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70 rounded-md p-3 sm:p-4 flex flex-col items-center justify-center group-hover:border-terracotta/30 transition-colors duration-300 relative z-10">
-                <div className="flex items-center justify-center gap-5 sm:gap-6 w-full">
-                  <div
-                    title={hankoLines[0].tooltip || hankoLines[0].label}
-                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-85 min-h-[128px] sm:min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
-                  >
-                    {hankoLines[0].text}
+              {hankoLines.length > 0 && (
+                <div className="w-full mt-3 sm:mt-4 pt-3 sm:pt-4 bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70 rounded-md p-3 sm:p-4 flex flex-col items-center justify-center group-hover:border-terracotta/30 transition-colors duration-300 relative z-10">
+                  <div className="flex items-center justify-center gap-5 sm:gap-6 w-full">
+                    {hankoLines.map((line, lIdx) => (
+                      <div
+                        key={lIdx}
+                        title={line.tooltip || line.label}
+                        className={`writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] min-h-[128px] sm:min-h-[148px] leading-relaxed transition-all cursor-default whitespace-nowrap select-none ${
+                          lIdx === 1
+                            ? 'text-terracotta font-medium hover:scale-105'
+                            : 'text-light-ink-muted dark:text-dark-ink-muted opacity-80 hover:opacity-100'
+                        }`}
+                      >
+                        {line.text}
+                      </div>
+                    ))}
                   </div>
-                  <div
-                    title={hankoLines[1].tooltip || hankoLines[1].label}
-                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-terracotta font-medium min-h-[128px] sm:min-h-[148px] leading-relaxed hover:scale-105 transition-transform cursor-default whitespace-nowrap select-none"
-                  >
-                    {hankoLines[1].text}
-                  </div>
-                  <div
-                    title={hankoLines[2].tooltip || hankoLines[2].label}
-                    className="writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.25em] sm:tracking-[0.3em] text-light-ink-muted dark:text-dark-ink-muted opacity-70 min-h-[128px] sm:min-h-[148px] leading-relaxed hover:opacity-100 transition-opacity cursor-default whitespace-nowrap select-none"
-                  >
-                    {hankoLines[2].text}
+                  <div className="mt-2.5 pt-2 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[10px] font-mono tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle uppercase px-1">
+                    {hankoLines.map((line, lIdx) => (
+                      <span key={lIdx}>{line.label}</span>
+                    ))}
                   </div>
                 </div>
-                <div className="mt-2.5 pt-2 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[10px] font-mono tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle uppercase px-1">
-                  <span>{hankoLines[0].label}</span>
-                  <span>{hankoLines[1].label}</span>
-                  <span>{hankoLines[2].label}</span>
-                </div>
-            </div>
+              )}
           </div>
         </div>
       </div>

@@ -18,7 +18,6 @@ import {
   parsePillarTags,
   HankoCardConfig,
   HankoCardLine,
-  DEFAULT_HANKO_CARD,
 } from '../../../context/SiteDataContext';
 import { HankoStamp } from '../../common/HankoStamp';
 import { CornerBrackets } from '../../common/CornerBrackets';
@@ -82,7 +81,13 @@ const mapProfileToIntroData = (profile: any): IntroData => ({
     Array.isArray(profile?.capability_pillars)
       ? profile.capability_pillars
       : [],
-  hanko_card: profile?.hanko_card || DEFAULT_HANKO_CARD,
+  hanko_card: profile?.hanko_card || {
+    headerLabel: '',
+    locationArchive: '',
+    stampCharacter: '',
+    statusBadge: '',
+    lines: [],
+  },
 });
 
 export const IntroEditor: React.FC = () => {
@@ -161,7 +166,7 @@ export const IntroEditor: React.FC = () => {
     setData((prev) => ({
       ...prev,
       hanko_card: {
-        ...(prev.hanko_card || DEFAULT_HANKO_CARD),
+        ...(prev.hanko_card || {}),
         ...patch,
       },
     }));
@@ -170,13 +175,16 @@ export const IntroEditor: React.FC = () => {
   const updateHankoLine = (idx: number, patch: Partial<HankoCardLine>) => {
     notifyDirty();
     setData((prev) => {
-      const current = prev.hanko_card?.lines || DEFAULT_HANKO_CARD.lines!;
-      const nextLines = [...current] as [HankoCardLine, HankoCardLine, HankoCardLine];
+      const current = prev.hanko_card?.lines || [];
+      const nextLines = [...current];
+      while (nextLines.length <= idx) {
+        nextLines.push({ text: '', label: '', tooltip: '' });
+      }
       nextLines[idx] = { ...nextLines[idx], ...patch };
       return {
         ...prev,
         hanko_card: {
-          ...(prev.hanko_card || DEFAULT_HANKO_CARD),
+          ...(prev.hanko_card || {}),
           lines: nextLines,
         },
       };
@@ -233,7 +241,7 @@ export const IntroEditor: React.FC = () => {
 
   handleSaveRef.current = handleSave;
 
-  const hankoData = data.hanko_card || DEFAULT_HANKO_CARD;
+  const hankoData = data.hanko_card || { lines: [] };
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -626,7 +634,7 @@ export const IntroEditor: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {[0, 1, 2].map((idx) => {
                   const line =
-                    (hankoData.lines && hankoData.lines[idx]) || DEFAULT_HANKO_CARD.lines![idx];
+                    (hankoData.lines && hankoData.lines[idx]) || { text: '', label: '', tooltip: '' };
                   return (
                     <div
                       key={idx}

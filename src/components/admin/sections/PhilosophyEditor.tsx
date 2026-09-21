@@ -12,7 +12,6 @@ import {
   useSiteData,
   OriginStoryConfig,
   OriginMilestone,
-  DEFAULT_ORIGIN_STORY,
 } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
@@ -57,6 +56,18 @@ const newPillar = (pos: number): PillarEntry => ({
   description: '',
 });
 
+const createEmptyOriginStory = (): OriginStoryConfig => ({
+  badge: 'ORIGIN & TRAJECTORY · 原点と軌跡',
+  headline: '',
+  leadParagraph: '',
+  milestones: [
+    { era: 'PHASE 01', title: '', subtitle: '', tag: '', description: '' },
+    { era: 'PHASE 02', title: '', subtitle: '', tag: '', description: '' },
+    { era: 'PHASE 03', title: '', subtitle: '', tag: '', description: '' },
+    { era: 'PHASE 04', title: '', subtitle: '', tag: '', description: '' },
+  ],
+});
+
 export const PhilosophyEditor: React.FC = () => {
   const { pillars: contextPillars, profile: contextProfile, refresh } = useSiteData();
 
@@ -72,7 +83,7 @@ export const PhilosophyEditor: React.FC = () => {
 
   // Origin Trajectory state
   const [originData, setOriginData] = useState<OriginStoryConfig>(() => {
-    return contextProfile?.origin_story || DEFAULT_ORIGIN_STORY;
+    return contextProfile?.origin_story || createEmptyOriginStory();
   });
 
   // Pillars state
@@ -83,7 +94,7 @@ export const PhilosophyEditor: React.FC = () => {
   const [saveState, setSaveState] = useState<SaveState>('idle');
 
   const resetPhilosophy = useCallback(() => {
-    setOriginData(contextProfile?.origin_story || DEFAULT_ORIGIN_STORY);
+    setOriginData(contextProfile?.origin_story || createEmptyOriginStory());
     setPillars(mapPillarsFromContext(contextPillars));
   }, [contextProfile?.origin_story, contextPillars]);
 
@@ -107,16 +118,16 @@ export const PhilosophyEditor: React.FC = () => {
   const updateMilestone = (index: number, patch: Partial<OriginMilestone>) => {
     notifyDirty();
     setOriginData((prev) => {
-      const currentList = prev.milestones || DEFAULT_ORIGIN_STORY.milestones!;
+      const currentList = prev.milestones || [];
       const updated = currentList.map((m, idx) => (idx === index ? { ...m, ...patch } : m));
       return { ...prev, milestones: updated };
     });
   };
 
-  const resetOriginToDefault = () => {
+  const resetOriginToSaved = () => {
     notifyDirty();
-    setOriginData(DEFAULT_ORIGIN_STORY);
-    toast.info('Origin story reset to default draft. Click Save to persist.');
+    setOriginData(contextProfile?.origin_story || createEmptyOriginStory());
+    toast.info('Origin story reset to saved state.');
   };
 
   // Pillar updaters
@@ -227,7 +238,7 @@ export const PhilosophyEditor: React.FC = () => {
 
   handleSaveRef.current = handleSave;
 
-  const milestoneList = originData.milestones || DEFAULT_ORIGIN_STORY.milestones!;
+  const milestoneList = originData.milestones || [];
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -284,10 +295,10 @@ export const PhilosophyEditor: React.FC = () => {
                 type="button"
                 variant="ghost"
                 size="sm"
-                onClick={resetOriginToDefault}
+                onClick={resetOriginToSaved}
                 className="text-[11px] font-mono h-7 text-light-ink-subtle hover:text-terracotta cursor-pointer"
               >
-                <RotateCcw className="w-3 h-3 mr-1" /> Reset to Default Story
+                <RotateCcw className="w-3 h-3 mr-1" /> Reset to Saved
               </Button>
             </div>
 

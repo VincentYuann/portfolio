@@ -4,7 +4,7 @@ import { BambooArt } from '../../common/BambooArt';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
-import { useSiteData, DEFAULT_ORIGIN_STORY } from '../../../context/SiteDataContext';
+import { useSiteData } from '../../../context/SiteDataContext';
 
 const TRAJECTORY_THEMES = [
   {
@@ -95,13 +95,13 @@ const PILLAR_CONFIGS = [
 export const PhilosophyBento: React.FC = () => {
   const { pillars: rawPillars, profile } = useSiteData();
   const displayPillars = Array.isArray(rawPillars) ? rawPillars : [];
-  const originStory = profile?.origin_story || DEFAULT_ORIGIN_STORY;
+  const originStory = profile?.origin_story;
   const milestones =
-    originStory.milestones && originStory.milestones.length > 0
+    originStory?.milestones && Array.isArray(originStory.milestones)
       ? originStory.milestones
-      : DEFAULT_ORIGIN_STORY.milestones!;
+      : [];
 
-  if (displayPillars.length === 0 && (!originStory.milestones || originStory.milestones.length === 0)) {
+  if (displayPillars.length === 0 && milestones.length === 0) {
     return null;
   }
 
@@ -203,7 +203,7 @@ export const PhilosophyBento: React.FC = () => {
           {/* Card Top Sub-Header */}
           <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60 relative z-10">
             <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-              {originStory.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
+              {originStory?.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
             </span>
             <div className="flex items-center gap-1.5 font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider">
               <span>PHILADELPHIA, PA</span>
@@ -215,11 +215,13 @@ export const PhilosophyBento: React.FC = () => {
           {/* Headline & Lead Narrative */}
           <div className="max-w-3xl mb-6 relative z-10">
             <h3 className="font-serif text-xl sm:text-2xl text-light-ink dark:text-dark-ink font-medium tracking-tight">
-              {originStory.headline || 'From Logic Puzzles to Full-Stack Systems'}
+              {originStory?.headline || ''}
             </h3>
-            <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-light">
-              {originStory.leadParagraph || DEFAULT_ORIGIN_STORY.leadParagraph}
-            </p>
+            {originStory?.leadParagraph && (
+              <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-light">
+                {originStory.leadParagraph}
+              </p>
+            )}
           </div>
 
           {/* 4 Milestones Responsive Grid */}
