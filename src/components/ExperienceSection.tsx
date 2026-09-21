@@ -351,16 +351,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] hover:border-ochre/50 hover:bg-light-surface dark:hover:bg-[#1f2028]'
                     }`}
                   >
-                    {/* Celestial Ensō Orbital Circle: Placed at the top-left corner of the card frame */}
+                    {/* Celestial Ensō Orbital Circle: Placed at the top-left corner of the card frame (only on hover) */}
                     <EnsoOrbital
                       placement="top-left"
                       size={96}
-                      hoverOnly={!isCardActive}
-                      className={
-                        isCardActive
-                          ? '!opacity-100 !scale-100 transition-all duration-500'
-                          : 'opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500'
-                      }
+                      hoverOnly={true}
                     />
 
                     {/* Corner Hairline Brackets */}

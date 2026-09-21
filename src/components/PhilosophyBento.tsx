@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Compass, Feather, ShieldCheck } from 'lucide-react';
 import { BambooArt } from './BambooArt';
 import { EnsoOrbital } from './EnsoOrbital';
@@ -92,7 +92,6 @@ const PILLAR_CONFIGS = [
 
 export const PhilosophyBento: React.FC = () => {
   const { pillars: rawPillars, profile } = useSiteData();
-  const [hoveredTrajectory, setHoveredTrajectory] = useState<'parent' | number | null>(null);
   const displayPillars = Array.isArray(rawPillars) ? rawPillars : [];
   const originStory = profile?.origin_story || DEFAULT_ORIGIN_STORY;
   const milestones =
@@ -167,12 +166,12 @@ export const PhilosophyBento: React.FC = () => {
       {/* Main Philosophy Bento Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
-        <div className="mb-8 sm:mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80">
+        <div className="mb-10 sm:mb-12 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80">
           <div className="max-w-3xl">
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">04 //</span>
               <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                ORIGIN &amp; ARCHITECTURAL PHILOSOPHY
+                ORIGIN &amp; PHILOSOPHY · 原点と哲学
               </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
@@ -189,17 +188,8 @@ export const PhilosophyBento: React.FC = () => {
 
         {/* 04.1 Origin Trajectory Bento Box */}
         <div
-          onMouseEnter={() => setHoveredTrajectory('parent')}
-          onMouseLeave={() => setHoveredTrajectory(null)}
-          className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame group hover:border-terracotta/40 transition-colors duration-300"
+          className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame hover:border-terracotta/40 transition-colors duration-300"
         >
-          {/* Celestial Ensō Orbital Circle: blooms on top-left when hovering the bigger div outside small cards */}
-          <EnsoOrbital
-            placement="top-left"
-            size={128}
-            active={hoveredTrajectory === 'parent'}
-            interactive={false}
-          />
           <CornerBrackets size="md" />
 
           {/* Card Top Sub-Header */}
@@ -231,21 +221,13 @@ export const PhilosophyBento: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  onMouseEnter={(e) => {
-                    e.stopPropagation();
-                    setHoveredTrajectory(idx);
-                  }}
-                  onMouseLeave={(e) => {
-                    e.stopPropagation();
-                    setHoveredTrajectory('parent');
-                  }}
-                  className={`p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between ${tTheme.borderHover} ${tTheme.accentBar} ${tTheme.glow} transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm`}
+                  className={`group p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between ${tTheme.borderHover} ${tTheme.accentBar} ${tTheme.glow} transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm`}
                 >
-                  {/* Celestial Ensō Orbital Circle: blooms on top-left of this specific milestone card */}
+                  {/* Celestial Ensō Orbital Circle: blooms on top-left of this specific milestone card ONLY when hovered */}
                   <EnsoOrbital
                     placement="top-left"
                     size={88}
-                    active={hoveredTrajectory === idx}
+                    hoverOnly={true}
                     interactive={false}
                   />
                   <div>
