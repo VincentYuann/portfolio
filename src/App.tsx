@@ -14,6 +14,14 @@ import { supabase } from './lib/supabase';
 import { toast } from 'sonner';
 import { ThemedToaster } from './components/layout/ThemedToaster';
 
+import {
+  ProjectsPageSkeleton,
+  HobbiesPageSkeleton,
+  ResumePageSkeleton,
+  AdminStudioSkeleton,
+  LoginPageSkeleton,
+} from './components/common/Skeletons';
+
 // Route-level code-splitting for non-critical views (drastically reduces initial bundle size)
 const ProjectsPage = lazy(() => import('./components/sections/projects/ProjectsPage').then((m) => ({ default: m.ProjectsPage })));
 const ResumePage = lazy(() => import('./components/sections/resume/ResumePage').then((m) => ({ default: m.ResumePage })));
@@ -21,24 +29,39 @@ const HobbiesPage = lazy(() => import('./components/sections/hobbies/HobbiesPage
 const LoginPage = lazy(() => import('./components/sections/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
 const EditPage = lazy(() => import('./components/admin/AdminStudio').then((m) => ({ default: m.AdminStudio })));
 
-const RouteLoadingFallback: React.FC = () => (
-  <div
-    className="min-h-[70vh] flex flex-col items-center justify-center gap-4 text-light-ink-muted dark:text-dark-ink-muted animate-in fade-in duration-300"
-    role="status"
-    aria-live="polite"
-    aria-label="Loading view"
-  >
-    <div className="relative flex items-center justify-center">
-      <div className="w-10 h-10 rounded-full border border-terracotta/20 dark:border-terracotta/30 animate-ping absolute" />
-      <div className="w-7 h-7 rounded-full border-2 border-terracotta/30 border-t-terracotta animate-spin" />
-    </div>
-    <span className="font-mono text-xs uppercase tracking-widest text-light-ink-muted/80 dark:text-dark-ink-muted/80">
-      Loading · 読み込み中
-    </span>
-  </div>
-);
-
 export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies';
+
+const RouteLoadingFallback: React.FC<{ currentView?: ViewMode }> = ({ currentView }) => {
+  switch (currentView) {
+    case 'projects':
+      return <ProjectsPageSkeleton />;
+    case 'hobbies':
+      return <HobbiesPageSkeleton />;
+    case 'resume':
+      return <ResumePageSkeleton />;
+    case 'edit':
+      return <AdminStudioSkeleton />;
+    case 'login':
+      return <LoginPageSkeleton />;
+    default:
+      return (
+        <div
+          className="min-h-[70vh] flex flex-col items-center justify-center gap-4 text-light-ink-muted dark:text-dark-ink-muted animate-in fade-in duration-300"
+          role="status"
+          aria-live="polite"
+          aria-label="Loading view"
+        >
+          <div className="relative flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full border border-terracotta/20 dark:border-terracotta/30 animate-ping absolute" />
+            <div className="w-7 h-7 rounded-full border-2 border-terracotta/30 border-t-terracotta animate-spin" />
+          </div>
+          <span className="font-mono text-xs uppercase tracking-widest text-light-ink-muted/80 dark:text-dark-ink-muted/80">
+            Loading · 読み込み中
+          </span>
+        </div>
+      );
+  }
+};
 
 const getInitialView = (): ViewMode => {
   if (typeof window === 'undefined') return 'home';
@@ -293,7 +316,7 @@ export const App: React.FC = () => {
           />
 
           <main className="flex-1 w-full">
-            <Suspense fallback={<RouteLoadingFallback />}>
+            <Suspense fallback={<RouteLoadingFallback currentView={currentView} />}>
               {currentView === 'login' && (
                 <LoginPage onNavigate={handleNavigate} />
               )}
