@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { SiteDataProvider, useSiteData } from './context/SiteDataContext';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { SectionDivider } from './components/SectionDivider';
-import { ExperienceSection } from './components/ExperienceSection';
-import { ProjectsShowcase } from './components/ProjectsShowcase';
-import { PhilosophyBento } from './components/PhilosophyBento';
-import { HobbiesSection } from './components/HobbiesSection';
-import { ContactSection } from './components/ContactSection';
-import { Footer } from './components/Footer';
+import { Header } from './components/layout/Header';
+import { Hero } from './components/sections/hero/Hero';
+import { SectionDivider } from './components/common/SectionDivider';
+import { ExperienceSection } from './components/sections/experience/ExperienceSection';
+import { ProjectsShowcase } from './components/sections/projects/ProjectsShowcase';
+import { PhilosophyBento } from './components/sections/philosophy/PhilosophyBento';
+import { HobbiesSection } from './components/sections/hobbies/HobbiesSection';
+import { ContactSection } from './components/sections/contact/ContactSection';
+import { Footer } from './components/layout/Footer';
 import { supabase } from './lib/supabase';
 import { toast } from 'sonner';
-import { ThemedToaster } from './components/ThemedToaster';
+import { ThemedToaster } from './components/layout/ThemedToaster';
 
 // Route-level code-splitting for non-critical views (drastically reduces initial bundle size)
-const ProjectsPage = lazy(() => import('./components/ProjectsPage').then((m) => ({ default: m.ProjectsPage })));
-const ResumePage = lazy(() => import('./components/ResumePage').then((m) => ({ default: m.ResumePage })));
-const HobbiesPage = lazy(() => import('./components/HobbiesPage').then((m) => ({ default: m.HobbiesPage })));
-const LoginPage = lazy(() => import('./components/LoginPage').then((m) => ({ default: m.LoginPage })));
-const EditPage = lazy(() => import('./components/EditPage').then((m) => ({ default: m.EditPage })));
+const ProjectsPage = lazy(() => import('./components/sections/projects/ProjectsPage').then((m) => ({ default: m.ProjectsPage })));
+const ResumePage = lazy(() => import('./components/sections/resume/ResumePage').then((m) => ({ default: m.ResumePage })));
+const HobbiesPage = lazy(() => import('./components/sections/hobbies/HobbiesPage').then((m) => ({ default: m.HobbiesPage })));
+const LoginPage = lazy(() => import('./components/sections/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
+const EditPage = lazy(() => import('./components/admin/AdminStudio').then((m) => ({ default: m.AdminStudio })));
 
 const RouteLoadingFallback: React.FC = () => (
   <div

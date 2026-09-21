@@ -12,16 +12,73 @@ A modern, dynamic personal portfolio combining Japanese *Wabi-Sabi* aesthetics (
 
 ---
 
-## 🏛️ Features & Architecture
+## 🏛️ System Architecture & Data Flow
 
-- **Dual-Theme Design System**: Seamless switching between *Akari Day* (warm washi paper) and *Obsidian Night* (deep graphite canvas) with Japanese calligraphy accents and sumi-e bamboo margin art.
-- **Dynamic Supabase Backend**: All projects, experience timelines, hobbies, and profile configurations are stored in PostgreSQL with Row-Level Security (RLS) and real-time site synchronization.
-- **Projects Showcase & Catalog**: Tag-based search, featured project highlights, architecture modal inspectors, and dynamic live/GitHub links.
-- **Career Trajectory & Milestones**: Interactive chronology of engineering roles, progressive disclosure impact drawers, and domain badges.
-- **Hobbies & Pursuits**: Multi-image photo galleries with lightbox zoom, category filter pills, and compact metadata badges.
-- **Curriculum Vitae & LaTeX Studio**: S3-backed PDF resume streaming alongside an interactive, live-editable LaTeX source viewer.
-- **Admin CMS Editor (`#edit`)**: Full in-browser management suite with dirty state tracking, drag-and-drop reordering, storage uploads, and `Ctrl+S` quick save.
-- **Modular DRY Architecture**: Centralized reusable components (`SectionHeading`, `StatusBadge`, `HobbyCard`, `MarginBambooFlanks`, `useAdminDirty`).
+The application is structured as a reactive Single Page Application (SPA) powered by React 18, Vite, and Supabase. Public visitors enjoy fast, cached reads, while verified admin sessions enable live in-browser CMS modifications.
+
+```mermaid
+graph TD
+    subgraph Client ["Frontend Client (React 18 + Vite)"]
+        UI["UI Layer<br/>(Layout, Sections, Common Widgets)"]
+        Context["SiteDataContext<br/>(Global Cache, Sync & Fallbacks)"]
+        Admin["Admin CMS Studio<br/>(Live Editors, Dirty Tracker)"]
+    end
+
+    subgraph Supabase ["Supabase Backend (Cloud Infrastructure)"]
+        Auth["Supabase Auth<br/>(GitHub OAuth + JWT Validation)"]
+        DB["PostgreSQL Database<br/>(Tables with Row Level Security)"]
+        Storage["Supabase Storage S3<br/>(portfolio-assets Bucket)"]
+    end
+
+    UI --> Context
+    Admin -->|CRUD Mutations & Sync| Context
+    Context -->|Public Anon Reads| DB
+    Admin -->|Verify Admin JWT| Auth
+    Auth -->|Admin Claims Guard| DB
+    Admin -->|Direct Image/PDF Upload| Storage
+    UI -->|Stream PDF & Optimized Images| Storage
+```
+
+### 🔄 Frontend & Backend Interactions
+
+1. **Public Reads & Resilient Fallbacks**:
+   - The frontend queries Supabase PostgreSQL tables (`projects`, `experience`, `profile`, `philosophy_pillars`) using the anonymous public client key.
+   - If offline or experiencing network delays, `SiteDataContext` seamlessly falls back to bundled schemas and `localStorage` caching to guarantee zero visual interruption.
+
+2. **Authenticated Admin Operations**:
+   - The Admin Studio (`#edit`) authenticates via GitHub OAuth.
+   - PostgreSQL Row Level Security (RLS) policies cryptographically verify the JWT claims against the administrator's designated email address before granting write permissions (`INSERT`, `UPDATE`, `DELETE`).
+
+3. **Storage & Assets Management**:
+   - Resume PDF documents and hobby photo galleries are uploaded directly to the S3-backed Supabase `portfolio-assets` bucket with strict content-type validations and size constraints.
+   - The client streams assets with automatic error-fallback handlers (`handleImageError`) to ensure robust media rendering.
+
+---
+
+## 📂 Component & Code Organization
+
+The codebase cleanly separates **universal shell/layout elements**, **reusable visual widgets**, **atomic UI primitives**, and **domain-specific feature sections**:
+
+```
+src/
+├── components/
+│   ├── layout/            # Universal Shell (Header, Footer, Toast notifications)
+│   ├── common/            # Shared Wabi-Sabi elements (EnsoOrbital, SectionHeading, StatusBadge, etc.)
+│   ├── ui/                # Headless UI primitives (Button, Dialog, Badge, Input, Tabs, etc.)
+│   ├── sections/          # Domain-specific feature modules
+│   │   ├── hero/          # Identity banner & Hanko card
+│   │   ├── projects/      # Projects showcase, catalog page & architecture modal
+│   │   ├── experience/    # Career trajectory milestones & timeline
+│   │   ├── philosophy/    # Architectural pillars & engineering craft bento
+│   │   ├── hobbies/       # Photo gallery archive, filter pills & hobby cards
+│   │   ├── contact/       # Contact form & correspondence
+│   │   ├── resume/        # S3 PDF stream viewer & live LaTeX editor
+│   │   └── auth/          # Admin authentication modal
+│   └── admin/             # Isolated Admin CMS Studio & editor sections
+├── context/               # SiteDataContext & Supabase real-time synchronization
+├── lib/                   # Supabase client, constants, and helper utilities
+└── data/                  # TypeScript interfaces and fallback datasets
+```
 
 ---
 
@@ -29,7 +86,7 @@ A modern, dynamic personal portfolio combining Japanese *Wabi-Sabi* aesthetics (
 
 | Category | Technology |
 | :--- | :--- |
-| **Frontend** | React 18, TypeScript, Tailwind CSS, Vite 6, Lucide Icons, Sonner |
+| **Frontend** | React 18, TypeScript, Tailwind CSS, Vite 6, Lucide Icons, Sonner, Yet-Another-React-Lightbox |
 | **Backend & Auth** | Supabase (PostgreSQL, Row Level Security, GitHub OAuth) |
 | **Storage & Media** | Supabase Storage (S3-compatible bucket for images & PDF CVs) |
 | **Deployment** | GitHub Pages with GitHub Actions CI/CD |
