@@ -1,10 +1,9 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { ArrowLeft, Search, ExternalLink, Github, Layers, Calendar } from 'lucide-react';
-import { Project } from '../../../data/projects';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
-import { useSiteData } from '../../../context/SiteDataContext';
+import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { StatusBadge } from '../../common/StatusBadge';
 import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
 import { handleImageError } from '../../../lib/constants';

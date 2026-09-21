@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { Project } from '../data/projects';
 
 /* ─── Types ───────────────────────────────────────────────────────── */
 
@@ -90,6 +89,32 @@ export interface PhilosophyPillar {
   title: string;
   tag: string;
   description: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  kanji: string;
+  category?: string;
+  badge?: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  tags: string[];
+  metrics?: { label: string; value: string }[];
+  overview: string;
+  bullets?: string[];
+  startDate?: string;
+  endDate?: string;
+  isActive?: boolean;
+  statusLabel?: string;
+  links: {
+    github?: string;
+    live?: string;
+    caseStudyText?: string;
+  };
+  isFeatured?: boolean;
+  displayOrder?: number;
 }
 
 export interface ExperienceRecord {

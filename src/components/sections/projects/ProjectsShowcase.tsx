@@ -1,12 +1,11 @@
 import React, { useState, Suspense, lazy } from 'react';
-import { Project } from '../../../data/projects';
 import { ArrowRight, Layers, Github, ExternalLink, Calendar } from 'lucide-react';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { Badge } from '../../ui/badge';
 import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
-import { useSiteData } from '../../../context/SiteDataContext';
+import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { MarginBambooFlanks } from '../../common/MarginBambooFlanks';
 import { SectionHeading } from '../../common/SectionHeading';
 import { StatusBadge } from '../../common/StatusBadge';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Project } from '../../../data/projects';
+import { Project } from '../../../context/SiteDataContext';
 import { ExternalLink, Github, ListChecks, Layers, Calendar } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';

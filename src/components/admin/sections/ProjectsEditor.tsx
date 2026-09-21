@@ -6,8 +6,7 @@ import {
   Calendar,
 } from 'lucide-react';
 import { supabase, formatErrorMessage, uploadProjectImage, withTimeout } from '../../../lib/supabase';
-import { useSiteData } from '../../../context/SiteDataContext';
-import { Project } from '../../../data/projects';
+import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { EditorCardShell } from '../shared/EditorCardShell';
 import { TechTagSelector } from '../shared/TechTagSelector';
