@@ -104,10 +104,12 @@ export const App: React.FC = () => {
   const isDevAdmin = typeof window !== 'undefined' && window.sessionStorage?.getItem('dev_admin') === 'true';
   const [currentView, setCurrentView] = useState<ViewMode>(getInitialView);
   const [isAdmin, setIsAdmin] = useState(isDevAdmin);
+  const [isVisitor, setIsVisitor] = useState(false);
   const [authReady, setAuthReady] = useState(false);
 
   // Stable refs so hash routing effect never needs to re-run on state changes
   const isAdminRef = useRef(isDevAdmin);
+  const isVisitorRef = useRef(false);
   const authReadyRef = useRef(false);
   const setViewRef = useRef(setCurrentView);
   setViewRef.current = setCurrentView;
@@ -143,8 +145,11 @@ export const App: React.FC = () => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       const isOwner = isOwnerSession(session);
+      const isVisitorUser = Boolean(session?.user && !isOwner);
       isAdminRef.current = isOwner;
+      isVisitorRef.current = isVisitorUser;
       setIsAdmin(isOwner);
+      setIsVisitor(isVisitorUser);
       authReadyRef.current = true;
       setAuthReady(true);
 
@@ -154,8 +159,14 @@ export const App: React.FC = () => {
           if (isOwner) {
             setViewRef.current('edit');
           } else {
-            setViewRef.current('home');
-            window.history.replaceState(null, '', '#home');
+            if (isVisitorUser) {
+              toast.info('Visitor Access Only', {
+                description: "You're logged in as a visitor, not an admin. You can only view projects.",
+                duration: 5000,
+              });
+            }
+            setViewRef.current('projects');
+            window.history.replaceState(null, '', '#all-projects');
           }
         }
       } else if (event === 'SIGNED_IN') {
@@ -168,21 +179,26 @@ export const App: React.FC = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
         } else {
-          // Unauthorized user logged in: revoke and reject
-          supabase?.auth.signOut();
-          if (window.location.hash.toLowerCase() === '#edit') {
-            setViewRef.current('home');
-            window.history.replaceState(null, '', '#home');
-          }
-          toast.error('Access Denied: Only the portfolio owner is authorized to access the edit dashboard.');
+          // Logged in as a visitor (non-admin)
+          toast.info('Logged in as Visitor', {
+            description: "You're logged in as a visitor, not an admin. You can only view projects.",
+            duration: 6000,
+          });
+          // Redirect from login or edit view to projects
+          setViewRef.current('projects');
+          window.history.replaceState(null, '', '#all-projects');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } else if (event === 'TOKEN_REFRESHED') {
-        // Token refreshed in background: update admin flags without interfering with active view
         isAdminRef.current = isOwner;
+        isVisitorRef.current = isVisitorUser;
         setIsAdmin(isOwner);
+        setIsVisitor(isVisitorUser);
       } else if (event === 'SIGNED_OUT') {
         isAdminRef.current = false;
+        isVisitorRef.current = false;
         setIsAdmin(false);
+        setIsVisitor(false);
         setViewRef.current((prev) => {
           if (prev === 'edit') {
             window.history.replaceState(null, '', '#home');
@@ -223,9 +239,12 @@ export const App: React.FC = () => {
           setViewRef.current('edit');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (authReadyRef.current) {
-          // Only boot to home if auth check has finished and user is not admin
-          setViewRef.current('home');
-          window.history.replaceState(null, '', '#home');
+          toast.warning('Visitor Access Only', {
+            description: "You're logged in as a visitor, not an admin. You can only view projects.",
+            duration: 5000,
+          });
+          setViewRef.current('projects');
+          window.history.replaceState(null, '', '#all-projects');
         } else {
           // Auth is still hydrating: keep 'edit' view and let auth listener decide
           setViewRef.current('edit');
@@ -242,8 +261,15 @@ export const App: React.FC = () => {
   }, []); // ← empty deps: no re-runs from state changes
 
   const handleNavigate = (view: ViewMode, sectionId?: string) => {
-    // Guard: edit is only accessible when admin (or while auth check is in flight)
-    if (view === 'edit' && authReadyRef.current && !isAdminRef.current) return;
+    // Guard: edit is only accessible when admin
+    if (view === 'edit' && authReadyRef.current && !isAdminRef.current) {
+      toast.warning('Visitor Access Only', {
+        description: "You're logged in as a visitor, not an admin. You can only view projects.",
+        duration: 5000,
+      });
+      handleNavigate('projects');
+      return;
+    }
 
     setCurrentView(view);
 
@@ -298,13 +324,14 @@ export const App: React.FC = () => {
             onNavigate={handleNavigate}
             onOpenContact={() => handleNavigate('home', 'contact')}
             isAdmin={isAdmin}
+            isVisitor={isVisitor}
             onLogout={handleLogout}
           />
 
           <main className="flex-1 w-full">
             <Suspense fallback={<RouteLoadingFallback currentView={currentView} />}>
               {currentView === 'login' && (
-                <LoginPage onNavigate={handleNavigate} />
+                <LoginPage onNavigate={handleNavigate} isVisitor={isVisitor} onLogout={handleLogout} />
               )}
 
               <div key={currentView} className="animate-view-enter w-full">

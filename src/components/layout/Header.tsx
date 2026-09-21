@@ -10,6 +10,7 @@ interface HeaderProps {
   currentView?: ViewMode;
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
   isAdmin?: boolean;
+  isVisitor?: boolean;
   onLogout?: () => void;
 }
 
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
   currentView = 'home',
   onNavigate,
   isAdmin = false,
+  isVisitor = false,
   onLogout,
 }) => {
   const { theme, setTheme } = useTheme();
@@ -245,7 +247,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Desktop Quick Dropdown (when >= xl) */}
             {desktopDropdownOpen && (
-              <div className="hidden xl:block absolute right-0 top-full mt-2 w-44 bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] rounded-xl shadow-xl overflow-hidden py-1.5 z-50 animate-in fade-in-50 zoom-in-95 duration-150">
+              <div className="hidden xl:block absolute right-0 top-full mt-2 w-48 bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] rounded-xl shadow-xl overflow-hidden py-1.5 z-50 animate-in fade-in-50 zoom-in-95 duration-150">
                 {isAdmin ? (
                   <>
                     <button
@@ -264,6 +266,31 @@ export const Header: React.FC<HeaderProps> = ({
                         onLogout?.();
                       }}
                       className="w-full text-left px-4 py-2.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-red-400 transition-colors cursor-pointer"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : isVisitor ? (
+                  <>
+                    <div className="px-4 py-1.5 text-[10px] font-mono text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-wider">
+                      Visitor · Read-Only
+                    </div>
+                    <button
+                      onClick={() => {
+                        setDesktopDropdownOpen(false);
+                        onNavigate?.('projects');
+                      }}
+                      className="w-full text-left px-4 py-2 font-sans text-xs text-light-ink dark:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-terracotta transition-colors cursor-pointer"
+                    >
+                      View Projects
+                    </button>
+                    <div className="mx-3 my-1 border-t border-light-border dark:border-dark-border" />
+                    <button
+                      onClick={() => {
+                        setDesktopDropdownOpen(false);
+                        onLogout?.();
+                      }}
+                      className="w-full text-left px-4 py-2 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-red-400 transition-colors cursor-pointer"
                     >
                       Logout
                     </button>
@@ -346,6 +373,21 @@ export const Header: React.FC<HeaderProps> = ({
                   >
                     Edit Portfolio
                   </button>
+                  <button
+                    onClick={() => {
+                      setMobileDrawerOpen(false);
+                      onLogout?.();
+                    }}
+                    className="py-1 text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors font-sans"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : isVisitor ? (
+                <div className="flex items-center justify-between pt-1 px-1 text-xs">
+                  <span className="py-1 text-amber-600 dark:text-amber-400 text-[11px] font-mono font-medium">
+                    Visitor (View Only)
+                  </span>
                   <button
                     onClick={() => {
                       setMobileDrawerOpen(false);
