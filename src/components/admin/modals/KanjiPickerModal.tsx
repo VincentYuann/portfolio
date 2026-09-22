@@ -96,8 +96,16 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
         {/* Currently Selected Banner */}
         <div className="px-4 py-2.5 sm:py-3 bg-terracotta/5 dark:bg-terracotta/10 border-b border-light-border/60 dark:border-dark-border/60 flex items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-terracotta/40 bg-light-surface dark:bg-dark-surface-card flex items-center justify-center font-serif text-xl sm:text-2xl font-black text-terracotta select-none shadow-2xs shrink-0">
-              {selectedChar || '-'}
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg border border-terracotta/40 bg-light-surface dark:bg-dark-surface-card flex items-center justify-center font-serif font-black text-terracotta select-none shadow-2xs shrink-0 overflow-hidden p-1">
+              <span className={`text-center leading-tight tracking-tight flex items-center justify-center ${
+                (selectedChar?.length || 0) > 2
+                  ? 'text-[10px] tracking-tighter'
+                  : (selectedChar?.length || 0) === 2
+                  ? 'text-xs sm:text-sm font-bold'
+                  : 'text-xl sm:text-2xl'
+              }`}>
+                {selectedChar || '-'}
+              </span>
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">

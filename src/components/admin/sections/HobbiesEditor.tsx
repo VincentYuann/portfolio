@@ -367,9 +367,17 @@ export const HobbiesEditor: React.FC = () => {
               title={hobby.title || 'Untitled Hobby'}
               subtitle={hobby.subtitle}
               emblem={
-                <span className="font-serif font-bold text-terracotta text-base leading-none">
-                  {hobby.kanji || '好'}
-                </span>
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 bg-terracotta/5 dark:bg-terracotta/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
+                  <span className={`font-serif font-bold text-terracotta leading-tight text-center ${
+                    (hobby.kanji?.length || 0) > 2
+                      ? 'text-[9px] tracking-tighter'
+                      : (hobby.kanji?.length || 0) === 2
+                      ? 'text-[11px] sm:text-xs tracking-tight'
+                      : 'text-sm sm:text-base'
+                  }`}>
+                    {hobby.kanji || '好'}
+                  </span>
+                </div>
               }
               badge={
                 <div className="flex items-center gap-1.5">

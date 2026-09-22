@@ -96,12 +96,18 @@ export const PhilosophyBento: React.FC = () => {
   const { pillars: rawPillars, profile } = useSiteData();
   const displayPillars = Array.isArray(rawPillars) ? rawPillars : [];
   const originStory = profile?.origin_story;
-  const milestones =
+  const rawMilestones =
     originStory?.milestones && Array.isArray(originStory.milestones)
       ? originStory.milestones
       : [];
+  const milestones = rawMilestones.filter(
+    (m) => Boolean(m.title?.trim() || m.description?.trim() || m.subtitle?.trim())
+  );
+  const hasOriginStory = Boolean(
+    originStory && (originStory.headline?.trim() || originStory.leadParagraph?.trim() || milestones.length > 0)
+  );
 
-  if (displayPillars.length === 0 && milestones.length === 0) {
+  if (displayPillars.length === 0 && !hasOriginStory) {
     return null;
   }
 
@@ -195,79 +201,91 @@ export const PhilosophyBento: React.FC = () => {
         </div>
 
         {/* 04.1 Origin Trajectory Bento Box */}
-        <div
-          className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame hover:border-terracotta/40 transition-colors duration-300"
-        >
-          <CornerBrackets size="md" />
+        {hasOriginStory && (
+          <div
+            className="mb-10 sm:mb-12 bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-sm border border-light-border dark:border-dark-border rounded-xl p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame hover:border-terracotta/40 transition-colors duration-300"
+          >
+            <CornerBrackets size="md" />
 
-          {/* Card Top Sub-Header */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60 relative z-10">
-            <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-              {originStory?.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
-            </span>
-            <div className="flex items-center gap-1.5 font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider">
-              <span>PHILADELPHIA, PA</span>
-              <span className="opacity-40">·</span>
-              <span className="text-terracotta font-medium">SWE · SYSTEMS · FULL-STACK</span>
+            {/* Card Top Sub-Header */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60 relative z-10">
+              <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                {originStory?.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
+              </span>
+              <div className="flex items-center gap-1.5 font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider">
+                <span>PHILADELPHIA, PA</span>
+                <span className="opacity-40">·</span>
+                <span className="text-terracotta font-medium">SWE · SYSTEMS · FULL-STACK</span>
+              </div>
             </div>
-          </div>
 
-          {/* Headline & Lead Narrative */}
-          <div className="max-w-3xl mb-6 relative z-10">
-            <h3 className="font-serif text-xl sm:text-2xl text-light-ink dark:text-dark-ink font-medium tracking-tight">
-              {originStory?.headline || ''}
-            </h3>
-            {originStory?.leadParagraph && (
-              <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-light">
-                {originStory.leadParagraph}
-              </p>
+            {/* Headline & Lead Narrative */}
+            {(originStory?.headline || originStory?.leadParagraph) && (
+              <div className="max-w-3xl mb-6 relative z-10">
+                {originStory?.headline && (
+                  <h3 className="font-serif text-xl sm:text-2xl text-light-ink dark:text-dark-ink font-medium tracking-tight">
+                    {originStory.headline}
+                  </h3>
+                )}
+                {originStory?.leadParagraph && (
+                  <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-light">
+                    {originStory.leadParagraph}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Trajectory Milestones Responsive Grid */}
+            {milestones.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 relative z-10">
+                {milestones.map((m, idx) => {
+                  const tTheme = TRAJECTORY_THEMES[idx % TRAJECTORY_THEMES.length];
+                  return (
+                    <div
+                      key={idx}
+                      className={`group p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between ${tTheme.borderHover} ${tTheme.accentBar} ${tTheme.glow} transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm`}
+                    >
+                      {/* Celestial Ensō Orbital Circle */}
+                      <EnsoOrbital
+                        placement="top-left"
+                        size={88}
+                        hoverOnly={true}
+                        interactive={false}
+                      />
+                      <div>
+                        <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
+                          <span className={`font-mono text-[10px] font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
+                            {m.era || `PHASE 0${idx + 1}`}
+                          </span>
+                          {m.tag && (
+                            <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${tTheme.tagBg} tracking-wider uppercase`}>
+                              {m.tag}
+                            </span>
+                          )}
+                        </div>
+                        {m.title && (
+                          <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors relative z-10">
+                            {m.title}
+                          </h4>
+                        )}
+                        {m.subtitle && (
+                          <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-normal relative z-10">
+                            {m.subtitle}
+                          </p>
+                        )}
+                        {m.description && (
+                          <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mt-2.5 relative z-10">
+                            {m.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </div>
-
-          {/* 4 Milestones Responsive Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 relative z-10">
-            {milestones.map((m, idx) => {
-              const tTheme = TRAJECTORY_THEMES[idx % TRAJECTORY_THEMES.length];
-              return (
-                <div
-                  key={idx}
-                  className={`group p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between ${tTheme.borderHover} ${tTheme.accentBar} ${tTheme.glow} transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm`}
-                >
-                  {/* Celestial Ensō Orbital Circle: blooms on top-left of this specific milestone card ONLY when hovered */}
-                  <EnsoOrbital
-                    placement="top-left"
-                    size={88}
-                    hoverOnly={true}
-                    interactive={false}
-                  />
-                  <div>
-                    <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
-                      <span className={`font-mono text-[10px] font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
-                        {m.era || `PHASE 0${idx + 1}`}
-                      </span>
-                      {m.tag && (
-                        <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${tTheme.tagBg} tracking-wider uppercase`}>
-                          {m.tag}
-                        </span>
-                      )}
-                    </div>
-                    <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors relative z-10">
-                      {m.title}
-                    </h4>
-                    {m.subtitle && (
-                      <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-normal relative z-10">
-                        {m.subtitle}
-                      </p>
-                    )}
-                    <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mt-2.5 relative z-10">
-                      {m.description}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        )}
 
         {/* 04.2 Core Architectural Pillars Subsection Divider */}
         {displayPillars.length > 0 && (

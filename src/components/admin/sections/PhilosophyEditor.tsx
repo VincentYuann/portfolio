@@ -5,7 +5,6 @@ import {
   ChevronRight,
   Compass,
   ScrollText,
-  RotateCcw,
 } from 'lucide-react';
 import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
 import {
@@ -21,7 +20,6 @@ import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
 import { Badge } from '../../ui/badge';
-import { Button } from '../../ui/button';
 import { toast } from 'sonner';
 
 interface PillarEntry {
@@ -122,12 +120,6 @@ export const PhilosophyEditor: React.FC = () => {
       const updated = currentList.map((m, idx) => (idx === index ? { ...m, ...patch } : m));
       return { ...prev, milestones: updated };
     });
-  };
-
-  const resetOriginToSaved = () => {
-    notifyDirty();
-    setOriginData(contextProfile?.origin_story || createEmptyOriginStory());
-    toast.info('Origin story reset to saved state.');
   };
 
   // Pillar updaters
@@ -271,7 +263,7 @@ export const PhilosophyEditor: React.FC = () => {
                 Origin Trajectory &amp; Journey (原点と軌跡)
               </h3>
               <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
-                4-phase engineering journey from logic puzzles and game loops to distributed systems and hospitality empathy.
+                Configurable trajectory milestones and narrative engineering journey.
               </p>
             </div>
           </div>
@@ -286,20 +278,11 @@ export const PhilosophyEditor: React.FC = () => {
 
         {!collapsed.origin && (
           <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-6 border-t border-light-border/60 dark:border-dark-border/60">
-            {/* Header & Reset row */}
+            {/* Header row */}
             <div className="flex items-center justify-between flex-wrap gap-2">
               <span className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted">
                 Narrative Header &amp; Lead
               </span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={resetOriginToSaved}
-                className="text-[11px] font-mono h-7 text-light-ink-subtle hover:text-terracotta cursor-pointer"
-              >
-                <RotateCcw className="w-3 h-3 mr-1" /> Reset to Saved
-              </Button>
             </div>
 
             {/* Headline */}
@@ -422,33 +405,39 @@ export const PhilosophyEditor: React.FC = () => {
         {!collapsed.pillars && (
           <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-6 border-t border-light-border/60 dark:border-dark-border/60">
             {/* Pillars Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-start">
               {pillars.map((pillar) => (
                 <div
                   key={pillar.position}
-                  className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] p-5 sm:p-6 space-y-4 shadow-xs classical-card-frame flex flex-col justify-between overflow-hidden"
+                  className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] p-5 sm:p-6 shadow-xs classical-card-frame group hover:border-terracotta/40 transition-colors"
                 >
                   <CornerBrackets size="sm" />
 
-                  <div className="space-y-4.5">
+                  <div className="space-y-4">
                     {/* Header Pill & Delete */}
-                    <div className="flex items-center justify-between">
-                      <Badge variant="terracotta" className="font-mono text-xs px-2.5 py-0.5 font-semibold">
-                        PILLAR 0{pillar.position}
-                      </Badge>
+                    <div className="flex items-center justify-between pb-2.5 border-b border-light-border/60 dark:border-dark-border/60">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="terracotta" className="font-mono text-xs px-2.5 py-0.5 font-semibold">
+                          PILLAR 0{pillar.position}
+                        </Badge>
+                        <span className="font-mono text-[10px] text-light-ink-subtle uppercase tracking-wider">
+                          CORE TENET
+                        </span>
+                      </div>
                       {pillars.length > 1 && (
                         <button
                           type="button"
                           onClick={() => deletePillar(pillar.position)}
                           className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
                           title="Delete pillar"
+                          aria-label={`Delete Pillar 0${pillar.position}`}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       )}
                     </div>
 
-                    {/* Universal Emblem Kanji Selector */}
+                    {/* Universal Emblem Kanji Selector (Embedded Mode) */}
                     <EmblemKanjiSelector
                       kanji={pillar.kanji}
                       kanjiSubtitle={pillar.romaji}
@@ -457,12 +446,17 @@ export const PhilosophyEditor: React.FC = () => {
                       }
                       onKanjiSubtitleChange={(romaji) => updatePillar(pillar.position, { romaji })}
                       showLogoOption={false}
-                      label="Kanji Concept Character"
+                      variant="embedded"
+                      label="Kanji Concept & Reading"
                     />
 
                     {/* Title & Tag */}
                     <div>
-                      <Label htmlFor={`pillar-${pillar.position}-title`} required>
+                      <Label
+                        htmlFor={`pillar-${pillar.position}-title`}
+                        className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
+                        required
+                      >
                         Pillar Title
                       </Label>
                       <Input
@@ -470,12 +464,15 @@ export const PhilosophyEditor: React.FC = () => {
                         value={pillar.title}
                         onChange={(e) => updatePillar(pillar.position, { title: e.target.value })}
                         placeholder="e.g. Negative Space & Intentionality"
-                        className="mt-1 font-serif text-sm font-medium"
+                        className="font-serif text-sm font-medium h-9"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor={`pillar-${pillar.position}-tag`} className="text-xs font-medium">
+                      <Label
+                        htmlFor={`pillar-${pillar.position}-tag`}
+                        className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
+                      >
                         Category Tag
                       </Label>
                       <Input
@@ -483,21 +480,25 @@ export const PhilosophyEditor: React.FC = () => {
                         value={pillar.tag}
                         onChange={(e) => updatePillar(pillar.position, { tag: e.target.value })}
                         placeholder="e.g. ARCHITECTURE · SPATIAL HARMONY"
-                        className="mt-1 text-xs font-mono uppercase"
+                        className="text-xs font-mono uppercase h-8"
                       />
                     </div>
 
+                    {/* Philosophical Narrative */}
                     <div>
-                      <Label htmlFor={`pillar-${pillar.position}-desc`} className="text-xs font-medium">
+                      <Label
+                        htmlFor={`pillar-${pillar.position}-desc`}
+                        className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
+                      >
                         Philosophical Narrative
                       </Label>
                       <Textarea
                         id={`pillar-${pillar.position}-desc`}
-                        rows={5}
+                        rows={6}
                         value={pillar.description}
                         onChange={(e) => updatePillar(pillar.position, { description: e.target.value })}
                         placeholder="Explain how this Japanese aesthetic principle informs your engineering and software craft…"
-                        className="mt-1 text-xs leading-relaxed min-h-[96px]"
+                        className="text-xs leading-relaxed font-light min-h-[140px] resize-y"
                       />
                     </div>
                   </div>

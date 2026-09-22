@@ -10,6 +10,7 @@ import {
   ScrollText,
   ChevronDown,
   ChevronRight,
+  BookOpen,
 } from 'lucide-react';
 import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
 import {
@@ -20,6 +21,7 @@ import {
   HankoCardLine,
 } from '../../../context/SiteDataContext';
 import { HankoStamp } from '../../common/HankoStamp';
+import { KanjiPickerModal } from '../modals/KanjiPickerModal';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { TechTagSelector } from '../shared/TechTagSelector';
@@ -101,6 +103,7 @@ export const IntroEditor: React.FC = () => {
     domains: true,
     hanko: true,
   });
+  const [kanjiModalOpen, setKanjiModalOpen] = useState(false);
 
   const toggle = (section: string) => {
     setCollapsed((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -593,17 +596,47 @@ export const IntroEditor: React.FC = () => {
               </div>
             </div>
 
-            {/* Live Status / Availability Pill */}
-            <div>
-              <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                Live Status / Availability Pill (Optional)
-              </Label>
-              <Input
-                value={hankoData.statusBadge || ''}
-                onChange={(e) => updateHanko({ statusBadge: e.target.value })}
-                placeholder="e.g. AVAILABLE FOR WORK or EST. 2021 · FULL-STACK"
-                className="font-mono uppercase text-xs h-8"
-              />
+            {/* Stamp Character & Live Status row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                  Stamp Seal Character / Kanji (認印)
+                </Label>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+                    <HankoStamp char={hankoData.stampCharacter || '原'} className="w-5 h-5" />
+                  </div>
+                  <Input
+                    value={hankoData.stampCharacter || ''}
+                    onChange={(e) => updateHanko({ stampCharacter: e.target.value })}
+                    placeholder="原 (or 鑑賞)"
+                    maxLength={4}
+                    className="font-serif text-xs h-8 flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setKanjiModalOpen(true)}
+                    className="h-8 px-2.5 text-xs font-mono text-light-ink-muted hover:text-terracotta border-light-border dark:border-dark-border cursor-pointer shrink-0"
+                    title="Choose Kanji"
+                  >
+                    <BookOpen className="w-3.5 h-3.5 mr-1 text-terracotta" />
+                    Picker
+                  </Button>
+                </div>
+              </div>
+              <div>
+                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                  Live Status / Availability Pill (Optional)
+                </Label>
+                <Input
+                  value={hankoData.statusBadge || ''}
+                  onChange={(e) => updateHanko({ statusBadge: e.target.value })}
+                  placeholder="e.g. AVAILABLE FOR WORK or EST. 2021 · FULL-STACK"
+                  className="font-mono uppercase text-xs h-8"
+                />
+              </div>
             </div>
 
             {/* Vertical Prose Snippets & Presets */}
@@ -681,6 +714,16 @@ export const IntroEditor: React.FC = () => {
           </div>
         )}
       </div>
+
+      <KanjiPickerModal
+        isOpen={kanjiModalOpen}
+        selectedChar={hankoData.stampCharacter || '原'}
+        onSelect={(char) => {
+          updateHanko({ stampCharacter: char });
+          setKanjiModalOpen(false);
+        }}
+        onClose={() => setKanjiModalOpen(false)}
+      />
     </div>
   );
 };
