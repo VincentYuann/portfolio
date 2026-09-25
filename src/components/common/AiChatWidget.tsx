@@ -14,6 +14,7 @@ import {
   ChevronDown,
   Maximize2,
   Minimize2,
+  Lock,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -148,7 +149,7 @@ const ACCEPTED_FILE_TYPES_ATTR = [
   'application/msword',
 ].join(',');
 
-export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin: _isAdmin = false }) => {
+export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
@@ -182,6 +183,16 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
     }
     setFilePreviewUrl(null);
   }, [attachedFile]);
+
+  // Automatically clear attached file if user is logged out or is not an administrator
+  useEffect(() => {
+    if (!isAdmin && attachedFile) {
+      setAttachedFile(null);
+      toast.info('File Cleared', {
+        description: 'Multimodal file analysis is reserved for administrator sessions.',
+      });
+    }
+  }, [isAdmin, attachedFile]);
 
   // Chat window size & position state (responsive initial dimensions)
   const [isMobile, setIsMobile] = useState(() =>
@@ -401,6 +412,14 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
     const trimmed = rawText.trim();
     if ((!trimmed && !attachedFile) || isStreaming) return;
 
+    if (attachedFile && !isAdmin) {
+      toast.info('Admin Privilege Required', {
+        description: 'Multimodal document and image analysis is reserved for administrator sessions. Please ask your questions via text!',
+        duration: 5000,
+      });
+      return;
+    }
+
     const userMsgId = `user-${Date.now()}`;
     const currentFile = attachedFile;
     const currentPreviewUrl = filePreviewUrl;
@@ -478,10 +497,17 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
           setDisplayedStreamingText(fullText.slice(0, charIndex));
         }
       }, 20);
-    } catch {
+    } catch (err: any) {
       // Graceful local synthesis on network or microservice boundary
       if (streamIntervalRef.current) {
         clearInterval(streamIntervalRef.current);
+      }
+
+      if (err instanceof Error && err.message.toLowerCase().includes('administrator')) {
+        toast.error('Administrator Access Required', {
+          description: 'Multimodal file analysis is reserved for verified administrators. Synthesizing an architectural response for your text query.',
+          duration: 5000,
+        });
       }
 
       const latencyMs = Math.round(performance.now() - startTime);
@@ -586,6 +612,14 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
   };
 
   const validateAndStageFile = (file: File): boolean => {
+    if (!isAdmin) {
+      toast.info('Admin Privilege Required', {
+        description: 'Multimodal document and image analysis is reserved for administrator sessions to manage Gemini compute quotas. You can explore and ask anything via text!',
+        duration: 5000,
+      });
+      return false;
+    }
+
     const ext = '.' + (file.name.split('.').pop() || '').toLowerCase();
     const isExtensionAllowed = ALLOWED_FILE_EXTENSIONS.includes(ext);
     const isMimeAllowed = file.type ? ALLOWED_MIME_TYPES.has(file.type) : false;
@@ -1270,11 +1304,15 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
           {isDraggingFile && (
             <div className="absolute inset-0 z-50 bg-terracotta/95 dark:bg-terracotta/95 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-white border-2 border-dashed border-white/70 animate-in fade-in duration-150 pointer-events-none select-none text-center">
               <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-2.5 shadow-sm">
-                <Upload className="w-6 h-6 text-white" />
+                {isAdmin ? <Upload className="w-6 h-6 text-white" /> : <Lock className="w-6 h-6 text-white" />}
               </div>
-              <span className="font-serif font-semibold text-sm tracking-wide">Drop file to attach</span>
-              <span className="font-mono text-[11px] text-white/90 mt-1">
-                Images (PNG, JPG, WEBP, GIF) · PDF · DOCX · Max 50 MB
+              <span className="font-serif font-semibold text-sm tracking-wide">
+                {isAdmin ? 'Drop file to attach' : 'Admin Privilege Required'}
+              </span>
+              <span className="font-mono text-[11px] text-white/90 mt-1 max-w-xs text-center">
+                {isAdmin
+                  ? 'Images (PNG, JPG, WEBP, GIF) · PDF · DOCX · Max 50 MB'
+                  : 'Multimodal file analysis is reserved for administrator sessions. Please ask questions via text!'}
               </span>
             </div>
           )}
@@ -1730,16 +1768,42 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
                     type="button"
                     variant="ghost"
                     size="icon"
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() => {
+                      if (!isAdmin) {
+                        toast.info('Admin Privilege Required', {
+                          description: 'Multimodal document and image analysis is reserved for administrator sessions to manage Gemini compute quotas. You can explore and ask anything via text!',
+                          duration: 5000,
+                        });
+                        return;
+                      }
+                      fileInputRef.current?.click();
+                    }}
                     disabled={isStreaming}
-                    className="w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-lg text-light-ink-subtle hover:text-terracotta hover:bg-terracotta/10 shrink-0 mb-0.5 cursor-pointer"
-                    aria-label="Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX up to 50 MB)"
+                    className={`w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-lg shrink-0 mb-0.5 cursor-pointer relative ${
+                      isAdmin
+                        ? 'text-light-ink-subtle hover:text-terracotta hover:bg-terracotta/10'
+                        : 'text-light-ink-subtle/70 dark:text-dark-ink-subtle/70 hover:text-terracotta hover:bg-terracotta/10'
+                    }`}
+                    aria-label={
+                      isAdmin
+                        ? 'Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX up to 50 MB)'
+                        : 'File analysis (Admin access required · Text chat open to all)'
+                    }
                   >
                     <Paperclip className="w-4 h-4" />
+                    {!isAdmin && (
+                      <span
+                        className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-ochre ring-1 ring-light-surface dark:ring-dark-surface-card"
+                        title="Admin access required"
+                        aria-hidden="true"
+                      />
+                    )}
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="top" align="start" sideOffset={6}>
-                  Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX · Max 50 MB)
+                <TooltipContent side="top" align="start" sideOffset={6} className="max-w-xs text-xs">
+                  {isAdmin
+                    ? 'Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX · Max 50 MB)'
+                    : 'File analysis (Admin access required · Text questions open to all)'}
                 </TooltipContent>
               </Tooltip>
 
