@@ -4,6 +4,7 @@ import {
   X,
   Terminal,
   RotateCcw,
+  Paperclip,
   FileText,
   Upload,
   Copy,
@@ -137,6 +138,16 @@ const ALLOWED_MIME_TYPES = new Set([
   'application/msword',
 ]);
 const ALLOWED_FILE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.pdf', '.docx', '.doc'];
+const ACCEPTED_FILE_TYPES_ATTR = [
+  ...ALLOWED_FILE_EXTENSIONS,
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'image/gif',
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+].join(',');
 
 export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -158,6 +169,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   const [isDraggingFile, setIsDraggingFile] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [expandedTelemetryId, setExpandedTelemetryId] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-generate and clean up object URLs for image preview thumbnails
   useEffect(() => {
@@ -1761,6 +1773,41 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
               }}
               className="relative flex items-end rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-card p-1.5 focus-within:border-terracotta focus-within:ring-1 focus-within:ring-terracotta/30 transition-all shadow-xs"
             >
+              {isAdmin && (
+                <>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept={ACCEPTED_FILE_TYPES_ATTR}
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        validateAndStageFile(e.target.files[0]);
+                      }
+                      e.target.value = '';
+                    }}
+                  />
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isStreaming}
+                        className="w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-lg shrink-0 mb-0.5 cursor-pointer text-light-ink-subtle hover:text-terracotta hover:bg-terracotta/10"
+                        aria-label="Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX up to 50 MB)"
+                      >
+                        <Paperclip className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" align="start" sideOffset={6} className="max-w-xs text-xs">
+                      Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX · Max 50 MB)
+                    </TooltipContent>
+                  </Tooltip>
+                </>
+              )}
+
               <label htmlFor={inputId} className="sr-only">
                 Ask about systems, code, or craft
               </label>
