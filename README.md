@@ -1,4 +1,4 @@
-# Vincent Yuan — Software Engineering Portfolio
+# Vincent Yuan: Software Engineering Portfolio
 
 [![Live Site](https://img.shields.io/badge/Live_Portfolio-vincentyuann.github.io-B5482E?style=for-the-badge&logo=githubpages&logoColor=white)](https://vincentyuann.github.io/portfolio)
 [![React 18](https://img.shields.io/badge/React_18.3-Vite_6-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
@@ -14,12 +14,13 @@ A modern, dynamic personal portfolio combining Japanese *Wabi-Sabi* aesthetics (
 
 ## 🏛️ System Architecture & Data Flow
 
-The application is structured as a reactive Single Page Application (SPA) powered by React 18, Vite, and Supabase. Public visitors enjoy fast, cached reads, while verified admin sessions enable live in-browser CMS modifications.
+The application is structured as a reactive Single Page Application (SPA) powered by React 18, Vite, Supabase, and a companion AI Agent microservice. Public visitors enjoy fast, cached reads, while verified admin sessions enable live in-browser CMS modifications.
 
 ```mermaid
 graph TD
     subgraph Client ["Frontend Client (React 18 + Vite)"]
         UI["UI Layer<br/>(Layout, Sections, Common Widgets)"]
+        Chat["AI Chat Companion<br/>(AiChatWidget, Markdown, KaTeX)"]
         Context["SiteDataContext<br/>(Global Cache, Sync & Fallbacks)"]
         Admin["Admin CMS Studio<br/>(Live Editors, Dirty Tracker)"]
     end
@@ -30,6 +31,11 @@ graph TD
         Storage["Supabase Storage S3<br/>(portfolio-assets Bucket)"]
     end
 
+    subgraph Microservice ["AI Agent Microservice (FastAPI + Gemini)"]
+        Agent["Gemini Agent Backend<br/>(Flash-Lite Models, Tool Ingestion)"]
+        Files["Multimodal Processor<br/>(In-Memory Stream, 50MB Limit)"]
+    end
+
     UI --> Context
     Admin -->|CRUD Mutations & Sync| Context
     Context -->|Public Anon Reads| DB
@@ -37,6 +43,9 @@ graph TD
     Auth -->|Admin Claims Guard| DB
     Admin -->|Direct Image/PDF Upload| Storage
     UI -->|Stream PDF & Optimized Images| Storage
+    Chat -->|Query + Multimodal Uploads| Agent
+    Agent --> Files
+    Chat -.->|Offline Boundary Fallback| UI
 ```
 
 ### 🔄 Frontend & Backend Interactions
@@ -55,6 +64,16 @@ graph TD
 
 ---
 
+## 🤖 Vincent's AI Companion & Agent Microservice
+
+The portfolio embeds an interactive engineering assistant (`<AiChatWidget />`) designed around Wabi-Sabi artisan principles and powered by a dedicated Python microservice:
+- **Multimodal Uploads & Verification**: Accepts images (`PNG`, `JPEG`, `WEBP`, `GIF`) and documents (`PDF`, `DOCX`, `DOC`) up to 50 MB, streaming in-memory without disk temporary files.
+- **Intelligent Architectural Synthesis**: Integrates Google Gemini (`gemini-3.5-flash-lite` / `gemini-3.1-flash-lite`) to answer technical inquiries about distributed systems, projects, latency optimization, and artisan craft.
+- **Graceful Boundary Fallback**: If the microservice is temporarily unreachable, the frontend automatically falls back to an offline architectural knowledge base.
+- **Decoupled Architecture**: All backend agent pipelines, tool definitions, test suites, and deployment manifests are maintained in the companion **AI Agent** microservice repository.
+
+---
+
 ## 📂 Component & Code Organization
 
 The codebase cleanly separates **universal shell/layout elements**, **reusable visual widgets**, **atomic UI primitives**, and **domain-specific feature sections**:
@@ -63,8 +82,8 @@ The codebase cleanly separates **universal shell/layout elements**, **reusable v
 src/
 ├── components/
 │   ├── layout/            # Universal Shell (Header, Footer, Toast notifications)
-│   ├── common/            # Shared Wabi-Sabi elements (EnsoOrbital, SectionHeading, StatusBadge, etc.)
-│   ├── ui/                # Headless UI primitives (Button, Dialog, Badge, Input, Tabs, etc.)
+│   ├── common/            # Shared Wabi-Sabi elements (AiChatWidget, EnsoOrbital, SectionHeading, etc.)
+│   ├── ui/                # Headless UI & Chat primitives (Button, Dialog, Badge, ChatBubble, etc.)
 │   ├── sections/          # Domain-specific feature modules
 │   │   ├── hero/          # Identity banner & Hanko card
 │   │   ├── projects/      # Projects showcase, catalog page & architecture modal
@@ -76,7 +95,7 @@ src/
 │   │   └── auth/          # Admin authentication modal
 │   └── admin/             # Isolated Admin CMS Studio & editor sections
 ├── context/               # SiteDataContext & Supabase real-time synchronization
-├── lib/                   # Supabase client, constants, and helper utilities
+├── lib/                   # Supabase client, aiAgentApi, constants, and helper utilities
 └── data/                  # TypeScript interfaces and fallback datasets
 ```
 
@@ -86,8 +105,9 @@ src/
 
 | Category | Technology |
 | :--- | :--- |
-| **Frontend** | React 18, TypeScript, Tailwind CSS, Vite 6, Lucide Icons, Sonner, Yet-Another-React-Lightbox |
+| **Frontend** | React 18, TypeScript, Tailwind CSS, Vite 6, Lucide Icons, Sonner, KaTeX, React Markdown |
 | **Backend & Auth** | Supabase (PostgreSQL, Row Level Security, GitHub OAuth) |
+| **AI Microservice** | Python FastAPI, Google Gemini SDK, Gemini Files API (maintained in companion repo) |
 | **Storage & Media** | Supabase Storage (S3-compatible bucket for images & PDF CVs) |
 | **Deployment** | GitHub Pages with GitHub Actions CI/CD |
 

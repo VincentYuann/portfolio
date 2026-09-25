@@ -41,31 +41,13 @@ interface MilestoneTheme {
 }
 
 const MILESTONE_THEMES: MilestoneTheme[] = [
-  // 0: Active / AI & Full-Stack Systems (木) - Bamboo Emerald Green
-  {
-    primary: '#446557',
-    textClass: 'text-bamboo dark:text-[#658B7B]',
-    badgeBg: 'bg-bamboo/15 dark:bg-bamboo/20',
-    badgeBorder: 'border-bamboo/50 dark:border-bamboo/60',
-    badgeText: 'text-bamboo dark:text-[#87A889]',
-    emblemBorder: 'border-bamboo/70 dark:border-bamboo/80',
-    emblemShadow: 'shadow-[0_0_12px_rgba(68,101,87,0.3)]',
-    cardActiveBorder: 'border-bamboo/60 dark:border-bamboo/60',
-    cardActiveRing: 'ring-1 ring-bamboo/25',
-    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(68,101,87,0.22),0_0_24px_-4px_rgba(212,155,106,0.1)]',
-    nodeActiveBg: 'bg-bamboo',
-    nodeActiveBorder: 'border-bamboo',
-    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(68,101,87,0.7)]',
-    bulletOrdinalClass: 'text-bamboo dark:text-[#87A889] bg-bamboo/10 dark:bg-bamboo/20 border-bamboo/30 shadow-[0_0_8px_rgba(68,101,87,0.15)]',
-    accentBarClass: 'border-l-2 border-l-bamboo/70 dark:border-l-bamboo/70',
-  },
-  // 1: Software Engineering & Architecture (墨) - Cinnabar Terracotta
+  // 0: Active / Systems Architecture & AI (朱) - Cinnabar Terracotta Primary
   {
     primary: '#C83C23',
-    textClass: 'text-terracotta dark:text-[#ff7d63]',
+    textClass: 'text-terracotta dark:text-terracotta',
     badgeBg: 'bg-terracotta/15 dark:bg-terracotta/20',
     badgeBorder: 'border-terracotta/50 dark:border-terracotta/60',
-    badgeText: 'text-terracotta dark:text-[#ff7d63]',
+    badgeText: 'text-terracotta dark:text-terracotta',
     emblemBorder: 'border-terracotta/70 dark:border-terracotta/80',
     emblemShadow: 'shadow-[0_0_12px_rgba(200,60,35,0.3)]',
     cardActiveBorder: 'border-terracotta/60 dark:border-terracotta/60',
@@ -74,16 +56,16 @@ const MILESTONE_THEMES: MilestoneTheme[] = [
     nodeActiveBg: 'bg-terracotta',
     nodeActiveBorder: 'border-terracotta',
     nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(200,60,35,0.7)]',
-    bulletOrdinalClass: 'text-terracotta dark:text-[#ff7d63] bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-[0_0_8px_rgba(200,60,35,0.15)]',
+    bulletOrdinalClass: 'text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-[0_0_8px_rgba(200,60,35,0.15)]',
     accentBarClass: 'border-l-2 border-l-terracotta/70 dark:border-l-terracotta/70',
   },
-  // 2: Craft & Operations / Joinery (明) - Warm Ochre Amber
+  // 1: Craft & Operations / Joinery (明) - Warm Ochre Amber
   {
     primary: '#D49B6A',
-    textClass: 'text-ochre dark:text-[#E5B88F]',
+    textClass: 'text-ochre dark:text-ochre',
     badgeBg: 'bg-ochre/15 dark:bg-ochre/20',
     badgeBorder: 'border-ochre/50 dark:border-ochre/60',
-    badgeText: 'text-ochre dark:text-[#E5B88F]',
+    badgeText: 'text-ochre dark:text-ochre',
     emblemBorder: 'border-ochre/70 dark:border-ochre/80',
     emblemShadow: 'shadow-[0_0_12px_rgba(212,155,106,0.3)]',
     cardActiveBorder: 'border-ochre/60 dark:border-ochre/60',
@@ -92,26 +74,44 @@ const MILESTONE_THEMES: MilestoneTheme[] = [
     nodeActiveBg: 'bg-ochre',
     nodeActiveBorder: 'border-ochre',
     nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(212,155,106,0.7)]',
-    bulletOrdinalClass: 'text-ochre dark:text-[#E5B88F] bg-ochre/10 dark:bg-ochre/20 border-ochre/30 shadow-[0_0_8px_rgba(212,155,106,0.15)]',
+    bulletOrdinalClass: 'text-ochre dark:text-ochre bg-ochre/10 dark:bg-ochre/20 border-ochre/30 shadow-[0_0_8px_rgba(212,155,106,0.15)]',
     accentBarClass: 'border-l-2 border-l-ochre/70 dark:border-l-ochre/70',
   },
-  // 3: Foundation & Roots (原) - Deep Indigo / Sumi Slate
+  // 2: Full-Stack Systems & Discipline (木) - Bamboo Green
   {
-    primary: '#3B4E6B',
-    textClass: 'text-[#3B4E6B] dark:text-[#8EA8C3]',
-    badgeBg: 'bg-[#3B4E6B]/15 dark:bg-[#3B4E6B]/25',
-    badgeBorder: 'border-[#3B4E6B]/50 dark:border-[#3B4E6B]/60',
-    badgeText: 'text-[#3B4E6B] dark:text-[#8EA8C3]',
-    emblemBorder: 'border-[#3B4E6B]/70 dark:border-[#3B4E6B]/80',
-    emblemShadow: 'shadow-[0_0_12px_rgba(59,78,107,0.3)]',
-    cardActiveBorder: 'border-[#3B4E6B]/60 dark:border-[#3B4E6B]/60',
-    cardActiveRing: 'ring-1 ring-[#3B4E6B]/25',
-    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(59,78,107,0.25),0_0_24px_-4px_rgba(212,155,106,0.1)]',
-    nodeActiveBg: 'bg-[#3B4E6B]',
-    nodeActiveBorder: 'border-[#3B4E6B]',
-    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(59,78,107,0.7)]',
-    bulletOrdinalClass: 'text-[#3B4E6B] dark:text-[#8EA8C3] bg-[#3B4E6B]/10 dark:bg-[#3B4E6B]/20 border-[#3B4E6B]/30 shadow-[0_0_8px_rgba(59,78,107,0.15)]',
-    accentBarClass: 'border-l-2 border-l-[#3B4E6B]/70 dark:border-l-[#3B4E6B]/70',
+    primary: '#526D57',
+    textClass: 'text-bamboo dark:text-bamboo',
+    badgeBg: 'bg-bamboo/15 dark:bg-bamboo/20',
+    badgeBorder: 'border-bamboo/50 dark:border-bamboo/60',
+    badgeText: 'text-bamboo dark:text-bamboo',
+    emblemBorder: 'border-bamboo/70 dark:border-bamboo/80',
+    emblemShadow: 'shadow-[0_0_12px_rgba(82,109,87,0.3)]',
+    cardActiveBorder: 'border-bamboo/60 dark:border-bamboo/60',
+    cardActiveRing: 'ring-1 ring-bamboo/25',
+    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(82,109,87,0.22),0_0_24px_-4px_rgba(212,155,106,0.1)]',
+    nodeActiveBg: 'bg-bamboo',
+    nodeActiveBorder: 'border-bamboo',
+    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(82,109,87,0.7)]',
+    bulletOrdinalClass: 'text-bamboo dark:text-bamboo bg-bamboo/10 dark:bg-bamboo/20 border-bamboo/30 shadow-[0_0_8px_rgba(82,109,87,0.15)]',
+    accentBarClass: 'border-l-2 border-l-bamboo/70 dark:border-l-bamboo/70',
+  },
+  // 3: Foundation & Roots (原) - Terracotta Heritage
+  {
+    primary: '#B5482E',
+    textClass: 'text-terracotta dark:text-terracotta',
+    badgeBg: 'bg-terracotta/15 dark:bg-terracotta/20',
+    badgeBorder: 'border-terracotta/50 dark:border-terracotta/60',
+    badgeText: 'text-terracotta dark:text-terracotta',
+    emblemBorder: 'border-terracotta/70 dark:border-terracotta/80',
+    emblemShadow: 'shadow-[0_0_12px_rgba(181,72,46,0.3)]',
+    cardActiveBorder: 'border-terracotta/60 dark:border-terracotta/60',
+    cardActiveRing: 'ring-1 ring-terracotta/25',
+    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(181,72,46,0.25),0_0_24px_-4px_rgba(212,155,106,0.1)]',
+    nodeActiveBg: 'bg-terracotta',
+    nodeActiveBorder: 'border-terracotta',
+    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(181,72,46,0.7)]',
+    bulletOrdinalClass: 'text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-[0_0_8px_rgba(181,72,46,0.15)]',
+    accentBarClass: 'border-l-2 border-l-terracotta/70 dark:border-l-terracotta/70',
   },
 ];
 
@@ -226,7 +226,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
               <button
                 type="button"
                 onClick={toggleAll}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-terracotta/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
                 title="Expand or collapse all career milestone details"
               >
                 <Layers className="w-3.5 h-3.5 text-terracotta" />
@@ -242,7 +242,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     onNavigate('resume');
                   }
                 }}
-                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-terracotta/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
               >
                 <Briefcase className="w-3.5 h-3.5 text-terracotta" />
                 <span className="hidden sm:inline">Curriculum Vitae</span>
@@ -255,8 +255,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
         {/* Timeline Container */}
         <div className="relative timeline-container">
-          {/* Vertical Joinery Axis Line with Multi-Stop Organic Gradient */}
-          <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-[2px] bg-gradient-to-b from-bamboo via-terracotta via-ochre to-[#3B4E6B]/50 -translate-x-1/2 pointer-events-none z-0" />
+          {/* Vertical Joinery Axis Line with Subtle Terracotta-to-Neutral Hairline */}
+          <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-px bg-gradient-to-b from-terracotta via-ochre/40 to-light-border/60 dark:to-dark-border/60 -translate-x-1/2 pointer-events-none z-0" />
 
           {/* Milestone Cards Stack */}
           <div className="space-y-8 sm:space-y-12">
@@ -310,8 +310,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                   <div
                     className={`relative rounded-xl sm:rounded-2xl border p-4 sm:p-7 overflow-visible transition-all duration-200 classical-card-frame shadow-akari dark:shadow-night-glow ${
                       isCardActive
-                        ? `${theme.cardActiveBorder} bg-light-surface-card dark:bg-[#181920] ${theme.cardActiveRing} ${theme.cardActiveGlow}`
-                        : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] hover:border-ochre/50 hover:bg-light-surface dark:hover:bg-[#1f2028]'
+                        ? `${theme.cardActiveBorder} bg-light-surface-card dark:bg-dark-surface-card ${theme.cardActiveRing} ${theme.cardActiveGlow}`
+                        : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card hover:border-ochre/50 hover:bg-light-surface dark:hover:bg-dark-surface'
                     }`}
                   >
                     {/* Celestial Ensō Orbital Circle: Placed at the top-left corner of the card frame (only on hover) */}
@@ -326,7 +326,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                       {/* Left: Clean Square Emblem (Custom Logo Image or Default Japanese Hanko Seal) */}
-                      <div className={`relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-xl border ${theme.emblemBorder} bg-light-surface dark:bg-[#16171d] ${theme.emblemShadow} flex items-center justify-center overflow-hidden shrink-0 mx-auto sm:mx-0 transition-shadow duration-300`}>
+                      <div className={`relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-xl border ${theme.emblemBorder} bg-light-surface dark:bg-dark-surface-card ${theme.emblemShadow} flex items-center justify-center overflow-hidden shrink-0 mx-auto sm:mx-0 transition-shadow duration-300`}>
                         {exp.logoUrl ? (
                           <img
                             src={exp.logoUrl}
@@ -337,7 +337,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             onError={handleImageError}
                           />
                         ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-[#181920]/40">
+                          <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-dark-surface-card/40">
                             <span className={`font-serif font-black ${theme.textClass} text-2xl sm:text-3xl leading-none tracking-normal`}>
                               {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
                             </span>
@@ -416,7 +416,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                               className={`inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-lg font-mono text-xs transition-all duration-200 border cursor-pointer ${
                                 isExpanded
                                   ? `${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder} font-medium`
-                                  : 'bg-light-surface dark:bg-[#181920] text-light-ink-muted dark:text-neutral-300 border-light-border dark:border-[#282a36] hover:border-terracotta/60 hover:text-terracotta'
+                                  : 'bg-light-surface dark:bg-dark-surface-card text-light-ink-muted dark:text-dark-ink-muted border-light-border dark:border-dark-border hover:border-terracotta/60 hover:text-terracotta'
                               }`}
                             >
                               <Layers className={`w-3.5 h-3.5 ${theme.textClass}`} />

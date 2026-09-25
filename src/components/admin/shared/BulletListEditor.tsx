@@ -16,7 +16,7 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
   bullets,
   onChange,
   label = 'Engineering Contributions & Quantified Impact',
-  placeholder = 'Describe a technical contribution or quantified architectural metric…',
+  placeholder = 'Describe a technical contribution or quantified architectural metric...',
   className = '',
 }) => {
   const safeBullets = bullets.length > 0 ? bullets : [''];
@@ -74,10 +74,10 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
         </Button>
       </div>
 
-      <div className="space-y-2.5">
+      <div className="flex flex-col gap-2.5">
         {safeBullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2.5 group">
-            <span className="font-mono text-[10px] font-semibold text-terracotta dark:text-[#ff7d63] bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-1 select-none shrink-0 mt-1 shadow-2xs">
+            <span className="font-mono text-[10px] font-semibold text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-1 select-none shrink-0 mt-1 shadow-2xs">
               #{String(idx + 1).padStart(2, '0')}
             </span>
             <Textarea
@@ -86,6 +86,7 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
               onChange={(e) => updateBullet(idx, e.target.value)}
               onKeyDown={(e) => handleKeyDown(idx, e)}
               placeholder={placeholder}
+              aria-label={label ? `${label} point ${idx + 1}` : `Highlight point ${idx + 1}`}
               className="text-xs font-sans resize-none py-2 px-3 leading-relaxed flex-1 min-h-[52px]"
             />
             <button
@@ -93,7 +94,7 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
               onClick={() => removeBullet(idx)}
               className="text-light-ink-subtle hover:text-red-500 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-md hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer shrink-0 mt-1"
               title="Remove point"
-              aria-label={`Remove point ${idx + 1}`}
+              aria-label={label ? `Remove ${label} point ${idx + 1}` : `Remove point ${idx + 1}`}
             >
               <X className="w-4 h-4" />
             </button>

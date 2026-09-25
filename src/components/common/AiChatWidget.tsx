@@ -9,7 +9,9 @@ import {
   Upload,
   Copy,
   Check,
-  Image as ImageIcon,
+  Sparkles,
+  Activity,
+  ChevronDown,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -17,9 +19,33 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import { toast } from 'sonner';
-import { useSiteData } from '../../context/SiteDataContext';
 import { ViewMode } from '../../App';
 import { sendToAiAgent, ChatResponse } from '../../lib/aiAgentApi';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
+import {
+  MessageScrollerProvider,
+  MessageScroller,
+  MessageScrollerViewport,
+  MessageScrollerContent,
+  MessageScrollerItem,
+  MessageScrollerButton,
+  Attachment,
+  AttachmentMedia,
+  AttachmentContent,
+  AttachmentTitle,
+  AttachmentDescription,
+  AttachmentActions,
+  AttachmentAction,
+  Marker,
+  MarkerContent,
+  MarkerIcon,
+  ChatBubble,
+  ChatBubbleMessage,
+  ChatBubbleTimestamp,
+  ChatInput,
+} from '../ui/chat';
 
 interface ActionSpec {
   title: string;
@@ -29,17 +55,24 @@ interface ActionSpec {
   externalUrl?: string;
 }
 
+interface MessageTelemetry {
+  model: string;
+  tokensPerSec?: number;
+  latencyMs: number;
+  interactionId?: string;
+  isFallback: boolean;
+}
+
 interface ChatMessage {
   id: string;
-  sender: 'user' | 'ai';
+  sender: 'user' | 'ai' | 'system';
   text: string;
   timestamp: string;
   specCard?: ActionSpec;
-  tokensPerSec?: number;
-  confidence?: number;
-  highlightWords?: string[];
   attachmentName?: string;
+  attachmentUrl?: string;
   userType?: string;
+  telemetry?: MessageTelemetry;
 }
 
 interface AiChatWidgetProps {
@@ -56,6 +89,7 @@ const BroomIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) 
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
+    aria-hidden="true"
   >
     <path d="M12 2v7" />
     <path d="M8 9h8a1 1 0 0 1 1 1v2a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-2a1 1 0 0 1 1-1Z" />
@@ -89,31 +123,57 @@ const UNIVERSAL_PROMPT_PILLS = [
   },
 ];
 
-export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin = false }) => {
-  const { profile, projects, experiences, pillars } = useSiteData();
+// File upload constraints matching AI Agent backend (app/files.py & app/config.py)
+const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB hard limit
+const ALLOWED_MIME_TYPES = new Set([
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'image/gif',
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+]);
+const ALLOWED_FILE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.pdf', '.docx', '.doc'];
+const ACCEPTED_FILE_TYPES_ATTR = [
+  ...ALLOWED_FILE_EXTENSIONS,
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'image/gif',
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+].join(',');
+
+export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin: _isAdmin = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [displayedStreamingText, setDisplayedStreamingText] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
+  const prevIsOpenRef = useRef(false);
   const streamIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const inputId = useId();
 
-  // Multi-turn conversational thread pointer backed by useState (resets on browser refresh)
+  // Multi-turn conversational interaction state
   const [interactionId, setInteractionId] = useState<string | null>(null);
   const [callerContext, setCallerContext] = useState<{ userType: string; email?: string | null } | null>(null);
-  // 50 MB upper limit (strictly matching AI Agent MAX_FILE_SIZE_BYTES)
-  const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024;
+
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
   const [isDraggingFile, setIsDraggingFile] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [expandedTelemetryId, setExpandedTelemetryId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-generate and clean up object URLs for image preview thumbnails
   useEffect(() => {
-    if (attachedFile && attachedFile.type.startsWith('image/')) {
+    if (
+      attachedFile &&
+      (attachedFile.type.startsWith('image/') || /\.(png|jpe?g|webp|gif)$/i.test(attachedFile.name))
+    ) {
       const url = URL.createObjectURL(attachedFile);
       setFilePreviewUrl(url);
       return () => URL.revokeObjectURL(url);
@@ -121,35 +181,38 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     setFilePreviewUrl(null);
   }, [attachedFile]);
 
-  // Chat window size & position (resizable & draggable - null defaults purely to bottom-right CSS)
+  // Chat window size & position state (responsive initial dimensions)
   const [windowSize, setWindowSize] = useState<{ width: number; height: number }>(() => {
     if (typeof window !== 'undefined') {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const maxH = Math.max(340, vh - 24);
+      const maxH = Math.max(360, vh - 32);
       return {
-        width: Math.min(420, vw - 24),
+        width: Math.min(430, vw - 24),
         height: Math.min(580, maxH),
       };
     }
-    return { width: 400, height: 560 };
+    return { width: 420, height: 580 };
   });
   const [windowPos, setWindowPos] = useState<{ x: number; y: number } | null>(null);
   const chatWindowRef = useRef<HTMLDivElement>(null);
 
-  // Initial welcome message
+  // Initial welcome message reflecting Vincent's architectural perspective
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome-msg',
       sender: 'ai',
       text: "Greetings. I am Vincent's AI Companion. I synthesize his architectural philosophies, systems engineering lineage, and selected works. Ask about distributed systems, low-latency AI pipelines, or our artisan philosophy.",
       timestamp: 'ONLINE · SYNTHESIS READY',
-      tokensPerSec: 142,
-      confidence: 99.8,
       specCard: {
         title: 'Spec: Telemetry // Komorebi Architecture',
         actionText: 'Explore Projects →',
         view: 'projects',
+      },
+      telemetry: {
+        model: 'Vincent Architectural Kernel',
+        latencyMs: 8,
+        isFallback: true,
       },
     },
   ]);
@@ -163,7 +226,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     const minX = 8;
     const minY = 8;
     const maxX = Math.max(minX, window.innerWidth - size.width - 8);
-    const maxY = Math.max(minY, window.innerHeight - 56);
+    const maxY = Math.max(minY, window.innerHeight - 64);
     return {
       x: Math.max(minX, Math.min(pos.x, maxX)),
       y: Math.max(minY, Math.min(pos.y, maxY)),
@@ -177,7 +240,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       const vh = window.innerHeight;
       const maxAllowedH = Math.max(340, vh - 24);
 
-      // Adjust window size if larger than screen
       setWindowSize((prev) => {
         const targetWidth = Math.min(prev.width, vw - 16);
         const targetHeight = Math.min(prev.height, maxAllowedH);
@@ -187,7 +249,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
         };
       });
 
-      // Clamp chat window position if currently custom positioned
       setWindowPos((prev) => {
         if (!prev) return null;
         return clampWindowBounds(prev, windowSize);
@@ -198,19 +259,28 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     return () => window.removeEventListener('resize', handleResize);
   }, [clampWindowBounds, windowSize]);
 
-  // Scroll to bottom when messages update
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // MessageScrollerProvider owns intelligent streaming follow and scroll anchoring without jumping
 
+  // Modal open/close lifecycle: auto-focus input on open, restore focus to launcher on close
   useEffect(() => {
     if (isOpen) {
-      scrollToBottom();
-      if (window.innerWidth >= 768) {
-        inputRef.current?.focus();
-      }
+      const timer = setTimeout(() => {
+        if (window.innerWidth >= 640) {
+          inputRef.current?.focus();
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    } else if (prevIsOpenRef.current) {
+      // WCAG 2.4.3 Focus Order: restore focus to launcher on modal dismiss
+      // Defer through setTimeout to ensure newly mounted launcher receives focus
+      // after the browser finishes pointer/click event dispatch on the unmounted close element.
+      const timer = setTimeout(() => {
+        launcherRef.current?.focus();
+      }, 16);
+      return () => clearTimeout(timer);
     }
-  }, [isOpen, messages, displayedStreamingText]);
+    prevIsOpenRef.current = isOpen;
+  }, [isOpen]);
 
   useEffect(() => {
     return () => {
@@ -220,11 +290,40 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     };
   }, []);
 
-  // Close on Escape key press
+  // Global hotkeys: Cmd+K / Ctrl+K toggles widget, Escape closes it, Tab cycles focus within modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsOpen((prev) => !prev);
+        return;
+      }
+
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
         setIsOpen(false);
+        return;
+      }
+
+      // Modal focus trapping for WCAG 2.1.2 compliance
+      if (e.key === 'Tab' && chatWindowRef.current) {
+        const focusable = chatWindowRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length > 0) {
+          const firstElement = focusable[0];
+          const lastElement = focusable[focusable.length - 1];
+
+          if (e.shiftKey && document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          } else if (!e.shiftKey && document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -233,109 +332,46 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
 
   const getTimestamp = () => {
     const now = new Date();
-    return now.toTimeString().split(' ')[0];
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Grounded response generator
-  const generateResponse = (userQuery: string): {
-    text: string;
-    specCard?: ActionSpec;
-    confidence: number;
-    tokensPerSec: number;
-  } => {
-    const q = userQuery.toLowerCase();
+  /**
+   * Humanized fallback responses when microservice is unavailable or returning non-200.
+   * Completely avoids leaking HTTP 405/500 stack codes or cryptic backend jargon.
+   */
+  const getFallbackSynthesis = (userPrompt: string): string => {
+    const q = userPrompt.toLowerCase();
 
-    if (q.includes('wabi-sabi') || q.includes('ma') || q.includes('philosophy') || q.includes('craft') || q.includes('間') || q.includes('侘寂')) {
-      const topPillar = pillars && pillars.length > 0 ? pillars[0].title : 'Disciplined Minimalism';
-      return {
-        text: `In Vincent's architecture, Ma (間) represents intentional negative space: translated as eliminating orchestrator bloat, strict backpressure, and zero unneeded microservice hops.\n\nWabi-Sabi (侘寂) manifests as accepting inherent node failures through graceful degradation and deterministic state recovery rather than fragile distributed locks. The core philosophy centers on ${topPillar}.`,
-        specCard: {
-          title: 'Philosophy: Origin & Craft // Ma (間)',
-          actionText: 'Inspect Philosophy →',
-          view: 'home',
-          sectionId: 'philosophy',
-        },
-        confidence: 99.4,
-        tokensPerSec: 142,
-      };
+    if (q.includes('project') || q.includes('work') || q.includes('portfolio') || q.includes('build')) {
+      return (
+        "Vincent's engineering lineage integrates Shokunin artisan discipline with modern distributed infrastructure. " +
+        "Key highlights include:\n\n" +
+        "- **Komorebi Telemetry**: Low-overhead distributed telemetry pipeline with sub-millisecond trace ingestion.\n" +
+        "- **Distributed Cache Engine**: Lock-free concurrent hash ring architecture with consistent hashing.\n" +
+        "- **Full-Stack Systems**: Reactive interfaces paired with high-throughput microservices.\n\n" +
+        "Feel free to explore the Projects section or initiate a direct inquiry."
+      );
     }
 
-    if (q.includes('architect') || q.includes('latency') || q.includes('sub-100ms') || q.includes('system') || q.includes('ai') || q.includes('stream')) {
-      return {
-        text: `Vincent's AI and backend architecture focuses on sub-100ms streaming pipelines, zero-waste data paths, and robust telemetry. High-throughput edge endpoints utilize asynchronous I/O and strict type constraints across TypeScript, Python, and Go.\n\nEvery interface emphasizes observable telemetry, resilient back-off policies, and deterministic execution.`,
-        specCard: {
-          title: 'Spec: Telemetry // Komorebi Distributed Stream',
-          actionText: 'Inspect Spec →',
-          view: 'projects',
-        },
-        confidence: 99.1,
-        tokensPerSec: 156,
-      };
+    if (q.includes('wabi') || q.includes('sabi') || q.includes('ma') || q.includes('philosophy') || q.includes('craft')) {
+      return (
+        "In Vincent's architecture, *Ma* (間) represents intentional negative space, both in visual hierarchy and in asynchronous decoupling. " +
+        "*Wabi-Sabi* (侘寂) embraces practical elegance: avoiding needless complexity, honoring deterministic behavior, and building systems that age gracefully under load."
+      );
     }
 
-    if (q.includes('project') || q.includes('works') || q.includes('build') || q.includes('portfolio') || q.includes('accomplish')) {
-      const firstProject = projects && projects.length > 0 ? projects[0] : null;
-      const secondProject = projects && projects.length > 1 ? projects[1] : null;
-
-      const projectSummary = firstProject
-        ? `${firstProject.title} (${firstProject.subtitle || 'Production System'})${secondProject ? ` alongside ${secondProject.title}` : ''}`
-        : 'distributed telemetry suites and high-performance full-stack web applications';
-
-      return {
-        text: `Vincent's selected portfolio highlights ${projectSummary}.\n\nEach build pairs artisan user interfaces with robust backend infrastructure, real-time database synchronization via Supabase, and disciplined architectural boundaries.`,
-        specCard: {
-          title: firstProject ? `Work: ${firstProject.title} // Interactive Showcase` : 'Selected Portfolio · 作品',
-          actionText: 'View All Works →',
-          view: 'projects',
-        },
-        confidence: 98.7,
-        tokensPerSec: 138,
-      };
+    if (q.includes('avail') || q.includes('contact') || q.includes('hire') || q.includes('job') || q.includes('role')) {
+      return (
+        "Vincent is actively open to systems engineering, AI architecture, and full-stack software engineering opportunities. " +
+        "You can reach out directly via the **Initiate a Dialogue** section at the bottom of the page, or connect on LinkedIn and GitHub."
+      );
     }
 
-    if (q.includes('experience') || q.includes('career') || q.includes('job') || q.includes('role') || q.includes('resume') || q.includes('background') || q.includes('work at')) {
-      const currentRole = experiences && experiences.length > 0 ? experiences[0] : null;
-      const roleText = currentRole
-        ? `Currently active as ${currentRole.title} at ${currentRole.company}, operating across ${currentRole.domainLabel || 'systems engineering'}.`
-        : 'Operating across systems engineering, full-stack development, and AI integration.';
-
-      return {
-        text: `${roleText}\n\nVincent brings deep engineering rigor across full-stack systems, modern cloud infrastructure, and low-latency client experiences. Detailed trajectory and verified accomplishments are archived in the curriculum vitae.`,
-        specCard: {
-          title: 'Archive: Curriculum Vitae // Experience Record',
-          actionText: 'Open Full Resume →',
-          view: 'resume',
-        },
-        confidence: 99.2,
-        tokensPerSec: 148,
-      };
-    }
-
-    if (q.includes('contact') || q.includes('hire') || q.includes('avail') || q.includes('collaborat') || q.includes('email') || q.includes('talk') || q.includes('reach')) {
-      const email = profile?.email || 'contact@vincentyuan.me';
-      return {
-        text: `Vincent is actively open to exceptional engineering opportunities, advisory roles, and architectural dialogues.\n\nYou can reach out directly via the encrypted contact portal on this site or dispatch an email to ${email}.`,
-        specCard: {
-          title: 'Dialogue: Direct Communication Channel',
-          actionText: 'Initiate Dialogue →',
-          view: 'home',
-          sectionId: 'contact',
-        },
-        confidence: 99.6,
-        tokensPerSec: 164,
-      };
-    }
-
-    return {
-      text: `Vincent's engineering lineage integrates Shokunin artisan discipline with modern distributed infrastructure. Whether designing reactive frontend architectures or high-throughput backend services, the primary tenet remains clarity, zero unnecessary hops, and deterministic behavior.\n\nFeel free to explore his projects, review the career trajectory, or initiate a direct inquiry.`,
-      specCard: {
-        title: 'Overview: Systems Architecture & Portfolio Index',
-        actionText: 'Explore Works →',
-        view: 'projects',
-      },
-      confidence: 97.9,
-      tokensPerSec: 135,
-    };
+    return (
+      "Vincent specializes in distributed systems, low-latency AI pipelines, and artisan frontend craft. " +
+      "Whether designing reactive user interfaces or resilient backend services, the primary tenet remains clarity, zero unnecessary hops, and deterministic behavior. " +
+      "Explore his selected portfolio works or initiate an engineering dialogue anytime."
+    );
   };
 
   const handleSendMessage = async (textToSend?: string) => {
@@ -345,31 +381,33 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
 
     const userMsgId = `user-${Date.now()}`;
     const currentFile = attachedFile;
+    const currentPreviewUrl = filePreviewUrl;
     const userMsg: ChatMessage = {
       id: userMsgId,
       sender: 'user',
       text: trimmed || (currentFile ? `[Uploaded attachment: ${currentFile.name}]` : ''),
       timestamp: `YOU · ${getTimestamp()}`,
       attachmentName: currentFile?.name,
+      attachmentUrl: currentPreviewUrl || undefined,
     };
 
     setMessages((prev) => [...prev, userMsg]);
     setInputValue('');
     setAttachedFile(null);
-    setIsStreaming(true);
     setDisplayedStreamingText('');
-
+    setIsStreaming(true);
     const startTime = performance.now();
 
     try {
-      // Execute call to FastAPI Gemini Agent microservice
+      // Execute call to Gemini Agent microservice
       const data: ChatResponse = await sendToAiAgent({
         message: trimmed || 'Please inspect the attached document or image.',
         previousInteractionId: interactionId,
         file: currentFile,
       });
 
-      // Update multi-turn interaction_id in useState (resets on browser refresh)
+      const latencyMs = Math.round(performance.now() - startTime);
+
       if (data.interaction_id) {
         setInteractionId(data.interaction_id);
       }
@@ -381,12 +419,10 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       }
 
       const fullText = data.response;
-      const durationSec = Math.max(0.3, (performance.now() - startTime) / 1000);
       const estimatedTokens = Math.max(16, Math.round(fullText.length / 3.8));
-      const tokensPerSec = Math.round(estimatedTokens / durationSec);
-
+      const tokensPerSec = Math.round(estimatedTokens / Math.max(0.3, latencyMs / 1000));
       let charIndex = 0;
-      const chunkSize = Math.max(2, Math.floor(fullText.length / 35));
+      const chunkSize = Math.max(3, Math.floor(fullText.length / 30));
 
       if (streamIntervalRef.current) {
         clearInterval(streamIntervalRef.current);
@@ -405,37 +441,62 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
             id: `ai-${Date.now()}`,
             sender: 'ai',
             text: fullText,
-            timestamp: getTimestamp(),
-            tokensPerSec,
-            confidence: 99.6,
+            timestamp: `VINCENT AI · ${getTimestamp()}`,
             userType: data.user_type,
+            telemetry: {
+              model: data.model ? data.model.replace(/^models\//, '') : 'gemini-3.5-flash-lite',
+              latencyMs,
+              tokensPerSec,
+              interactionId: data.interaction_id || undefined,
+              isFallback: false,
+            },
           };
           setMessages((prev) => [...prev, finalAiMsg]);
         } else {
           setDisplayedStreamingText(fullText.slice(0, charIndex));
         }
       }, 20);
-    } catch (err) {
+    } catch {
+      // Graceful local synthesis on network or microservice boundary
       if (streamIntervalRef.current) {
         clearInterval(streamIntervalRef.current);
       }
-      setIsStreaming(false);
-      setDisplayedStreamingText('');
 
-      const errorText = (err as Error).message || 'Failed to reach AI Agent microservice.';
+      const latencyMs = Math.round(performance.now() - startTime);
+      const fallbackText = getFallbackSynthesis(trimmed);
+      let charIndex = 0;
+      const chunkSize = Math.max(4, Math.floor(fallbackText.length / 25));
 
-      // Generate graceful local fallback so conversation is never broken
-      const fallback = generateResponse(trimmed);
-      const finalAiMsg: ChatMessage = {
-        id: `ai-err-${Date.now()}`,
-        sender: 'ai',
-        text: `**Microservice Notice**: ${errorText}\n\n*Local architectural synthesis:*\n\n${fallback.text}`,
-        timestamp: 'OFFLINE FALLBACK',
-        specCard: fallback.specCard,
-        tokensPerSec: 130,
-        confidence: 94.5,
-      };
-      setMessages((prev) => [...prev, finalAiMsg]);
+      streamIntervalRef.current = setInterval(() => {
+        charIndex += chunkSize;
+        if (charIndex >= fallbackText.length) {
+          if (streamIntervalRef.current) {
+            clearInterval(streamIntervalRef.current);
+          }
+          setDisplayedStreamingText(fallbackText);
+          setIsStreaming(false);
+
+          const finalAiMsg: ChatMessage = {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            text: fallbackText,
+            timestamp: `VINCENT AI · ${getTimestamp()}`,
+            specCard: {
+              title: 'Overview: Systems Architecture & Portfolio Index',
+              actionText: 'Explore Works →',
+              view: 'projects',
+            },
+            telemetry: {
+              model: 'Local Architectural Knowledge Base',
+              latencyMs,
+              isFallback: true,
+            },
+          };
+          setMessages((prev) => [...prev, finalAiMsg]);
+        } else {
+          setDisplayedStreamingText(fallbackText.slice(0, charIndex));
+        }
+      }, 20);
     }
   };
 
@@ -450,14 +511,19 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     setAttachedFile(null);
     setMessages([
       {
+        id: `marker-${Date.now()}`,
+        sender: 'system',
+        text: 'Dialogue Thread Refreshed · Context Reset',
+        timestamp: getTimestamp(),
+      },
+      {
         id: `welcome-${Date.now()}`,
         sender: 'ai',
-        text: "Dialogue memory reset. Thread cleared. All architectural contexts and Gemini tools are online.",
-        timestamp: 'SYNCHRONIZED',
-        tokensPerSec: 142,
-        confidence: 99.9,
+        text: 'Dialogue thread refreshed. All architectural contexts and synthesis tools are online.',
+        timestamp: `VINCENT AI · ${getTimestamp()}`,
       },
     ]);
+    toast.success('Conversation thread refreshed');
   };
 
   const handleActionClick = (spec?: ActionSpec) => {
@@ -481,20 +547,30 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   };
 
   const validateAndStageFile = (file: File): boolean => {
-    if (file.size > MAX_FILE_SIZE_BYTES) {
-      toast.error(
-        `File "${file.name}" (${formatFileSize(file.size)}) exceeds the 50 MB maximum limit.`,
-        { description: 'Please choose a file smaller than 50 MB.' }
-      );
+    const ext = '.' + (file.name.split('.').pop() || '').toLowerCase();
+    const isExtensionAllowed = ALLOWED_FILE_EXTENSIONS.includes(ext);
+    const isMimeAllowed = file.type ? ALLOWED_MIME_TYPES.has(file.type) : false;
+
+    if (!isExtensionAllowed && !isMimeAllowed) {
+      toast.error('Unsupported file format', {
+        description: `"${file.name}" is not supported. Please upload an image (PNG, JPG, WEBP, GIF) or document (PDF, DOCX, DOC).`,
+      });
       return false;
     }
+
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      toast.error('File exceeds 50 MB limit', {
+        description: `"${file.name}" (${formatFileSize(file.size)}) exceeds the 50 MB maximum allowed upload size.`,
+      });
+      return false;
+    }
+
     setAttachedFile(file);
     toast.success(`Attached ${file.name} (${formatFileSize(file.size)})`);
     return true;
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
-    if (!isAdmin) return;
     const items = e.clipboardData?.items;
     if (!items) return;
 
@@ -512,7 +588,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   };
 
   const handleDragEnter = (e: React.DragEvent) => {
-    if (!isAdmin) return;
     e.preventDefault();
     e.stopPropagation();
     if (e.dataTransfer.types.includes('Files')) {
@@ -521,7 +596,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   };
 
   const handleDragOver = (e: React.DragEvent) => {
-    if (!isAdmin) return;
     e.preventDefault();
     e.stopPropagation();
     e.dataTransfer.dropEffect = 'copy';
@@ -529,7 +603,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
-    if (!isAdmin) return;
     e.preventDefault();
     e.stopPropagation();
     if (e.currentTarget.contains(e.relatedTarget as Node)) return;
@@ -537,7 +610,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   };
 
   const handleDrop = (e: React.DragEvent) => {
-    if (!isAdmin) return;
     e.preventDefault();
     e.stopPropagation();
     setIsDraggingFile(false);
@@ -590,24 +662,24 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
             },
             blockquote({ children }) {
               return (
-                <blockquote className="my-2.5 border-l-2 border-terracotta/70 bg-terracotta/5 dark:bg-terracotta/10 px-3.5 py-2 rounded-r-lg text-xs sm:text-[13px] text-light-ink dark:text-dark-ink italic shadow-xs">
+                <blockquote className="my-2.5 border-l border-terracotta/40 bg-terracotta/5 dark:bg-terracotta/10 px-3.5 py-1.5 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink italic rounded-r-md">
                   {children}
                 </blockquote>
               );
             },
             hr() {
-              return <hr className="my-3.5 border-terracotta/30 dark:border-terracotta/40" />;
+              return <hr className="my-3 border-light-border dark:border-dark-border" />;
             },
             h1({ children }) {
               return (
-                <h1 className="font-serif font-bold text-base text-terracotta my-2.5 pb-1 border-b border-terracotta/20">
+                <h1 className="font-serif font-bold text-sm sm:text-base text-terracotta my-2 pb-1 border-b border-light-border dark:border-dark-border">
                   {children}
                 </h1>
               );
             },
             h2({ children }) {
               return (
-                <h2 className="font-serif font-bold text-sm text-terracotta my-2">
+                <h2 className="font-serif font-bold text-xs sm:text-sm text-terracotta my-2">
                   {children}
                 </h2>
               );
@@ -625,7 +697,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-terracotta underline hover:text-terracotta/80 underline-offset-2 transition-colors font-medium"
+                  className="text-terracotta underline hover:text-terracotta-hover underline-offset-2 transition-colors font-medium"
                 >
                   {children}
                 </a>
@@ -642,7 +714,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
               const codeString = String(children).replace(/\n$/, '');
               const language = className?.replace('language-', '') || 'code';
               return (
-                <div className="relative my-2.5 rounded-lg border border-light-border dark:border-dark-border bg-black/5 dark:bg-black/40 overflow-hidden group/code select-text">
+                <div className="relative my-2.5 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised overflow-hidden group/code select-text shadow-2xs">
                   <div className="flex items-center justify-between px-3 py-1 bg-black/5 dark:bg-white/5 border-b border-light-border/40 dark:border-dark-border/40 text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle select-none">
                     <span>{language}</span>
                     <button
@@ -651,8 +723,9 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                         navigator.clipboard.writeText(codeString);
                         toast.success('Code copied to clipboard');
                       }}
-                      className="hover:text-terracotta transition-colors flex items-center gap-1 cursor-pointer"
+                      className="hover:text-terracotta transition-colors flex items-center gap-1 cursor-pointer py-0.5 px-1"
                       title="Copy code"
+                      aria-label="Copy code block"
                     >
                       <Copy className="w-3 h-3" />
                       <span>Copy</span>
@@ -675,7 +748,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
             },
             th({ children }) {
               return (
-                <th className="px-3 py-1.5 bg-black/5 dark:bg-white/5 font-serif font-semibold text-terracotta text-left">
+                <th className="px-3 py-1.5 bg-light-surface-raised dark:bg-dark-surface-raised font-serif font-semibold text-terracotta text-left">
                   {children}
                 </th>
               );
@@ -696,36 +769,43 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   };
 
   /* ─────────────────────────────────────────────────────────────────────────
-     2. DRAGGING THE CHAT WINDOW BY ITS HEADER BAR
+     WINDOW DRAGGING (DESKTOP)
      ───────────────────────────────────────────────────────────────────────── */
   const handleHeaderPointerDown = (e: React.PointerEvent) => {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || window.innerWidth < 640) return;
     const target = e.currentTarget as HTMLElement;
     try {
       target.setPointerCapture(e.pointerId);
     } catch {
-      // Ignore if pointer capture fails
+      // Ignore pointer capture fallback
     }
 
     const rect = chatWindowRef.current?.getBoundingClientRect();
     if (!rect) return;
 
+    const startX = e.clientX;
+    const startY = e.clientY;
     const currentPos = windowPos || { x: rect.left, y: rect.top };
     let curX = currentPos.x;
     let curY = currentPos.y;
     let lastX = e.clientX;
     let lastY = e.clientY;
-
-    if (chatWindowRef.current) {
-      chatWindowRef.current.style.transition = 'none';
-      chatWindowRef.current.style.top = '0px';
-      chatWindowRef.current.style.left = '0px';
-      chatWindowRef.current.style.right = 'auto';
-      chatWindowRef.current.style.bottom = 'auto';
-      chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
-    }
+    let hasDragged = false;
 
     const onPointerMove = (moveEv: PointerEvent) => {
+      const totalDist = Math.hypot(moveEv.clientX - startX, moveEv.clientY - startY);
+      if (!hasDragged) {
+        if (totalDist < 6) return;
+        hasDragged = true;
+        if (chatWindowRef.current) {
+          chatWindowRef.current.style.transition = 'none';
+          chatWindowRef.current.style.top = '0px';
+          chatWindowRef.current.style.left = '0px';
+          chatWindowRef.current.style.right = 'auto';
+          chatWindowRef.current.style.bottom = 'auto';
+        }
+      }
+
       const dx = moveEv.clientX - lastX;
       const dy = moveEv.clientY - lastY;
       lastX = moveEv.clientX;
@@ -735,7 +815,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       curY += dy;
 
       const minX = 8;
-      const minY = 8; // Top of screen: z-[60] stays above navbar and never traps
+      const minY = 8;
       const maxX = Math.max(minX, window.innerWidth - windowSize.width - 8);
       const maxY = Math.max(minY, window.innerHeight - 56);
 
@@ -751,21 +831,23 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       try {
         target.releasePointerCapture(upEv.pointerId);
       } catch {
-        // Ignore if pointer capture release fails
+        // Ignore pointer release
       }
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('pointercancel', onPointerUp);
 
-      if (chatWindowRef.current) {
-        chatWindowRef.current.style.transition = '';
-        chatWindowRef.current.style.top = '';
-        chatWindowRef.current.style.left = '';
-        chatWindowRef.current.style.right = '';
-        chatWindowRef.current.style.bottom = '';
-        chatWindowRef.current.style.transform = '';
+      if (hasDragged) {
+        if (chatWindowRef.current) {
+          chatWindowRef.current.style.transition = '';
+          chatWindowRef.current.style.top = '';
+          chatWindowRef.current.style.left = '';
+          chatWindowRef.current.style.right = '';
+          chatWindowRef.current.style.bottom = '';
+          chatWindowRef.current.style.transform = '';
+        }
+        setWindowPos({ x: curX, y: curY });
       }
-      setWindowPos({ x: curX, y: curY });
     };
 
     window.addEventListener('pointermove', onPointerMove);
@@ -774,7 +856,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   };
 
   /* ─────────────────────────────────────────────────────────────────────────
-     3. RESIZING / EXPANDING THE CHATBOT WIDGET
+     WINDOW RESIZING (DESKTOP)
      ───────────────────────────────────────────────────────────────────────── */
   const handleResizeStart = (
     e: React.PointerEvent,
@@ -782,13 +864,13 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.button !== 0) return;
+    if (e.button !== 0 || window.innerWidth < 640) return;
 
     const target = e.currentTarget as HTMLElement;
     try {
       target.setPointerCapture(e.pointerId);
     } catch {
-      // Ignore if pointer capture fails
+      // Ignore pointer capture fallback
     }
 
     const rect = chatWindowRef.current?.getBoundingClientRect();
@@ -801,8 +883,8 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     let lastX = e.clientX;
     let lastY = e.clientY;
 
-    const minW = 300;
-    const minH = 340;
+    const minW = 320;
+    const minH = 360;
     const maxW = window.innerWidth - 16;
     const maxH = window.innerHeight - 16;
 
@@ -813,6 +895,8 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       chatWindowRef.current.style.right = 'auto';
       chatWindowRef.current.style.bottom = 'auto';
       chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+      chatWindowRef.current.style.width = `${curWidth}px`;
+      chatWindowRef.current.style.height = `${curHeight}px`;
     }
 
     const onPointerMove = (moveEv: PointerEvent) => {
@@ -821,36 +905,27 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       lastX = moveEv.clientX;
       lastY = moveEv.clientY;
 
-      if (direction.includes('w')) {
-        const nextW = curWidth - dx;
-        if (nextW >= minW && nextW <= maxW && curX + dx >= 8) {
-          curWidth = nextW;
-          curX += dx;
-        }
-      } else if (direction.includes('e')) {
-        const nextW = curWidth + dx;
-        if (nextW >= minW && curX + nextW <= window.innerWidth - 8) {
-          curWidth = nextW;
-        }
+      if (direction.includes('e')) {
+        curWidth = Math.min(maxW, Math.max(minW, curWidth + dx));
       }
-
+      if (direction.includes('s')) {
+        curHeight = Math.min(maxH, Math.max(minH, curHeight + dy));
+      }
+      if (direction.includes('w')) {
+        const nextW = Math.min(maxW, Math.max(minW, curWidth - dx));
+        curX += curWidth - nextW;
+        curWidth = nextW;
+      }
       if (direction.includes('n')) {
-        const nextH = curHeight - dy;
-        if (nextH >= minH && nextH <= maxH && curY + dy >= 8) {
-          curHeight = nextH;
-          curY += dy;
-        }
-      } else if (direction.includes('s')) {
-        const nextH = curHeight + dy;
-        if (nextH >= minH && curY + nextH <= window.innerHeight - 8) {
-          curHeight = nextH;
-        }
+        const nextH = Math.min(maxH, Math.max(minH, curHeight - dy));
+        curY += curHeight - nextH;
+        curHeight = nextH;
       }
 
       if (chatWindowRef.current) {
+        chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
         chatWindowRef.current.style.width = `${curWidth}px`;
         chatWindowRef.current.style.height = `${curHeight}px`;
-        chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
       }
     };
 
@@ -858,7 +933,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       try {
         target.releasePointerCapture(upEv.pointerId);
       } catch {
-        // Ignore if pointer capture release fails
+        // Ignore pointer release
       }
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
@@ -883,43 +958,35 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
 
   return (
     <>
-      {/* ─── 1. STATIONARY BOTTOM-RIGHT LAUNCHER ─── */}
+      {/* ─── 1. SINGULAR HANKO TRIGGER (DESIGN SYSTEM ALIGNED) ─── */}
       {!isOpen && (
         <button
+          ref={launcherRef}
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[60] select-none cursor-pointer focus:outline-none group"
-          title="Ask Vincent's AI Companion"
-          aria-label="Toggle Vincent's AI Assistant"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2.5 p-1.5 sm:pl-2 sm:pr-3.5 sm:py-1.5 rounded-full bg-light-surface-card dark:bg-dark-surface-card border border-terracotta/40 hover:border-terracotta dark:border-terracotta/40 dark:hover:border-terracotta text-light-ink dark:text-dark-ink shadow-md hover:shadow-hanko-glow transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 active:scale-95 cursor-pointer min-h-[48px] min-w-[48px]"
+          aria-label="Open Vincent's AI Companion (Press Cmd+K or Ctrl+K)"
+          aria-haspopup="dialog"
+          aria-expanded={false}
+          title="Ask Vincent's AI (⌘K)"
         >
-          <div className="relative flex items-center gap-2.5 p-1 rounded-full animate-float-subtle">
-            {/* Desktop Pill Trigger with Signature Rectangular Corner Frame */}
-            <div className="relative hidden sm:flex items-center gap-2.5 px-4 py-2 rounded-full border-2 transition-all duration-200 backdrop-blur-md overflow-hidden border-terracotta/70 dark:border-terracotta/80 bg-light-surface-raised dark:bg-[#1E2028] shadow-akari-raised dark:shadow-[0_12px_28px_rgba(0,0,0,0.65)] group-hover:border-terracotta group-hover:shadow-hanko-glow group-hover:scale-[1.02]">
-              {/* Subtle inner hairline perimeter */}
-              <div className="absolute inset-1 rounded-full border border-terracotta/20 dark:border-terracotta/30 pointer-events-none" />
-
-              <span className="font-serif text-terracotta font-bold text-xs">問</span>
-              <span className="font-sans text-[11px] font-semibold text-light-ink dark:text-dark-ink tracking-wide">
-                Ask Vincent's AI
-              </span>
-              <span className="text-[10px] font-mono text-terracotta/80 dark:text-ochre">
-                // 問答
-              </span>
-            </div>
-
-            {/* Circular Hanko Seal Button with High-Contrast Terracotta Aura */}
-            <div className="relative flex items-center justify-center">
-              <div className="w-13 h-13 sm:w-12 sm:h-12 rounded-full bg-terracotta text-white flex items-center justify-center transition-transform duration-150 border-2 border-white/30 dark:border-white/20 shadow-hanko-glow animate-launcher-glow group-hover:scale-105 active:scale-95">
-                <span className="font-serif font-black text-xl sm:text-lg tracking-wider text-white select-none drop-shadow-xs">
-                  問
-                </span>
-              </div>
-            </div>
+          {/* Authentic Hanko Stamp Mark */}
+          <div className="w-9 h-9 rounded-full bg-terracotta text-white flex items-center justify-center font-serif font-bold text-sm shadow-xs group-hover:scale-105 transition-transform shrink-0">
+            問
+          </div>
+          {/* Launcher Label & Shortcut Affordance (Responsive Desktop Expansion) */}
+          <div className="hidden sm:flex items-center gap-2 pr-0.5">
+            <span className="font-serif text-xs sm:text-sm font-medium tracking-tight">
+              Ask Vincent's AI
+            </span>
+            <kbd className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-medium rounded border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface text-light-ink-subtle dark:text-dark-ink-subtle">
+              ⌘K
+            </kbd>
           </div>
         </button>
       )}
 
-      {/* ─── 2. HIGH-CONTRAST EXPANDABLE CHATBOT WINDOW (OUTER RECTANGLE CORNERS) ─── */}
+      {/* ─── 2. ACCESSIBLE CHATBOT DIALOG MODAL (SHADCN COMPOSE PATTERN) ─── */}
       {isOpen && (
         <div
           ref={chatWindowRef}
@@ -929,255 +996,334 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           style={{
-            width: `${windowSize.width}px`,
-            height: `${windowSize.height}px`,
-            maxHeight: 'calc(100vh - 16px)',
-            transform: windowPos
+            width: typeof window !== 'undefined' && window.innerWidth < 640 ? '100%' : `${windowSize.width}px`,
+            height: typeof window !== 'undefined' && window.innerWidth < 640 ? '85dvh' : `${windowSize.height}px`,
+            maxHeight: typeof window !== 'undefined' && window.innerWidth < 640 ? '85dvh' : 'calc(100vh - 24px)',
+            transform: typeof window !== 'undefined' && window.innerWidth >= 640 && windowPos
               ? `translate3d(${windowPos.x}px, ${windowPos.y}px, 0)`
               : undefined,
           }}
-          className={`fixed ${
-            windowPos ? 'top-0 left-0' : 'bottom-4 right-4 sm:bottom-6 sm:right-6'
-          } z-[60] flex flex-col rounded-2xl border-2 border-terracotta dark:border-terracotta bg-light-surface-raised dark:bg-[#1A1C23] shadow-2xl shadow-terracotta/20 dark:shadow-[0_25px_65px_rgba(0,0,0,0.85)] ring-1 ring-terracotta/40 dark:ring-terracotta/50 overflow-hidden animate-in zoom-in-95 fade-in duration-200`}
+          className={`fixed z-[60] flex flex-col ${
+            windowPos && typeof window !== 'undefined' && window.innerWidth >= 640
+              ? 'top-0 left-0'
+              : 'bottom-0 left-0 right-0 sm:bottom-6 sm:right-6 sm:left-auto sm:right-6'
+          } rounded-t-2xl sm:rounded-xl border border-terracotta/40 dark:border-terracotta/50 bg-light-surface-card dark:bg-dark-surface-card shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in duration-200`}
           role="dialog"
+          aria-modal="true"
           aria-labelledby="ai-chat-title"
         >
-          {/* Drag & Drop File Overlay (Admin only) */}
-          {isDraggingFile && isAdmin && (
-            <div className="absolute inset-0 z-50 rounded-2xl bg-terracotta/90 dark:bg-terracotta/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-white border-2 border-dashed border-white/70 animate-in fade-in duration-150 pointer-events-none">
-              <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-3 shadow-lg">
-                <Upload className="w-8 h-8 text-white animate-bounce" />
-              </div>
-              <span className="font-serif font-bold text-base tracking-wide">Drop file to attach</span>
-              <span className="font-mono text-xs text-white/90 mt-1">Images, PDF, or DOCX · Max 50 MB</span>
-            </div>
-          )}
+          {/* Subtle Outer Joinery Corner Brackets (Desktop Only) */}
+          <div className="hidden sm:block absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-terracotta pointer-events-none z-40 opacity-70" />
+          <div className="hidden sm:block absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-terracotta pointer-events-none z-40 opacity-70" />
+          <div className="hidden sm:block absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-terracotta pointer-events-none z-40 opacity-70" />
+          <div className="hidden sm:block absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-terracotta pointer-events-none z-40 opacity-70" />
 
-          {/* ── RECTANGLE CORNER BORDERS DIRECTLY ON OUTSIDE PERIMETER (MATCHING USER REFERENCE IMAGE) ── */}
-          {/* Outer High-Contrast Hairline Perimeter Line */}
-          <div className="absolute inset-1.5 sm:inset-2 pointer-events-none border border-terracotta/40 dark:border-terracotta/40 rounded-xl z-30" />
-
-          {/* 4 Precision Right-Angle Terracotta Corner Brackets (Exact match to media_1790299169496.png) */}
-          <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 w-4 h-4 border-t-2 border-l-2 border-terracotta pointer-events-none z-40" />
-          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 w-4 h-4 border-t-2 border-r-2 border-terracotta pointer-events-none z-40" />
-          <div className="absolute bottom-1.5 left-1.5 sm:bottom-2 sm:left-2 w-4 h-4 border-b-2 border-l-2 border-terracotta pointer-events-none z-40" />
-          <div className="absolute bottom-1.5 right-1.5 sm:bottom-2 sm:right-2 w-4 h-4 border-b-2 border-r-2 border-terracotta pointer-events-none z-40" />
-
-          {/* ── RESIZE HANDLES (EXPAND WIDGET IN ALL DIRECTIONS) ── */}
-          {/* Top-Left Corner Resize Grip */}
+          {/* Desktop Resizing Affordances */}
           <div
             onPointerDown={(e) => handleResizeStart(e, 'nw')}
-            className="absolute -top-1 -left-1 w-7 h-7 cursor-nwse-resize z-50 flex items-start justify-start p-1 group"
-            title="Drag to resize widget"
-          >
-            <div className="w-3 h-3 border-t-2 border-l-2 border-terracotta group-hover:scale-110 transition-transform" />
-          </div>
-
-          {/* Top Edge Handle */}
+            className="hidden sm:flex absolute -top-1 -left-1 w-6 h-6 cursor-nwse-resize z-50 items-start justify-start p-1"
+            title="Resize window"
+            aria-hidden="true"
+          />
           <div
             onPointerDown={(e) => handleResizeStart(e, 'n')}
-            className="absolute top-0 left-6 right-6 h-2.5 cursor-ns-resize z-40 hover:bg-terracotta/20 transition-colors"
-            title="Drag top edge to expand vertically"
+            className="hidden sm:block absolute top-0 left-6 right-6 h-2 cursor-ns-resize z-40 hover:bg-terracotta/20 transition-colors"
+            title="Resize vertically"
+            aria-hidden="true"
           />
-
-          {/* Left Edge Handle */}
           <div
             onPointerDown={(e) => handleResizeStart(e, 'w')}
-            className="absolute left-0 top-6 bottom-6 w-2.5 cursor-ew-resize z-40 hover:bg-terracotta/20 transition-colors"
-            title="Drag left edge to expand horizontally"
+            className="hidden sm:block absolute left-0 top-6 bottom-6 w-2 cursor-ew-resize z-40 hover:bg-terracotta/20 transition-colors"
+            title="Resize horizontally"
+            aria-hidden="true"
           />
-
-          {/* Bottom-Right Corner Resize Grip (Traditional Window Handle) */}
           <div
             onPointerDown={(e) => handleResizeStart(e, 'se')}
-            className="absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-50 flex items-end justify-end p-1.5 group"
-            title="Drag corner to expand widget"
+            className="hidden sm:flex absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-50 items-end justify-end p-1.5 text-terracotta opacity-70 hover:opacity-100 transition-opacity"
+            title="Resize window"
+            aria-hidden="true"
           >
-            <svg viewBox="0 0 10 10" className="w-3 h-3 text-terracotta transition-transform group-hover:scale-110">
+            <svg viewBox="0 0 10 10" className="w-2.5 h-2.5">
               <line x1="8" y1="2" x2="2" y2="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               <line x1="8" y1="5" x2="5" y2="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               <line x1="8" y1="8" x2="8" y2="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </div>
 
-          {/* ─── 1. DRAGGABLE WINDOW HEADER (HIGH CONTRAST) ─── */}
+          {/* Drag & Drop File Overlay */}
+          {isDraggingFile && (
+            <div className="absolute inset-0 z-50 bg-terracotta/95 dark:bg-terracotta/95 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-white border-2 border-dashed border-white/70 animate-in fade-in duration-150 pointer-events-none select-none text-center">
+              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-2.5 shadow-sm">
+                <Upload className="w-6 h-6 text-white" />
+              </div>
+              <span className="font-serif font-semibold text-sm tracking-wide">Drop file to attach</span>
+              <span className="font-mono text-[11px] text-white/90 mt-1">
+                Images (PNG, JPG, WEBP, GIF) · PDF · DOCX · Max 50 MB
+              </span>
+            </div>
+          )}
+
+          {/* Mobile Sheet Handle Affordance */}
+          <div className="sm:hidden flex justify-center pt-2 pb-0.5 bg-light-surface-raised dark:bg-dark-surface-raised">
+            <div className="w-10 h-1 rounded-full bg-light-ink-subtle/30 dark:bg-dark-ink-subtle/30" />
+          </div>
+
+          {/* ─── MODAL HEADER ─── */}
           <div
             onPointerDown={handleHeaderPointerDown}
-            onDoubleClick={() => setWindowPos(null)}
-            className="relative z-30 flex items-center justify-between px-4 py-3 border-b-2 border-terracotta/30 bg-light-surface dark:bg-[#15171F] cursor-grab active:cursor-grabbing select-none"
-            title="Drag header to move window // Double-click to dock to bottom-right"
+            className="relative z-30 flex items-center justify-between px-4 py-3 border-b border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised sm:cursor-grab active:cursor-grabbing select-none"
+            title="Drag header to move"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-terracotta flex items-center justify-center text-white shadow-md flex-shrink-0">
-                <span className="font-serif font-black text-sm">問</span>
+            <div className="flex items-center gap-2.5">
+              <div
+                onPointerDown={(e) => e.stopPropagation()}
+                className="w-7 h-7 rounded-lg bg-terracotta flex items-center justify-center text-white shadow-xs shrink-0 select-none cursor-default"
+              >
+                <span className="font-serif font-bold text-xs">問</span>
               </div>
               <div>
                 <h3
                   id="ai-chat-title"
-                  className="font-serif text-sm font-semibold text-light-ink dark:text-dark-ink tracking-tight flex items-center gap-1.5"
+                  className="font-serif text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-tight flex items-center gap-1.5"
                 >
                   <span className="text-terracotta">問答</span>
-                  <span className="text-light-ink-subtle dark:text-dark-ink-subtle font-mono text-xs">//</span>
+                  <span className="text-light-ink-subtle dark:text-dark-ink-subtle font-mono text-xs">·</span>
                   <span>Vincent's AI Companion</span>
                 </h3>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-bamboo animate-pulse" />
-                  <span className="font-mono text-[9px] tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle uppercase">
+                  <span className="font-mono text-[10px] tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle uppercase">
                     {isStreaming
-                      ? 'COMMUNICATING // GEMINI MICROSERVICE'
+                      ? 'Synthesizing...'
                       : callerContext
-                      ? `${callerContext.userType.toUpperCase()} // READY`
-                      : 'SYSTEM ONLINE // READY'}
+                      ? `${callerContext.userType.toUpperCase()} · ONLINE`
+                      : 'ONLINE · READY'}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Header Controls */}
+            {/* Header Action Controls (Accessible touch boundaries) */}
             <div
-              className="flex items-center gap-1.5"
+              className="flex items-center gap-1"
               onPointerDown={(e) => e.stopPropagation()}
             >
               {windowPos && (
-                <button
-                  onClick={() => setWindowPos(null)}
-                  className="p-1.5 rounded-md text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta hover:bg-terracotta/10 transition-colors"
-                  title="Dock to bottom-right corner"
-                  aria-label="Dock to bottom-right corner"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                </button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setWindowPos(null)}
+                      className="w-9 h-9 sm:w-8 sm:h-8 rounded-lg text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta hover:bg-terracotta/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
+                      aria-label="Dock to bottom corner"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">Dock to bottom corner</TooltipContent>
+                </Tooltip>
               )}
-              <button
-                onClick={handleClearHistory}
-                className="p-1.5 rounded-md text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta hover:bg-terracotta/10 transition-colors"
-                title="Clear conversation"
-                aria-label="Clear conversation history"
-              >
-                <BroomIcon className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-md text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-terracotta/10 transition-colors"
-                title="Close assistant"
-                aria-label="Close assistant"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleClearHistory}
+                    className="w-9 h-9 sm:w-8 sm:h-8 rounded-lg text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta hover:bg-terracotta/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
+                    aria-label="Refresh conversation thread"
+                  >
+                    <BroomIcon className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">Refresh conversation</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsOpen(false)}
+                    className="w-9 h-9 sm:w-8 sm:h-8 rounded-lg text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-terracotta/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
+                    aria-label="Close assistant"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">Close assistant (Esc)</TooltipContent>
+              </Tooltip>
             </div>
           </div>
 
-          {/* ─── 2. UNIVERSAL PREPREPARED PROMPT BUTTONS ─── */}
-          <div className="relative z-30 px-3 py-2 border-b border-light-border/70 dark:border-dark-border/70 bg-light-surface/70 dark:bg-dark-surface/70 overflow-x-auto scrollbar-none flex items-center gap-1.5 whitespace-nowrap">
+          {/* ─── QUICK TOPIC PROMPTS (NON-CLIPPING HORIZONTAL SCROLLER) ─── */}
+          <div className="relative z-30 px-3 py-2 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface-raised dark:bg-dark-surface-card overflow-x-auto scrollbar-none flex items-center gap-1.5 whitespace-nowrap">
             {UNIVERSAL_PROMPT_PILLS.map((pill) => (
               <button
                 key={pill.id}
+                type="button"
                 onClick={() => handleSendMessage(pill.prompt)}
                 disabled={isStreaming}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta hover:text-terracotta dark:hover:border-terracotta text-light-ink dark:text-dark-ink text-[11px] font-sans transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group flex-shrink-0 shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-3 sm:py-1 rounded-full border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta hover:text-terracotta text-light-ink dark:text-dark-ink text-[11px] font-sans transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 shadow-2xs cursor-pointer min-h-[38px] sm:min-h-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-1"
               >
+                <Sparkles className="w-3 h-3 text-terracotta" />
                 <span>{pill.label}</span>
               </button>
             ))}
           </div>
 
-          {/* ─── 3. MESSAGES VIEWPORT (Washi Pattern Subtle Grid) ─── */}
-          <div className="relative z-30 flex-1 overflow-y-auto p-4 space-y-4 washi-pattern scroll-smooth">
-            {messages.map((msg) => {
-              const isAi = msg.sender === 'ai';
+          {/* Screen reader live announcement for status transitions */}
+          <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {isStreaming ? "Vincent's AI is synthesizing response..." : ""}
+          </div>
 
-              if (!isAi) {
-                return (
-                  <div key={msg.id} className="flex flex-col items-end space-y-1">
-                    <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle tracking-wider uppercase">
-                      {msg.timestamp}
-                    </span>
-                    <div className="max-w-[85%] px-3.5 py-2.5 rounded-2xl rounded-tr-none bg-light-button-dark dark:bg-dark-surface-raised border border-light-border dark:border-dark-border-strong text-light-on-dark dark:text-dark-ink font-sans text-xs leading-relaxed shadow-sm">
-                      {msg.attachmentName && (
-                        <div className="flex items-center gap-1.5 text-[10px] text-terracotta dark:text-ochre mb-1.5 pb-1 border-b border-white/10 dark:border-white/10">
-                          <FileText className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate max-w-[200px]">{msg.attachmentName}</span>
-                        </div>
-                      )}
-                      {msg.text}
-                    </div>
-                  </div>
-                );
-              }
+          {/* ─── CHAT MESSAGES SCROLLER (SHADCN CANONICAL PRIMITIVES) ─── */}
+          <MessageScrollerProvider autoScroll>
+            <MessageScroller className="flex-1">
+              <MessageScrollerViewport>
+                <MessageScrollerContent className="pt-3">
+                  {messages.map((msg) => {
+                    if (msg.sender === 'system') {
+                      return (
+                        <MessageScrollerItem key={msg.id} messageId={msg.id}>
+                          <Marker variant="separator">
+                            <MarkerIcon>
+                              <RotateCcw className="size-3" />
+                            </MarkerIcon>
+                            <MarkerContent>{msg.text}</MarkerContent>
+                          </Marker>
+                        </MessageScrollerItem>
+                      );
+                    }
 
-              return (
-                <div key={msg.id} className="flex flex-col space-y-1.5 animate-in fade-in duration-200">
-                  <div className="flex items-center justify-between">
+                    const isAi = msg.sender === 'ai';
+
+                    if (!isAi) {
+                      return (
+                        <MessageScrollerItem key={msg.id} messageId={msg.id} scrollAnchor>
+                          <ChatBubble variant="sent">
+                            <div className="flex flex-col items-end space-y-1">
+                              <ChatBubbleTimestamp>{msg.timestamp}</ChatBubbleTimestamp>
+                              <ChatBubbleMessage variant="sent">
+                                {msg.attachmentName && (
+                                  <div className="mb-2">
+                                    <Attachment
+                                      state="done"
+                                      size="xs"
+                                      className="bg-white/10 dark:bg-black/20 border-white/20 text-white"
+                                    >
+                                      <AttachmentMedia
+                                        variant={msg.attachmentUrl ? 'image' : 'icon'}
+                                        className="size-6 bg-white/20 text-white border-0 overflow-hidden"
+                                      >
+                                        {msg.attachmentUrl ? (
+                                          <img
+                                            src={msg.attachmentUrl}
+                                            alt={msg.attachmentName}
+                                            className="size-full object-cover"
+                                          />
+                                        ) : (
+                                          <FileText className="size-3 text-white" />
+                                        )}
+                                      </AttachmentMedia>
+                                      <AttachmentContent>
+                                        <AttachmentTitle className="text-white text-[11px] truncate max-w-[160px]">
+                                          {msg.attachmentName}
+                                        </AttachmentTitle>
+                                        <AttachmentDescription className="text-white/80 text-[10px]">
+                                          ATTACHMENT
+                                        </AttachmentDescription>
+                                      </AttachmentContent>
+                                    </Attachment>
+                                  </div>
+                                )}
+                                {msg.text}
+                              </ChatBubbleMessage>
+                            </div>
+                          </ChatBubble>
+                        </MessageScrollerItem>
+                      );
+                    }
+
+                    return (
+                      <MessageScrollerItem key={msg.id} messageId={msg.id}>
+                        <div className="flex flex-col space-y-1.5 animate-in fade-in duration-150">
+                          {/* Assistant Identity Row */}
+                          <div className="flex items-center justify-between px-1">
                     <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-[11px] font-serif font-bold shadow-xs">
+                      <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-[10px] font-serif font-bold shadow-2xs">
                         原
                       </div>
                       <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
                         Vincent AI
                       </span>
                       {msg.userType && (
-                        <span className="font-mono text-[9px] px-1.5 py-0.2 rounded border border-terracotta/40 bg-terracotta/10 text-terracotta tracking-wider uppercase">
+                        <Badge variant="terracotta" className="text-[10px] px-1.5 py-0 h-4">
                           {msg.userType}
-                        </span>
+                        </Badge>
                       )}
-                      <span className="font-mono text-[9px] px-1.5 py-0.2 rounded border border-ochre/40 bg-ochre/10 text-ochre tracking-wider uppercase">
-                        GEMINI 3.6 FLASH
-                      </span>
+                      <Badge
+                        variant="outline"
+                        className={`text-[10px] px-1.5 py-0 h-4 font-mono ${
+                          msg.telemetry?.isFallback
+                            ? 'text-ochre border-ochre/40 bg-ochre/5'
+                            : 'text-terracotta border-terracotta/40 bg-terracotta/5'
+                        }`}
+                      >
+                        {msg.telemetry?.isFallback ? 'ARCHIVE' : 'GEMINI'}
+                      </Badge>
                     </div>
+                    <ChatBubbleTimestamp>{msg.timestamp}</ChatBubbleTimestamp>
                   </div>
 
-                  {/* AI Response Card with Matching Rectangle Corner Frame */}
-                  <div className="relative rounded-xl border border-terracotta/35 dark:border-terracotta/40 bg-light-surface-card dark:bg-[#16171E] p-4 shadow-sm overflow-hidden group select-text">
-                    {/* Inner rectangle hairline and corner tick */}
-                    <div className="absolute inset-1.5 pointer-events-none border border-terracotta/25 dark:border-terracotta/25 rounded-lg" />
-                    <div className="absolute top-1.5 left-1.5 w-2.5 h-2.5 border-t border-l border-terracotta pointer-events-none" />
-                    <div className="absolute top-1.5 right-1.5 w-2.5 h-2.5 border-t border-r border-terracotta pointer-events-none" />
-                    <div className="absolute bottom-1.5 left-1.5 w-2.5 h-2.5 border-b border-l border-terracotta pointer-events-none" />
-                    <div className="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-b border-r border-terracotta pointer-events-none" />
-
-                    {/* Top right action bar: Copy response */}
-                    <div className="absolute top-2 right-2.5 z-20 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigator.clipboard.writeText(msg.text);
-                          setCopiedMessageId(msg.id);
-                          toast.success('Response copied to clipboard');
-                          setTimeout(() => setCopiedMessageId(null), 2000);
-                        }}
-                        className="p-1 rounded bg-light-surface/90 dark:bg-dark-surface/90 border border-light-border dark:border-dark-border text-light-ink-subtle hover:text-terracotta shadow-xs transition-colors cursor-pointer"
-                        title="Copy response"
-                        aria-label="Copy response"
-                      >
-                        {copiedMessageId === msg.id ? (
-                          <Check className="w-3.5 h-3.5 text-bamboo" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
-                    </div>
-
-                    <div className="absolute top-2 right-2.5 select-none pointer-events-none text-3xl font-serif text-light-ink-subtle/10 dark:text-dark-ink-subtle/10">
-                      侘寂
+                  {/* Clean Artisan Message Card (No Slop, No Giant Watermark, No Corner Bracket Clutter) */}
+                  <div className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-raised p-4 shadow-2xs group select-text">
+                    {/* Copy Response Action */}
+                    <div className="absolute top-2.5 right-2.5 z-20 flex items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100 transition-opacity">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(msg.text);
+                              setCopiedMessageId(msg.id);
+                              toast.success('Response copied to clipboard');
+                              setTimeout(() => setCopiedMessageId(null), 2000);
+                            }}
+                            className="w-8 h-8 sm:w-7 sm:h-7 rounded-md text-light-ink-subtle hover:text-terracotta bg-light-surface/90 dark:bg-dark-surface/90 shadow-2xs min-w-[32px] min-h-[32px]"
+                            aria-label="Copy response"
+                          >
+                            {copiedMessageId === msg.id ? (
+                              <Check className="w-3.5 h-3.5 text-bamboo" />
+                            ) : (
+                              <Copy className="w-3.5 h-3.5" />
+                            )}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top">Copy response</TooltipContent>
+                      </Tooltip>
                     </div>
 
                     <MarkdownRenderer content={msg.text} />
 
+                    {/* Grounded Action Spec Card */}
                     {msg.specCard && (
-                      <div className="mt-3 pt-2 border-t border-light-border/60 dark:border-dark-border/60">
+                      <div className="mt-3 pt-2.5 border-t border-light-border/60 dark:border-dark-border/60">
                         <button
+                          type="button"
                           onClick={() => handleActionClick(msg.specCard)}
-                          className="w-full flex items-center justify-between p-2 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta/70 transition-all duration-200 group/card text-left"
+                          className="w-full flex items-center justify-between p-2.5 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface hover:border-terracotta transition-all text-left group/card cursor-pointer shadow-2xs"
                         >
-                          <div className="flex items-center gap-2 overflow-hidden">
-                            <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white flex-shrink-0">
-                              <Terminal className="w-3 h-3 text-white" />
+                          <div className="flex items-center gap-2 min-w-0 pr-2">
+                            <div className="w-6 h-6 rounded bg-terracotta flex items-center justify-center text-white shrink-0">
+                              <Terminal className="w-3.5 h-3.5 text-white" />
                             </div>
-                            <span className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted truncate">
+                            <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted truncate">
                               {msg.specCard.title}
                             </span>
                           </div>
-                          <span className="font-sans text-[11px] font-medium text-terracotta group-hover/card:translate-x-0.5 transition-transform flex-shrink-0 ml-2">
+                          <span className="font-sans text-xs font-semibold text-terracotta group-hover/card:translate-x-0.5 transition-transform shrink-0">
                             {msg.specCard.actionText}
                           </span>
                         </button>
@@ -1185,93 +1331,137 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle tracking-wider px-1">
-                    <span>TOKENS: {msg.tokensPerSec || 142}/s · CONFIDENCE: {msg.confidence || 99.4}%</span>
-                    {interactionId && (
-                      <span className="text-[9px] opacity-70">
-                        THREAD: {interactionId.slice(-8)}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+                  {/* Optional Telemetry Inspector Drawer */}
+                  {msg.telemetry && (
+                    <div className="px-1">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedTelemetryId((prev) =>
+                            prev === msg.id ? null : msg.id
+                          )
+                        }
+                        className="inline-flex items-center gap-1.5 text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle hover:text-terracotta dark:hover:text-terracotta transition-colors py-0.5 cursor-pointer select-none"
+                        aria-expanded={expandedTelemetryId === msg.id}
+                        aria-label={expandedTelemetryId === msg.id ? 'Collapse telemetry drawer' : 'Inspect telemetry'}
+                      >
+                        <Activity className="w-3 h-3 text-terracotta" />
+                        <span>{expandedTelemetryId === msg.id ? 'Hide Telemetry' : 'Inspect Telemetry'}</span>
+                        <ChevronDown
+                          className={`w-3 h-3 transition-transform duration-150 ${
+                            expandedTelemetryId === msg.id ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
 
-            {isStreaming && (
-              <div className="flex flex-col space-y-1.5 animate-in fade-in duration-150">
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-[11px] font-serif font-bold">
-                    原
-                  </div>
-                  <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
-                    Vincent AI
-                  </span>
-                  <span className="font-mono text-[9px] px-1.5 py-0.2 rounded border border-bamboo/40 bg-bamboo/10 text-bamboo tracking-wider uppercase animate-pulse">
-                    STREAMING
-                  </span>
-                </div>
-
-                <div className="relative rounded-xl border border-terracotta/35 dark:border-terracotta/40 bg-light-surface-card dark:bg-[#16171E] p-4 shadow-sm overflow-hidden select-text">
-                  <div className="absolute inset-1.5 pointer-events-none border border-terracotta/25 dark:border-terracotta/25 rounded-lg" />
-                  <div className="absolute top-2 right-2.5 select-none pointer-events-none text-3xl font-serif text-light-ink-subtle/10 dark:text-dark-ink-subtle/10">
-                    侘寂
-                  </div>
-                  <MarkdownRenderer content={displayedStreamingText} />
-                  <span className="inline-block w-1.5 h-3.5 bg-terracotta ml-1 animate-pulse align-middle" />
-                </div>
-
-                <div className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle tracking-wider px-1">
-                  TOKENS: 148/s · BUFFERING...
-                </div>
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* ─── 4. INPUT BAR DOCK ─── */}
-          <div className="relative z-30 p-3 border-t-2 border-terracotta/30 bg-light-surface dark:bg-[#15171F]">
-            {/* Staged file preview with thumbnail, mime badge, and 50MB limit indicator */}
-            {attachedFile && (
-              <div className="mb-2 flex items-center justify-between p-2 rounded-xl border border-terracotta/40 bg-terracotta/5 dark:bg-terracotta/10 text-xs font-mono text-light-ink dark:text-dark-ink shadow-xs animate-in fade-in slide-in-from-bottom-1 duration-150">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  {filePreviewUrl ? (
-                    <img
-                      src={filePreviewUrl}
-                      alt={attachedFile.name}
-                      className="w-10 h-10 object-cover rounded-lg border border-terracotta/40 shrink-0 shadow-xs"
-                    />
-                  ) : attachedFile.type.startsWith('image/') ? (
-                    <div className="w-10 h-10 rounded-lg bg-terracotta/15 flex items-center justify-center shrink-0 border border-terracotta/30">
-                      <ImageIcon className="w-5 h-5 text-terracotta" />
-                    </div>
-                  ) : (
-                    <div className="w-10 h-10 rounded-lg bg-terracotta/15 flex items-center justify-center shrink-0 border border-terracotta/30">
-                      <FileText className="w-5 h-5 text-terracotta" />
+                      {expandedTelemetryId === msg.id && (
+                        <div className="mt-1.5 p-2.5 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised text-[10px] font-mono space-y-1 animate-in fade-in duration-150">
+                          <div className="flex items-center justify-between text-light-ink-muted dark:text-dark-ink-muted">
+                            <span>Engine:</span>
+                            <span className="text-light-ink dark:text-dark-ink font-medium">{msg.telemetry.model}</span>
+                          </div>
+                          <div className="flex items-center justify-between text-light-ink-muted dark:text-dark-ink-muted">
+                            <span>Latency:</span>
+                            <span className="text-light-ink dark:text-dark-ink font-medium">{msg.telemetry.latencyMs} ms</span>
+                          </div>
+                          {msg.telemetry.tokensPerSec && (
+                            <div className="flex items-center justify-between text-light-ink-muted dark:text-dark-ink-muted">
+                              <span>Throughput:</span>
+                              <span className="text-light-ink dark:text-dark-ink font-medium">~{msg.telemetry.tokensPerSec} tok/s</span>
+                            </div>
+                          )}
+                          {msg.telemetry.interactionId && (
+                            <div className="flex items-center justify-between text-light-ink-muted dark:text-dark-ink-muted">
+                              <span>Thread:</span>
+                              <span className="text-light-ink dark:text-dark-ink font-medium">{msg.telemetry.interactionId.slice(-8)}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between text-light-ink-muted dark:text-dark-ink-muted">
+                            <span>Dispatch:</span>
+                            <span className={msg.telemetry.isFallback ? 'text-ochre font-medium' : 'text-bamboo font-medium'}>
+                              {msg.telemetry.isFallback ? 'Local Architectural Knowledge Base' : 'Live Agent Microservice'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
-                  <div className="min-w-0 flex flex-col">
-                    <span className="truncate font-sans font-medium text-xs text-light-ink dark:text-dark-ink max-w-[200px] sm:max-w-[260px]">
-                      {attachedFile.name}
-                    </span>
-                    <div className="flex items-center gap-1.5 text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle mt-0.5">
-                      <span className="px-1.5 py-0.2 rounded bg-terracotta/15 text-terracotta font-mono font-semibold uppercase text-[9px]">
-                        {attachedFile.name.split('.').pop() || 'FILE'}
-                      </span>
-                      <span>{formatFileSize(attachedFile.size)}</span>
-                      <span className="opacity-60">/ 50 MB max</span>
-                    </div>
-                  </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setAttachedFile(null)}
-                  className="p-1 rounded-md text-light-ink-muted hover:text-terracotta hover:bg-terracotta/10 transition-colors ml-2 shrink-0 cursor-pointer"
-                  title="Remove attachment"
-                  aria-label="Remove attachment"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+              </MessageScrollerItem>
+            );
+                  })}
+
+                  {/* Live Streaming State */}
+                  {isStreaming && (
+                    <MessageScrollerItem messageId="streaming">
+                      <div className="flex flex-col space-y-1.5 animate-in fade-in duration-150">
+                        <div className="flex items-center gap-2 px-1">
+                          <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-[10px] font-serif font-bold">
+                            原
+                          </div>
+                          <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
+                            Vincent AI
+                          </span>
+                          <Badge variant="terracotta" className="text-[10px] px-1.5 py-0 h-4 animate-pulse">
+                            STREAMING
+                          </Badge>
+                        </div>
+
+                        <div className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-raised p-4 shadow-2xs select-text">
+                          {displayedStreamingText ? (
+                            <>
+                              <MarkdownRenderer content={displayedStreamingText} />
+                              <span className="inline-block w-1.5 h-3.5 bg-terracotta ml-1 animate-pulse align-middle" aria-hidden="true" />
+                            </>
+                          ) : (
+                            <div className="flex items-center gap-2 text-xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle py-1">
+                              <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
+                              <span>Synthesizing response...</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </MessageScrollerItem>
+                  )}
+                </MessageScrollerContent>
+              </MessageScrollerViewport>
+              <MessageScrollerButton />
+            </MessageScroller>
+          </MessageScrollerProvider>
+
+          {/* ─── INPUT DOCK BAR ─── */}
+          <div className="relative z-30 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised">
+            {/* Staged file preview with canonical shadcn Attachment */}
+            {attachedFile && (
+              <div className="mb-2 animate-in fade-in duration-150">
+                <Attachment state="idle" size="sm">
+                  <AttachmentMedia variant={filePreviewUrl ? 'image' : 'icon'}>
+                    {filePreviewUrl ? (
+                      <img
+                        src={filePreviewUrl}
+                        alt={attachedFile.name}
+                        className="size-full object-cover"
+                      />
+                    ) : (
+                      <FileText className="size-4" />
+                    )}
+                  </AttachmentMedia>
+                  <AttachmentContent>
+                    <AttachmentTitle>{attachedFile.name}</AttachmentTitle>
+                    <AttachmentDescription>
+                      {formatFileSize(attachedFile.size)} · {attachedFile.name.split('.').pop()?.toUpperCase() || 'FILE'} / 50 MB max
+                    </AttachmentDescription>
+                  </AttachmentContent>
+                  <AttachmentActions>
+                    <AttachmentAction
+                      onClick={() => setAttachedFile(null)}
+                      title="Remove attachment"
+                      aria-label="Remove attachment"
+                    >
+                      <X className="size-3.5" />
+                    </AttachmentAction>
+                  </AttachmentActions>
+                </Attachment>
               </div>
             )}
 
@@ -1280,62 +1470,74 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="relative flex items-center rounded-xl border-2 border-terracotta/40 dark:border-terracotta/50 bg-light-surface-raised dark:bg-dark-surface-raised px-3 py-1.5 focus-within:border-terracotta transition-colors shadow-inner"
+              className="relative flex items-end rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-card p-1.5 focus-within:border-terracotta focus-within:ring-1 focus-within:ring-terracotta/30 transition-all shadow-xs"
             >
-              {isAdmin && (
-                <>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*,application/pdf,.docx"
-                    className="hidden"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files[0]) {
-                        validateAndStageFile(e.target.files[0]);
-                      }
-                      e.target.value = '';
-                    }}
-                  />
-                  <button
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept={ACCEPTED_FILE_TYPES_ATTR}
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    validateAndStageFile(e.target.files[0]);
+                  }
+                  e.target.value = '';
+                }}
+              />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="icon"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isStreaming}
-                    className="p-1.5 rounded-lg text-light-ink-subtle hover:text-terracotta hover:bg-terracotta/10 transition-colors mr-1 shrink-0 disabled:opacity-50 cursor-pointer"
-                    title="Attach file (Paste, drag & drop, or click · Max 50 MB)"
-                    aria-label="Attach file"
+                    className="w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-lg text-light-ink-subtle hover:text-terracotta hover:bg-terracotta/10 shrink-0 mb-0.5 cursor-pointer"
+                    aria-label="Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX up to 50 MB)"
                   >
                     <Paperclip className="w-4 h-4" />
-                  </button>
-                </>
-              )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="start" sideOffset={6}>
+                  Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX · Max 50 MB)
+                </TooltipContent>
+              </Tooltip>
 
               <label htmlFor={inputId} className="sr-only">
                 Ask about systems, code, or craft
               </label>
-              <input
+              <ChatInput
                 id={inputId}
                 ref={inputRef}
-                type="text"
                 value={inputValue}
-                maxLength={500}
+                maxLength={800}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Ask about systems, code, or craft..."
+                onEnterSubmit={() => handleSendMessage()}
+                placeholder="Ask about systems, code, or craft... (Enter to send, Shift+Enter for newline)"
                 disabled={isStreaming}
-                className="flex-1 bg-transparent text-xs sm:text-[13px] text-light-ink dark:text-dark-ink placeholder:text-light-ink-subtle/70 dark:placeholder:text-dark-ink-subtle/70 focus:outline-none disabled:opacity-50 pr-16"
+                className="py-1.5 px-2 text-xs sm:text-[13px]"
               />
 
-              <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle mr-2 select-none">
-                {inputValue.length}/500
-              </span>
-
-              <button
-                type="submit"
-                disabled={(!inputValue.trim() && !attachedFile) || isStreaming}
-                className="w-7 h-7 rounded-lg bg-terracotta hover:bg-terracotta-hover disabled:opacity-30 disabled:hover:bg-terracotta text-white flex items-center justify-center transition-all duration-150 active:scale-95 flex-shrink-0 shadow-xs"
-                aria-label="Send query"
-              >
-                <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
-              </button>
+              <div className="flex items-center gap-1.5 shrink-0 mb-0.5 pr-0.5">
+                {inputValue.length > 0 && (
+                  <span className="hidden sm:inline font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle select-none">
+                    {inputValue.length}/800
+                  </span>
+                )}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="submit"
+                      disabled={(!inputValue.trim() && !attachedFile) || isStreaming}
+                      className="w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-lg bg-terracotta hover:bg-terracotta-hover text-white flex items-center justify-center transition-transform active:scale-95 shrink-0 p-0 shadow-xs"
+                      aria-label="Send query"
+                    >
+                      <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">Send query (Enter)</TooltipContent>
+                </Tooltip>
+              </div>
             </form>
           </div>
         </div>

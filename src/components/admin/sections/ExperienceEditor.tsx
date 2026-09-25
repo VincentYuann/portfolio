@@ -316,7 +316,7 @@ export const ExperienceEditor: React.FC = () => {
                 <span
                   className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-[11px] font-bold uppercase tracking-wider ${
                     exp.isActive
-                      ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-[#ff7d63]'
+                      ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-terracotta-soft'
                       : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'
                   }`}
                 >
@@ -332,7 +332,7 @@ export const ExperienceEditor: React.FC = () => {
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 bg-terracotta/5 dark:bg-terracotta/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
                   <span className={`font-serif font-bold text-terracotta leading-tight text-center ${
                     (exp.kanji?.length || 0) > 2
-                      ? 'text-[9px] tracking-tighter'
+                      ? 'text-[10px] tracking-tighter leading-none'
                       : (exp.kanji?.length || 0) === 2
                       ? 'text-[11px] sm:text-xs tracking-tight'
                       : 'text-sm sm:text-base'

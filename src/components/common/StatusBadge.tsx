@@ -43,10 +43,10 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   // Custom theme overrides from experience milestones
   const activeClass = bg && border && text
     ? `${bg} ${border} ${text} border shadow-xs`
-    : 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#ff7d63] dark:shadow-[0_0_10px_rgba(200,60,35,0.25)]';
+    : 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-terracotta-soft dark:shadow-[0_0_10px_rgba(200,60,35,0.25)]';
 
   const completedClass =
-    'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#20222a] dark:border-[#383b47] dark:text-stone-400';
+    'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-dark-surface dark:border-dark-border dark:text-dark-ink-muted';
 
   const dotActiveClass = dotBg || 'bg-terracotta shadow-[0_0_6px_rgba(200,60,35,0.8)]';
 

@@ -40,7 +40,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
           onNavigate('projects');
         }
       }}
-      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
+      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-terracotta/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200"
     >
       <Layers className="w-3.5 h-3.5 text-terracotta" />
       <span className="sm:hidden">All Projects ({projects?.length || 0})</span>
@@ -78,7 +78,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
         />
 
         {/* Alternating Editorial Project Cards Stack (Top 3 on Home) */}
-        <div className="flex flex-col space-y-6 sm:space-y-8">
+        <div className="flex flex-col gap-6 sm:gap-8">
           {displayedProjects.map((project, index) => {
             const isAlternate = index % 2 === 1;
             const isCurrent = typeof project.isActive === 'boolean' ? project.isActive : index === 0;
@@ -86,7 +86,8 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
             return (
               <article
                 key={project.id}
-                className="interactive-card group relative w-full bg-light-surface-card dark:bg-[#1B1C22] hover:bg-light-surface dark:hover:bg-[#202229] border border-light-border dark:border-[#2D3039] rounded-xl p-4 sm:p-8 transition-all duration-300 shadow-sm hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame overflow-visible"
+                onClick={() => setSelectedProject(project)}
+                className="interactive-card group relative w-full bg-light-surface-card dark:bg-dark-surface-card hover:bg-light-surface dark:hover:bg-dark-surface border border-light-border dark:border-dark-border rounded-xl p-4 sm:p-8 transition-all duration-300 shadow-sm hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame overflow-visible cursor-pointer"
               >
                 {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered project card */}
                 <EnsoOrbital
@@ -105,7 +106,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                 >
                   {/* Visual Media Column */}
                   <div className={`lg:col-span-6 ${isAlternate ? 'lg:col-start-7' : ''}`}>
-                    <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden bg-light-surface-muted dark:bg-[#121316] border border-light-border/70 dark:border-[#2D3039]">
+                    <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden bg-light-surface-muted dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70">
                       <img
                         src={project.image}
                         alt={project.title}
@@ -119,7 +120,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
 
                   {/* Narrative & Specifications Column */}
                   <div
-                    className={`lg:col-span-6 flex flex-col justify-center space-y-4 ${
+                    className={`lg:col-span-6 flex flex-col justify-center gap-4 ${
                       isAlternate ? 'lg:col-start-1' : ''
                     }`}
                   >
@@ -165,7 +166,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                     </div>
 
                     {/* Action Foot Link & Direct Repository / Live Triggers */}
-                    <div className="pt-3 border-t border-light-border/60 dark:border-[#2D3039]/80 flex items-center justify-between gap-4">
+                    <div className="pt-3 border-t border-light-border/60 dark:border-dark-border/80 flex items-center justify-between gap-4">
                       <button
                         type="button"
                         onClick={() => setSelectedProject(project)}

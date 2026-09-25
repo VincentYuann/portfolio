@@ -10,6 +10,7 @@ export interface ChatResponse {
   user_type: 'Admin' | 'Logged-in User' | 'Guest' | string;
   user_email?: string | null;
   status: string;
+  model?: string | null;
 }
 
 export interface SendMessageOptions {
@@ -72,38 +73,50 @@ export async function sendToAiAgent({
       headers,
       body: formData,
     });
-  } catch (initialErr) {
-    // If relative endpoint fails (e.g. direct static run without proxy), attempt direct localhost:8000
-    if (primaryEndpoint.startsWith('/api')) {
-      try {
-        response = await fetch('http://127.0.0.1:8000/api/v1/chat', {
-          method: 'POST',
-          headers,
-          body: formData,
-        });
-      } catch {
-        throw new Error(
-          'Could not reach AI Agent microservice at http://127.0.0.1:8000. Please verify the FastAPI backend is running.'
-        );
-      }
-    } else {
-      throw new Error(
-        `Failed to reach AI Agent microservice: ${(initialErr as Error).message}`
-      );
-    }
+  } catch {
+    throw new Error(
+      'Unable to connect to the AI companion. Please check your connection and try again.'
+    );
   }
 
   if (!response.ok) {
-    let errorDetail = `Microservice returned HTTP ${response.status}`;
+    let errorDetail = '';
     try {
       const errJson = await response.json();
       if (errJson.detail) {
-        errorDetail = typeof errJson.detail === 'string' ? errJson.detail : JSON.stringify(errJson.detail);
+        errorDetail =
+          typeof errJson.detail === 'string'
+            ? errJson.detail
+            : Array.isArray(errJson.detail)
+            ? errJson.detail.map((d: any) => d.msg || d).join(', ')
+            : JSON.stringify(errJson.detail);
       }
     } catch {
       // ignore
     }
-    throw new Error(errorDetail);
+
+    if (errorDetail) {
+      // Strip any raw HTTP status code prefixes if present
+      const clean = errorDetail
+        .replace(/^HTTP\s*\d+:\s*/i, '')
+        .replace(/^\d{3}\s+[a-zA-Z\s]+:\s*/, '')
+        .trim();
+      throw new Error(clean || 'The AI service encountered an issue. Please try again.');
+    }
+
+    if (response.status === 403) {
+      throw new Error('File uploads are restricted to administrators.');
+    }
+    if (response.status === 413) {
+      throw new Error('The attached file exceeds the 50 MB size limit.');
+    }
+    if (response.status === 415) {
+      throw new Error('The attached file type is not supported.');
+    }
+    if (response.status === 429) {
+      throw new Error('Message limit reached. Please wait a moment and try again.');
+    }
+    throw new Error('The AI service is temporarily unavailable. Please try again shortly.');
   }
 
   const data: ChatResponse = await response.json();

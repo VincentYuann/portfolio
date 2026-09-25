@@ -10,7 +10,7 @@ const labelVariants = cva(
 export const RequiredStar: React.FC<{ className?: string }> = ({ className = '' }) => (
   <span
     aria-hidden="true"
-    className={cn('text-terracotta dark:text-[#ff7d63] font-black text-sm ml-1 select-none inline-block align-middle leading-none', className)}
+    className={cn('text-terracotta dark:text-terracotta-soft font-black text-sm ml-1 select-none inline-block align-middle leading-none', className)}
     title="Required field"
   >
     *

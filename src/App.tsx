@@ -14,6 +14,7 @@ import { supabase } from './lib/supabase';
 import { toast } from 'sonner';
 import { ThemedToaster } from './components/layout/ThemedToaster';
 import { AiChatWidget } from './components/common/AiChatWidget';
+import { TooltipProvider } from './components/ui/tooltip';
 
 import {
   ProjectsPageSkeleton,
@@ -318,60 +319,62 @@ export const App: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <SiteDataProvider>
-        <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink washi-pattern transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta">
-          <Header
-            currentView={currentView}
-            onNavigate={handleNavigate}
-            onOpenContact={() => handleNavigate('home', 'contact')}
-            isAdmin={isAdmin}
-            isVisitor={isVisitor}
-            onLogout={handleLogout}
-          />
+      <TooltipProvider delayDuration={200}>
+        <SiteDataProvider>
+          <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink washi-pattern transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta">
+            <Header
+              currentView={currentView}
+              onNavigate={handleNavigate}
+              onOpenContact={() => handleNavigate('home', 'contact')}
+              isAdmin={isAdmin}
+              isVisitor={isVisitor}
+              onLogout={handleLogout}
+            />
 
-          <main className="flex-1 w-full">
-            <Suspense fallback={<RouteLoadingFallback currentView={currentView} />}>
-              {currentView === 'login' && (
-                <LoginPage onNavigate={handleNavigate} isVisitor={isVisitor} onLogout={handleLogout} />
-              )}
+            <main className="flex-1 w-full">
+              <Suspense fallback={<RouteLoadingFallback currentView={currentView} />}>
+                {currentView === 'login' && (
+                  <LoginPage onNavigate={handleNavigate} isVisitor={isVisitor} onLogout={handleLogout} />
+                )}
 
-              <div key={currentView} className="animate-view-enter w-full">
-                {currentView === 'edit' && (
-                  isAdmin ? (
-                    <EditPage onNavigate={handleNavigate} />
-                  ) : !authReady ? (
-                    <div className="min-h-screen flex items-center justify-center pt-20">
-                      <div className="text-center font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-                        Verifying authorization…
+                <div key={currentView} className="animate-view-enter w-full">
+                  {currentView === 'edit' && (
+                    isAdmin ? (
+                      <EditPage onNavigate={handleNavigate} />
+                    ) : !authReady ? (
+                      <div className="min-h-screen flex items-center justify-center pt-20">
+                        <div className="text-center font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+                          Verifying authorization…
+                        </div>
                       </div>
-                    </div>
-                  ) : null
-                )}
+                    ) : null
+                  )}
 
-                {currentView === 'resume' && (
-                  <ResumePage onNavigate={handleNavigate} />
-                )}
+                  {currentView === 'resume' && (
+                    <ResumePage onNavigate={handleNavigate} />
+                  )}
 
-                {currentView === 'projects' && (
-                  <ProjectsPage onNavigate={handleNavigate} />
-                )}
+                  {currentView === 'projects' && (
+                    <ProjectsPage onNavigate={handleNavigate} />
+                  )}
 
-                {currentView === 'hobbies' && (
-                  <HobbiesPage onNavigate={handleNavigate} />
-                )}
+                  {currentView === 'hobbies' && (
+                    <HobbiesPage onNavigate={handleNavigate} />
+                  )}
 
-                {currentView === 'home' && (
-                  <HomeView onNavigate={handleNavigate} />
-                )}
-              </div>
-            </Suspense>
-          </main>
+                  {currentView === 'home' && (
+                    <HomeView onNavigate={handleNavigate} />
+                  )}
+                </div>
+              </Suspense>
+            </main>
 
-          {currentView === 'home' && <Footer onNavigate={handleNavigate} />}
-        </div>
-        <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
-        <ThemedToaster />
-      </SiteDataProvider>
+            {currentView === 'home' && <Footer onNavigate={handleNavigate} />}
+          </div>
+          <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
+          <ThemedToaster />
+        </SiteDataProvider>
+      </TooltipProvider>
     </ThemeProvider>
   );
 };

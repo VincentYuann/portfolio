@@ -44,7 +44,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
 
       {/* Card Header */}
       <div className="relative z-10">
-        <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60">
+        <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-dark-border/60">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="font-mono text-[10px] font-bold text-terracotta tracking-wider uppercase">
@@ -154,12 +154,12 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
               return (
                 <div
                   key={mIdx}
-                  className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2a2c38] shadow-xs"
+                  className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-lg bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border shadow-xs"
                 >
-                  <span className="font-semibold text-light-ink dark:text-[#EDEAE4] text-[11px] sm:text-xs tracking-tight">
+                  <span className="font-semibold text-light-ink dark:text-dark-ink text-[11px] sm:text-xs tracking-tight">
                     {labelText}
                   </span>
-                  <span className="font-normal text-light-ink-muted dark:text-[#9CA3AF] text-[11px] sm:text-xs">
+                  <span className="font-normal text-light-ink-muted dark:text-dark-ink-muted text-[11px] sm:text-xs">
                     {item.value}
                   </span>
                 </div>

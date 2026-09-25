@@ -280,9 +280,9 @@ Every major section across the portfolio follows an identical 5-tier structural 
 - **File**: `src/components/HankoStamp.tsx`
 - **Purpose**: Authentic cinnabar vermilion seal script mark (`原` - Haru/Origin by default) enclosed in a double square hairline border with breathing pulse animation (`animate-seal-breathe` 6s).
 - **Hero Showcase Card**: Houses the seal, live coordinate header (`PHILADELPHIA, PA`), availability pill (`OPEN TO ROLES · FULL-STACK`), and a 3-column vertical tategaki prose widget:
-  1. `間と余白の美学` (`MA · 間` — Aesthetics of Negative Space)
-  2. `静寂と簡素な調和` (`WA · 調和` — Silence and Simple Harmony)
-  3. `職人の精緻な組手` (`CRAFT · 職人` — Artisan Precision and Joinery)
+  1. `間と余白の美学` (`MA · 間`: Aesthetics of Negative Space)
+  2. `静寂と簡素な調和` (`WA · 調和`: Silence and Simple Harmony)
+  3. `職人の精緻な組手` (`CRAFT · 職人`: Artisan Precision and Joinery)
 
 ### 4. Technical Domain Badges (`<TechTag />`)
 - **File**: `src/components/TechTag.tsx`
@@ -311,6 +311,16 @@ Every major section across the portfolio follows an identical 5-tier structural 
   - Left column: 16:10 showcase media, technology stack badges, and direct external links.
   - Right column: Title, subtitle, architectural narrative, key architectural highlights bullet list, and operational metrics grid.
   - Dismissal: Keyboard Escape, backdrop click, or Close button.
+
+### 9. AI Companion Widget (`<AiChatWidget />`)
+- **File**: `src/components/common/AiChatWidget.tsx`
+- **Anatomy**:
+  - Singular Hanko trigger button (`問`) with desktop keyboard shortcut (`⌘K`).
+  - Artisan dialog window adhering to canonical `#F7F0E3` (Day) and `#1B1C22` / `#2A2C32` (Night) tokens.
+  - Opaque quick prompt pills bar (`bg-light-surface-raised dark:bg-dark-surface-card`) preventing message text bleed-through.
+  - Dragging with 6px intent threshold (preventing accidental click teleportation) and explicit docking control (`RotateCcw`).
+  - Strict multimodal upload constraints: Images (`PNG`, `JPEG`, `WEBP`, `GIF`) and Documents (`PDF`, `DOCX`, `DOC`) up to 50 MB, streaming in-memory to the Gemini Files API.
+  - Full keyboard focus restoration on dismissal, meeting WCAG 2.4.3 focus order.
 
 ---
 

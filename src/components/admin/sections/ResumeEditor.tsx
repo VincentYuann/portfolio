@@ -280,7 +280,7 @@ export const ResumeEditor: React.FC = () => {
 
       {/* Upload Panel */}
       {tab === 'upload' && (
-        <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl p-6 sm:p-8 shadow-xs classical-card-frame">
+        <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl p-6 sm:p-8 shadow-xs classical-card-frame">
           <CornerBrackets size="md" />
           <input
             ref={fileInputRef}
@@ -348,7 +348,7 @@ export const ResumeEditor: React.FC = () => {
 
       {/* LaTeX Code Editor */}
       {tab === 'editor' && (
-        <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs overflow-hidden classical-card-frame">
+        <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl shadow-xs overflow-hidden classical-card-frame">
           <CornerBrackets size="md" />
           {/* Editor Header Bar */}
           <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">

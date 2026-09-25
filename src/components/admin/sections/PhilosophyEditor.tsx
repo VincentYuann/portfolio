@@ -246,7 +246,7 @@ export const PhilosophyEditor: React.FC = () => {
       />
 
       {/* Collapsible Card 1: Origin Trajectory Narrative */}
-      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] shadow-xs classical-card-frame overflow-hidden transition-colors">
+      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs classical-card-frame overflow-hidden transition-colors">
         <CornerBrackets size="sm" />
         <button
           type="button"
@@ -369,7 +369,7 @@ export const PhilosophyEditor: React.FC = () => {
       </div>
 
       {/* Collapsible Card 2: Core Philosophy Pillars */}
-      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] shadow-xs classical-card-frame overflow-hidden transition-colors">
+      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs classical-card-frame overflow-hidden transition-colors">
         <CornerBrackets size="sm" />
         <button
           type="button"
@@ -409,7 +409,7 @@ export const PhilosophyEditor: React.FC = () => {
               {pillars.map((pillar) => (
                 <div
                   key={pillar.position}
-                  className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-[#181920] p-5 sm:p-6 shadow-xs classical-card-frame group hover:border-terracotta/40 transition-colors"
+                  className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card p-5 sm:p-6 shadow-xs classical-card-frame group hover:border-terracotta/40 transition-colors"
                 >
                   <CornerBrackets size="sm" />
 
@@ -428,7 +428,7 @@ export const PhilosophyEditor: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => deletePillar(pillar.position)}
-                          className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded-md hover:bg-light-surface dark:hover:bg-[#20222a] transition-colors cursor-pointer"
+                          className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded-md hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer"
                           title="Delete pillar"
                           aria-label={`Delete Pillar 0${pillar.position}`}
                         >

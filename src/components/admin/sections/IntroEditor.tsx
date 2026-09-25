@@ -258,7 +258,7 @@ export const IntroEditor: React.FC = () => {
       />
 
       {/* Collapsible Section 1: Identity & Hero Statement */}
-      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
+      <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
         <CornerBrackets size="sm" />
         <button
           type="button"
@@ -348,7 +348,7 @@ export const IntroEditor: React.FC = () => {
       </div>
 
       {/* Collapsible Section 2: Contact & Social Presence */}
-      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
+      <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
         <CornerBrackets size="sm" />
         <button
           type="button"
@@ -429,7 +429,7 @@ export const IntroEditor: React.FC = () => {
       </div>
 
       {/* Collapsible Section 3: Technical Domains Ribbon */}
-      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
+      <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
         <CornerBrackets size="sm" />
         <button
           type="button"
@@ -538,7 +538,7 @@ export const IntroEditor: React.FC = () => {
       </div>
 
       {/* Collapsible Section 4: Hanko Seal Showcase Card (認印) */}
-      <div className="relative bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
+      <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
         <CornerBrackets size="sm" />
         <button
           type="button"

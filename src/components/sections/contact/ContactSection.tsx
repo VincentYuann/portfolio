@@ -131,9 +131,9 @@ export const ContactSection: React.FC = () => {
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             {/* Left Column: Narrative & Direct Links */}
-            <div className="lg:col-span-6 flex flex-col space-y-6">
+            <div className="lg:col-span-6 flex flex-col gap-6">
               <div className="flex items-center gap-2 mb-2">
-                <span className="font-serif text-terracotta text-sm">05 //</span>
+                <span className="font-serif text-terracotta text-sm">06 //</span>
                 <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                   DIALOGUE &amp; CORRESPONDENCE · 対話と通信
                 </span>
@@ -166,7 +166,7 @@ export const ContactSection: React.FC = () => {
                       <button
                         type="button"
                         onClick={handleCopyEmail}
-                        className="inline-flex items-center gap-1.5 px-4 py-3 bg-light-surface-raised dark:bg-[#1B1C22] border border-light-border dark:border-[#2D3039] hover:bg-light-surface dark:hover:bg-[#252831] hover:border-ochre/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200 cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-4 py-3 bg-light-surface-raised dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface-raised hover:border-ochre/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200 cursor-pointer"
                         title="Copy email to clipboard"
                       >
                         {copiedEmail ? (
@@ -189,7 +189,7 @@ export const ContactSection: React.FC = () => {
                       href={contactGithub}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-3 bg-light-surface-raised dark:bg-[#1B1C22] border border-light-border dark:border-[#2D3039] hover:bg-light-surface dark:hover:bg-[#252831] hover:border-ochre/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200"
+                      className="inline-flex items-center gap-2 px-4 py-3 bg-light-surface-raised dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface-raised hover:border-ochre/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200"
                     >
                       <Github className="w-4 h-4" />
                       <span className="tracking-widest">Github</span>
@@ -201,7 +201,7 @@ export const ContactSection: React.FC = () => {
                       href={contactLinkedin}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-3 bg-light-surface-raised dark:bg-[#1B1C22] border border-light-border dark:border-[#2D3039] hover:bg-light-surface dark:hover:bg-[#252831] hover:border-ochre/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200"
+                      className="inline-flex items-center gap-2 px-4 py-3 bg-light-surface-raised dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface-raised hover:border-ochre/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest rounded-lg shadow-xs transition-all duration-200"
                     >
                       <Linkedin className="w-4 h-4" />
                       <span className="tracking-widest">Linkedin</span>
@@ -228,7 +228,7 @@ export const ContactSection: React.FC = () => {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
                   {/* Honeypot field for bot protection - invisible to human visitors */}
                   <div className="absolute opacity-0 -z-10 select-none pointer-events-none w-0 h-0 overflow-hidden" aria-hidden="true">
                     <label htmlFor="website_check">Leave this field blank</label>

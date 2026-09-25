@@ -78,7 +78,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Header Title Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-light-border/70 dark:border-[#2D3039]/80 mb-8 sm:mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-8 sm:mb-10">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>

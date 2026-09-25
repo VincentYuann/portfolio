@@ -14,7 +14,7 @@ const badgeVariants = cva(
         destructive:
           'border-transparent bg-red-500 text-white shadow-2xs hover:bg-red-600',
         outline:
-          'border-light-border dark:border-[#333640] text-light-ink dark:text-dark-ink bg-light-surface dark:bg-[#16171D]',
+          'border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink bg-light-surface dark:bg-dark-surface-card',
         terracotta:
           'border-terracotta/30 bg-terracotta/10 text-terracotta dark:text-terracotta-soft',
       },

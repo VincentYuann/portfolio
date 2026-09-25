@@ -143,13 +143,14 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
 
         {/* Logo URL / File Upload Row (when logo option enabled) */}
         {showLogoOption && onLogoUrlChange && (
-          <div className="space-y-1.5 pt-2.5 border-t border-light-border/40 dark:border-dark-border/40">
+          <div className="flex flex-col gap-1.5 pt-2.5 border-t border-light-border/40 dark:border-dark-border/40">
             <div className="flex items-center gap-1.5">
               <Input
                 type="url"
                 value={logoUrl}
                 onChange={(e) => onLogoUrlChange(e.target.value)}
                 placeholder="Logo URL (e.g. https://...)"
+                aria-label="Emblem or company logo URL"
                 className="text-xs font-mono h-8 flex-1 min-w-0"
               />
 

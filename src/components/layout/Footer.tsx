@@ -8,7 +8,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
-    <footer className="w-full bg-light-surface-card dark:bg-[#15161C] border-t border-light-border dark:border-[#2D3039] mt-16 relative overflow-hidden">
+    <footer className="w-full bg-light-surface-card dark:bg-dark-surface-card border-t border-light-border dark:border-dark-border mt-16 relative overflow-hidden">
       {/* Decorative Wabi-Sabi Watermark */}
       <div className="absolute right-6 -bottom-6 select-none pointer-events-none opacity-[0.03] dark:opacity-[0.05] font-serif text-9xl">
         侘寂

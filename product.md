@@ -77,8 +77,12 @@ graph TD
   3. **Projects**: Project cards, descriptions, architecture points, metrics, and tags (`Save Project` per item, `Save All Projects` global).
   4. **Resume**: Live LaTeX source editor with Supabase database persistence (`Save LaTeX Source`, `Save & Publish PDF`).
   5. **Philosophy**: 2 collapsible sections (`Origin Trajectory` 4-phase editor + `Architectural Pillars`).
-* **Sticky Sub-Navigation Bar**: Horizontal scrolling pill bar on mobile with short labels (`Intro`, `Projects`, `Exit`), and full labels on desktop.
-* **Live Database Syncing & Toast Feedback**: Optimistic updates, dirty state detection (`portfolio-admin-dirty` / `portfolio-admin-clean`), and instant `sonner` toast confirmations.
+### 05. Vincent's AI Companion (`<AiChatWidget />`)
+* **Wabi-Sabi Conversational Shell**: Floating singular Hanko launcher stamp (`問`), auto-expanding `ChatInput` with `Enter` (send) and `Shift+Enter` (newline), and keyboard shortcut (`Cmd+K` / `Ctrl+K`).
+* **Multimodal Uploads**: Accepts images (`PNG`, `JPEG`, `WEBP`, `GIF`) and documents (`PDF`, `DOCX`, `DOC`) up to 50 MB, streaming in-memory to the Gemini Files API.
+* **Microservice Backend Integration**: Orchestrates queries via a companion FastAPI microservice utilizing `gemini-3.5-flash-lite` and `gemini-3.1-flash-lite`, with offline fallback to local architectural knowledge base.
+* **Full Keyboard & Focus Trapping**: WCAG 2.4.3 compliant focus order, `aria-live="polite"` streaming status announcements, and keyboard restoration on modal dismiss.
+* **Separation of Concerns**: Microservice pipelines, tools, and testing suites are encapsulated in the companion `AI Agent` repository.
 
 ---
 

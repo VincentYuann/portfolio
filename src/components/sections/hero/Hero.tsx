@@ -87,13 +87,13 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         {/* Subtle Celestial Orbiting Dust Particles */}
         <div className="absolute left-1/4 top-1/3 w-1.5 h-1.5 rounded-full bg-ochre/40 mote-1 blur-[0.5px] z-20" />
         <div className="absolute right-1/3 bottom-28 w-2 h-2 rounded-full bg-ochre/30 mote-2 blur-[0.5px] z-20" />
-        <div className="absolute right-1/2 bottom-12 w-1 h-1 rounded-full bg-light-ink-muted/30 dark:bg-[#edeae4]/35 mote-3 blur-[0.5px] z-20" />
+        <div className="absolute right-1/2 bottom-12 w-1 h-1 rounded-full bg-light-ink-muted/30 dark:bg-dark-ink/35 mote-3 blur-[0.5px] z-20" />
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Main Content Column (8 cols) */}
-          <div className="lg:col-span-8 flex flex-col space-y-5 sm:space-y-6 pt-1 sm:pt-2">
+          <div className="lg:col-span-8 flex flex-col gap-5 sm:gap-6 pt-1 sm:pt-2">
             {/* Display Headline: Bold Editorial Serifs with High Contrast */}
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink leading-[1.14] sm:leading-[1.12] tracking-tight font-bold text-balance">
               {headline}
@@ -128,7 +128,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                     onNavigate('resume');
                   }
                 }}
-                className="group inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-[#2D3039] hover:border-terracotta/40 text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-lg shadow-xs transition-all duration-200 hover:-translate-y-0.5 cursor-pointer shrink-0"
+                className="group inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/40 text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-lg shadow-xs transition-all duration-200 hover:-translate-y-0.5 cursor-pointer shrink-0"
               >
                 <span className="sm:hidden">View Resume</span>
                 <span className="hidden sm:inline">View Resume & CV</span>
@@ -154,7 +154,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                     return (
                       <div
                         key={pillar.label}
-                        className="inline-flex flex-wrap items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-xs border border-light-border/80 dark:border-[#2D3039] hover:border-terracotta/40 transition-colors shadow-2xs"
+                        className="inline-flex flex-wrap items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-xs border border-light-border/80 dark:border-dark-border hover:border-terracotta/40 transition-colors shadow-2xs"
                       >
                         <span className="font-mono text-[10px] sm:text-[11px] font-bold text-terracotta uppercase tracking-wider shrink-0">
                           {pillar.label}
@@ -167,7 +167,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                                 key={tag}
                                 tag={tag}
                                 size="sm"
-                                className="border-light-border/40 dark:border-dark-border/40 bg-light-surface dark:bg-[#16171D] text-[10px]"
+                                className="border-light-border/40 dark:border-dark-border/40 bg-light-surface dark:bg-dark-surface-card text-[10px]"
                               />
                             ))}
                           </div>

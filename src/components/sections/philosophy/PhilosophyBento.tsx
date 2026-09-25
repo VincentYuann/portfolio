@@ -8,32 +8,32 @@ import { useSiteData } from '../../../context/SiteDataContext';
 
 const TRAJECTORY_THEMES = [
   {
-    eraColor: 'text-ochre dark:text-[#E5B88F]',
-    tagBg: 'bg-ochre/10 dark:bg-ochre/20 text-ochre dark:text-[#E5B88F] border-ochre/30',
+    eraColor: 'text-ochre dark:text-ochre',
+    tagBg: 'bg-ochre/10 dark:bg-ochre/20 text-ochre dark:text-ochre border-ochre/30',
     borderHover: 'hover:border-ochre/50',
     accentBar: 'border-l-2 border-l-ochre/70 dark:border-l-ochre/70',
     glow: 'hover:shadow-[0_4px_20px_rgba(212,155,106,0.12)]',
   },
   {
-    eraColor: 'text-[#4A6B82] dark:text-[#8EA8C3]',
-    tagBg: 'bg-[#4A6B82]/10 dark:bg-[#4A6B82]/20 text-[#4A6B82] dark:text-[#8EA8C3] border-[#4A6B82]/30',
-    borderHover: 'hover:border-[#4A6B82]/50',
-    accentBar: 'border-l-2 border-l-[#4A6B82]/70 dark:border-l-[#4A6B82]/70',
-    glow: 'hover:shadow-[0_4px_20px_rgba(74,107,130,0.12)]',
+    eraColor: 'text-bamboo dark:text-bamboo',
+    tagBg: 'bg-bamboo/10 dark:bg-bamboo/20 text-bamboo dark:text-bamboo border-bamboo/30',
+    borderHover: 'hover:border-bamboo/50',
+    accentBar: 'border-l-2 border-l-bamboo/70 dark:border-l-bamboo/70',
+    glow: 'hover:shadow-[0_4px_20px_rgba(82,109,87,0.12)]',
   },
   {
-    eraColor: 'text-terracotta dark:text-[#ff7d63]',
-    tagBg: 'bg-terracotta/10 dark:bg-terracotta/20 text-terracotta dark:text-[#ff7d63] border-terracotta/30',
+    eraColor: 'text-terracotta dark:text-terracotta',
+    tagBg: 'bg-terracotta/10 dark:bg-terracotta/20 text-terracotta dark:text-terracotta border-terracotta/30',
     borderHover: 'hover:border-terracotta/50',
     accentBar: 'border-l-2 border-l-terracotta/70 dark:border-l-terracotta/70',
     glow: 'hover:shadow-[0_4px_20px_rgba(200,60,35,0.12)]',
   },
   {
-    eraColor: 'text-bamboo dark:text-[#658B7B]',
-    tagBg: 'bg-bamboo/10 dark:bg-bamboo/20 text-bamboo dark:text-[#87A889] border-bamboo/30',
-    borderHover: 'hover:border-bamboo/50',
-    accentBar: 'border-l-2 border-l-bamboo/70 dark:border-l-bamboo/70',
-    glow: 'hover:shadow-[0_4px_20px_rgba(68,101,87,0.12)]',
+    eraColor: 'text-ochre dark:text-ochre',
+    tagBg: 'bg-ochre/10 dark:bg-ochre/20 text-ochre dark:text-ochre border-ochre/30',
+    borderHover: 'hover:border-ochre/50',
+    accentBar: 'border-l-2 border-l-ochre/70 dark:border-l-ochre/70',
+    glow: 'hover:shadow-[0_4px_20px_rgba(212,155,106,0.12)]',
   },
 ];
 
@@ -41,13 +41,13 @@ const PILLAR_CONFIGS = [
   {
     icon: Compass,
     num: 'PILLAR 01',
-    kanjiColor: 'text-[#3B4E6B] dark:text-[#8EA8C3]',
-    iconColor: 'text-[#3B4E6B] dark:text-[#8EA8C3]',
-    dotColor: 'bg-[#3B4E6B]',
-    hoverBorder: 'hover:border-[#3B4E6B]/50',
+    kanjiColor: 'text-ochre dark:text-ochre',
+    iconColor: 'text-ochre dark:text-ochre',
+    dotColor: 'bg-ochre',
+    hoverBorder: 'hover:border-ochre/50',
     watermark: (
       <svg
-        className="w-32 h-32 absolute -right-6 -bottom-6 text-[#3B4E6B]/15 dark:text-[#8EA8C3]/10 pointer-events-none"
+        className="w-32 h-32 absolute -right-6 -bottom-6 text-ochre/15 dark:text-ochre/10 pointer-events-none"
         viewBox="0 0 100 100"
         fill="none"
         stroke="currentColor"
@@ -61,8 +61,8 @@ const PILLAR_CONFIGS = [
   {
     icon: Feather,
     num: 'PILLAR 02',
-    kanjiColor: 'text-terracotta dark:text-[#ff7d63]',
-    iconColor: 'text-terracotta dark:text-[#ff7d63]',
+    kanjiColor: 'text-terracotta dark:text-terracotta',
+    iconColor: 'text-terracotta dark:text-terracotta',
     dotColor: 'bg-terracotta',
     hoverBorder: 'hover:border-terracotta/50',
     watermark: (
@@ -80,8 +80,8 @@ const PILLAR_CONFIGS = [
   {
     icon: ShieldCheck,
     num: 'PILLAR 03',
-    kanjiColor: 'text-bamboo dark:text-[#87A889]',
-    iconColor: 'text-bamboo dark:text-[#87A889]',
+    kanjiColor: 'text-bamboo dark:text-bamboo',
+    iconColor: 'text-bamboo dark:text-bamboo',
     dotColor: 'bg-bamboo',
     hoverBorder: 'hover:border-bamboo/50',
     watermark: (
@@ -180,7 +180,7 @@ export const PhilosophyBento: React.FC = () => {
       {/* Main Philosophy Bento Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
-        <div className="mb-10 sm:mb-12 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80">
+        <div className="mb-10 sm:mb-12 pb-6 border-b border-light-border/70 dark:border-dark-border/80">
           <div className="max-w-3xl">
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">04 //</span>
@@ -208,7 +208,7 @@ export const PhilosophyBento: React.FC = () => {
             <CornerBrackets size="md" />
 
             {/* Card Top Sub-Header */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-[#2D3039]/60 relative z-10">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
               <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                 {originStory?.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
               </span>
@@ -289,7 +289,7 @@ export const PhilosophyBento: React.FC = () => {
 
         {/* 04.2 Core Architectural Pillars Subsection Divider */}
         {displayPillars.length > 0 && (
-          <div className="mb-6 pt-2 pb-3 flex items-center justify-between border-b border-light-border/60 dark:border-[#2D3039]/60">
+          <div className="mb-6 pt-2 pb-3 flex items-center justify-between border-b border-light-border/60 dark:border-dark-border/60">
             <div className="flex items-center gap-2">
               <span className="font-serif text-terracotta text-sm">04.2 //</span>
               <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
@@ -330,8 +330,8 @@ export const PhilosophyBento: React.FC = () => {
                 <CornerBrackets size="md" />
 
                 {/* Top Accent Kanji & Icon */}
-                <div className="space-y-3 sm:space-y-4 relative z-10">
-                  <div className="flex items-center justify-between border-b border-light-border/60 dark:border-[#2D3039]/60 pb-3 sm:pb-4">
+                <div className="flex flex-col gap-3 sm:gap-4 relative z-10">
+                  <div className="flex items-center justify-between border-b border-light-border/60 dark:border-dark-border/60 pb-3 sm:pb-4">
                     <span className={`pillar-kanji font-serif text-4xl sm:text-6xl ${config.kanjiColor} font-light leading-none inline-block pl-1 sm:pl-2 select-none transition-colors`}>
                       {pillar.kanji}
                     </span>
@@ -339,7 +339,7 @@ export const PhilosophyBento: React.FC = () => {
                       <span className="font-mono text-[10px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                         {num}
                       </span>
-                      <div className="w-7 h-7 rounded-full bg-light-surface-raised dark:bg-[#14151A] border border-light-border dark:border-[#2D3039] flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-full bg-light-surface-raised dark:bg-dark-surface-card border border-light-border dark:border-dark-border flex items-center justify-center">
                         <Icon className={`w-3.5 h-3.5 ${config.iconColor}`} />
                       </div>
                     </div>
@@ -362,7 +362,7 @@ export const PhilosophyBento: React.FC = () => {
 
                 {/* Bottom Tag */}
                 {pillar.tag && (
-                  <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-[#2D3039]/40 flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
+                  <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-dark-border/40 flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
                     <span className={`w-1.5 h-1.5 rounded-full ${config.dotColor}`} />
                     <span className="font-mono text-[10px] uppercase tracking-[0.18em] font-medium truncate">
                       {pillar.tag}

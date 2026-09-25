@@ -16,12 +16,12 @@
 }
 
 .dark {
-  --canvas-bg: #121317;
-  --pattern-dot: #2D3039;
-  --surface-bg: #1E1F23;
-  --ink-color: #EDEAE4;
-  --ink-muted: #9E988F;
-  --border-color: #2D3039;
+  --canvas-bg: #1E1F24;
+  --pattern-dot: #3A3D44;
+  --surface-bg: #2A2C32;
+  --ink-color: #E8E6DF;
+  --ink-muted: #A7A398;
+  --border-color: #3A3D44;
   --color-terracotta-rgb: 200 60 35;
   --color-ochre-rgb: 212 155 106;
   --color-bamboo-rgb: 68 101 87;

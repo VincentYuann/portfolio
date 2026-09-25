@@ -24,7 +24,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   const rightAction = actions || action;
   return (
     <div
-      className={`flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-light-border/70 dark:border-[#2D3039]/80 gap-6 ${className}`}
+      className={`flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-light-border/70 dark:border-dark-border/80 gap-6 ${className}`}
     >
       <div className="max-w-3xl">
         <div className="flex items-center gap-2 mb-2">

@@ -98,7 +98,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
                C 170,98 152,58 116,42
                C 104,36 94,33 86,30
                Z"
-            className="fill-[#323236] dark:fill-[#edeae4] opacity-35 dark:opacity-30 transition-colors duration-300"
+            className="fill-light-ink dark:fill-dark-ink opacity-35 dark:opacity-30 transition-colors duration-300"
             filter="url(#enso-ink-bleed)"
           />
 

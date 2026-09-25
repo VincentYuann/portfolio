@@ -247,7 +247,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Desktop Quick Dropdown (when >= xl) */}
             {desktopDropdownOpen && (
-              <div className="hidden xl:block absolute right-0 top-full mt-2 w-48 bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] rounded-xl shadow-xl overflow-hidden py-1.5 z-50 animate-in fade-in-50 zoom-in-95 duration-150">
+              <div className="hidden xl:block absolute right-0 top-full mt-2 w-48 bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl shadow-xl overflow-hidden py-1.5 z-50 animate-in fade-in-50 zoom-in-95 duration-150">
                 {isAdmin ? (
                   <>
                     <button

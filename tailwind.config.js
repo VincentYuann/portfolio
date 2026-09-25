@@ -20,20 +20,20 @@ export default {
           'button-dark': '#26262E',
           'on-dark': '#F7F0E3',
         },
-        // Charcoal Night tokens
+        // Charcoal Night tokens (Canonical DESIGN.md specification)
         dark: {
-          canvas: '#121317',
-          surface: '#1E1F23',
-          'surface-raised': '#292A2E',
-          'surface-muted': '#1A1B1F',
-          'surface-card': '#1E1F23',
-          ink: '#EDEAE4',
-          'ink-muted': '#9E988F',
+          canvas: '#1E1F24',
+          surface: '#2A2C32',
+          'surface-raised': '#32343B',
+          'surface-muted': '#24262C',
+          'surface-card': '#1B1C22',
+          ink: '#E8E6DF',
+          'ink-muted': '#A7A398',
           'ink-subtle': '#797A7E',
-          border: '#2D3039',
+          border: '#3A3D44',
           'border-strong': '#565A63',
-          'button-light': '#EDEAE4',
-          'on-light': '#121317',
+          'button-light': '#E8E6DF',
+          'on-light': '#1E1F24',
         },
         // Brand & Accent tokens
         terracotta: {

@@ -221,7 +221,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Top Header Section */}
-        <div className="mb-8 sm:mb-10 pb-8 border-b border-light-border/70 dark:border-[#2D3039]/80 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="mb-8 sm:mb-10 pb-8 border-b border-light-border/70 dark:border-dark-border/80 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>

@@ -45,8 +45,8 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
           <div className="space-y-2 border-b border-light-border/60 dark:border-dark-border/60 pb-4 sm:pb-5">
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {/* Date Range Strip */}
-              <span className="font-mono text-xs text-terracotta dark:text-[#ff7d63] font-semibold tracking-wider uppercase flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-terracotta dark:text-[#ff7d63]" />
+              <span className="font-mono text-xs text-terracotta dark:text-terracotta-soft font-semibold tracking-wider uppercase flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-terracotta dark:text-terracotta-soft" />
                 {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
               </span>
 
@@ -54,8 +54,8 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
               <span
                 className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider ${
                   project.isActive
-                    ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-[#ff7d63]'
-                    : 'bg-stone-100 dark:bg-[#20222a] border border-stone-300 dark:border-[#383b47] text-stone-600 dark:text-stone-400'
+                    ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-terracotta-soft'
+                    : 'bg-stone-100 dark:bg-dark-surface border border-stone-300 dark:border-dark-border text-stone-600 dark:text-dark-ink-muted'
                 }`}
               >
                 <span
@@ -166,7 +166,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                         key={idx}
                         className="p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/70 dark:bg-dark-surface-card/70 hover:border-terracotta/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-all flex items-start gap-3 shadow-2xs group"
                       >
-                        <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-terracotta dark:text-[#ff7d63] bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-0.5 shrink-0 select-none shadow-[0_0_8px_rgba(200,60,35,0.15)] mt-0.5">
+                        <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-terracotta dark:text-terracotta-soft bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-0.5 shrink-0 select-none shadow-[0_0_8px_rgba(200,60,35,0.15)] mt-0.5">
                           #{String(idx + 1).padStart(2, '0')}
                         </span>
                         <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">

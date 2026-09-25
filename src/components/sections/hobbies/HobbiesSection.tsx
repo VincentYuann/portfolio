@@ -28,7 +28,7 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
           onNavigate('hobbies');
         }
       }}
-      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-[#181920] border border-light-border dark:border-[#2D3039] hover:border-terracotta/50 text-light-ink dark:text-[#EDEAE4] font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
+      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-terracotta/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
     >
       <Layers className="w-3.5 h-3.5 text-terracotta" />
       <span className="sm:hidden">All Hobbies ({hobbies.length})</span>

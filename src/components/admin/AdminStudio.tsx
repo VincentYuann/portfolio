@@ -257,7 +257,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
           aria-live="polite"
           className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[calc(100%-1.5rem)] animate-in slide-in-from-bottom-5 fade-in duration-200 pointer-events-auto select-none"
         >
-          <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-light-surface/95 dark:bg-[#181920]/95 backdrop-blur-md border border-amber-500/40 shadow-2xl text-light-ink dark:text-dark-ink">
+          <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-light-surface/95 dark:bg-dark-surface-card/95 backdrop-blur-md border border-amber-500/40 shadow-2xl text-light-ink dark:text-dark-ink">
             <div className="flex items-center gap-2.5 min-w-0">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
               <div className="min-w-0">
