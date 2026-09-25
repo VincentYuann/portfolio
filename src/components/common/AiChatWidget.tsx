@@ -301,6 +301,17 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
     };
   }, []);
 
+  // Ensure DOM inline position styles are cleared when window is docked to bottom-right corner
+  useEffect(() => {
+    if (!windowPos && chatWindowRef.current) {
+      chatWindowRef.current.style.top = '';
+      chatWindowRef.current.style.left = '';
+      chatWindowRef.current.style.right = '';
+      chatWindowRef.current.style.bottom = '';
+      chatWindowRef.current.style.transform = '';
+    }
+  }, [windowPos]);
+
   // Global hotkeys: Cmd+K / Ctrl+K toggles widget, Escape closes it, Tab cycles focus within modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -535,6 +546,23 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
       },
     ]);
     toast.success('Conversation thread refreshed');
+  };
+
+  const handleDockToCorner = () => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.style.top = '';
+      chatWindowRef.current.style.left = '';
+      chatWindowRef.current.style.right = '';
+      chatWindowRef.current.style.bottom = '';
+      chatWindowRef.current.style.transform = '';
+      chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+      setTimeout(() => {
+        if (chatWindowRef.current) {
+          chatWindowRef.current.style.transition = '';
+        }
+      }, 260);
+    }
+    setWindowPos(null);
   };
 
   const handleActionClick = (spec?: ActionSpec) => {
@@ -1180,6 +1208,10 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
                 ? 'calc(100dvh - 8px)'
                 : '85dvh'
               : 'calc(100vh - 24px)',
+            top: !isMobile && windowPos ? '0px' : undefined,
+            left: !isMobile && windowPos ? '0px' : undefined,
+            right: !isMobile && windowPos ? 'auto' : undefined,
+            bottom: !isMobile && windowPos ? 'auto' : undefined,
             transform: !isMobile && windowPos
               ? `translate3d(${windowPos.x}px, ${windowPos.y}px, 0)`
               : undefined,
@@ -1189,8 +1221,8 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
           }}
           className={`fixed z-[60] flex flex-col ${
             windowPos && !isMobile
-              ? 'top-0 left-0'
-              : 'bottom-0 left-0 right-0 sm:bottom-6 sm:right-6 sm:left-auto sm:right-6'
+              ? 'top-0 left-0 right-auto bottom-auto'
+              : 'bottom-0 left-0 right-0 sm:top-auto sm:bottom-6 sm:right-6 sm:left-auto'
           } rounded-t-2xl sm:rounded-xl border border-terracotta/40 dark:border-terracotta/50 bg-light-surface-card dark:bg-dark-surface-card shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in duration-200`}
           role="dialog"
           aria-modal="true"
@@ -1304,14 +1336,14 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => setWindowPos(null)}
+                      onClick={handleDockToCorner}
                       className="w-9 h-9 sm:w-8 sm:h-8 rounded-lg text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta hover:bg-terracotta/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
-                      aria-label="Dock to bottom corner"
+                      aria-label="Dock to bottom-right corner"
                     >
                       <RotateCcw className="w-4 h-4" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent side="bottom">Dock to bottom corner</TooltipContent>
+                  <TooltipContent side="bottom">Dock to bottom-right corner</TooltipContent>
                 </Tooltip>
               )}
               {isMobile && (
