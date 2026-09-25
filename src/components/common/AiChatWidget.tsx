@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useId, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useId } from 'react';
 import {
   ArrowUpRight,
   X,
@@ -182,6 +182,9 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
   }, [attachedFile]);
 
   // Chat window size & position state (responsive initial dimensions)
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+  );
   const [windowSize, setWindowSize] = useState<{ width: number; height: number }>(() => {
     if (typeof window !== 'undefined') {
       const vw = window.innerWidth;
@@ -217,47 +220,48 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
     },
   ]);
 
-  // Keep widget reactive and strictly inside screen bounds
-  const clampWindowBounds = useCallback((
-    pos: { x: number; y: number },
-    size: { width: number; height: number }
-  ) => {
-    if (typeof window === 'undefined') return pos;
-    const minX = 8;
-    const minY = 8;
-    const maxX = Math.max(minX, window.innerWidth - size.width - 8);
-    const maxY = Math.max(minY, window.innerHeight - 64);
-    return {
-      x: Math.max(minX, Math.min(pos.x, maxX)),
-      y: Math.max(minY, Math.min(pos.y, maxY)),
+  // Update bounds on window resize atomically without stale closure dependencies
+  useEffect(() => {
+    let resizeTimer: number | null = null;
+    const handleResize = () => {
+      if (resizeTimer) cancelAnimationFrame(resizeTimer);
+      resizeTimer = requestAnimationFrame(() => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const mobile = vw < 640;
+        setIsMobile(mobile);
+
+        if (mobile) {
+          // Bottom-sheet mode on mobile: release floating desktop coordinates
+          setWindowPos(null);
+        } else {
+          const maxAllowedH = Math.max(340, vh - 24);
+          setWindowSize((prev) => ({
+            width: Math.max(300, Math.min(prev.width, vw - 16)),
+            height: Math.max(340, Math.min(prev.height, maxAllowedH)),
+          }));
+
+          setWindowPos((prev) => {
+            if (!prev) return null;
+            const minX = 8;
+            const minY = 8;
+            const maxX = Math.max(minX, vw - 320);
+            const maxY = Math.max(minY, vh - 64);
+            return {
+              x: Math.max(minX, Math.min(prev.x, maxX)),
+              y: Math.max(minY, Math.min(prev.y, maxY)),
+            };
+          });
+        }
+      });
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (resizeTimer) cancelAnimationFrame(resizeTimer);
     };
   }, []);
-
-  // Update bounds on window resize
-  useEffect(() => {
-    const handleResize = () => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const maxAllowedH = Math.max(340, vh - 24);
-
-      setWindowSize((prev) => {
-        const targetWidth = Math.min(prev.width, vw - 16);
-        const targetHeight = Math.min(prev.height, maxAllowedH);
-        return {
-          width: Math.max(300, targetWidth),
-          height: Math.max(340, targetHeight),
-        };
-      });
-
-      setWindowPos((prev) => {
-        if (!prev) return null;
-        return clampWindowBounds(prev, windowSize);
-      });
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [clampWindowBounds, windowSize]);
 
   // MessageScrollerProvider owns intelligent streaming follow and scroll anchoring without jumping
 
@@ -769,10 +773,13 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
   };
 
   /* ─────────────────────────────────────────────────────────────────────────
-     WINDOW DRAGGING (DESKTOP)
+     WINDOW DRAGGING (DESKTOP) & SWIPE-TO-DISMISS (MOBILE)
      ───────────────────────────────────────────────────────────────────────── */
+  const dragRafRef = useRef<number | null>(null);
+
   const handleHeaderPointerDown = (e: React.PointerEvent) => {
-    if (e.button !== 0 || window.innerWidth < 640) return;
+    // Only primary mouse button or touch
+    if (e.button !== 0) return;
     const target = e.currentTarget as HTMLElement;
     try {
       target.setPointerCapture(e.pointerId);
@@ -785,86 +792,174 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
 
     const startX = e.clientX;
     const startY = e.clientY;
-    const currentPos = windowPos || { x: rect.left, y: rect.top };
-    let curX = currentPos.x;
-    let curY = currentPos.y;
-    let lastX = e.clientX;
-    let lastY = e.clientY;
-    let hasDragged = false;
+    const mobile = isMobile;
 
-    const onPointerMove = (moveEv: PointerEvent) => {
-      const totalDist = Math.hypot(moveEv.clientX - startX, moveEv.clientY - startY);
-      if (!hasDragged) {
-        if (totalDist < 6) return;
-        hasDragged = true;
-        if (chatWindowRef.current) {
-          chatWindowRef.current.style.transition = 'none';
-          chatWindowRef.current.style.top = '0px';
-          chatWindowRef.current.style.left = '0px';
-          chatWindowRef.current.style.right = 'auto';
-          chatWindowRef.current.style.bottom = 'auto';
+    if (!mobile) {
+      // Desktop dragging mode
+      const currentPos = windowPos || { x: rect.left, y: rect.top };
+      let curX = currentPos.x;
+      let curY = currentPos.y;
+      let lastX = e.clientX;
+      let lastY = e.clientY;
+      let hasDragged = false;
+
+      const onPointerMove = (moveEv: PointerEvent) => {
+        const totalDist = Math.hypot(moveEv.clientX - startX, moveEv.clientY - startY);
+        if (!hasDragged) {
+          if (totalDist < 5) return;
+          hasDragged = true;
+          if (chatWindowRef.current) {
+            chatWindowRef.current.style.transition = 'none';
+            chatWindowRef.current.style.top = '0px';
+            chatWindowRef.current.style.left = '0px';
+            chatWindowRef.current.style.right = 'auto';
+            chatWindowRef.current.style.bottom = 'auto';
+          }
         }
-      }
 
-      const dx = moveEv.clientX - lastX;
-      const dy = moveEv.clientY - lastY;
-      lastX = moveEv.clientX;
-      lastY = moveEv.clientY;
+        const dx = moveEv.clientX - lastX;
+        const dy = moveEv.clientY - lastY;
+        lastX = moveEv.clientX;
+        lastY = moveEv.clientY;
 
-      curX += dx;
-      curY += dy;
+        curX += dx;
+        curY += dy;
 
-      const minX = 8;
-      const minY = 8;
-      const maxX = Math.max(minX, window.innerWidth - windowSize.width - 8);
-      const maxY = Math.max(minY, window.innerHeight - 56);
+        const widgetWidth = chatWindowRef.current?.offsetWidth || windowSize.width;
+        const minX = 8;
+        const minY = 8;
+        const maxX = Math.max(minX, window.innerWidth - widgetWidth - 8);
+        const maxY = Math.max(minY, window.innerHeight - 56);
 
-      curX = Math.max(minX, Math.min(curX, maxX));
-      curY = Math.max(minY, Math.min(curY, maxY));
+        curX = Math.max(minX, Math.min(curX, maxX));
+        curY = Math.max(minY, Math.min(curY, maxY));
 
-      if (chatWindowRef.current) {
-        chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
-      }
-    };
+        if (dragRafRef.current) cancelAnimationFrame(dragRafRef.current);
+        dragRafRef.current = requestAnimationFrame(() => {
+          if (chatWindowRef.current) {
+            chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+          }
+        });
+      };
 
-    const onPointerUp = (upEv: PointerEvent) => {
-      try {
-        target.releasePointerCapture(upEv.pointerId);
-      } catch {
-        // Ignore pointer release
-      }
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      window.removeEventListener('pointercancel', onPointerUp);
-
-      if (hasDragged) {
-        if (chatWindowRef.current) {
-          chatWindowRef.current.style.transition = '';
-          chatWindowRef.current.style.top = '';
-          chatWindowRef.current.style.left = '';
-          chatWindowRef.current.style.right = '';
-          chatWindowRef.current.style.bottom = '';
-          chatWindowRef.current.style.transform = '';
+      const onPointerUp = (upEv: PointerEvent) => {
+        try {
+          target.releasePointerCapture(upEv.pointerId);
+        } catch {
+          // Ignore pointer release
         }
-        setWindowPos({ x: curX, y: curY });
-      }
-    };
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
 
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-    window.addEventListener('pointercancel', onPointerUp);
+        if (dragRafRef.current) {
+          cancelAnimationFrame(dragRafRef.current);
+          dragRafRef.current = null;
+        }
+
+        if (hasDragged) {
+          if (chatWindowRef.current) {
+            chatWindowRef.current.style.transition = '';
+            // Do not clear style.transform or top/left here; let React state update seamlessly adopt it
+          }
+          setWindowPos({ x: curX, y: curY });
+        }
+      };
+
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
+    } else {
+      // Mobile bottom-sheet swipe-down-to-dismiss mode
+      let currentDy = 0;
+      let hasSwiped = false;
+      const startTime = performance.now();
+
+      const onPointerMove = (moveEv: PointerEvent) => {
+        const deltaY = moveEv.clientY - startY;
+        // Only allow downward dragging
+        if (deltaY <= 0) return;
+        if (!hasSwiped && deltaY > 4) {
+          hasSwiped = true;
+          if (chatWindowRef.current) {
+            chatWindowRef.current.style.transition = 'none';
+          }
+        }
+        if (hasSwiped) {
+          currentDy = deltaY;
+          if (dragRafRef.current) cancelAnimationFrame(dragRafRef.current);
+          dragRafRef.current = requestAnimationFrame(() => {
+            if (chatWindowRef.current) {
+              chatWindowRef.current.style.transform = `translate3d(0, ${currentDy}px, 0)`;
+            }
+          });
+        }
+      };
+
+      const onPointerUp = (upEv: PointerEvent) => {
+        try {
+          target.releasePointerCapture(upEv.pointerId);
+        } catch {
+          // Ignore
+        }
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+
+        if (dragRafRef.current) {
+          cancelAnimationFrame(dragRafRef.current);
+          dragRafRef.current = null;
+        }
+
+        if (hasSwiped && chatWindowRef.current) {
+          const duration = performance.now() - startTime;
+          const velocity = currentDy / Math.max(1, duration); // px per ms
+
+          // Dismiss if dragged down more than 90px or swiped briskly with velocity > 0.45 px/ms
+          if (currentDy > 90 || velocity > 0.45) {
+            chatWindowRef.current.style.transition = 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease-out';
+            chatWindowRef.current.style.transform = 'translate3d(0, 100%, 0)';
+            chatWindowRef.current.style.opacity = '0';
+            setTimeout(() => {
+              setIsOpen(false);
+              if (chatWindowRef.current) {
+                chatWindowRef.current.style.transform = '';
+                chatWindowRef.current.style.opacity = '';
+                chatWindowRef.current.style.transition = '';
+              }
+            }, 220);
+          } else {
+            // Spring back smoothly to docked position
+            chatWindowRef.current.style.transition = 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)';
+            chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
+            setTimeout(() => {
+              if (chatWindowRef.current) {
+                chatWindowRef.current.style.transform = '';
+                chatWindowRef.current.style.transition = '';
+              }
+            }, 300);
+          }
+        }
+      };
+
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
+    }
   };
 
   /* ─────────────────────────────────────────────────────────────────────────
      WINDOW RESIZING (DESKTOP)
      ───────────────────────────────────────────────────────────────────────── */
+  const resizeRafRef = useRef<number | null>(null);
+
   const handleResizeStart = (
     e: React.PointerEvent,
     direction: 'n' | 's' | 'e' | 'w' | 'nw' | 'ne' | 'sw' | 'se'
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.button !== 0 || window.innerWidth < 640) return;
+    if (e.button !== 0 || isMobile) return;
 
     const target = e.currentTarget as HTMLElement;
     try {
@@ -922,11 +1017,14 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
         curHeight = nextH;
       }
 
-      if (chatWindowRef.current) {
-        chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
-        chatWindowRef.current.style.width = `${curWidth}px`;
-        chatWindowRef.current.style.height = `${curHeight}px`;
-      }
+      if (resizeRafRef.current) cancelAnimationFrame(resizeRafRef.current);
+      resizeRafRef.current = requestAnimationFrame(() => {
+        if (chatWindowRef.current) {
+          chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+          chatWindowRef.current.style.width = `${curWidth}px`;
+          chatWindowRef.current.style.height = `${curHeight}px`;
+        }
+      });
     };
 
     const onPointerUp = (upEv: PointerEvent) => {
@@ -939,19 +1037,19 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('pointercancel', onPointerUp);
 
+      if (resizeRafRef.current) {
+        cancelAnimationFrame(resizeRafRef.current);
+        resizeRafRef.current = null;
+      }
+
       if (chatWindowRef.current) {
         chatWindowRef.current.style.transition = '';
-        chatWindowRef.current.style.top = '';
-        chatWindowRef.current.style.left = '';
-        chatWindowRef.current.style.right = '';
-        chatWindowRef.current.style.bottom = '';
-        chatWindowRef.current.style.transform = '';
       }
       setWindowSize({ width: curWidth, height: curHeight });
       setWindowPos({ x: curX, y: curY });
     };
 
-    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
     window.addEventListener('pointerup', onPointerUp);
     window.addEventListener('pointercancel', onPointerUp);
   };
@@ -996,15 +1094,15 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           style={{
-            width: typeof window !== 'undefined' && window.innerWidth < 640 ? '100%' : `${windowSize.width}px`,
-            height: typeof window !== 'undefined' && window.innerWidth < 640 ? '85dvh' : `${windowSize.height}px`,
-            maxHeight: typeof window !== 'undefined' && window.innerWidth < 640 ? '85dvh' : 'calc(100vh - 24px)',
-            transform: typeof window !== 'undefined' && window.innerWidth >= 640 && windowPos
+            width: isMobile ? '100%' : `${windowSize.width}px`,
+            height: isMobile ? '85dvh' : `${windowSize.height}px`,
+            maxHeight: isMobile ? '85dvh' : 'calc(100vh - 24px)',
+            transform: !isMobile && windowPos
               ? `translate3d(${windowPos.x}px, ${windowPos.y}px, 0)`
               : undefined,
           }}
           className={`fixed z-[60] flex flex-col ${
-            windowPos && typeof window !== 'undefined' && window.innerWidth >= 640
+            windowPos && !isMobile
               ? 'top-0 left-0'
               : 'bottom-0 left-0 right-0 sm:bottom-6 sm:right-6 sm:left-auto sm:right-6'
           } rounded-t-2xl sm:rounded-xl border border-terracotta/40 dark:border-terracotta/50 bg-light-surface-card dark:bg-dark-surface-card shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in duration-200`}
@@ -1063,16 +1161,20 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
             </div>
           )}
 
-          {/* Mobile Sheet Handle Affordance */}
-          <div className="sm:hidden flex justify-center pt-2 pb-0.5 bg-light-surface-raised dark:bg-dark-surface-raised">
-            <div className="w-10 h-1 rounded-full bg-light-ink-subtle/30 dark:bg-dark-ink-subtle/30" />
+          {/* Mobile Sheet Handle Affordance (Swipe down to dismiss) */}
+          <div
+            onPointerDown={handleHeaderPointerDown}
+            className="sm:hidden flex justify-center pt-2.5 pb-1 bg-light-surface-raised dark:bg-dark-surface-raised cursor-grab active:cursor-grabbing touch-none select-none"
+            aria-label="Swipe down to dismiss"
+          >
+            <div className="w-10 h-1.5 rounded-full bg-light-ink-subtle/30 dark:bg-dark-ink-subtle/30" />
           </div>
 
           {/* ─── MODAL HEADER ─── */}
           <div
             onPointerDown={handleHeaderPointerDown}
-            className="relative z-30 flex items-center justify-between px-4 py-3 border-b border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised sm:cursor-grab active:cursor-grabbing select-none"
-            title="Drag header to move"
+            className="relative z-30 flex items-center justify-between px-4 py-3 border-b border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised sm:cursor-grab active:cursor-grabbing select-none touch-none"
+            title="Drag header to move or swipe down on mobile"
           >
             <div className="flex items-center gap-2.5">
               <div
@@ -1108,7 +1210,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
               className="flex items-center gap-1"
               onPointerDown={(e) => e.stopPropagation()}
             >
-              {windowPos && (
+              {!isMobile && windowPos && (
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
