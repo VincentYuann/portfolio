@@ -67,6 +67,8 @@ graph TD
 ## 🤖 Vincent's AI Companion & Agent Microservice
 
 The portfolio embeds an interactive engineering assistant (`<AiChatWidget />`) designed around Wabi-Sabi artisan principles and powered by a dedicated Python microservice:
+- **Server-Side Knowledge Aggregation (`supabase/get_portfolio_ai_context.sql`)**: PostgreSQL RPC function `public.get_portfolio_ai_context()` serves structured, canonical context (`profile`, `projects`, `experience`, `philosophy_pillars`) directly to the AI agent, stripping heavy image assets and internal database IDs in-engine for maximal token efficiency.
+- **Automated Database Webhook Invalidation**: Schema mutations (`INSERT`, `UPDATE`, `DELETE`) trigger Supabase Database Webhooks targeting the AI service (`/api/v1/webhook/supabase-invalidate`), keeping the server RAM cache synchronized without frontend coupling.
 - **Multimodal Uploads & Verification**: Accepts images (`PNG`, `JPEG`, `WEBP`, `GIF`) and documents (`PDF`, `DOCX`, `DOC`) up to 50 MB, streaming in-memory without disk temporary files.
 - **Intelligent Architectural Synthesis**: Integrates Google Gemini (`gemini-3.5-flash-lite` / `gemini-3.1-flash-lite`) to answer technical inquiries about distributed systems, projects, latency optimization, and artisan craft.
 - **Graceful Boundary Fallback**: If the microservice is temporarily unreachable, the frontend automatically falls back to an offline architectural knowledge base.
