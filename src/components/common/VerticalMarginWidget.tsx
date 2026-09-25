@@ -89,10 +89,10 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
 
   const pulseDotClass =
     pulseColor === 'bamboo'
-      ? 'bg-bamboo/80 animate-status-glow'
+      ? 'bg-bamboo/80 animate-status-glow origin-center'
       : pulseColor === 'ochre'
-      ? 'bg-ochre/80 animate-status-glow'
-      : 'bg-terracotta/80 animate-ruby-pulse';
+      ? 'bg-ochre/80 animate-status-glow origin-center'
+      : 'bg-terracotta/80 animate-ruby-pulse origin-center';
 
   const topHairlineGradient =
     side === 'left'

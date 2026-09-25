@@ -158,7 +158,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
           />
 
           {/* Glowing Ruby / Vermilion Bead at Golden Arc Apex */}
-          <g className="animate-ruby-pulse origin-center">
+          <g className="animate-ruby-pulse" style={{ transformOrigin: '106px 16px' }}>
             {/* Ambient Aura */}
             <circle cx="106" cy="16" r="6" fill="#EA4A2A" className="opacity-40" />
             {/* Core Solid Bead */}

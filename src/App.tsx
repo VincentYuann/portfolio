@@ -13,6 +13,7 @@ import { Footer } from './components/layout/Footer';
 import { supabase } from './lib/supabase';
 import { toast } from 'sonner';
 import { ThemedToaster } from './components/layout/ThemedToaster';
+import { AiChatWidget } from './components/common/AiChatWidget';
 
 import {
   ProjectsPageSkeleton,
@@ -368,6 +369,7 @@ export const App: React.FC = () => {
 
           {currentView === 'home' && <Footer onNavigate={handleNavigate} />}
         </div>
+        <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
         <ThemedToaster />
       </SiteDataProvider>
     </ThemeProvider>

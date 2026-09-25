@@ -8,7 +8,7 @@ export const ThemedToaster: React.FC = () => {
   // Inverse theme: Day page gets Night toast, Night page gets Day toast
   return (
     <Toaster
-      position="bottom-right"
+      position="bottom-left"
       theme={theme === 'night' ? 'light' : 'dark'}
       gap={10}
       offset={24}
