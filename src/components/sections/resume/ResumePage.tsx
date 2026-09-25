@@ -3,7 +3,7 @@ import { FileText, Code2, Download, Copy, Check, ExternalLink, ArrowLeft } from 
 import { tokenizeLatexLine, getTokenClassName } from '../../../lib/latexHighlight';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
-import { getResumePdfUrl, fetchResumeLatex } from '../../../lib/supabase';
+import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
 
 interface ResumePageProps {
@@ -144,15 +144,16 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
   const [latexSource, setLatexSource] = useState(DEFAULT_RESUME_TEX);
   const [copied, setCopied] = useState(false);
 
-  // Supabase S3-backed storage bucket PDF URL (with local / relative fallback)
-  const supabasePdfUrl = getResumePdfUrl();
+  // Supabase S3-backed storage bucket PDF URL (with live DB + local fallback)
+  const [supabasePdfUrl, setSupabasePdfUrl] = useState(getResumePdfUrl());
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Fetch live LaTeX from Supabase if available
-    fetchResumeLatex().then((content) => {
-      if (content) setLatexSource(content);
+    // Fetch live LaTeX and S3 resume link from Supabase
+    fetchResumeData().then((data) => {
+      if (data?.latex) setLatexSource(data.latex);
+      if (data?.resumeLink) setSupabasePdfUrl(data.resumeLink);
     });
   }, []);
 

@@ -81,10 +81,20 @@ export function withTimeout<T>(
   ]);
 }
 
+let cachedResumeLink: string | null = null;
+
+export function setCachedResumeLink(url: string) {
+  cachedResumeLink = url;
+}
+
 /**
  * Returns the public URL for the resume PDF from the Supabase 'portfolio-assets' bucket (or S3 endpoint).
  */
 export function getResumePdfUrl(): string {
+  if (cachedResumeLink) {
+    return cachedResumeLink;
+  }
+
   if (import.meta.env.VITE_RESUME_PDF_URL) {
     return import.meta.env.VITE_RESUME_PDF_URL;
   }
@@ -110,7 +120,7 @@ export function getResumePdfUrl(): string {
 /**
  * Uploads a resume PDF directly into 'portfolio-assets/resumes/' with S3-backed Supabase Storage.
  */
-export async function uploadResumePdf(file: File) {
+export async function uploadResumePdf(file: File): Promise<string> {
   if (!supabase) {
     throw new Error('Supabase client is not configured.');
   }
@@ -135,17 +145,33 @@ export async function uploadResumePdf(file: File) {
           contentType: 'application/pdf',
           cacheControl: '3600',
         });
-      if (!fallbackRes.error) {
-        return fallbackRes.data;
+      if (fallbackRes.error) {
+        throw new Error(formatErrorMessage(fallbackRes.error));
       }
+    } else {
+      throw new Error(formatErrorMessage(res.error));
     }
   }
 
-  if (res.error) {
-    throw new Error(formatErrorMessage(res.error));
+  const { data } = supabase.storage
+    .from(RESUME_BUCKET)
+    .getPublicUrl(RESUME_PDF_FILENAME);
+
+  const publicUrl = data?.publicUrl || '';
+  if (publicUrl) {
+    cachedResumeLink = publicUrl;
+    try {
+      await supabase.from('resume_latex').upsert({
+        id: 1,
+        resume_link: publicUrl,
+        updated_at: new Date().toISOString(),
+      });
+    } catch (e) {
+      console.warn('Could not sync resume_link to resume_latex:', e);
+    }
   }
 
-  return res.data;
+  return publicUrl;
 }
 
 /**
@@ -201,38 +227,68 @@ export const uploadProjectImage = (file: File) => uploadAssetImage(file, 'projec
 export const uploadExperienceLogo = (file: File) => uploadAssetImage(file, 'experience');
 export const uploadHobbyImage = (file: File) => uploadAssetImage(file, 'hobbies');
 
+export interface ResumeData {
+  latex: string;
+  resumeLink: string;
+}
+
 /**
- * Loads the LaTeX source content from the Supabase resume_latex table.
+ * Loads both the LaTeX source and S3 resume PDF link from the Supabase resume_latex table.
  */
-export async function fetchResumeLatex(): Promise<string | null> {
+export async function fetchResumeData(): Promise<ResumeData | null> {
   if (!supabase) return null;
 
   try {
     const { data, error } = await supabase
       .from('resume_latex')
-      .select('content')
+      .select('latex, resume_link, content')
       .eq('id', 1)
       .single();
 
     if (error || !data) return null;
-    return data.content || null;
+    const latex = data.latex || data.content || '';
+    const resumeLink = data.resume_link || '';
+    if (resumeLink) {
+      cachedResumeLink = resumeLink;
+    }
+    return { latex, resumeLink };
   } catch (err) {
-    console.warn('Could not fetch resume LaTeX from Supabase:', err);
+    console.warn('Could not fetch resume data from Supabase:', err);
     return null;
   }
 }
 
 /**
- * Saves the LaTeX source content to the Supabase resume_latex table.
+ * Loads the LaTeX source content from the Supabase resume_latex table.
  */
-export async function saveResumeLatex(content: string) {
+export async function fetchResumeLatex(): Promise<string | null> {
+  const data = await fetchResumeData();
+  return data?.latex || null;
+}
+
+/**
+ * Saves the LaTeX source content and optional S3 resume PDF link to the Supabase resume_latex table.
+ */
+export async function saveResumeLatex(content: string, resumeLink?: string) {
   if (!supabase) {
     throw new Error('Supabase client is not configured.');
   }
 
+  const payload: Record<string, any> = {
+    id: 1,
+    latex: content || '',
+    content: content || '',
+    updated_at: new Date().toISOString(),
+  };
+
+  if (resumeLink) {
+    payload.resume_link = resumeLink;
+    cachedResumeLink = resumeLink;
+  }
+
   const { error } = await supabase
     .from('resume_latex')
-    .upsert({ id: 1, content: content || '', updated_at: new Date().toISOString() });
+    .upsert(payload, { onConflict: 'id' });
 
   if (error) {
     throw new Error(formatErrorMessage(error));

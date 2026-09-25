@@ -29,7 +29,6 @@ export interface ExperienceEntry {
   tags: string[];
   isActive: boolean;
   statusLabel: string;
-  domainLabel: string;
   logoUrl: string;
   kanji: string;
   kanjiSubtitle: string;
@@ -55,7 +54,6 @@ const mapExperiencesFromContext = (contextExperiences: ExperienceRecord[]): Expe
     tags: e.tags || [],
     isActive: typeof e.isActive === 'boolean' ? e.isActive : idx === 0,
     statusLabel: e.statusLabel || (idx === 0 ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
-    domainLabel: e.domainLabel || '',
     logoUrl: e.logoUrl || '',
     kanji: e.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原'),
     kanjiSubtitle: e.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS'),
@@ -76,7 +74,6 @@ const newEntry = (order: number = 0): ExperienceEntry => ({
   tags: order === 0 ? ['TypeScript', 'React', 'Node.js', 'PostgreSQL'] : ['Python', 'System Architecture', 'APIs'],
   isActive: order === 0,
   statusLabel: order === 0 ? 'ACTIVE / 現職' : 'COMPLETED / 歴任',
-  domainLabel: '',
   logoUrl: '',
   kanji: order === 0 ? '木' : order === 1 ? '墨' : order === 2 ? '明' : '原',
   kanjiSubtitle: order === 0 ? 'AI' : order === 1 ? 'SUMI' : order === 2 ? 'CRAFT' : 'SYS',
@@ -231,7 +228,6 @@ export const ExperienceEditor: React.FC = () => {
           tags: e.tags || [],
           overview: e.overview || '',
           bullets: cleanBullets,
-          domain_label: e.domainLabel || '',
           description: combinedDescription,
           updated_at: new Date().toISOString(),
         };

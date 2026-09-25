@@ -130,7 +130,6 @@ export interface ExperienceRecord {
   tags?: string[];
   isActive?: boolean;
   statusLabel?: string;
-  domainLabel?: string;
   logoUrl?: string;
   kanji?: string;
   kanjiSubtitle?: string;
@@ -178,17 +177,10 @@ export const useSiteData = () => useContext(SiteDataContext);
 function mapRowToProject(row: any, index?: number): Project {
   const title = row.title || '';
   const id = row.id || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const summary = row.summary || row.description || '';
+  const overview = row.overview || row.description || '';
   
-  // Format key engineering highlights & bullets
-  let bullets: string[] = [];
-  if (Array.isArray(row.bullets) && row.bullets.length > 0) {
-    bullets = row.bullets;
-  } else if (Array.isArray(row.sections) && row.sections.length > 0) {
-    bullets = row.sections.flatMap((s: any) =>
-      Array.isArray(s.bullets) ? s.bullets : Array.isArray(s.points) ? s.points : [],
-    );
-  }
+  // Bullets array from canonical bullets column
+  const bullets: string[] = Array.isArray(row.bullets) ? row.bullets : [];
 
   const isFeatured = typeof row.is_featured === 'boolean' 
     ? row.is_featured 
@@ -200,13 +192,11 @@ function mapRowToProject(row: any, index?: number): Project {
 
   const isActive = typeof row.is_active === 'boolean'
     ? row.is_active
-    : typeof row.isActive === 'boolean'
-    ? row.isActive
-    : (row.end_date?.toLowerCase().includes('present') || row.endDate?.toLowerCase().includes('present') || false);
+    : (row.end_date?.toLowerCase().includes('present') || false);
 
-  const startDate = row.start_date || row.startDate || '';
-  const endDate = row.end_date || row.endDate || '';
-  const statusLabel = row.status_label || row.statusLabel || (isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了');
+  const startDate = row.start_date || '';
+  const endDate = row.end_date || '';
+  const statusLabel = row.status_label || (isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了');
 
   return {
     id,
@@ -214,20 +204,20 @@ function mapRowToProject(row: any, index?: number): Project {
     kanji: row.kanji || '',
     category: row.category || undefined,
     badge: row.badge || '',
-    subtitle: row.subtitle || summary,
-    description: summary,
+    subtitle: row.subtitle || overview,
+    description: overview,
     image: row.image || '',
-    tags: Array.isArray(row.tech_stacks) ? row.tech_stacks : Array.isArray(row.tags) ? row.tags : [],
-    metrics: Array.isArray(row.metrics) ? row.metrics : [],
-    overview: row.overview || summary,
+    tags: Array.isArray(row.tech_stacks) ? row.tech_stacks : [],
+    metrics: [],
+    overview,
     bullets,
     startDate,
     endDate,
     isActive,
     statusLabel,
     links: {
-      github: row.github_link || row.links?.github || '',
-      live: row.live_link || row.links?.live || '',
+      github: row.github_link || '',
+      live: row.live_link || '',
       caseStudyText: row.case_study_text || '',
     },
     isFeatured,
@@ -472,7 +462,6 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               row.status_label ||
               row.statusLabel ||
               (isCurrent ? 'ACTIVE / 現職' : '歴任 / COMPLETED'),
-            domainLabel: row.domain_label || row.domainLabel || '',
             logoUrl: row.logo_url || row.logoUrl || row.logo || '',
             kanji: row.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原'),
             kanjiSubtitle:

@@ -221,13 +221,14 @@ export const ResumeEditor: React.FC = () => {
 
       await withTimeout(
         (async () => {
+          let uploadedUrl: string | undefined = undefined;
           // 1. If a PDF is uploaded, push it to the S3-backed Supabase Storage bucket
           if (tab === 'upload' && uploadedFile && uploadedFile.name.toLowerCase().endsWith('.pdf')) {
-            await uploadResumePdf(uploadedFile);
+            uploadedUrl = await uploadResumePdf(uploadedFile);
           }
 
-          // 2. Persist current LaTeX source to database
-          await saveResumeLatex(latex);
+          // 2. Persist current LaTeX source and S3 resume link to database
+          await saveResumeLatex(latex, uploadedUrl);
         })(),
         20000,
         'Save request timed out. Please check your network and try again.'

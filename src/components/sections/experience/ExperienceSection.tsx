@@ -373,13 +373,6 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             activeTextClass={theme.badgeText}
                             activeDotBgClass={theme.nodeActiveBg}
                           />
-
-                          {/* Optional Domain Category Tag */}
-                          {exp.domainLabel && (
-                            <span className={`font-mono text-[10px] px-2 py-0.5 rounded ${theme.badgeBg} ${theme.badgeBorder} ${theme.badgeText} border uppercase tracking-wider hidden sm:inline-block`}>
-                              {exp.domainLabel}
-                            </span>
-                          )}
                         </div>
 
                         {/* Title & Company */}
