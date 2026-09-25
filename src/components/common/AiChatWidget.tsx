@@ -4,7 +4,6 @@ import {
   X,
   Terminal,
   RotateCcw,
-  Paperclip,
   FileText,
   Upload,
   Copy,
@@ -138,16 +137,6 @@ const ALLOWED_MIME_TYPES = new Set([
   'application/msword',
 ]);
 const ALLOWED_FILE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.pdf', '.docx', '.doc'];
-const ACCEPTED_FILE_TYPES_ATTR = [
-  ...ALLOWED_FILE_EXTENSIONS,
-  'image/png',
-  'image/jpeg',
-  'image/webp',
-  'image/gif',
-  'application/pdf',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/msword',
-].join(',');
 
 export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -169,7 +158,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
   const [isDraggingFile, setIsDraggingFile] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [expandedTelemetryId, setExpandedTelemetryId] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-generate and clean up object URLs for image preview thumbnails
   useEffect(() => {
@@ -412,11 +400,13 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     const trimmed = rawText.trim();
     if ((!trimmed && !attachedFile) || isStreaming) return;
 
+    // Guard against devtool state manipulation or unauthorized file attachment
     if (attachedFile && !isAdmin) {
       toast.info('Admin Privilege Required', {
-        description: 'Multimodal document and image analysis is reserved for administrator sessions. Please ask your questions via text!',
+        description: 'File attachments and multimodal analysis are restricted to administrator sessions. Please ask your questions via text!',
         duration: 5000,
       });
+      setAttachedFile(null);
       return;
     }
 
@@ -503,9 +493,16 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
         clearInterval(streamIntervalRef.current);
       }
 
-      if (err instanceof Error && err.message.toLowerCase().includes('administrator')) {
-        toast.error('Administrator Access Required', {
-          description: 'Multimodal file analysis is reserved for verified administrators. Synthesizing an architectural response for your text query.',
+      if (
+        err instanceof Error &&
+        (err.message.toLowerCase().includes('administrator') ||
+          err.message.toLowerCase().includes('restricted') ||
+          err.message.toLowerCase().includes('permission') ||
+          err.message.toLowerCase().includes('forbidden') ||
+          err.message.includes('403'))
+      ) {
+        toast.info('Admin Privilege Required', {
+          description: 'File attachments and multimodal analysis are restricted to administrator sessions. Synthesizing an architectural response for your text query.',
           duration: 5000,
         });
       }
@@ -650,9 +647,16 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       if (item.kind === 'file') {
+        e.preventDefault();
+        if (!isAdmin) {
+          toast.info('Admin Privilege Required', {
+            description: 'File attachments and multimodal analysis are restricted to administrator sessions. Please ask your questions via text!',
+            duration: 5000,
+          });
+          return;
+        }
         const file = item.getAsFile();
         if (file) {
-          e.preventDefault();
           validateAndStageFile(file);
           return;
         }
@@ -688,6 +692,13 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     setIsDraggingFile(false);
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
+      if (!isAdmin) {
+        toast.info('Admin Privilege Required', {
+          description: 'File attachments and multimodal analysis are restricted to administrator sessions. Please ask your questions via text!',
+          duration: 5000,
+        });
+        return;
+      }
       validateAndStageFile(files[0]);
     }
   };
@@ -1750,63 +1761,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
               }}
               className="relative flex items-end rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-card p-1.5 focus-within:border-terracotta focus-within:ring-1 focus-within:ring-terracotta/30 transition-all shadow-xs"
             >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept={ACCEPTED_FILE_TYPES_ATTR}
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    validateAndStageFile(e.target.files[0]);
-                  }
-                  e.target.value = '';
-                }}
-              />
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      if (!isAdmin) {
-                        toast.info('Admin Privilege Required', {
-                          description: 'Multimodal document and image analysis is reserved for administrator sessions to manage Gemini compute quotas. You can explore and ask anything via text!',
-                          duration: 5000,
-                        });
-                        return;
-                      }
-                      fileInputRef.current?.click();
-                    }}
-                    disabled={isStreaming}
-                    className={`w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-lg shrink-0 mb-0.5 cursor-pointer relative ${
-                      isAdmin
-                        ? 'text-light-ink-subtle hover:text-terracotta hover:bg-terracotta/10'
-                        : 'text-light-ink-subtle/70 dark:text-dark-ink-subtle/70 hover:text-terracotta hover:bg-terracotta/10'
-                    }`}
-                    aria-label={
-                      isAdmin
-                        ? 'Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX up to 50 MB)'
-                        : 'File analysis (Admin access required · Text chat open to all)'
-                    }
-                  >
-                    <Paperclip className="w-4 h-4" />
-                    {!isAdmin && (
-                      <span
-                        className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-ochre ring-1 ring-light-surface dark:ring-dark-surface-card"
-                        title="Admin access required"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="start" sideOffset={6} className="max-w-xs text-xs">
-                  {isAdmin
-                    ? 'Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX · Max 50 MB)'
-                    : 'File analysis (Admin access required · Text questions open to all)'}
-                </TooltipContent>
-              </Tooltip>
-
               <label htmlFor={inputId} className="sr-only">
                 Ask about systems, code, or craft
               </label>
