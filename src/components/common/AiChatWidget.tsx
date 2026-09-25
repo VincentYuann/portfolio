@@ -23,6 +23,7 @@ import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import { toast } from 'sonner';
 import { ViewMode } from '../../App';
+import { useSiteData } from '../../context/SiteDataContext';
 import { sendToAiAgent, ChatResponse } from '../../lib/aiAgentApi';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -150,6 +151,7 @@ const ACCEPTED_FILE_TYPES_ATTR = [
 ].join(',');
 
 export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin = false }) => {
+  const { refresh: refreshSiteData } = useSiteData();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
@@ -459,6 +461,11 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           userType: data.user_type,
           email: data.user_email,
         });
+      }
+
+      // Eagerly refresh site data if in admin session to synchronize any database mutations
+      if (isAdmin) {
+        refreshSiteData().catch((err) => console.warn('Post-interaction site refresh caught:', err));
       }
 
       const fullText = data.response;
