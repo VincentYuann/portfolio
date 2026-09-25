@@ -12,6 +12,8 @@ import {
   Sparkles,
   Activity,
   ChevronDown,
+  Maximize2,
+  Minimize2,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -185,6 +187,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined' ? window.innerWidth < 640 : false
   );
+  const [isExpandedMobile, setIsExpandedMobile] = useState(false);
   const [windowSize, setWindowSize] = useState<{ width: number; height: number }>(() => {
     if (typeof window !== 'undefined') {
       const vw = window.innerWidth;
@@ -235,6 +238,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
           // Bottom-sheet mode on mobile: release floating desktop coordinates
           setWindowPos(null);
         } else {
+          setIsExpandedMobile(false);
           const maxAllowedH = Math.max(340, vh - 24);
           setWindowSize((prev) => ({
             width: Math.max(300, Math.min(prev.width, vw - 16)),
@@ -274,14 +278,17 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
         }
       }, 100);
       return () => clearTimeout(timer);
-    } else if (prevIsOpenRef.current) {
-      // WCAG 2.4.3 Focus Order: restore focus to launcher on modal dismiss
-      // Defer through setTimeout to ensure newly mounted launcher receives focus
-      // after the browser finishes pointer/click event dispatch on the unmounted close element.
-      const timer = setTimeout(() => {
-        launcherRef.current?.focus();
-      }, 16);
-      return () => clearTimeout(timer);
+    } else {
+      setIsExpandedMobile(false);
+      if (prevIsOpenRef.current) {
+        // WCAG 2.4.3 Focus Order: restore focus to launcher on modal dismiss
+        // Defer through setTimeout to ensure newly mounted launcher receives focus
+        // after the browser finishes pointer/click event dispatch on the unmounted close element.
+        const timer = setTimeout(() => {
+          launcherRef.current?.focus();
+        }, 16);
+        return () => clearTimeout(timer);
+      }
     }
     prevIsOpenRef.current = isOpen;
   }, [isOpen]);
@@ -870,16 +877,14 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
       window.addEventListener('pointerup', onPointerUp);
       window.addEventListener('pointercancel', onPointerUp);
     } else {
-      // Mobile bottom-sheet swipe-down-to-dismiss mode
+      // Mobile bottom-sheet bidirectional swipe: swipe up for fullscreen, swipe down to collapse/dismiss
       let currentDy = 0;
       let hasSwiped = false;
       const startTime = performance.now();
 
       const onPointerMove = (moveEv: PointerEvent) => {
         const deltaY = moveEv.clientY - startY;
-        // Only allow downward dragging
-        if (deltaY <= 0) return;
-        if (!hasSwiped && deltaY > 4) {
+        if (!hasSwiped && Math.abs(deltaY) > 5) {
           hasSwiped = true;
           if (chatWindowRef.current) {
             chatWindowRef.current.style.transition = 'none';
@@ -890,7 +895,15 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
           if (dragRafRef.current) cancelAnimationFrame(dragRafRef.current);
           dragRafRef.current = requestAnimationFrame(() => {
             if (chatWindowRef.current) {
-              chatWindowRef.current.style.transform = `translate3d(0, ${currentDy}px, 0)`;
+              if (currentDy > 0) {
+                // Downward dragging
+                chatWindowRef.current.style.transform = `translate3d(0, ${currentDy}px, 0)`;
+              } else {
+                // Upward dragging: visual elastic feedback
+                const upwardResistance = isExpandedMobile ? 0.15 : 0.45;
+                const visualDy = Math.max(-90, currentDy * upwardResistance);
+                chatWindowRef.current.style.transform = `translate3d(0, ${visualDy}px, 0)`;
+              }
             }
           });
         }
@@ -911,33 +924,95 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
           dragRafRef.current = null;
         }
 
-        if (hasSwiped && chatWindowRef.current) {
-          const duration = performance.now() - startTime;
-          const velocity = currentDy / Math.max(1, duration); // px per ms
+        const duration = performance.now() - startTime;
+        const velocity = currentDy / Math.max(1, duration); // px per ms (positive = down, negative = up)
 
-          // Dismiss if dragged down more than 90px or swiped briskly with velocity > 0.45 px/ms
-          if (currentDy > 90 || velocity > 0.45) {
-            chatWindowRef.current.style.transition = 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease-out';
-            chatWindowRef.current.style.transform = 'translate3d(0, 100%, 0)';
-            chatWindowRef.current.style.opacity = '0';
-            setTimeout(() => {
-              setIsOpen(false);
-              if (chatWindowRef.current) {
-                chatWindowRef.current.style.transform = '';
-                chatWindowRef.current.style.opacity = '';
-                chatWindowRef.current.style.transition = '';
-              }
-            }, 220);
-          } else {
-            // Spring back smoothly to docked position
-            chatWindowRef.current.style.transition = 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)';
+        if (hasSwiped && chatWindowRef.current) {
+          if (currentDy < -30 || velocity < -0.28) {
+            // Upward swipe: expand to fullscreen
+            setIsExpandedMobile(true);
+            chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
             chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
             setTimeout(() => {
               if (chatWindowRef.current) {
                 chatWindowRef.current.style.transform = '';
                 chatWindowRef.current.style.transition = '';
               }
-            }, 300);
+            }, 260);
+          } else if (currentDy > 0) {
+            // Downward swipe
+            if (isExpandedMobile) {
+              if (currentDy > 160 || velocity > 0.8) {
+                // Deep swipe dismisses completely
+                chatWindowRef.current.style.transition = 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease-out';
+                chatWindowRef.current.style.transform = 'translate3d(0, 100%, 0)';
+                chatWindowRef.current.style.opacity = '0';
+                setTimeout(() => {
+                  setIsOpen(false);
+                  setIsExpandedMobile(false);
+                  if (chatWindowRef.current) {
+                    chatWindowRef.current.style.transform = '';
+                    chatWindowRef.current.style.opacity = '';
+                    chatWindowRef.current.style.transition = '';
+                  }
+                }, 220);
+              } else if (currentDy > 40 || velocity > 0.3) {
+                // Moderate swipe down collapses from fullscreen back to standard 85dvh
+                setIsExpandedMobile(false);
+                chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+                chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
+                setTimeout(() => {
+                  if (chatWindowRef.current) {
+                    chatWindowRef.current.style.transform = '';
+                    chatWindowRef.current.style.transition = '';
+                  }
+                }, 260);
+              } else {
+                // Short drag springs back to fullscreen
+                chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+                chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
+                setTimeout(() => {
+                  if (chatWindowRef.current) {
+                    chatWindowRef.current.style.transform = '';
+                    chatWindowRef.current.style.transition = '';
+                  }
+                }, 260);
+              }
+            } else {
+              // Standard 85dvh sheet: downward swipe dismisses or springs back
+              if (currentDy > 90 || velocity > 0.45) {
+                chatWindowRef.current.style.transition = 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease-out';
+                chatWindowRef.current.style.transform = 'translate3d(0, 100%, 0)';
+                chatWindowRef.current.style.opacity = '0';
+                setTimeout(() => {
+                  setIsOpen(false);
+                  if (chatWindowRef.current) {
+                    chatWindowRef.current.style.transform = '';
+                    chatWindowRef.current.style.opacity = '';
+                    chatWindowRef.current.style.transition = '';
+                  }
+                }, 220);
+              } else {
+                chatWindowRef.current.style.transition = 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)';
+                chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
+                setTimeout(() => {
+                  if (chatWindowRef.current) {
+                    chatWindowRef.current.style.transform = '';
+                    chatWindowRef.current.style.transition = '';
+                  }
+                }, 300);
+              }
+            }
+          } else {
+            // Neutral release springs back
+            chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+            chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
+            setTimeout(() => {
+              if (chatWindowRef.current) {
+                chatWindowRef.current.style.transform = '';
+                chatWindowRef.current.style.transition = '';
+              }
+            }, 260);
           }
         }
       };
@@ -1095,10 +1170,21 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
           onDrop={handleDrop}
           style={{
             width: isMobile ? '100%' : `${windowSize.width}px`,
-            height: isMobile ? '85dvh' : `${windowSize.height}px`,
-            maxHeight: isMobile ? '85dvh' : 'calc(100vh - 24px)',
+            height: isMobile
+              ? isExpandedMobile
+                ? 'calc(100dvh - 8px)'
+                : '85dvh'
+              : `${windowSize.height}px`,
+            maxHeight: isMobile
+              ? isExpandedMobile
+                ? 'calc(100dvh - 8px)'
+                : '85dvh'
+              : 'calc(100vh - 24px)',
             transform: !isMobile && windowPos
               ? `translate3d(${windowPos.x}px, ${windowPos.y}px, 0)`
+              : undefined,
+            transition: isMobile
+              ? 'height 0.28s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1)'
               : undefined,
           }}
           className={`fixed z-[60] flex flex-col ${
@@ -1161,14 +1247,16 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
             </div>
           )}
 
-          {/* Mobile Sheet Handle Affordance (Swipe down to dismiss) */}
-          <div
+          {/* Mobile Sheet Handle Affordance (Tap or swipe up for fullscreen, swipe down to dismiss) */}
+          <button
+            type="button"
             onPointerDown={handleHeaderPointerDown}
-            className="sm:hidden flex justify-center pt-2.5 pb-1 bg-light-surface-raised dark:bg-dark-surface-raised cursor-grab active:cursor-grabbing touch-none select-none"
-            aria-label="Swipe down to dismiss"
+            onClick={() => setIsExpandedMobile((prev) => !prev)}
+            className="sm:hidden flex flex-col items-center justify-center pt-2.5 pb-1 w-full bg-light-surface-raised dark:bg-dark-surface-raised cursor-grab active:cursor-grabbing touch-none select-none border-none outline-hidden focus-visible:ring-1 focus-visible:ring-terracotta"
+            aria-label={isExpandedMobile ? "Collapse chat sheet" : "Expand chat to fullscreen"}
           >
-            <div className="w-10 h-1.5 rounded-full bg-light-ink-subtle/30 dark:bg-dark-ink-subtle/30" />
-          </div>
+            <div className="w-10 h-1.5 rounded-full bg-light-ink-subtle/30 dark:bg-dark-ink-subtle/30 hover:bg-terracotta/50 transition-colors" />
+          </button>
 
           {/* ─── MODAL HEADER ─── */}
           <div
@@ -1224,6 +1312,24 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin:
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom">Dock to bottom corner</TooltipContent>
+                </Tooltip>
+              )}
+              {isMobile && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setIsExpandedMobile((prev) => !prev)}
+                      className="w-9 h-9 rounded-lg text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta hover:bg-terracotta/10 min-w-[36px] min-h-[36px]"
+                      aria-label={isExpandedMobile ? "Collapse to standard view" : "Expand to fullscreen"}
+                    >
+                      {isExpandedMobile ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    {isExpandedMobile ? "Collapse sheet" : "Expand fullscreen"}
+                  </TooltipContent>
                 </Tooltip>
               )}
               <Tooltip>
