@@ -77,7 +77,7 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
       <div className="flex flex-col gap-2.5">
         {safeBullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2.5 group">
-            <span className="font-mono text-[10px] font-semibold text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-1 select-none shrink-0 mt-1 shadow-2xs">
+            <span className="font-mono text-xs font-semibold text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-1 select-none shrink-0 mt-1 shadow-2xs">
               #{String(idx + 1).padStart(2, '0')}
             </span>
             <Textarea
@@ -101,15 +101,15 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
           </div>
         ))}
       </div>
-      <p className="font-sans text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle flex items-center gap-1.5 flex-wrap">
+      <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted flex items-center gap-1.5 flex-wrap mt-1">
         <span>Quick keys:</span>
-        <kbd className="font-mono px-1 py-0.5 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded text-[10px]">Enter</kbd>
+        <kbd className="font-mono px-1.5 py-0.5 bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border rounded text-xs text-light-ink dark:text-dark-ink font-medium shadow-2xs">Enter</kbd>
         <span>new point</span>
         <span className="opacity-40">·</span>
-        <kbd className="font-mono px-1 py-0.5 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded text-[10px]">Shift+Enter</kbd>
+        <kbd className="font-mono px-1.5 py-0.5 bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border rounded text-xs text-light-ink dark:text-dark-ink font-medium shadow-2xs">Shift+Enter</kbd>
         <span>newline</span>
         <span className="opacity-40">·</span>
-        <kbd className="font-mono px-1 py-0.5 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded text-[10px]">Backspace</kbd>
+        <kbd className="font-mono px-1.5 py-0.5 bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border rounded text-xs text-light-ink dark:text-dark-ink font-medium shadow-2xs">Backspace</kbd>
         <span>delete empty</span>
       </p>
     </div>

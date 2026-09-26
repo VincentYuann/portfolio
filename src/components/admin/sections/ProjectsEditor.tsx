@@ -344,7 +344,7 @@ export const ProjectsEditor: React.FC = () => {
                       e.stopPropagation();
                       toggleFeatured(project.id);
                     }}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-[11px] font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
                       project.isFeatured
                         ? 'bg-ochre/15 text-ochre border border-ochre/40'
                         : 'bg-light-surface dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted border border-light-border dark:border-dark-border hover:text-ochre hover:border-ochre/40'
@@ -356,7 +356,7 @@ export const ProjectsEditor: React.FC = () => {
                   </button>
 
                   <span
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-[11px] font-semibold uppercase tracking-wider ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-xs font-semibold uppercase tracking-wider ${
                       project.isActive
                         ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-terracotta-soft'
                         : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'

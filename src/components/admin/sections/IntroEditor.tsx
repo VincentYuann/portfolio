@@ -445,13 +445,13 @@ export const IntroEditor: React.FC = () => {
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Technical Domains Ribbon (Max 3)
               </h3>
-              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block max-w-xl">
                 Substrate domain categories and official technology badges beneath your hero section.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-light-ink-subtle px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+            <span className="font-mono text-xs uppercase tracking-wider text-light-ink-subtle px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
               {data.capability_pillars.length}/3 DOMAINS
             </span>
             {!collapsed.domains ? (
@@ -492,7 +492,7 @@ export const IntroEditor: React.FC = () => {
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex-1 max-w-sm">
-                        <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                        <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
                           Domain Category
                         </Label>
                         <Input
@@ -573,7 +573,7 @@ export const IntroEditor: React.FC = () => {
             {/* Header & Location row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
                   Header Eyebrow Label
                 </Label>
                 <Input
@@ -584,7 +584,7 @@ export const IntroEditor: React.FC = () => {
                 />
               </div>
               <div>
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
                   Location / Archive Coordinate
                 </Label>
                 <Input
@@ -599,8 +599,8 @@ export const IntroEditor: React.FC = () => {
             {/* Stamp Character & Live Status row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                  Stamp Seal Character / Kanji (認印)
+                <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                  Stamp Seal Character (認印)
                 </Label>
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
@@ -627,8 +627,8 @@ export const IntroEditor: React.FC = () => {
                 </div>
               </div>
               <div>
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                  Live Status / Availability Pill (Optional)
+                <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                  Availability Pill (Optional)
                 </Label>
                 <Input
                   value={hankoData.statusBadge || ''}
@@ -642,11 +642,11 @@ export const IntroEditor: React.FC = () => {
             {/* Vertical Prose Snippets & Presets */}
             <div className="pt-2 border-t border-light-border/50 dark:border-dark-border/50 space-y-3">
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted">
-                  Vertical Tategaki Columns (3 Lines) &amp; Footer Labels
+                <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted">
+                  Tategaki Columns (3 Lines) &amp; Labels
                 </Label>
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[10px] font-mono text-light-ink-subtle">Presets:</span>
+                  <span className="text-xs font-mono text-light-ink-subtle">Presets:</span>
                   {HANKO_PRESETS.map((preset) => (
                     <button
                       key={preset.name}
@@ -656,7 +656,7 @@ export const IntroEditor: React.FC = () => {
                           lines: preset.lines as [HankoCardLine, HankoCardLine, HankoCardLine],
                         })
                       }
-                      className="px-2 py-0.5 text-[10px] font-mono rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta transition-colors cursor-pointer"
+                      className="px-2.5 py-1 text-xs font-mono rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta transition-colors cursor-pointer"
                     >
                       {preset.name}
                     </button>
@@ -664,17 +664,17 @@ export const IntroEditor: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[0, 1, 2].map((idx) => {
                   const line =
                     (hankoData.lines && hankoData.lines[idx]) || { text: '', label: '', tooltip: '' };
                   return (
                     <div
                       key={idx}
-                      className="p-2.5 rounded-lg bg-light-surface-card dark:bg-dark-surface-card border border-light-border/60 dark:border-dark-border/60 space-y-2"
+                      className="p-3 space-y-2.5 border-t-2 border-ochre/30 dark:border-ochre/20 pt-3"
                     >
                       <div>
-                        <span className="text-[10px] font-mono uppercase text-light-ink-subtle block mb-1">
+                        <span className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted block mb-1">
                           Column 0{idx + 1} (Vertical Kanji)
                         </span>
                         <Input
@@ -685,7 +685,7 @@ export const IntroEditor: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <span className="text-[10px] font-mono uppercase text-light-ink-subtle block mb-1">
+                        <span className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted block mb-1">
                           Footer Pill Label
                         </span>
                         <Input
@@ -696,7 +696,7 @@ export const IntroEditor: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <span className="text-[10px] font-mono uppercase text-light-ink-subtle block mb-1">
+                        <span className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted block mb-1">
                           English Hover Tooltip
                         </span>
                         <Input

@@ -310,7 +310,7 @@ export const ExperienceEditor: React.FC = () => {
               subtitle={`${exp.startDate || 'Start'} - ${exp.endDate || 'Present'}${exp.location ? ` · ${exp.location}` : ''}`}
               badge={
                 <span
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-[11px] font-bold uppercase tracking-wider ${
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-xs font-bold uppercase tracking-wider ${
                     exp.isActive
                       ? 'bg-terracotta/15 border border-terracotta/40 text-terracotta dark:text-terracotta-soft'
                       : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'

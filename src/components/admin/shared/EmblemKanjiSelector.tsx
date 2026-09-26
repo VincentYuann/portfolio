@@ -59,18 +59,12 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
   return (
     <div className={`space-y-2 ${className}`}>
       {label && (
-        <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted flex items-center justify-between">
+        <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted flex items-center justify-between">
           <span>{label}</span>
         </Label>
       )}
 
-      <div
-        className={
-          isEmbedded
-            ? 'p-2.5 sm:p-3 rounded-lg bg-light-surface/40 dark:bg-dark-surface/40 border border-light-border/70 dark:border-dark-border/70 space-y-2.5'
-            : 'p-3 sm:p-4 rounded-xl bg-light-surface/50 dark:bg-dark-surface/50 border border-light-border dark:border-dark-border space-y-3'
-        }
-      >
+      <div className={isEmbedded ? 'pt-1.5 space-y-2.5' : 'pt-2 space-y-3'}>
         {/* Top Header: Seal Box + Kanji Browse & Romaji Subtitle Stack */}
         <div className="flex items-center gap-3">
           {/* Visual Seal Preview Box */}
@@ -121,7 +115,7 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
                   </span>
                 </span>
               </div>
-              <span className="text-[10px] font-mono text-terracotta font-semibold uppercase tracking-wider shrink-0">
+              <span className="text-xs font-mono text-terracotta font-semibold uppercase tracking-wider shrink-0">
                 Browse →
               </span>
             </Button>
@@ -197,7 +191,7 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
                 </Button>
               )}
             </div>
-            <p className="font-sans text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle leading-tight">
+            <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed mt-1">
               {hasLogo
                 ? 'Custom logo active. Clear URL to revert to Japanese Kanji seal.'
                 : 'Displaying Kanji seal. Enter URL or upload image to override with custom logo.'}

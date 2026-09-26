@@ -48,7 +48,7 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
         </Button>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 min-h-[38px] p-2.5 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border dark:border-dark-border items-center">
+      <div className="flex flex-wrap gap-1.5 min-h-[36px] py-1.5 items-center">
         {cleanTags.map((tag, idx) => (
           <span
             key={`${tag}-${idx}`}

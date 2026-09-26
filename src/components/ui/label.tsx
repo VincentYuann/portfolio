@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 const labelVariants = cva(
-  'text-[10px] font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-widest leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 select-none block',
+  'text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted tracking-wide leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 select-none block',
 );
 
 export const RequiredStar: React.FC<{ className?: string }> = ({ className = '' }) => (

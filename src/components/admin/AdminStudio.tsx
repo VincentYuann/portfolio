@@ -208,7 +208,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
                         : 'text-light-ink-muted dark:text-dark-ink-muted group-hover:text-light-ink dark:group-hover:text-dark-ink'
                     }`}
                   />
-                  <span className="font-mono text-[10px] opacity-60">{s.num}</span>
+                  <span className="font-mono text-xs opacity-70">{s.num}</span>
                   <span className="hidden sm:inline">{s.label}</span>
                   <span className="sm:hidden">{s.shortLabel}</span>
 
@@ -302,7 +302,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
               >
                 <Save className="w-3.5 h-3.5 shrink-0" />
                 <span>Save {activeSectionObj?.shortLabel || 'Section'}</span>
-                <kbd className="hidden sm:inline font-mono text-[10px] opacity-80 ml-1 bg-black/20 px-1 py-0.5 rounded">
+                <kbd className="hidden sm:inline font-mono text-xs opacity-80 ml-1 bg-black/20 px-1.5 py-0.5 rounded">
                   Ctrl+S
                 </kbd>
               </button>

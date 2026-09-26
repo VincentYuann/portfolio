@@ -35,7 +35,7 @@ export const EditorSectionHeader: React.FC<EditorSectionHeaderProps> = ({
           {title}
         </h2>
         {subtitle && (
-          <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 leading-relaxed">
+          <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 leading-relaxed max-w-xl">
             {subtitle}
           </p>
         )}
