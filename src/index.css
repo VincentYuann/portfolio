@@ -109,22 +109,71 @@
     border-radius: 3px;
   }
 
+  /* Akari Paper Translucent Craft Cards with Micro-Blur */
+  .card-akari-translucent,
   .craft-card {
-    background-color: var(--card-bg);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    background-color: rgba(42, 44, 50, 0.85);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18); /* impeccable-disable-line design-system-color */
   }
 
+  :root:not(.dark) .card-akari-translucent,
   :root:not(.dark) .craft-card {
-    background-color: #F7F0E3;
+    background-color: rgba(247, 240, 227, 0.82);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     box-shadow: 0 1px 3px rgba(40, 46, 58, 0.04);
   }
 
   .craft-modal {
-    background-color: var(--card-bg);
+    background-color: rgba(42, 44, 50, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   :root:not(.dark) .craft-modal {
-    background-color: #F7F0E3;
+    background-color: rgba(247, 240, 227, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Full-bleed Section Art Canvas */
+  .section-art-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Integrated Artwork Layer */
+  .integrated-sumie-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, black 40%, transparent 95%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, black 40%, transparent 95%);
+  }
+
+  /* Day Mode: Ink absorbs directly into the paper fibers */
+  :root:not(.dark) .integrated-sumie-art {
+    mix-blend-mode: multiply;
+    opacity: 0.30;
+  }
+
+  /* Night Mode: Inverts the painting into ethereal silver-ash mist */
+  :root.dark .integrated-sumie-art,
+  .dark .integrated-sumie-art {
+    mix-blend-mode: screen;
+    filter: invert(1) contrast(1.1) brightness(0.85);
+    opacity: 0.12;
   }
 
   /* Direct Tactile Micro-Tooth Texture Overlay */
@@ -382,7 +431,7 @@
   inset: 6px;
   border: 1px solid rgb(var(--color-ochre-rgb) / 0.12);
   pointer-events: none;
-  border-radius: 4px;
+  border-radius: 2px;
   transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -498,8 +547,8 @@
 
 [data-sonner-toast] {
   font-family: inherit !important;
-  border-radius: 12px !important;
-  border-width: 1.5px !important;
+  border-radius: 3px !important;
+  border-width: 1px !important;
   backdrop-filter: blur(16px) !important;
   box-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.2) !important; /* impeccable-disable-line design-system-color */
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -514,28 +563,28 @@
 
 /* Icons: In Day mode (dark toast), icons are luminous terracotta/ochre */
 [data-sonner-toast] [data-icon] {
-  color: #F0D7C7 !important;
+  color: var(--color-terracotta-soft) !important;
 }
 
 [data-sonner-toast][data-type="success"] [data-icon] {
-  color: #87A889 !important;
+  color: var(--color-bamboo) !important;
 }
 
 [data-sonner-toast][data-type="info"] [data-icon] {
-  color: #D3A45B !important;
+  color: var(--color-ochre) !important;
 }
 
 /* Icons: In Night mode (light toast), icons are cinnabar terracotta/ochre */
 .dark [data-sonner-toast] [data-icon] {
-  color: #B5482E !important;
+  color: var(--color-terracotta) !important;
 }
 
 .dark [data-sonner-toast][data-type="success"] [data-icon] {
-  color: #526D57 !important;
+  color: var(--color-bamboo) !important;
 }
 
 .dark [data-sonner-toast][data-type="info"] [data-icon] {
-  color: #9A6B2E !important;
+  color: var(--color-ochre-dark) !important;
 }
 
 [data-sonner-toast] [data-title] {
@@ -556,7 +605,7 @@
 /* Button in Day mode (dark toast) */
 [data-sonner-toast] [data-button] {
   font-family: inherit !important;
-  border-radius: 4px !important;
+  border-radius: 2px !important;
   font-weight: 600 !important;
   font-size: 11px !important;
   letter-spacing: 0.05em !important;
@@ -577,8 +626,8 @@
 .yarl__root {
   --yarl__color_backdrop: rgba(10, 11, 14, 0.94);
   --yarl__color_button: rgba(237, 234, 228, 0.85);
-  --yarl__color_button_active: #C83C23;
-  --yarl__thumbnails_thumbnail_border_active: #C83C23;
+  --yarl__color_button_active: var(--color-terracotta);
+  --yarl__thumbnails_thumbnail_border_active: var(--color-terracotta);
   --yarl__thumbnails_thumbnail_background: rgba(24, 25, 32, 0.85);
   --yarl__thumbnails_thumbnail_border: rgba(255, 255, 255, 0.15);
   --yarl__thumbnails_container_background: rgba(10, 11, 14, 0.8);
@@ -591,7 +640,7 @@
 
 .yarl__button {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  border-radius: 8px !important;
+  border-radius: 2px !important;
   min-width: 44px;
   min-height: 44px;
   display: inline-flex;
@@ -600,7 +649,7 @@
 }
 
 .yarl__button:hover {
-  color: #C83C23 !important;
+  color: var(--color-terracotta) !important;
   background-color: rgba(255, 255, 255, 0.08) !important; /* impeccable-disable-line design-system-color */
 }
 
@@ -613,8 +662,8 @@
 }
 
 .yarl__thumbnails_thumbnail_active {
-  border-color: #C83C23 !important;
-  box-shadow: 0 0 0 2px rgba(200, 60, 35, 0.4) !important;
+  border-color: var(--color-terracotta) !important;
+  box-shadow: 0 0 0 2px rgba(181, 72, 46, 0.4) !important;
 }
 
 /* ==============================================================================

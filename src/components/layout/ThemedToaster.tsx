@@ -14,7 +14,7 @@ export const ThemedToaster: React.FC = () => {
       offset={24}
       toastOptions={{
         duration: 4000,
-        className: 'font-sans text-xs border rounded-xl',
+        className: 'font-sans text-xs border rounded-[3px]',
       }}
     />
   );

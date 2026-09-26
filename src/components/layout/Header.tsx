@@ -340,7 +340,7 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.id}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item)}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-sans uppercase tracking-wider transition-colors ${
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-sans uppercase tracking-wider transition-colors ${
                     isActive
                       ? 'bg-terracotta/10 text-terracotta font-semibold'
                       : 'text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-light-ink dark:hover:text-dark-ink'
@@ -366,7 +366,7 @@ export const Header: React.FC<HeaderProps> = ({
                   }
                   setMobileDrawerOpen(false);
                 }}
-                className="w-full flex items-center justify-center py-2.5 px-4 rounded-lg text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity"
+                className="w-full flex items-center justify-center py-2.5 px-4 rounded-[2px] text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity"
               >
                 Get in Touch
               </a>

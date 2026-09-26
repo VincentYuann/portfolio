@@ -168,7 +168,21 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
   );
 
   return (
-    <div className="relative min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-20 pb-20">
+    <div className="relative min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-20 pb-20 overflow-hidden">
+      {/* Simple Tactile Cedar Wood Background for Editorial Workshop */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <img
+          src="./background/white wood.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover dark:hidden mix-blend-multiply opacity-55"
+        />
+        <img
+          src="./background/black wood.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover hidden dark:block mix-blend-screen opacity-40"
+        />
+      </div>
+
       {/* Sub Navbar: sticks just below main header with smooth horizontal scrolling */}
       <div className="sticky top-20 z-40 bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden relative">
@@ -239,7 +253,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Section Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10">
         <div role="tabpanel" id={`panel-${activeSection}`} aria-labelledby={`tab-${activeSection}`}>
           {activeSection === 'intro' && <IntroEditor />}
           {activeSection === 'experience' && <ExperienceEditor />}

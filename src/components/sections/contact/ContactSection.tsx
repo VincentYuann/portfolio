@@ -118,16 +118,19 @@ export const ContactSection: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface-card/40 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0 border-t border-light-border/50 dark:border-dark-border/50" />
       <div className="absolute inset-0 bg-radial-[at_50%_40%] from-terracotta/[0.03] dark:from-terracotta/[0.02] to-transparent pointer-events-none z-0" />
 
-      {/* 16:9 Cedar Wood Texture Background & Sumi-e Mountain Painting Decorations on the Outer Side Flanks */}
+      {/* 16:9 Cedar Wood Ground & Asymmetric Sumi-e Bamboo Art (Anchored Left for alternating rhythm) */}
       <SectionSideBackdrop
         textureDay="./background/white wood.jpg"
         textureNight="./background/black wood.jpg"
-        painting="./decorators/mountain.jpg"
-        paintingAlt="Sumi-e misty mountain ink wash painting"
-        textureOpacityDay={0.5}
-        textureOpacityNight={0.4}
-        paintingOpacityDay={0.36}
-        paintingOpacityNight={0.22}
+        painting="./decorators/bamboo.jpg"
+        paintingAlt="Sumi-e bamboo ink wash painting"
+        placement="left"
+        artworkWidth="w-full lg:w-[48%]"
+        maskCenter="at 25% 50%"
+        textureOpacityDay={0.65}
+        textureOpacityNight={0.45}
+        paintingOpacityDay={0.35}
+        paintingOpacityNight={0.14}
       />
 
       <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
@@ -183,9 +186,9 @@ export const ContactSection: React.FC = () => {
                     <>
                       <a
                         href={mailtoHref}
-                        className="btn-bloom inline-flex items-center gap-2 px-5 sm:px-6 py-3 bg-terracotta hover:bg-terracotta-hover text-white font-sans text-xs uppercase tracking-widest rounded-[2px] shadow-sm"
+                        className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-95 font-sans text-xs uppercase tracking-widest rounded-[2px] shadow-sm transition-all"
                       >
-                        <Mail className="w-4 h-4" />
+                        <Mail className="w-4 h-4 text-terracotta" />
                         <span>{contactEmail}</span>
                       </a>
 

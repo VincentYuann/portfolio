@@ -42,18 +42,18 @@ interface MilestoneTheme {
 const CANONICAL_MILESTONE_THEME: MilestoneTheme = {
   primary: '#B5482E',
   textClass: 'text-light-ink dark:text-dark-ink',
-  badgeBg: 'bg-emerald-500/10 dark:bg-emerald-500/15',
-  badgeBorder: 'border-emerald-600/25 dark:border-emerald-400/25',
-  badgeText: 'text-emerald-800 dark:text-emerald-400',
-  emblemBorder: 'border-light-border dark:border-[#3E3B37]',
+  badgeBg: 'bg-bamboo/10 dark:bg-bamboo/15',
+  badgeBorder: 'border-bamboo/25 dark:border-bamboo/35',
+  badgeText: 'text-bamboo-dark dark:text-bamboo-light',
+  emblemBorder: 'border-light-border dark:border-dark-border',
   emblemShadow: 'shadow-2xs',
-  cardActiveBorder: 'border-light-border-strong dark:border-[#4E525D]',
+  cardActiveBorder: 'border-light-border-strong dark:border-dark-border-strong',
   cardActiveRing: '',
   cardActiveGlow: 'shadow-sm',
-  nodeActiveBg: 'bg-emerald-600 dark:bg-emerald-400',
-  nodeActiveBorder: 'border-emerald-600 dark:border-emerald-400',
+  nodeActiveBg: 'bg-bamboo dark:bg-bamboo-light',
+  nodeActiveBorder: 'border-bamboo dark:border-bamboo-light',
   nodeActiveShadow: '',
-  bulletOrdinalClass: 'text-light-ink-muted dark:text-dark-ink-muted bg-light-surface dark:bg-[#1F1E1D] border-light-border dark:border-[#3E3B37]',
+  bulletOrdinalClass: 'text-light-ink-muted dark:text-dark-ink-muted bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border',
 };
 
 const getMilestoneTheme = (_idx: number): MilestoneTheme => {
@@ -137,16 +137,19 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
       {/* Subtle Japanese Joinery Axis Ambient Glow */}
       <div className="absolute left-0 sm:left-24 top-1/4 w-96 h-96 bg-radial-[at_center] from-ochre/[0.04] dark:from-ochre/[0.025] to-transparent pointer-events-none z-0" />
       
-      {/* 16:9 Linen Texture Background & Sumi-e Bamboo Painting Decorations on the Side Flanks */}
+      {/* 16:9 Linen Texture Ground & Asymmetric Sumi-e Bamboo Art (Anchored Left for alternating rhythm) */}
       <SectionSideBackdrop
         textureDay="./background/white linen.jpg"
         textureNight="./background/black linen.jpg"
         painting="./decorators/bamboo.jpg"
         paintingAlt="Sumi-e bamboo ink wash painting"
-        textureOpacityDay={0.5}
-        textureOpacityNight={0.4}
-        paintingOpacityDay={0.36}
-        paintingOpacityNight={0.22}
+        placement="left"
+        artworkWidth="w-full lg:w-[48%]"
+        maskCenter="at 25% 45%"
+        textureOpacityDay={0.65}
+        textureOpacityNight={0.45}
+        paintingOpacityDay={0.35}
+        paintingOpacityNight={0.14}
       />
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
@@ -378,9 +381,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                                   {bullets.map((pt, pIdx) => (
                                     <li
                                       key={pIdx}
-                                      className="p-3 sm:p-3.5 rounded-lg border border-light-border/70 dark:border-[#3A3D44]/70 bg-light-surface/50 dark:bg-[#25272D]/50 hover:border-light-border-strong dark:hover:border-[#4E525D] transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet"
+                                      className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-[#3A3D44]/70 bg-light-surface/50 dark:bg-[#25272D]/50 hover:border-light-border-strong dark:hover:border-[#4E525D] transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet"
                                     >
-                                      <span className="font-mono text-[11px] sm:text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-raised dark:bg-[#292B31] border border-light-border/80 dark:border-[#3A3D44] rounded px-1.5 py-0.5 shrink-0 select-none mt-0.5">
+                                      <span className="font-mono text-[11px] sm:text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-raised dark:bg-[#292B31] border border-light-border/80 dark:border-[#3A3D44] rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
                                         #{String(pIdx + 1).padStart(2, '0')}
                                       </span>
                                       <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">

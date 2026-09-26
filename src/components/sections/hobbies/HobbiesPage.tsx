@@ -3,6 +3,7 @@ import { ArrowLeft, Search, Layers } from 'lucide-react';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { ViewMode } from '../../../App';
 import { HobbyCard } from './HobbyCard';
+import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 
 interface HobbiesPageProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -39,7 +40,21 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* 16:9 Linen Texture Ground & Sumi-e Pine Tree (Retains exact Hobbies Section identity) */}
+      <SectionSideBackdrop
+        textureDay="./background/white linen.jpg"
+        textureNight="./background/black linen.jpg"
+        painting="./decorators/tree.jpg"
+        paintingAlt="Sumi-e pine tree ink wash painting"
+        placement="right"
+        artworkWidth="w-full lg:w-[50%]"
+        maskCenter="at 75% 50%"
+        textureOpacityDay={0.65}
+        textureOpacityNight={0.45}
+        paintingOpacityDay={0.35}
+        paintingOpacityNight={0.14}
+      />
+      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
         {/* Back navigation button */}
         <div className="mb-6 sm:mb-8">
           <button

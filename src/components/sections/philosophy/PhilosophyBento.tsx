@@ -113,16 +113,19 @@ export const PhilosophyBento: React.FC = () => {
       {/* Zen Ambient Mist Radial Wash */}
       <div className="absolute inset-0 bg-radial-[at_50%_50%] from-ochre/[0.03] dark:from-ochre/[0.02] to-transparent pointer-events-none z-0" />
 
-      {/* 16:9 Washi Paper Texture Background & Sumi-e Mountain Painting Decorations on the Side Flanks */}
+      {/* 16:9 Washi Paper Ground & Asymmetric Sumi-e Mountain Horizon (Anchored Left for alternating rhythm) */}
       <SectionSideBackdrop
         textureDay="./background/white paper texture.jpg"
         textureNight="./background/black paper.jpg"
         painting="./decorators/mountain.jpg"
         paintingAlt="Sumi-e misty mountain ink wash painting"
-        textureOpacityDay={0.5}
-        textureOpacityNight={0.4}
-        paintingOpacityDay={0.36}
-        paintingOpacityNight={0.22}
+        placement="left"
+        artworkWidth="w-full lg:w-[48%]"
+        maskCenter="at 28% 50%"
+        textureOpacityDay={0.65}
+        textureOpacityNight={0.45}
+        paintingOpacityDay={0.35}
+        paintingOpacityNight={0.14}
       />
 
       {/* Main Philosophy Bento Content */}

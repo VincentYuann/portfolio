@@ -42,9 +42,23 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
   };
 
   return (
-    <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas flex flex-col items-center justify-center px-6 relative">
+    <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      {/* Simple Tactile Cedar Wood Background for Auth Chamber */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <img
+          src="./background/white wood.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover dark:hidden mix-blend-multiply opacity-55"
+        />
+        <img
+          src="./background/black wood.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover hidden dark:block mix-blend-screen opacity-40"
+        />
+      </div>
+
       {/* Authentic Hanko Stamp Brand Header */}
-      <div className="mb-10 flex flex-col items-center gap-3">
+      <div className="mb-10 flex flex-col items-center gap-3 relative z-10">
         <div className="relative p-2 flex items-center justify-center animate-seal-breathe">
           <HankoStamp className="w-18 h-18 sm:w-20 sm:h-20" char="原" />
         </div>
@@ -57,7 +71,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
       </div>
 
       {/* Login Card with Japanese Double Hairline Frame & Corner Brackets */}
-      <div className="interactive-card relative w-full max-w-sm bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-8 shadow-sm flex flex-col gap-5 classical-card-frame">
+      <div className="interactive-card relative z-10 w-full max-w-sm bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-8 shadow-sm flex flex-col gap-5 classical-card-frame">
         <CornerBrackets size="md" />
 
         <h1 className="font-serif text-lg text-light-ink dark:text-dark-ink text-center">

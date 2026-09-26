@@ -5,6 +5,7 @@ import { CornerBrackets } from '../../common/CornerBrackets';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
+import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { ViewMode } from '../../../App';
 
 const ProjectDetailModal = lazy(() =>
@@ -67,7 +68,21 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* 16:9 Cedar Wood Ground & Dynamic Cresting Wave (Retains exact Projects Showcase identity) */}
+      <SectionSideBackdrop
+        textureDay="./background/white wood.jpg"
+        textureNight="./background/black wood.jpg"
+        painting="./decorators/ocean.jpg"
+        paintingAlt="Sumi-e ocean wave ink wash painting"
+        placement="bottom-right"
+        artworkWidth="w-full lg:w-[65%]"
+        maskCenter="at 75% 65%"
+        textureOpacityDay={0.65}
+        textureOpacityNight={0.45}
+        paintingOpacityDay={0.35}
+        paintingOpacityNight={0.14}
+      />
+      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
         {/* Detail Modal (Loaded dynamically on-demand) */}
         {selectedProject && (
           <Suspense fallback={null}>

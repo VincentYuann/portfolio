@@ -43,16 +43,19 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface/25 to-transparent dark:via-dark-surface-card/40 pointer-events-none z-0 border-y border-light-border/40 dark:border-dark-border/40" />
       <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-[28rem] max-w-full h-[28rem] bg-radial-[at_center] from-bamboo/[0.035] dark:from-bamboo/[0.02] to-transparent pointer-events-none z-0" />
 
-      {/* 16:9 Linen Texture Background & Sumi-e Pine Tree Painting Decorations on the Side Flanks */}
+      {/* 16:9 Linen Texture Ground & Asymmetric Sumi-e Pine Tree on Right */}
       <SectionSideBackdrop
         textureDay="./background/white linen.jpg"
         textureNight="./background/black linen.jpg"
         painting="./decorators/tree.jpg"
         paintingAlt="Sumi-e pine tree ink wash painting"
-        textureOpacityDay={0.5}
-        textureOpacityNight={0.4}
-        paintingOpacityDay={0.36}
-        paintingOpacityNight={0.22}
+        placement="right"
+        artworkWidth="w-full lg:w-[50%]"
+        maskCenter="at 75% 50%"
+        textureOpacityDay={0.65}
+        textureOpacityNight={0.45}
+        paintingOpacityDay={0.35}
+        paintingOpacityNight={0.14}
       />
 
       {/* Main Hobbies Content Container */}

@@ -54,13 +54,13 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
               <span
                 className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[2px] font-mono text-[10px] font-bold uppercase tracking-wider ${
                   project.isActive
-                    ? 'bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400'
-                    : 'bg-stone-100 dark:bg-dark-surface border border-light-border dark:border-dark-border text-stone-600 dark:text-dark-ink-muted'
+                    ? 'bg-bamboo/10 dark:bg-bamboo/20 border border-bamboo/30 dark:border-bamboo/40 text-bamboo-dark dark:text-bamboo-light'
+                    : 'bg-light-surface-muted dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'
                 }`}
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    project.isActive ? 'bg-emerald-500 animate-pulse' : 'bg-stone-400 dark:bg-neutral-500'
+                    project.isActive ? 'bg-bamboo dark:bg-bamboo-light animate-pulse' : 'bg-light-ink-subtle/40 dark:bg-dark-ink-subtle/40'
                   }`}
                 />
                 <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'}</span>

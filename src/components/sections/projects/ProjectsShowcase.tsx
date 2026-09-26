@@ -66,16 +66,19 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
       {/* Subtle Japanese Joinery Axis Ambient Glow */}
       <div className="absolute right-0 sm:right-24 top-1/3 w-96 h-96 bg-radial-[at_center] from-ochre/[0.04] dark:from-ochre/[0.025] to-transparent pointer-events-none z-0" />
       
-      {/* 16:9 Cedar Wood Texture Background & Sumi-e Great Ocean Waves Painting Decorations on the Side Flanks */}
+      {/* 16:9 Cedar Wood Ground & Dynamic Cresting Wave across Lower/Right Canvas */}
       <SectionSideBackdrop
         textureDay="./background/white wood.jpg"
         textureNight="./background/black wood.jpg"
         painting="./decorators/ocean.jpg"
         paintingAlt="Sumi-e ocean wave ink wash painting"
-        textureOpacityDay={0.5}
-        textureOpacityNight={0.4}
-        paintingOpacityDay={0.36}
-        paintingOpacityNight={0.22}
+        placement="bottom-right"
+        artworkWidth="w-full lg:w-[75%]"
+        maskCenter="at 70% 65%"
+        textureOpacityDay={0.65}
+        textureOpacityNight={0.45}
+        paintingOpacityDay={0.35}
+        paintingOpacityNight={0.14}
       />
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">

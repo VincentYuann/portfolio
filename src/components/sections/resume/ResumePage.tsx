@@ -4,6 +4,7 @@ import { tokenizeLatexLine, getTokenClassName } from '../../../lib/latexHighligh
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
+import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 
 interface ResumePageProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -185,7 +186,21 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
 
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* 16:9 Washi Paper Ground & Sumi-e Bamboo Art (Editorial CV Foundation) */}
+      <SectionSideBackdrop
+        textureDay="./background/white paper texture.jpg"
+        textureNight="./background/black paper.jpg"
+        painting="./decorators/bamboo.jpg"
+        paintingAlt="Sumi-e bamboo ink wash painting"
+        placement="right"
+        artworkWidth="w-full lg:w-[48%]"
+        maskCenter="at 75% 45%"
+        textureOpacityDay={0.65}
+        textureOpacityNight={0.45}
+        paintingOpacityDay={0.35}
+        paintingOpacityNight={0.14}
+      />
+      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
         {/* Back navigation button */}
         <div className="mb-6 sm:mb-8">
           <button

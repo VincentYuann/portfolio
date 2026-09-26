@@ -43,22 +43,22 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   // Custom theme overrides from experience milestones
   const activeClass = bg && border && text
     ? `${bg} ${border} ${text} border`
-    : 'bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-600/25 dark:border-emerald-400/25 text-emerald-800 dark:text-emerald-400';
+    : 'bg-bamboo/10 dark:bg-bamboo/20 border border-bamboo/30 dark:border-bamboo/40 text-bamboo-dark dark:text-bamboo-light';
 
   const completedClass =
-    'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-[#1F1E1D] dark:border-[#3E3B37] dark:text-dark-ink-muted';
+    'bg-light-surface-muted border border-light-border text-light-ink-muted dark:bg-dark-surface-muted dark:border-dark-border dark:text-dark-ink-muted';
 
-  const dotActiveClass = dotBg || 'bg-emerald-600 dark:bg-emerald-400';
+  const dotActiveClass = dotBg || 'bg-bamboo dark:bg-bamboo-light';
 
   return (
     <span
       className={`inline-flex items-center font-mono font-bold uppercase tracking-wider transition-colors select-none ${
-        isSm ? 'gap-1 px-2 py-0.5 text-[11px] rounded-full' : 'gap-1.5 px-2.5 py-0.5 text-[11px] rounded-full'
+        isSm ? 'gap-1 px-2 py-0.5 text-[11px] rounded-[2px]' : 'gap-1.5 px-2.5 py-0.5 text-[11px] rounded-[2px]'
       } ${isActive ? activeClass : completedClass} ${customClass}`}
     >
       <span
         className={`rounded-full shrink-0 ${isSm ? 'w-1 h-1' : 'w-1.5 h-1.5'} ${
-          isActive ? dotActiveClass : 'bg-stone-400 dark:bg-neutral-500'
+          isActive ? dotActiveClass : 'bg-light-ink-subtle/40 dark:bg-dark-ink-subtle/40'
         }`}
       />
       <span>{label}</span>

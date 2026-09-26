@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ArrowRight,
   FileText,
@@ -9,9 +9,6 @@ import {
   Linkedin,
   Mail,
   Compass,
-  Terminal,
-  Check,
-  Copy,
 } from 'lucide-react';
 import { useSiteData } from '../../../context/SiteDataContext';
 
@@ -21,7 +18,6 @@ interface HeroAkariStudioProps {
 
 export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) => {
   const { profile } = useSiteData();
-  const [copiedTerminal, setCopiedTerminal] = useState(false);
 
   const headline =
     profile?.headline || 'Crafting thoughtful digital experiences with algorithmic clarity.';
@@ -31,14 +27,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   const displayName = profile?.name || 'Vincent Yuan';
   const displayRole = profile?.role || 'Software & Generative AI Engineer';
 
-  const terminalCmd = 'npx vincent-yuan';
-
-  const handleCopyCmd = () => {
-    navigator.clipboard.writeText(terminalCmd);
-    setCopiedTerminal(true);
-    setTimeout(() => setCopiedTerminal(false), 2200);
-  };
-
   return (
     <section
       id="home"
@@ -46,64 +34,90 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
     >
       {/* 
         FIXED PINNED HERO BACKDROP (The Division Effect)
-        Distinct Hero Chamber: Akari workshop lantern glow + pine silhouette + sumi mountains
+        Layer 1: 16:9 Tactile Texture Ground (Washi Paper / Tactile Linen)
+        Layer 2: Panoramic Sumi-e Mountain Landscape & Mist (Naturally placed on right)
+        Layer 3: Sumi-e Pine / Bamboo accents & subtle mist gradients
       */}
-      <div className="fixed inset-0 top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden select-none">
-        {/* Layer 1: Akari Workshop Craft Atmosphere with Soft Faded Edge Vignette */}
-        <div className="absolute right-0 top-0 w-full lg:w-3/5 h-full opacity-80 dark:opacity-18 mix-blend-multiply dark:mix-blend-luminosity dark:filter dark:brightness-65 dark:contrast-115 transition-opacity duration-700">
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
+        {/* Layer 1: Full-Bleed Tactile Texture Ground */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+          {/* Day Mode: Tactile Washi Paper Texture */}
           <img
-            src="./images/akari-commerce.jpg"
-            alt="Akari craft workshop atmosphere"
-            className="w-full h-full object-cover object-center"
+            src="./background/white paper texture.jpg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover dark:hidden mix-blend-multiply opacity-60 transition-opacity duration-700"
             loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            style={{
-              maskImage:
-                'radial-gradient(ellipse 90% 85% at 65% 45%, black 25%, transparent 85%)',
-              WebkitMaskImage:
-                'radial-gradient(ellipse 90% 85% at 65% 45%, black 25%, transparent 85%)',
-            }}
           />
-        </div>
-
-        {/* Layer 2: Subtle Pine Tree Atmosphere on Left */}
-        <div className="absolute left-0 top-1/4 w-72 lg:w-96 h-96 opacity-30 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen pointer-events-none">
+          {/* Night Mode: Tactile Black Charcoal Washi Paper */}
           <img
-            src="./decorators/tree.jpg"
-            alt="Sumi-e pine tree branch"
-            className="w-full h-full object-contain object-left"
-            loading="lazy"
-            decoding="async"
-            style={{
-              maskImage:
-                'radial-gradient(ellipse 80% 80% at 30% 50%, black 20%, transparent 80%)',
-              WebkitMaskImage:
-                'radial-gradient(ellipse 80% 80% at 30% 50%, black 20%, transparent 80%)',
-            }}
+            src="./background/black paper.jpg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover hidden dark:block opacity-45 mix-blend-screen transition-opacity duration-700"
+            loading="eager"
           />
         </div>
 
-        {/* Layer 3: Subtle Sumi-e Landscape in Background */}
-        <div className="absolute left-0 bottom-0 w-full lg:w-1/2 h-2/3 opacity-30 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen pointer-events-none">
+        {/* Layer 2: Refined Sumi-e Landscape Artwork (Appropriate size, anchored on the right) */}
+        <div
+          className="absolute right-0 top-0 bottom-0 h-full w-full lg:w-[46%] pointer-events-none overflow-hidden transition-opacity duration-700"
+          style={{
+            maskImage:
+              'radial-gradient(ellipse 90% 80% at 70% 50%, black 35%, transparent 95%), linear-gradient(to bottom, black 85%, transparent 100%)',
+            WebkitMaskImage:
+              'radial-gradient(ellipse 90% 80% at 70% 50%, black 35%, transparent 95%), linear-gradient(to bottom, black 85%, transparent 100%)',
+          }}
+        >
+          {/* Day Mode: Sumi-e Mountain Ridges & Pagoda in warm ink wash */}
           <img
             src="./background/hero-sumie-landscape-banner.jpg"
-            alt="Sumi-e mountain background"
-            className="w-full h-full object-contain object-bottom-left"
-            loading="lazy"
-            decoding="async"
-            style={{
-              maskImage:
-                'radial-gradient(ellipse 85% 80% at 35% 65%, black 25%, transparent 85%)',
-              WebkitMaskImage:
-                'radial-gradient(ellipse 85% 80% at 35% 65%, black 25%, transparent 85%)',
-            }}
+            alt="Sumi-e landscape mountains and mist"
+            className="w-full h-full object-contain sm:object-right dark:hidden mix-blend-multiply opacity-60 transition-opacity duration-700"
+            loading="eager"
+          />
+          {/* Night Mode: Ethereal Silver-Ash Sumi-e Mountain Peaks */}
+          <img
+            src="./background/hero-sumie-landscape-banner.jpg"
+            alt="Sumi-e landscape mountains in night mist"
+            className="w-full h-full object-contain sm:object-right hidden dark:block mix-blend-screen opacity-35 filter invert contrast-125 brightness-90 transition-opacity duration-700"
+            loading="eager"
           />
         </div>
 
-        {/* Layer 4: Atmospheric Wash Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-r from-light-canvas via-light-canvas/75 to-transparent dark:from-dark-canvas dark:via-dark-canvas/85 dark:to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-light-canvas dark:from-dark-canvas to-transparent pointer-events-none" />
+        {/* Layer 3: Delicate Pine Tree Accent in the West Margin (Tasteful scale) */}
+        <div
+          className="absolute left-0 top-1/4 w-56 lg:w-64 h-56 lg:h-64 pointer-events-none opacity-25 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen"
+          style={{
+            maskImage: 'radial-gradient(ellipse 80% 80% at 35% 50%, black 20%, transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 35% 50%, black 20%, transparent 80%)',
+          }}
+        >
+          <img
+            src="./decorators/tree.jpg"
+            alt="Sumi-e pine branch accent"
+            className="w-full h-full object-contain object-left dark:filter dark:invert"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Layer 4: Delicate Sumi-e Bamboo Leaf Accent on East Margin */}
+        <div
+          className="absolute right-0 top-12 w-44 lg:w-56 h-64 lg:h-80 pointer-events-none opacity-20 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen"
+          style={{
+            maskImage: 'radial-gradient(ellipse 85% 85% at 75% 35%, black 25%, transparent 85%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 75% 35%, black 25%, transparent 85%)',
+          }}
+        >
+          <img
+            src="./decorators/bamboo.jpg"
+            alt="Sumi-e bamboo leaves accent"
+            className="w-full h-full object-contain object-right-top dark:filter dark:invert"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Layer 4: Gentle Atmospheric Wash Gradients for Text Legibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-light-canvas/75 via-light-canvas/35 to-transparent dark:from-dark-canvas/80 dark:via-dark-canvas/40 dark:to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-light-canvas dark:from-dark-canvas to-transparent pointer-events-none" />
       </div>
 
       {/* Main Studio Frame Layout (Sidebar + Hero Content) */}
@@ -115,7 +129,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             Addresses navbar duplication by:
             1. Omitting redundant second Hanko stamp (header has the canonical seal)
             2. Omitting redundant internal nav links (header already has them)
-            3. Providing real curatorial telemetry, coordinates, external profiles, and CLI snippet
+            3. Providing real curatorial telemetry, coordinates, and external profiles
           */}
           <aside className="lg:col-span-4 xl:col-span-3 border-b lg:border-b-0 lg:border-r border-light-border dark:border-dark-border pb-6 lg:pb-0 pr-0 lg:pr-8 flex flex-col justify-between gap-6 h-full">
             
@@ -159,15 +173,15 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   PHILLY, PA · 39.9526° N, 75.1652° W
                 </span>
               </div>
-              <div className="text-[11px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
+              <div className="text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
                 EDUCATION // DREXEL UNIVERSITY (BS CS)
               </div>
-              <div className="text-[11px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
+              <div className="text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
                 TIMEZONE // EST (UTC-5) · ACTIVE ATELIER
               </div>
             </div>
 
-            {/* External Channels & Developer CLI (Channels not in top navbar) */}
+            {/* External Channels (Channels not in top navbar) */}
             <div className="space-y-3 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
               <div className="text-2xs font-chakra uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-semibold">
                 DIRECT CHANNELS &amp; REPOSITORIES
@@ -202,37 +216,18 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   <span>Email</span>
                 </a>
               </div>
-
-              {/* Developer CLI Terminal Snippet */}
-              <button
-                type="button"
-                onClick={handleCopyCmd}
-                title="Copy developer CLI command"
-                className="w-full flex items-center justify-between px-3 py-2 rounded-[2px] bg-light-surface/80 dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong font-mono text-[11px] text-light-ink dark:text-dark-ink transition-all cursor-pointer group shadow-2xs"
-              >
-                <div className="flex items-center gap-1.5">
-                  <Terminal className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover:text-terracotta transition-colors" />
-                  <span className="text-light-ink-subtle select-none">$</span>
-                  <span className="font-medium tracking-tight">{terminalCmd}</span>
-                </div>
-                {copiedTerminal ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                ) : (
-                  <Copy className="w-3.5 h-3.5 text-light-ink-subtle opacity-60 group-hover:opacity-100 transition-opacity" />
-                )}
-              </button>
             </div>
 
-            {/* Status Consultation Badge */}
+            {/* Status Consultation Badge (Matching moodboard cinnabar status dot) */}
             <div className="flex items-center gap-3 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
               <div className="relative w-6 h-6 rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border flex items-center justify-center shrink-0">
-                <span className="w-2 h-2 rounded-full bg-emerald-500/90 dark:bg-emerald-400/90 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
               </div>
               <div>
                 <p className="font-chakra text-2xs uppercase tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle">
                   CURRENT AVAILABILITY
                 </p>
-                <p className="font-sans text-xs font-medium text-emerald-800 dark:text-emerald-400">
+                <p className="font-sans text-xs font-medium text-light-ink dark:text-dark-ink">
                   Open to Full-Stack &amp; AI Roles
                 </p>
               </div>
@@ -315,7 +310,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   </div>
                   <span className="font-mono text-2xs text-light-ink-subtle">BACKEND</span>
                 </div>
-                <div className="text-[11px] font-mono font-medium text-emerald-800 dark:text-emerald-400">
+                <div className="text-[11px] font-mono font-medium text-bamboo dark:text-bamboo-light">
                   Python · FastAPI · PostgreSQL · Node.js · Docker
                 </div>
                 <p className="font-mulish text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
@@ -334,7 +329,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   </div>
                   <span className="font-mono text-2xs text-light-ink-subtle">CRAFT</span>
                 </div>
-                <div className="text-[11px] font-mono font-medium text-emerald-800 dark:text-emerald-400">
+                <div className="text-[11px] font-mono font-medium text-bamboo dark:text-bamboo-light">
                   React 19 · TypeScript · Tailwind · Next.js · Vite
                 </div>
                 <p className="font-mulish text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
@@ -353,7 +348,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   </div>
                   <span className="font-mono text-2xs text-light-ink-subtle">INTELLIGENCE</span>
                 </div>
-                <div className="text-[11px] font-mono font-medium text-emerald-800 dark:text-emerald-400">
+                <div className="text-[11px] font-mono font-medium text-bamboo dark:text-bamboo-light">
                   Qdrant · LlamaIndex · Gemini API · LangChain · RAG
                 </div>
                 <p className="font-mulish text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
