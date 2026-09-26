@@ -382,11 +382,11 @@ export const HobbiesEditor: React.FC = () => {
               badge={
                 <div className="flex items-center gap-1.5">
                   {hobby.category && (
-                    <span className="font-mono text-[10px] sm:text-[11px] px-2 py-0.5 rounded-md bg-light-surface-raised dark:bg-dark-surface-raised text-light-ink-muted border border-light-border dark:border-dark-border uppercase">
+                    <span className="font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center rounded-md bg-stone-200/70 dark:bg-neutral-800 text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border font-medium uppercase tracking-wide">
                       {hobby.category}
                     </span>
                   )}
-                  <span className="font-mono text-[10px] sm:text-[11px] px-2 py-0.5 rounded-md bg-terracotta/10 text-terracotta border border-terracotta/20 font-medium">
+                  <span className="font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center rounded-md bg-terracotta/15 text-terracotta dark:text-terracotta-soft border border-terracotta/30 font-medium">
                     {imageCount}/{MAX_IMAGES_PER_HOBBY} Photos
                   </span>
                 </div>
@@ -473,7 +473,7 @@ export const HobbiesEditor: React.FC = () => {
                 </div>
 
                 {/* Row 3: Supabase Storage Multi-Image Gallery Manager (Up to 5 pictures) */}
-                <div className="space-y-3 p-4 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/60 dark:border-dark-border/60">
+                <div className="space-y-3 pt-3 border-t border-light-border/50 dark:border-dark-border/50">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <ImageIcon className="w-4 h-4 text-terracotta" />
@@ -515,7 +515,7 @@ export const HobbiesEditor: React.FC = () => {
                       {hobby.images.map((imgUrl, imgIdx) => (
                         <div
                           key={imgIdx}
-                          className="relative p-2 rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border/60 dark:border-dark-border/60 flex items-center gap-3 group/img shadow-2xs"
+                          className="relative p-2.5 border-b border-light-border/60 dark:border-dark-border/60 flex items-center gap-3 group/img"
                         >
                           <img
                             src={imgUrl}
@@ -526,17 +526,17 @@ export const HobbiesEditor: React.FC = () => {
                             }}
                           />
                           <div className="min-w-0 flex-1">
-                            <span className="font-mono text-[10px] text-terracotta font-bold block">
+                            <span className="font-mono text-xs text-terracotta font-semibold block">
                               Photo 0{imgIdx + 1} {imgIdx === 0 && '· Main Display'}
                             </span>
-                            <p className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted truncate">
+                            <p className="font-mono text-xs text-light-ink dark:text-dark-ink truncate max-w-xs">
                               {imgUrl}
                             </p>
                             {imgIdx !== 0 && (
                               <button
                                 type="button"
                                 onClick={() => handleSetMainImage(hobby.id, imgIdx)}
-                                className="text-[10px] font-mono text-terracotta hover:underline mt-0.5 flex items-center gap-1 cursor-pointer"
+                                className="text-xs font-mono text-terracotta hover:underline mt-0.5 flex items-center gap-1 cursor-pointer"
                               >
                                 <Check className="w-2.5 h-2.5" /> Set as Main
                               </button>

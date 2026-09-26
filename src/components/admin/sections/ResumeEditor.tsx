@@ -281,8 +281,7 @@ export const ResumeEditor: React.FC = () => {
 
       {/* Upload Panel */}
       {tab === 'upload' && (
-        <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl p-6 sm:p-8 shadow-xs classical-card-frame">
-          <CornerBrackets size="md" />
+        <div className="relative pt-1 space-y-4">
           <input
             ref={fileInputRef}
             type="file"

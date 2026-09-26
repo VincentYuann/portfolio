@@ -846,7 +846,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
             <span className="font-serif text-xs sm:text-sm font-medium tracking-tight">
               Ask Vincent's AI
             </span>
-            <kbd className="inline-flex items-center px-1.5 py-0.5 text-[11px] font-mono font-medium rounded border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface text-light-ink-muted dark:text-stone-300">
+            <kbd className="inline-flex items-center px-1.5 py-0.5 text-xs font-mono font-medium rounded border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface text-light-ink-muted dark:text-stone-300">
               ⌘K
             </kbd>
           </div>
@@ -885,11 +885,11 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
               ? 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)'
               : undefined,
           }}
-          className={`fixed z-[60] flex flex-col ${
+          className={`fixed z-[60] flex flex-col modal dialog ${
             windowPos && !isMobile
               ? 'top-0 left-0 right-auto bottom-auto'
               : 'bottom-0 left-0 right-0 sm:top-auto sm:bottom-6 sm:right-6 sm:left-auto'
-          } rounded-t-2xl sm:rounded-xl border border-terracotta/40 dark:border-terracotta/50 bg-light-surface-card dark:bg-dark-surface-card shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in duration-200`}
+          } rounded-t-2xl sm:rounded-xl border border-terracotta/40 dark:border-terracotta/50 bg-light-surface-card dark:bg-dark-surface-card shadow-lg dark:shadow-[0_8px_20px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in duration-200`}
           role="dialog"
           aria-modal="true"
           aria-labelledby="ai-chat-title"
@@ -941,7 +941,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
               <span className="font-serif font-semibold text-sm tracking-wide">
                 {isAdmin ? 'Drop file to attach' : 'Admin Privilege Required'}
               </span>
-              <span className="font-mono text-[11px] text-white/90 mt-1 max-w-xs text-center">
+              <span className="font-mono text-xs text-white/90 mt-1 max-w-xs text-center">
                 {isAdmin
                   ? 'Images (PNG, JPG, WEBP, GIF) · PDF · DOCX · Max 50 MB'
                   : 'Multimodal file analysis is reserved for administrator sessions. Please ask questions via text!'}
@@ -984,7 +984,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                 </h3>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-bamboo animate-pulse" />
-                  <span className="font-mono text-[10px] tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle uppercase">
+                  <span className="font-mono text-xs tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle uppercase">
                     {isStreaming
                       ? 'Synthesizing...'
                       : callerContext
@@ -1066,14 +1066,14 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           </div>
 
           {/* ─── QUICK TOPIC PROMPTS (NON-CLIPPING HORIZONTAL SCROLLER) ─── */}
-          <div className="relative z-30 px-3 py-2 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface-raised dark:bg-dark-surface-card overflow-x-auto scrollbar-none flex items-center gap-1.5 whitespace-nowrap">
+          <div className="relative z-30 px-3 py-2 border-b border-light-border/40 dark:border-dark-border/40 overflow-x-auto scrollbar-none flex items-center gap-1.5 whitespace-nowrap">
             {UNIVERSAL_PROMPT_PILLS.map((pill) => (
               <button
                 key={pill.id}
                 type="button"
                 onClick={() => handleSendMessage(pill.prompt)}
                 disabled={isStreaming}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-3 sm:py-1 rounded-full border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta hover:text-terracotta text-light-ink dark:text-dark-ink text-[11px] font-sans transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 shadow-2xs cursor-pointer min-h-[38px] sm:min-h-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-1"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-3 sm:py-1 rounded-full border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta hover:text-terracotta text-light-ink dark:text-dark-ink text-xs font-sans transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 shadow-2xs cursor-pointer min-h-[38px] sm:min-h-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-1"
               >
                 <Sparkles className="w-3 h-3 text-terracotta" />
                 <span>{pill.label}</span>
@@ -1136,10 +1136,10 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                                         )}
                                       </AttachmentMedia>
                                       <AttachmentContent>
-                                        <AttachmentTitle className="text-white text-[11px] truncate max-w-[160px]">
+                                        <AttachmentTitle className="text-white text-xs truncate max-w-[160px]">
                                           {msg.attachmentName}
                                         </AttachmentTitle>
-                                        <AttachmentDescription className="text-white/80 text-[10px]">
+                                        <AttachmentDescription className="text-white/80 text-xs">
                                           ATTACHMENT
                                         </AttachmentDescription>
                                       </AttachmentContent>
@@ -1160,20 +1160,20 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                           {/* Assistant Identity Row */}
                           <div className="flex items-center justify-between px-1">
                     <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-[10px] font-serif font-bold shadow-2xs">
+                      <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-xs font-serif font-bold shadow-2xs">
                         原
                       </div>
                       <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
                         Vincent AI
                       </span>
                       {msg.userType && (
-                        <Badge variant="terracotta" className="text-[10px] px-1.5 py-0 h-4">
+                        <Badge variant="terracotta" className="text-xs px-2 py-0.5 h-auto">
                           {msg.userType}
                         </Badge>
                       )}
                       <Badge
                         variant="outline"
-                        className={`text-[10px] px-1.5 py-0 h-4 font-mono ${
+                        className={`text-xs px-2 py-0.5 h-auto font-mono ${
                           msg.telemetry?.isFallback
                             ? 'text-ochre border-ochre/40 bg-ochre/5'
                             : 'text-terracotta border-terracotta/40 bg-terracotta/5'
@@ -1185,8 +1185,8 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                     <ChatBubbleTimestamp>{msg.timestamp}</ChatBubbleTimestamp>
                   </div>
 
-                  {/* Clean Artisan Message Card (No Slop, No Giant Watermark, No Corner Bracket Clutter) */}
-                  <div className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-raised p-4 shadow-2xs group select-text">
+                  {/* Clean Artisan Message Area (Un-nested container, max-w-xl for line length) */}
+                  <div className="relative pl-3.5 pr-3 py-3 border-l border-terracotta/40 bg-light-surface/40 dark:bg-dark-surface-raised/40 select-text max-w-xl group">
                     {/* Copy Response Action */}
                     <div className="absolute top-2.5 right-2.5 z-20 flex items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100 transition-opacity">
                       <Tooltip>
@@ -1251,7 +1251,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                             prev === msg.id ? null : msg.id
                           )
                         }
-                        className="inline-flex items-center gap-1.5 text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle hover:text-terracotta dark:hover:text-terracotta transition-colors py-0.5 cursor-pointer select-none"
+                        className="inline-flex items-center gap-1.5 text-xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle hover:text-terracotta dark:hover:text-terracotta transition-colors py-0.5 cursor-pointer select-none"
                         aria-expanded={expandedTelemetryId === msg.id}
                         aria-label={expandedTelemetryId === msg.id ? 'Collapse telemetry drawer' : 'Inspect telemetry'}
                       >
@@ -1265,7 +1265,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                       </button>
 
                       {expandedTelemetryId === msg.id && (
-                        <div className="mt-1.5 p-2.5 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised text-[10px] font-mono space-y-1 animate-in fade-in duration-150">
+                        <div className="mt-1.5 p-2.5 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised text-xs font-mono space-y-1 animate-in fade-in duration-150">
                           <div className="flex items-center justify-between text-light-ink-muted dark:text-dark-ink-muted">
                             <span>Engine:</span>
                             <span className="text-light-ink dark:text-dark-ink font-medium">{msg.telemetry.model}</span>
@@ -1306,18 +1306,18 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                     <MessageScrollerItem messageId="streaming">
                       <div className="flex flex-col space-y-1.5 animate-in fade-in duration-150">
                         <div className="flex items-center gap-2 px-1">
-                          <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-[10px] font-serif font-bold">
+                          <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-xs font-serif font-bold">
                             原
                           </div>
                           <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
                             Vincent AI
                           </span>
-                          <Badge variant="terracotta" className="text-[10px] px-1.5 py-0 h-4 animate-pulse">
+                          <Badge variant="terracotta" className="text-xs px-2 py-0.5 h-auto animate-pulse">
                             STREAMING
                           </Badge>
                         </div>
 
-                        <div className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-raised p-4 shadow-2xs select-text">
+                        <div className="relative pl-3.5 pr-3 py-3 border-l border-terracotta/40 bg-light-surface/40 dark:bg-dark-surface-raised/40 max-w-xl select-text">
                           {displayedStreamingText ? (
                             <>
                               <MarkdownRenderer content={displayedStreamingText} />
@@ -1340,7 +1340,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           </MessageScrollerProvider>
 
           {/* ─── INPUT DOCK BAR ─── */}
-          <div className="relative z-30 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised">
+          <div className="relative z-30 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-light-border/40 dark:border-dark-border/40">
             {/* Staged file preview with canonical shadcn Attachment */}
             {attachedFile && (
               <div className="mb-2 animate-in fade-in duration-150">
@@ -1380,14 +1380,14 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
               <div className="mb-2 flex items-center justify-between px-3 py-1.5 rounded-lg bg-terracotta/10 border border-terracotta/20 text-xs text-terracotta animate-in fade-in duration-150">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-terracotta animate-ping shrink-0" />
-                  <span className="font-sans font-medium text-[11px] sm:text-xs">
+                  <span className="font-sans font-medium text-xs">
                     Listening to microphone... Speak to dictate.
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => stopStt()}
-                  className="font-mono text-[11px] underline hover:text-terracotta-hover transition-colors ml-2 cursor-pointer"
+                  className="font-mono text-xs underline hover:text-terracotta-hover transition-colors ml-2 cursor-pointer"
                 >
                   Done
                 </button>
@@ -1399,7 +1399,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="relative flex items-end rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-card p-1.5 focus-within:border-terracotta focus-within:ring-1 focus-within:ring-terracotta/30 transition-all shadow-xs"
+              className="relative flex items-end rounded-xl border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-card p-1.5 focus-within:border-terracotta focus-within:ring-1 focus-within:ring-terracotta/30 transition-all"
             >
               {isAdmin && (
                 <>
@@ -1453,7 +1453,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
 
               <div className="flex items-center gap-1.5 shrink-0 mb-0.5 pr-0.5">
                 {inputValue.length > 0 && (
-                  <span className="hidden sm:inline font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle select-none">
+                  <span className="hidden sm:inline font-mono text-xs text-light-ink-subtle dark:text-dark-ink-subtle select-none">
                     {inputValue.length}/800
                   </span>
                 )}

@@ -314,15 +314,15 @@ export const PhilosophyEditor: React.FC = () => {
 
             {/* 4 Milestones */}
             <div className="space-y-4 pt-2 border-t border-light-border/60 dark:border-dark-border/60">
-              <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted block">
-                Four Trajectory Milestones (Phases 01 - 04)
+              <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted block">
+                Four Trajectory Milestones (Phases 01–04)
               </Label>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {milestoneList.map((milestone, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-lg bg-light-surface/60 dark:bg-dark-surface-raised/40 border border-light-border/70 dark:border-dark-border/70 space-y-3 relative"
+                    className="p-3.5 space-y-3 relative border-t-2 border-ochre/30 dark:border-ochre/20 pt-3"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <Input
@@ -385,13 +385,13 @@ export const PhilosophyEditor: React.FC = () => {
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Architectural Philosophy Pillars (三つの信条)
               </h3>
-              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block max-w-xl">
                 Up to 3 core architectural tenets displayed as cards in the Japanese Bento on the homepage.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-light-ink-subtle px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+            <span className="font-mono text-xs uppercase tracking-wider text-light-ink-subtle px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
               {pillars.length}/3 PILLARS
             </span>
             {!collapsed.pillars ? (
@@ -420,7 +420,7 @@ export const PhilosophyEditor: React.FC = () => {
                         <Badge variant="terracotta" className="font-mono text-xs px-2.5 py-0.5 font-semibold">
                           PILLAR 0{pillar.position}
                         </Badge>
-                        <span className="font-mono text-[10px] text-light-ink-subtle uppercase tracking-wider">
+                        <span className="font-mono text-xs text-light-ink-subtle uppercase tracking-wider">
                           CORE TENET
                         </span>
                       </div>
@@ -454,7 +454,7 @@ export const PhilosophyEditor: React.FC = () => {
                     <div>
                       <Label
                         htmlFor={`pillar-${pillar.position}-title`}
-                        className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
+                        className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
                         required
                       >
                         Pillar Title
@@ -471,7 +471,7 @@ export const PhilosophyEditor: React.FC = () => {
                     <div>
                       <Label
                         htmlFor={`pillar-${pillar.position}-tag`}
-                        className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
+                        className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
                       >
                         Category Tag
                       </Label>
@@ -488,7 +488,7 @@ export const PhilosophyEditor: React.FC = () => {
                     <div>
                       <Label
                         htmlFor={`pillar-${pillar.position}-desc`}
-                        className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
+                        className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
                       >
                         Philosophical Narrative
                       </Label>
