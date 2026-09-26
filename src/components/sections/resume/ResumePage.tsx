@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FileText, Code2, Download, Copy, Check, ExternalLink, ArrowLeft } from 'lucide-react';
 import { tokenizeLatexLine, getTokenClassName } from '../../../lib/latexHighlight';
 import { CornerBrackets } from '../../common/CornerBrackets';
-import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
 import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
 
@@ -186,29 +185,6 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
 
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      {/* Floating Vertical Margins in Left & Right Empty Spaces */}
-      <VerticalMarginWidget
-        side="left"
-        top="top-72"
-        {...MARGIN_PRESETS.seiJaku}
-      />
-      <VerticalMarginWidget
-        side="right"
-        top="top-96"
-        type="calligraphy"
-        motto="経歴の記録"
-        submotto="CURRICULUM VITAE"
-        coordinate="WATERLOO · TOKYO"
-        stampChar="記"
-        pulseColor="bamboo"
-      />
-      <VerticalMarginWidget
-        side="left"
-        top="top-[65%]"
-        type="minimal"
-        stampChar="証"
-      />
-
       <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Back navigation button */}
         <div className="mb-6 sm:mb-8">

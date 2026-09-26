@@ -13,6 +13,42 @@ export const ContactSection: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
+  const [touched, setTouched] = useState<{ name?: boolean; email?: boolean; message?: boolean }>({});
+
+  const validateField = (field: 'name' | 'email' | 'message', value: string): string | undefined => {
+    const trimmed = value.trim();
+    if (field === 'name') {
+      if (!trimmed) return 'Name is required to initiate dialogue.';
+      if (trimmed.length < 2) return 'Please provide at least 2 characters.';
+    }
+    if (field === 'email') {
+      if (!trimmed) return 'Email address is required.';
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmed)) return 'Please provide a valid email address.';
+    }
+    if (field === 'message') {
+      if (!trimmed) return 'Message content cannot be blank.';
+      if (trimmed.length < 10) return 'Please enter at least 10 characters.';
+    }
+    return undefined;
+  };
+
+  const handleBlur = (field: 'name' | 'email' | 'message') => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const val = field === 'name' ? name : field === 'email' ? email : message;
+    const err = validateField(field, val);
+    setErrors((prev) => ({ ...prev, [field]: err }));
+  };
+
+  const handleFieldChange = (field: 'name' | 'email' | 'message', val: string) => {
+    if (field === 'name') setName(val);
+    if (field === 'email') setEmail(val);
+    if (field === 'message') setMessage(val);
+    if (touched[field]) {
+      setErrors((prev) => ({ ...prev, [field]: validateField(field, val) }));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +59,19 @@ export const ContactSection: React.FC = () => {
     const formHoneypot = (formData.get('website_check') as string) || '';
     const defaultTopic = `[Portfolio Dialogue] ${formName.trim() || 'Direct Inquiry'}`;
 
-    if (!formName || !formEmail || !formMessage) return;
+    const nameErr = validateField('name', formName);
+    const emailErr = validateField('email', formEmail);
+    const messageErr = validateField('message', formMessage);
+
+    setTouched({ name: true, email: true, message: true });
+    setErrors({ name: nameErr, email: emailErr, message: messageErr });
+
+    if (nameErr || emailErr || messageErr) {
+      if (nameErr) document.getElementById('contact-name')?.focus();
+      else if (emailErr) document.getElementById('contact-email')?.focus();
+      else if (messageErr) document.getElementById('contact-message')?.focus();
+      return;
+    }
 
     setStatus('sending');
     const res = await sendContactMessage({
@@ -39,6 +87,8 @@ export const ContactSection: React.FC = () => {
       setName('');
       setEmail('');
       setMessage('');
+      setErrors({});
+      setTouched({});
       setTimeout(() => setStatus('idle'), 6000);
     } else {
       setStatus('error');
@@ -64,39 +114,6 @@ export const ContactSection: React.FC = () => {
 
   return (
     <section id="contact" className="relative w-full overflow-hidden py-14 lg:py-20 mb-8">
-      {/* Background Japanese Sumi-e Arts in Left & Right Empty Margins */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
-        {/* Left Margin Bamboo */}
-        <div className="absolute left-0 xl:left-4 bottom-0 top-12 w-32 xl:w-48 pointer-events-none z-0 hidden lg:block">
-          <img
-            src="./images/sumie-tall-vertical-bamboo.jpg"
-            alt="Sumi-e bamboo contact flank"
-            className="w-full h-full object-contain object-bottom opacity-35 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen dark:invert animate-bamboo-sway"
-            loading="lazy"
-            decoding="async"
-            style={{
-              maskImage: 'radial-gradient(ellipse 85% 85% at 40% 60%, black 40%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 40% 60%, black 40%, transparent 85%)',
-            }}
-          />
-        </div>
-
-        {/* Right Margin Bamboo */}
-        <div className="absolute right-0 xl:right-4 bottom-0 top-12 w-32 xl:w-48 pointer-events-none z-0 hidden lg:block">
-          <img
-            src="./images/sumie-tall-vertical-bamboo.jpg"
-            alt="Sumi-e bamboo contact flank"
-            className="w-full h-full object-contain object-bottom opacity-35 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen dark:invert scale-x-[-1]"
-            loading="lazy"
-            decoding="async"
-            style={{
-              maskImage: 'radial-gradient(ellipse 85% 85% at 60% 60%, black 40%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 60% 60%, black 40%, transparent 85%)',
-            }}
-          />
-        </div>
-      </div>
-
       <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
         <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-8 sm:p-12 overflow-visible shadow-akari dark:shadow-night-glow classical-card-frame hover:border-terracotta/40 transition-colors duration-500">
           {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered card */}
@@ -244,7 +261,7 @@ export const ContactSection: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="contact-name" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                        Your Name
+                        Your Name <span className="text-terracotta">*</span>
                       </label>
                       <input
                         id="contact-name"
@@ -253,13 +270,26 @@ export const ContactSection: React.FC = () => {
                         required
                         placeholder="e.g. Kenji Tanaka"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full px-3 py-2 rounded text-sm bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta focus-visible:ring-2 focus-visible:ring-terracotta/40 transition-colors"
+                        onChange={(e) => handleFieldChange('name', e.target.value)}
+                        onBlur={() => handleBlur('name')}
+                        aria-invalid={Boolean(touched.name && errors.name)}
+                        aria-describedby={touched.name && errors.name ? 'contact-name-error' : undefined}
+                        className={`w-full px-3 py-2 rounded text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors ${
+                          touched.name && errors.name
+                            ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
+                            : 'border-light-border dark:border-dark-border focus:border-terracotta focus-visible:ring-terracotta/40'
+                        }`}
                       />
+                      {touched.name && errors.name && (
+                        <p id="contact-name-error" className="mt-1 text-[11px] text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{errors.name}</span>
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label htmlFor="contact-email" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                        Email Address
+                        Email Address <span className="text-terracotta">*</span>
                       </label>
                       <input
                         id="contact-email"
@@ -268,15 +298,28 @@ export const ContactSection: React.FC = () => {
                         required
                         placeholder="e.g. kenji@studio.jp"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3 py-2 rounded text-sm bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta focus-visible:ring-2 focus-visible:ring-terracotta/40 transition-colors"
+                        onChange={(e) => handleFieldChange('email', e.target.value)}
+                        onBlur={() => handleBlur('email')}
+                        aria-invalid={Boolean(touched.email && errors.email)}
+                        aria-describedby={touched.email && errors.email ? 'contact-email-error' : undefined}
+                        className={`w-full px-3 py-2 rounded text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors ${
+                          touched.email && errors.email
+                            ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
+                            : 'border-light-border dark:border-dark-border focus:border-terracotta focus-visible:ring-terracotta/40'
+                        }`}
                       />
+                      {touched.email && errors.email && (
+                        <p id="contact-email-error" className="mt-1 text-[11px] text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{errors.email}</span>
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div>
                     <label htmlFor="contact-message" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                      Your Message
+                      Your Message <span className="text-terracotta">*</span>
                     </label>
                     <textarea
                       id="contact-message"
@@ -285,9 +328,22 @@ export const ContactSection: React.FC = () => {
                       required
                       placeholder="Briefly describe what you would like to create or explore together..."
                       value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded text-sm bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta focus-visible:ring-2 focus-visible:ring-terracotta/40 transition-colors resize-none"
+                      onChange={(e) => handleFieldChange('message', e.target.value)}
+                      onBlur={() => handleBlur('message')}
+                      aria-invalid={Boolean(touched.message && errors.message)}
+                      aria-describedby={touched.message && errors.message ? 'contact-message-error' : undefined}
+                      className={`w-full px-3 py-2.5 rounded text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors resize-none ${
+                        touched.message && errors.message
+                          ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
+                          : 'border-light-border dark:border-dark-border focus:border-terracotta focus-visible:ring-terracotta/40'
+                      }`}
                     />
+                    {touched.message && errors.message && (
+                      <p id="contact-message-error" className="mt-1 text-[11px] text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        <span>{errors.message}</span>
+                      </p>
+                    )}
                   </div>
 
                   {status === 'error' && (

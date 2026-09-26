@@ -18,11 +18,9 @@ import {
   Mic,
   MicOff,
 } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import 'katex/dist/katex.min.css';
+import { MarkdownRenderer } from './chat/MarkdownRenderer';
+import { useDraggableWindow } from './chat/useDraggableWindow';
+import { useBottomSheetGesture } from './chat/useBottomSheetGesture';
 import { toast } from 'sonner';
 import { ViewMode } from '../../App';
 import { useSiteData } from '../../context/SiteDataContext';
@@ -140,8 +138,10 @@ const ALLOWED_MIME_TYPES = new Set([
   'application/pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/msword',
+  'text/markdown',
+  'text/plain',
 ]);
-const ALLOWED_FILE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.pdf', '.docx', '.doc'];
+const ALLOWED_FILE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.pdf', '.docx', '.doc', '.md', '.markdown', '.txt'];
 const ACCEPTED_FILE_TYPES_ATTR = [
   ...ALLOWED_FILE_EXTENSIONS,
   'image/png',
@@ -151,6 +151,8 @@ const ACCEPTED_FILE_TYPES_ATTR = [
   'application/pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/msword',
+  'text/markdown',
+  'text/plain',
 ].join(',');
 
 export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin = false }) => {
@@ -392,44 +394,6 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  /**
-   * Humanized fallback responses when microservice is unavailable or returning non-200.
-   * Completely avoids leaking HTTP 405/500 stack codes or cryptic backend jargon.
-   */
-  const getFallbackSynthesis = (userPrompt: string): string => {
-    const q = userPrompt.toLowerCase();
-
-    if (q.includes('project') || q.includes('work') || q.includes('portfolio') || q.includes('build')) {
-      return (
-        "Vincent's engineering lineage integrates Shokunin artisan discipline with modern distributed infrastructure. " +
-        "Key highlights include:\n\n" +
-        "- **Komorebi Telemetry**: Low-overhead distributed telemetry pipeline with sub-millisecond trace ingestion.\n" +
-        "- **Distributed Cache Engine**: Lock-free concurrent hash ring architecture with consistent hashing.\n" +
-        "- **Full-Stack Systems**: Reactive interfaces paired with high-throughput microservices.\n\n" +
-        "Feel free to explore the Projects section or initiate a direct inquiry."
-      );
-    }
-
-    if (q.includes('wabi') || q.includes('sabi') || q.includes('ma') || q.includes('philosophy') || q.includes('craft')) {
-      return (
-        "In Vincent's architecture, *Ma* (間) represents intentional negative space, both in visual hierarchy and in asynchronous decoupling. " +
-        "*Wabi-Sabi* (侘寂) embraces practical elegance: avoiding needless complexity, honoring deterministic behavior, and building systems that age gracefully under load."
-      );
-    }
-
-    if (q.includes('avail') || q.includes('contact') || q.includes('hire') || q.includes('job') || q.includes('role')) {
-      return (
-        "Vincent is actively open to systems engineering, AI architecture, and full-stack software engineering opportunities. " +
-        "You can reach out directly via the **Initiate a Dialogue** section at the bottom of the page, or connect on LinkedIn and GitHub."
-      );
-    }
-
-    return (
-      "Vincent specializes in distributed systems, low-latency AI pipelines, and artisan frontend craft. " +
-      "Whether designing reactive user interfaces or resilient backend services, the primary tenet remains clarity, zero unnecessary hops, and deterministic behavior. " +
-      "Explore his selected portfolio works or initiate an engineering dialogue anytime."
-    );
-  };
 
   const handleSendMessage = async (textToSend?: string) => {
     if (isSttListening) {
@@ -469,11 +433,17 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     const startTime = performance.now();
 
     try {
-      // Execute call to Gemini Agent microservice
+      // Execute call to Gemini Agent microservice with REAL-TIME SSE streaming
+      let accumulated = '';
       const data: ChatResponse = await sendToAiAgent({
         message: trimmed || 'Please inspect the attached document or image.',
         previousInteractionId: interactionId,
         file: currentFile,
+        stream: true,
+        onDelta: (textChunk: string) => {
+          accumulated += textChunk;
+          setDisplayedStreamingText(accumulated);
+        },
       });
 
       const latencyMs = Math.round(performance.now() - startTime);
@@ -493,99 +463,68 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
         refreshSiteData().catch((err) => console.warn('Post-interaction site refresh caught:', err));
       }
 
-      const fullText = data.response;
+      const fullText = data.response || accumulated;
       const estimatedTokens = Math.max(16, Math.round(fullText.length / 3.8));
       const tokensPerSec = Math.round(estimatedTokens / Math.max(0.3, latencyMs / 1000));
-      let charIndex = 0;
-      const chunkSize = Math.max(3, Math.floor(fullText.length / 30));
 
-      if (streamIntervalRef.current) {
-        clearInterval(streamIntervalRef.current);
-      }
+      setDisplayedStreamingText('');
+      setIsStreaming(false);
 
-      streamIntervalRef.current = setInterval(() => {
-        charIndex += chunkSize;
-        if (charIndex >= fullText.length) {
-          if (streamIntervalRef.current) {
-            clearInterval(streamIntervalRef.current);
-          }
-          setDisplayedStreamingText(fullText);
-          setIsStreaming(false);
-
-          const finalAiMsg: ChatMessage = {
-            id: `ai-${Date.now()}`,
-            sender: 'ai',
-            text: fullText,
-            timestamp: `VINCENT AI · ${getTimestamp()}`,
-            userType: data.user_type,
-            telemetry: {
-              model: data.model ? data.model.replace(/^models\//, '') : 'gemini-3.5-flash-lite',
-              latencyMs,
-              tokensPerSec,
-              interactionId: data.interaction_id || undefined,
-              isFallback: false,
-            },
-          };
-          setMessages((prev) => [...prev, finalAiMsg]);
-        } else {
-          setDisplayedStreamingText(fullText.slice(0, charIndex));
-        }
-      }, 20);
+      const finalAiMsg: ChatMessage = {
+        id: `ai-${Date.now()}`,
+        sender: 'ai',
+        text: fullText,
+        timestamp: `VINCENT AI · ${getTimestamp()}`,
+        userType: data.user_type,
+        telemetry: {
+          model: data.model ? data.model.replace(/^models\//, '') : 'gemini-3.5-flash-lite',
+          latencyMs,
+          tokensPerSec,
+          interactionId: data.interaction_id || undefined,
+          isFallback: false,
+        },
+      };
+      setMessages((prev) => [...prev, finalAiMsg]);
     } catch (err: any) {
-      // Graceful local synthesis on network or microservice boundary
       if (streamIntervalRef.current) {
         clearInterval(streamIntervalRef.current);
       }
-
-      if (
-        err instanceof Error &&
-        (err.message.toLowerCase().includes('administrator') ||
-          err.message.toLowerCase().includes('restricted') ||
-          err.message.toLowerCase().includes('permission') ||
-          err.message.toLowerCase().includes('forbidden') ||
-          err.message.includes('403'))
-      ) {
-        toast.info('Admin Privilege Required', {
-          description: 'File attachments and multimodal analysis are restricted to administrator sessions. Synthesizing an architectural response for your text query.',
-          duration: 5000,
-        });
-      }
+      setDisplayedStreamingText('');
+      setIsStreaming(false);
 
       const latencyMs = Math.round(performance.now() - startTime);
-      const fallbackText = getFallbackSynthesis(trimmed);
-      let charIndex = 0;
-      const chunkSize = Math.max(4, Math.floor(fallbackText.length / 25));
+      const rawMessage = err instanceof Error ? err.message : String(err || 'Unknown error');
 
-      streamIntervalRef.current = setInterval(() => {
-        charIndex += chunkSize;
-        if (charIndex >= fallbackText.length) {
-          if (streamIntervalRef.current) {
-            clearInterval(streamIntervalRef.current);
-          }
-          setDisplayedStreamingText(fallbackText);
-          setIsStreaming(false);
+      const isForbidden = rawMessage.toLowerCase().includes('administrator') || rawMessage.toLowerCase().includes('restricted') || rawMessage.includes('403');
+      const isRateLimit = rawMessage.toLowerCase().includes('rate limit') || rawMessage.toLowerCase().includes('limit reached') || rawMessage.includes('429');
+      const isNetwork = rawMessage.toLowerCase().includes('connect') || rawMessage.toLowerCase().includes('network') || rawMessage.toLowerCase().includes('unavailable') || rawMessage.includes('502');
 
-          const finalAiMsg: ChatMessage = {
-            id: `ai-${Date.now()}`,
-            sender: 'ai',
-            text: fallbackText,
-            timestamp: `VINCENT AI · ${getTimestamp()}`,
-            specCard: {
-              title: 'Overview: Systems Architecture & Portfolio Index',
-              actionText: 'Explore Works →',
-              view: 'projects',
-            },
-            telemetry: {
-              model: 'Local Architectural Knowledge Base',
-              latencyMs,
-              isFallback: true,
-            },
-          };
-          setMessages((prev) => [...prev, finalAiMsg]);
-        } else {
-          setDisplayedStreamingText(fallbackText.slice(0, charIndex));
-        }
-      }, 20);
+      let userFacingText: string;
+      if (isForbidden) {
+        userFacingText = '⚠️ **Access Restricted**: File attachments and multimodal analysis are reserved for administrator sessions. Please submit your inquiries via text.';
+        toast.info('Admin Privilege Required', {
+          description: 'File attachments are restricted to administrator sessions.',
+        });
+      } else if (isRateLimit) {
+        userFacingText = '⏳ **Rate Limit**: The AI service is currently experiencing high demand. Please wait a few moments and try again.';
+      } else if (isNetwork) {
+        userFacingText = `⚠️ **Connection Issue**: Unable to connect to the AI service. (${rawMessage})\n\nPlease verify your connection and ensure the backend service is online.`;
+      } else {
+        userFacingText = `⚠️ **Service Notice**: ${rawMessage}`;
+      }
+
+      const errorAiMsg: ChatMessage = {
+        id: `ai-${Date.now()}`,
+        sender: 'ai',
+        text: userFacingText,
+        timestamp: `VINCENT AI · ${getTimestamp()}`,
+        telemetry: {
+          model: 'Error Diagnostic',
+          latencyMs,
+          isFallback: true,
+        },
+      };
+      setMessages((prev) => [...prev, errorAiMsg]);
     }
   };
 
@@ -670,7 +609,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
 
     if (!isExtensionAllowed && !isMimeAllowed) {
       toast.error('Unsupported file format', {
-        description: `"${file.name}" is not supported. Please upload an image (PNG, JPG, WEBP, GIF) or document (PDF, DOCX, DOC).`,
+        description: `"${file.name}" is not supported. Please upload an image (PNG, JPG, WEBP, GIF) or document (PDF, DOCX, DOC, MD, TXT).`,
       });
       return false;
     }
@@ -750,396 +689,31 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     }
   };
 
-  const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
-    return (
-      <div className="markdown-content select-text selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-terracotta/30 dark:selection:text-ochre">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm, remarkMath]}
-          rehypePlugins={[rehypeKatex]}
-          components={{
-            p({ children }) {
-              return (
-                <p className="leading-relaxed font-sans text-xs sm:text-[13px] text-light-ink dark:text-dark-ink mb-2.5 last:mb-0">
-                  {children}
-                </p>
-              );
-            },
-            strong({ children }) {
-              return (
-                <strong className="font-bold text-light-ink dark:text-white">
-                  {children}
-                </strong>
-              );
-            },
-            em({ children }) {
-              return <em className="italic font-serif">{children}</em>;
-            },
-            ul({ children }) {
-              return (
-                <ul className="my-2 space-y-1.5 list-disc pl-4 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink">
-                  {children}
-                </ul>
-              );
-            },
-            ol({ children }) {
-              return (
-                <ol className="my-2 space-y-1.5 list-decimal pl-4 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink">
-                  {children}
-                </ol>
-              );
-            },
-            li({ children }) {
-              return <li className="leading-relaxed pl-0.5">{children}</li>;
-            },
-            blockquote({ children }) {
-              return (
-                <blockquote className="my-2.5 border-l border-terracotta/40 bg-terracotta/5 dark:bg-terracotta/10 px-3.5 py-1.5 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink italic rounded-r-md">
-                  {children}
-                </blockquote>
-              );
-            },
-            hr() {
-              return <hr className="my-3 border-light-border dark:border-dark-border" />;
-            },
-            h1({ children }) {
-              return (
-                <h1 className="font-serif font-bold text-sm sm:text-base text-terracotta my-2 pb-1 border-b border-light-border dark:border-dark-border">
-                  {children}
-                </h1>
-              );
-            },
-            h2({ children }) {
-              return (
-                <h2 className="font-serif font-bold text-xs sm:text-sm text-terracotta my-2">
-                  {children}
-                </h2>
-              );
-            },
-            h3({ children }) {
-              return (
-                <h3 className="font-serif font-semibold text-xs text-light-ink dark:text-dark-ink my-1.5">
-                  {children}
-                </h3>
-              );
-            },
-            a({ href, children }) {
-              return (
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-terracotta underline hover:text-terracotta-hover underline-offset-2 transition-colors font-medium"
-                >
-                  {children}
-                </a>
-              );
-            },
-            code({ inline, className, children }: any) {
-              if (inline) {
-                return (
-                  <code className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-terracotta/10 text-terracotta dark:text-ochre border border-terracotta/20 select-text">
-                    {children}
-                  </code>
-                );
-              }
-              const codeString = String(children).replace(/\n$/, '');
-              const language = className?.replace('language-', '') || 'code';
-              return (
-                <div className="relative my-2.5 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised overflow-hidden group/code select-text shadow-2xs">
-                  <div className="flex items-center justify-between px-3 py-1 bg-black/5 dark:bg-white/5 border-b border-light-border/40 dark:border-dark-border/40 text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle select-none">
-                    <span>{language}</span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        navigator.clipboard.writeText(codeString);
-                        toast.success('Code copied to clipboard');
-                      }}
-                      className="hover:text-terracotta transition-colors flex items-center gap-1 cursor-pointer py-0.5 px-1"
-                      title="Copy code"
-                      aria-label="Copy code block"
-                    >
-                      <Copy className="w-3 h-3" />
-                      <span>Copy</span>
-                    </button>
-                  </div>
-                  <pre className="p-3 overflow-x-auto text-[11px] font-mono leading-relaxed text-light-ink dark:text-dark-ink select-text">
-                    <code>{children}</code>
-                  </pre>
-                </div>
-              );
-            },
-            table({ children }) {
-              return (
-                <div className="my-2.5 overflow-x-auto rounded-lg border border-light-border dark:border-dark-border">
-                  <table className="min-w-full divide-y divide-light-border dark:divide-dark-border text-xs">
-                    {children}
-                  </table>
-                </div>
-              );
-            },
-            th({ children }) {
-              return (
-                <th className="px-3 py-1.5 bg-light-surface-raised dark:bg-dark-surface-raised font-serif font-semibold text-terracotta text-left">
-                  {children}
-                </th>
-              );
-            },
-            td({ children }) {
-              return (
-                <td className="px-3 py-1.5 border-t border-light-border/40 dark:border-dark-border/40 text-light-ink dark:text-dark-ink">
-                  {children}
-                </td>
-              );
-            },
-          }}
-        >
-          {content}
-        </ReactMarkdown>
-      </div>
-    );
-  };
 
   /* ─────────────────────────────────────────────────────────────────────────
      WINDOW DRAGGING (DESKTOP) & SWIPE-TO-DISMISS (MOBILE)
      ───────────────────────────────────────────────────────────────────────── */
-  const dragRafRef = useRef<number | null>(null);
+  const { handleDesktopDragStart } = useDraggableWindow({
+    chatWindowRef,
+    windowPos,
+    windowSize,
+    setWindowPos,
+    disabled: isMobile,
+  });
+
+  const { handleMobileSheetPointerDown } = useBottomSheetGesture({
+    chatWindowRef,
+    isExpandedMobile,
+    setIsExpandedMobile,
+    setIsOpen,
+    disabled: !isMobile,
+  });
 
   const handleHeaderPointerDown = (e: React.PointerEvent) => {
-    // Only primary mouse button or touch
-    if (e.button !== 0) return;
-    const target = e.currentTarget as HTMLElement;
-    try {
-      target.setPointerCapture(e.pointerId);
-    } catch {
-      // Ignore pointer capture fallback
-    }
-
-    const rect = chatWindowRef.current?.getBoundingClientRect();
-    if (!rect) return;
-
-    const startX = e.clientX;
-    const startY = e.clientY;
-    const mobile = isMobile;
-
-    if (!mobile) {
-      // Desktop dragging mode
-      const currentPos = windowPos || { x: rect.left, y: rect.top };
-      let curX = currentPos.x;
-      let curY = currentPos.y;
-      let lastX = e.clientX;
-      let lastY = e.clientY;
-      let hasDragged = false;
-
-      const onPointerMove = (moveEv: PointerEvent) => {
-        const totalDist = Math.hypot(moveEv.clientX - startX, moveEv.clientY - startY);
-        if (!hasDragged) {
-          if (totalDist < 5) return;
-          hasDragged = true;
-          if (chatWindowRef.current) {
-            chatWindowRef.current.style.transition = 'none';
-            chatWindowRef.current.style.top = '0px';
-            chatWindowRef.current.style.left = '0px';
-            chatWindowRef.current.style.right = 'auto';
-            chatWindowRef.current.style.bottom = 'auto';
-          }
-        }
-
-        const dx = moveEv.clientX - lastX;
-        const dy = moveEv.clientY - lastY;
-        lastX = moveEv.clientX;
-        lastY = moveEv.clientY;
-
-        curX += dx;
-        curY += dy;
-
-        const widgetWidth = chatWindowRef.current?.offsetWidth || windowSize.width;
-        const minX = 8;
-        const minY = 8;
-        const maxX = Math.max(minX, window.innerWidth - widgetWidth - 8);
-        const maxY = Math.max(minY, window.innerHeight - 56);
-
-        curX = Math.max(minX, Math.min(curX, maxX));
-        curY = Math.max(minY, Math.min(curY, maxY));
-
-        if (dragRafRef.current) cancelAnimationFrame(dragRafRef.current);
-        dragRafRef.current = requestAnimationFrame(() => {
-          if (chatWindowRef.current) {
-            chatWindowRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
-          }
-        });
-      };
-
-      const onPointerUp = (upEv: PointerEvent) => {
-        try {
-          target.releasePointerCapture(upEv.pointerId);
-        } catch {
-          // Ignore pointer release
-        }
-        window.removeEventListener('pointermove', onPointerMove);
-        window.removeEventListener('pointerup', onPointerUp);
-        window.removeEventListener('pointercancel', onPointerUp);
-
-        if (dragRafRef.current) {
-          cancelAnimationFrame(dragRafRef.current);
-          dragRafRef.current = null;
-        }
-
-        if (hasDragged) {
-          if (chatWindowRef.current) {
-            chatWindowRef.current.style.transition = '';
-            // Do not clear style.transform or top/left here; let React state update seamlessly adopt it
-          }
-          setWindowPos({ x: curX, y: curY });
-        }
-      };
-
-      window.addEventListener('pointermove', onPointerMove, { passive: true });
-      window.addEventListener('pointerup', onPointerUp);
-      window.addEventListener('pointercancel', onPointerUp);
+    if (isMobile) {
+      handleMobileSheetPointerDown(e);
     } else {
-      // Mobile bottom-sheet bidirectional swipe: swipe up for fullscreen, swipe down to collapse/dismiss
-      let currentDy = 0;
-      let hasSwiped = false;
-      const startTime = performance.now();
-
-      const onPointerMove = (moveEv: PointerEvent) => {
-        const deltaY = moveEv.clientY - startY;
-        if (!hasSwiped && Math.abs(deltaY) > 5) {
-          hasSwiped = true;
-          if (chatWindowRef.current) {
-            chatWindowRef.current.style.transition = 'none';
-          }
-        }
-        if (hasSwiped) {
-          currentDy = deltaY;
-          if (dragRafRef.current) cancelAnimationFrame(dragRafRef.current);
-          dragRafRef.current = requestAnimationFrame(() => {
-            if (chatWindowRef.current) {
-              if (currentDy > 0) {
-                // Downward dragging
-                chatWindowRef.current.style.transform = `translate3d(0, ${currentDy}px, 0)`;
-              } else {
-                // Upward dragging: visual elastic feedback
-                const upwardResistance = isExpandedMobile ? 0.15 : 0.45;
-                const visualDy = Math.max(-90, currentDy * upwardResistance);
-                chatWindowRef.current.style.transform = `translate3d(0, ${visualDy}px, 0)`;
-              }
-            }
-          });
-        }
-      };
-
-      const onPointerUp = (upEv: PointerEvent) => {
-        try {
-          target.releasePointerCapture(upEv.pointerId);
-        } catch {
-          // Ignore
-        }
-        window.removeEventListener('pointermove', onPointerMove);
-        window.removeEventListener('pointerup', onPointerUp);
-        window.removeEventListener('pointercancel', onPointerUp);
-
-        if (dragRafRef.current) {
-          cancelAnimationFrame(dragRafRef.current);
-          dragRafRef.current = null;
-        }
-
-        const duration = performance.now() - startTime;
-        const velocity = currentDy / Math.max(1, duration); // px per ms (positive = down, negative = up)
-
-        if (hasSwiped && chatWindowRef.current) {
-          if (currentDy < -30 || velocity < -0.28) {
-            // Upward swipe: expand to fullscreen
-            setIsExpandedMobile(true);
-            chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
-            chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
-            setTimeout(() => {
-              if (chatWindowRef.current) {
-                chatWindowRef.current.style.transform = '';
-                chatWindowRef.current.style.transition = '';
-              }
-            }, 260);
-          } else if (currentDy > 0) {
-            // Downward swipe
-            if (isExpandedMobile) {
-              if (currentDy > 160 || velocity > 0.8) {
-                // Deep swipe dismisses completely
-                chatWindowRef.current.style.transition = 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease-out';
-                chatWindowRef.current.style.transform = 'translate3d(0, 100%, 0)';
-                chatWindowRef.current.style.opacity = '0';
-                setTimeout(() => {
-                  setIsOpen(false);
-                  setIsExpandedMobile(false);
-                  if (chatWindowRef.current) {
-                    chatWindowRef.current.style.transform = '';
-                    chatWindowRef.current.style.opacity = '';
-                    chatWindowRef.current.style.transition = '';
-                  }
-                }, 220);
-              } else if (currentDy > 40 || velocity > 0.3) {
-                // Moderate swipe down collapses from fullscreen back to standard 85dvh
-                setIsExpandedMobile(false);
-                chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
-                chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
-                setTimeout(() => {
-                  if (chatWindowRef.current) {
-                    chatWindowRef.current.style.transform = '';
-                    chatWindowRef.current.style.transition = '';
-                  }
-                }, 260);
-              } else {
-                // Short drag springs back to fullscreen
-                chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
-                chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
-                setTimeout(() => {
-                  if (chatWindowRef.current) {
-                    chatWindowRef.current.style.transform = '';
-                    chatWindowRef.current.style.transition = '';
-                  }
-                }, 260);
-              }
-            } else {
-              // Standard 85dvh sheet: downward swipe dismisses or springs back
-              if (currentDy > 90 || velocity > 0.45) {
-                chatWindowRef.current.style.transition = 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease-out';
-                chatWindowRef.current.style.transform = 'translate3d(0, 100%, 0)';
-                chatWindowRef.current.style.opacity = '0';
-                setTimeout(() => {
-                  setIsOpen(false);
-                  if (chatWindowRef.current) {
-                    chatWindowRef.current.style.transform = '';
-                    chatWindowRef.current.style.opacity = '';
-                    chatWindowRef.current.style.transition = '';
-                  }
-                }, 220);
-              } else {
-                chatWindowRef.current.style.transition = 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)';
-                chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
-                setTimeout(() => {
-                  if (chatWindowRef.current) {
-                    chatWindowRef.current.style.transform = '';
-                    chatWindowRef.current.style.transition = '';
-                  }
-                }, 300);
-              }
-            }
-          } else {
-            // Neutral release springs back
-            chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
-            chatWindowRef.current.style.transform = 'translate3d(0, 0, 0)';
-            setTimeout(() => {
-              if (chatWindowRef.current) {
-                chatWindowRef.current.style.transform = '';
-                chatWindowRef.current.style.transition = '';
-              }
-            }, 260);
-          }
-        }
-      };
-
-      window.addEventListener('pointermove', onPointerMove, { passive: true });
-      window.addEventListener('pointerup', onPointerUp);
-      window.addEventListener('pointercancel', onPointerUp);
+      handleDesktopDragStart(e);
     }
   };
 

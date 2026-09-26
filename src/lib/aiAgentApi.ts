@@ -17,6 +17,10 @@ export interface SendMessageOptions {
   message: string;
   previousInteractionId?: string | null;
   file?: File | null;
+  stream?: boolean;
+  onDelta?: (text: string) => void;
+  onToolStart?: (toolName: string) => void;
+  signal?: AbortSignal;
 }
 
 /**
@@ -33,11 +37,16 @@ export function getAiAgentEndpoint(): string {
 
 /**
  * Sends a message and optional interaction_id to the FastAPI Gemini Agent microservice.
+ * Supports both standard synchronous JSON requests and real-time SSE streaming.
  */
 export async function sendToAiAgent({
   message,
   previousInteractionId,
   file,
+  stream,
+  onDelta,
+  onToolStart,
+  signal,
 }: SendMessageOptions): Promise<ChatResponse> {
   const formData = new FormData();
   formData.append('message', message.trim());
@@ -48,6 +57,11 @@ export async function sendToAiAgent({
 
   if (file) {
     formData.append('file', file);
+  }
+
+  const wantsStream = Boolean(stream || onDelta);
+  if (wantsStream) {
+    formData.append('stream', 'true');
   }
 
   // Extract auth token if user is signed in with Supabase
@@ -72,8 +86,12 @@ export async function sendToAiAgent({
       method: 'POST',
       headers,
       body: formData,
+      signal,
     });
-  } catch {
+  } catch (err: any) {
+    if (err?.name === 'AbortError') {
+      throw new Error('Request was cancelled.');
+    }
     throw new Error(
       'Unable to connect to the AI companion. Please check your connection and try again.'
     );
@@ -117,6 +135,67 @@ export async function sendToAiAgent({
       throw new Error('Message limit reached. Please wait a moment and try again.');
     }
     throw new Error('The AI service is temporarily unavailable. Please try again shortly.');
+  }
+
+  // Handle real-time Server-Sent Events (SSE) streaming
+  if (wantsStream && response.body) {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let accumulatedText = '';
+    let finalInteractionId = previousInteractionId || null;
+    let resolvedUserType = 'Guest';
+    let resolvedUserEmail: string | null = null;
+    let resolvedModel = 'gemini-3.5-flash-lite';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.startsWith('data:')) {
+            const jsonStr = trimmed.slice(5).trim();
+            if (!jsonStr) continue;
+            try {
+              const event = JSON.parse(jsonStr);
+              if (event.type === 'init') {
+                if (event.user_type) resolvedUserType = event.user_type;
+                if (event.model) resolvedModel = event.model;
+                if (event.user_email) resolvedUserEmail = event.user_email;
+              } else if (event.type === 'delta') {
+                if (event.text) {
+                  accumulatedText += event.text;
+                  onDelta?.(event.text);
+                }
+              } else if (event.type === 'tool_start') {
+                onToolStart?.(event.name);
+              } else if (event.type === 'done') {
+                if (event.interaction_id) finalInteractionId = event.interaction_id;
+                if (event.model) resolvedModel = event.model;
+              }
+            } catch {
+              // Ignore malformed JSON chunks
+            }
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+
+    return {
+      status: 'success',
+      response: accumulatedText,
+      interaction_id: finalInteractionId,
+      user_type: resolvedUserType,
+      user_email: resolvedUserEmail,
+      model: resolvedModel,
+    };
   }
 
   const data: ChatResponse = await response.json();

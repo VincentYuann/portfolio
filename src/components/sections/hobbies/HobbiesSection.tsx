@@ -1,5 +1,4 @@
 import React from 'react';
-import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { ArrowRight, Layers } from 'lucide-react';
 import { ViewMode } from '../../../App';
@@ -57,20 +56,6 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-light-canvas via-light-canvas/80 to-transparent dark:from-dark-canvas dark:via-dark-canvas/80 z-10 pointer-events-none" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-light-canvas via-light-canvas/80 to-transparent dark:from-dark-canvas dark:via-dark-canvas/80 z-10 pointer-events-none" />
       </div>
-
-      {/* Left Empty Margin Japanese Vertical Floating Widget */}
-      <VerticalMarginWidget
-        side="left"
-        top="top-1/2 -translate-y-1/2"
-        {...MARGIN_PRESETS.shokuninCraft}
-      />
-
-      {/* Right Empty Margin Japanese Vertical Floating Widget */}
-      <VerticalMarginWidget
-        side="right"
-        top="top-1/2 -translate-y-1/2"
-        {...MARGIN_PRESETS.akariSimplicity}
-      />
 
       {/* Main Hobbies Content Container */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">

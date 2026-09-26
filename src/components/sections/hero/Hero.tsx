@@ -83,11 +83,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
         {/* Bottom atmospheric fade */}
         <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-light-canvas via-light-canvas/90 to-transparent dark:from-dark-canvas dark:via-dark-canvas/90 z-10 pointer-events-none" />
-
-        {/* Subtle Celestial Orbiting Dust Particles */}
-        <div className="absolute left-1/4 top-1/3 w-1.5 h-1.5 rounded-full bg-ochre/40 mote-1 blur-[0.5px] z-20" />
-        <div className="absolute right-1/3 bottom-28 w-2 h-2 rounded-full bg-ochre/30 mote-2 blur-[0.5px] z-20" />
-        <div className="absolute right-1/2 bottom-12 w-1 h-1 rounded-full bg-light-ink-muted/30 dark:bg-dark-ink/35 mote-3 blur-[0.5px] z-20" />
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">

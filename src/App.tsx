@@ -55,7 +55,7 @@ const getInitialView = (): ViewMode => {
   if (typeof window === 'undefined') return 'home';
   const hash = window.location.hash.toLowerCase();
   if (hash === '#resume' || hash === '#cv') return 'resume';
-  if (hash === '#all-projects' || hash === '#projects' || hash === '#archive') return 'projects';
+  if (hash === '#all-projects' || hash === '#projects' || hash === '#archive' || hash.startsWith('#project-')) return 'projects';
   if (hash === '#all-hobbies' || hash === '#hobbies-archive') return 'hobbies';
   if (hash === '#login') return 'login';
   if (hash === '#edit') return 'edit';
@@ -103,7 +103,7 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
 };
 
 export const App: React.FC = () => {
-  const isDevAdmin = typeof window !== 'undefined' && window.sessionStorage?.getItem('dev_admin') === 'true';
+  const isDevAdmin = Boolean(import.meta.env.DEV && typeof window !== 'undefined' && window.sessionStorage?.getItem('dev_admin') === 'true');
   const [currentView, setCurrentView] = useState<ViewMode>(getInitialView);
   const [isAdmin, setIsAdmin] = useState(isDevAdmin);
   const [isVisitor, setIsVisitor] = useState(false);
@@ -119,18 +119,12 @@ export const App: React.FC = () => {
   const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL || 'vincentyuan1020@gmail.com').toLowerCase().trim();
 
   const isOwnerSession = (session: any): boolean => {
-    if (typeof window !== 'undefined' && window.sessionStorage?.getItem('dev_admin') === 'true') {
+    if (import.meta.env.DEV && typeof window !== 'undefined' && window.sessionStorage?.getItem('dev_admin') === 'true') {
       return true;
     }
     const email = session?.user?.email?.toLowerCase()?.trim();
-    const metaEmail = session?.user?.user_metadata?.email?.toLowerCase()?.trim();
-    const userName = (session?.user?.user_metadata?.user_name || session?.user?.user_metadata?.preferred_username || '')?.toLowerCase()?.trim();
-
-    return (
-      (!!email && email === ADMIN_EMAIL) ||
-      (!!metaEmail && metaEmail === ADMIN_EMAIL) ||
-      (!!userName && userName === 'vincentyuann')
-    );
+    // Strict authentication: only trust verified top-level auth.user.email
+    return !!email && email === ADMIN_EMAIL;
   };
 
   /* -- Supabase auth listener: single subscription, strict admin verification -- */
@@ -230,6 +224,12 @@ export const App: React.FC = () => {
       } else if (hash === '#all-projects' || hash === '#projects' || hash === '#archive') {
         setViewRef.current('projects');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash.startsWith('#project-')) {
+        setViewRef.current((prev) => {
+          if (prev === 'projects' || prev === 'home') return prev;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return 'projects';
+        });
       } else if (hash === '#all-hobbies' || hash === '#hobbies-archive') {
         setViewRef.current('hobbies');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -308,6 +308,11 @@ export const App: React.FC = () => {
   };
 
   const handleLogout = async () => {
+    if (typeof window !== 'undefined') {
+      window.sessionStorage?.removeItem('dev_admin');
+    }
+    setIsAdmin(false);
+    isAdminRef.current = false;
     if (!supabase) return;
     try {
       await supabase.auth.signOut();

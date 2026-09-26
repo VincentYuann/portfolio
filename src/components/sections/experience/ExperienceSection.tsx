@@ -9,11 +9,9 @@ import {
 } from 'lucide-react';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
-import { VerticalMarginWidget } from '../../common/VerticalMarginWidget';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { TechTag } from '../../common/TechTag';
 import { Badge } from '../../ui/badge';
-import { MarginBambooFlanks } from '../../common/MarginBambooFlanks';
 import { SectionHeading } from '../../common/SectionHeading';
 import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
@@ -37,86 +35,28 @@ interface MilestoneTheme {
   nodeActiveBorder: string;
   nodeActiveShadow: string;
   bulletOrdinalClass: string;
-  accentBarClass: string;
 }
 
-const MILESTONE_THEMES: MilestoneTheme[] = [
-  // 0: Active / Systems Architecture & AI (朱) - Cinnabar Terracotta Primary
-  {
-    primary: '#C83C23',
-    textClass: 'text-terracotta dark:text-terracotta',
-    badgeBg: 'bg-terracotta/15 dark:bg-terracotta/20',
-    badgeBorder: 'border-terracotta/50 dark:border-terracotta/60',
-    badgeText: 'text-terracotta dark:text-terracotta',
-    emblemBorder: 'border-terracotta/70 dark:border-terracotta/80',
-    emblemShadow: 'shadow-[0_0_12px_rgba(200,60,35,0.3)]',
-    cardActiveBorder: 'border-terracotta/60 dark:border-terracotta/60',
-    cardActiveRing: 'ring-1 ring-terracotta/25',
-    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(200,60,35,0.25),0_0_24px_-4px_rgba(212,155,106,0.12)]',
-    nodeActiveBg: 'bg-terracotta',
-    nodeActiveBorder: 'border-terracotta',
-    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(200,60,35,0.7)]',
-    bulletOrdinalClass: 'text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-[0_0_8px_rgba(200,60,35,0.15)]',
-    accentBarClass: 'border-l-2 border-l-terracotta/70 dark:border-l-terracotta/70',
-  },
-  // 1: Craft & Operations / Joinery (明) - Warm Ochre Amber
-  {
-    primary: '#D49B6A',
-    textClass: 'text-ochre dark:text-ochre',
-    badgeBg: 'bg-ochre/15 dark:bg-ochre/20',
-    badgeBorder: 'border-ochre/50 dark:border-ochre/60',
-    badgeText: 'text-ochre dark:text-ochre',
-    emblemBorder: 'border-ochre/70 dark:border-ochre/80',
-    emblemShadow: 'shadow-[0_0_12px_rgba(212,155,106,0.3)]',
-    cardActiveBorder: 'border-ochre/60 dark:border-ochre/60',
-    cardActiveRing: 'ring-1 ring-ochre/25',
-    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(212,155,106,0.25),0_0_24px_-4px_rgba(200,60,35,0.1)]',
-    nodeActiveBg: 'bg-ochre',
-    nodeActiveBorder: 'border-ochre',
-    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(212,155,106,0.7)]',
-    bulletOrdinalClass: 'text-ochre dark:text-ochre bg-ochre/10 dark:bg-ochre/20 border-ochre/30 shadow-[0_0_8px_rgba(212,155,106,0.15)]',
-    accentBarClass: 'border-l-2 border-l-ochre/70 dark:border-l-ochre/70',
-  },
-  // 2: Full-Stack Systems & Discipline (木) - Bamboo Green
-  {
-    primary: '#526D57',
-    textClass: 'text-bamboo dark:text-bamboo',
-    badgeBg: 'bg-bamboo/15 dark:bg-bamboo/20',
-    badgeBorder: 'border-bamboo/50 dark:border-bamboo/60',
-    badgeText: 'text-bamboo dark:text-bamboo',
-    emblemBorder: 'border-bamboo/70 dark:border-bamboo/80',
-    emblemShadow: 'shadow-[0_0_12px_rgba(82,109,87,0.3)]',
-    cardActiveBorder: 'border-bamboo/60 dark:border-bamboo/60',
-    cardActiveRing: 'ring-1 ring-bamboo/25',
-    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(82,109,87,0.22),0_0_24px_-4px_rgba(212,155,106,0.1)]',
-    nodeActiveBg: 'bg-bamboo',
-    nodeActiveBorder: 'border-bamboo',
-    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(82,109,87,0.7)]',
-    bulletOrdinalClass: 'text-bamboo dark:text-bamboo bg-bamboo/10 dark:bg-bamboo/20 border-bamboo/30 shadow-[0_0_8px_rgba(82,109,87,0.15)]',
-    accentBarClass: 'border-l-2 border-l-bamboo/70 dark:border-l-bamboo/70',
-  },
-  // 3: Foundation & Roots (原) - Terracotta Heritage
-  {
-    primary: '#B5482E',
-    textClass: 'text-terracotta dark:text-terracotta',
-    badgeBg: 'bg-terracotta/15 dark:bg-terracotta/20',
-    badgeBorder: 'border-terracotta/50 dark:border-terracotta/60',
-    badgeText: 'text-terracotta dark:text-terracotta',
-    emblemBorder: 'border-terracotta/70 dark:border-terracotta/80',
-    emblemShadow: 'shadow-[0_0_12px_rgba(181,72,46,0.3)]',
-    cardActiveBorder: 'border-terracotta/60 dark:border-terracotta/60',
-    cardActiveRing: 'ring-1 ring-terracotta/25',
-    cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(181,72,46,0.25),0_0_24px_-4px_rgba(212,155,106,0.1)]',
-    nodeActiveBg: 'bg-terracotta',
-    nodeActiveBorder: 'border-terracotta',
-    nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(181,72,46,0.7)]',
-    bulletOrdinalClass: 'text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-[0_0_8px_rgba(181,72,46,0.15)]',
-    accentBarClass: 'border-l-2 border-l-terracotta/70 dark:border-l-terracotta/70',
-  },
-];
+// Canonical Terracotta Cinnabar theme strictly adhering to DESIGN.md single-accent discipline
+const CANONICAL_MILESTONE_THEME: MilestoneTheme = {
+  primary: '#C83C23',
+  textClass: 'text-terracotta dark:text-terracotta',
+  badgeBg: 'bg-terracotta/15 dark:bg-terracotta/20',
+  badgeBorder: 'border-terracotta/50 dark:border-terracotta/60',
+  badgeText: 'text-terracotta dark:text-terracotta',
+  emblemBorder: 'border-terracotta/70 dark:border-terracotta/80',
+  emblemShadow: 'shadow-[0_0_12px_rgba(200,60,35,0.3)]',
+  cardActiveBorder: 'border-terracotta/60 dark:border-terracotta/60',
+  cardActiveRing: 'ring-1 ring-terracotta/25',
+  cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(200,60,35,0.25),0_0_24px_-4px_rgba(200,60,35,0.12)]',
+  nodeActiveBg: 'bg-terracotta',
+  nodeActiveBorder: 'border-terracotta',
+  nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(200,60,35,0.7)]',
+  bulletOrdinalClass: 'text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-[0_0_8px_rgba(200,60,35,0.15)]',
+};
 
-const getMilestoneTheme = (idx: number): MilestoneTheme => {
-  return MILESTONE_THEMES[idx % MILESTONE_THEMES.length];
+const getMilestoneTheme = (_idx: number): MilestoneTheme => {
+  return CANONICAL_MILESTONE_THEME;
 };
 
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate }) => {
@@ -191,27 +131,6 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
   return (
     <section id="experience" className="relative w-full overflow-hidden py-16 lg:py-24">
-      {/* Subtle Japanese Sumi-e Arts in Left & Right Empty Margins */}
-      <MarginBambooFlanks />
-
-      {/* Floating Vertical Margins on Widescreen */}
-      <VerticalMarginWidget
-        side="left"
-        top="top-1/3"
-        type="calligraphy"
-        motto="歩みの軌跡"
-        submotto="TIMELINE"
-        coordinate="TOKYO · SF · WATERLOO"
-        stampChar="歴"
-        pulseColor="bamboo"
-      />
-      <VerticalMarginWidget
-        side="right"
-        top="top-2/3"
-        type="minimal"
-        stampChar="道"
-      />
-
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & Standardized Layout */}
         <SectionHeading
@@ -436,7 +355,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                                   {bullets.map((pt, pIdx) => (
                                     <li
                                       key={pIdx}
-                                      className={`p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/60 dark:bg-dark-surface-card/60 ${theme.accentBarClass} hover:border-terracotta/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet`}
+                                      className="p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/60 dark:bg-dark-surface-card/60 hover:border-terracotta/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet"
                                     >
                                       <span className={`font-mono text-[10px] sm:text-[11px] font-semibold ${theme.bulletOrdinalClass} rounded px-1.5 py-0.5 shrink-0 select-none mt-0.5`}>
                                         #{String(pIdx + 1).padStart(2, '0')}

@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --canvas-bg: #FCF9F8;
-  --pattern-dot: #E4D7C3;
+  --canvas-bg: #F2E9DA;
+  --pattern-dot: #D9C9AE;
   --surface-bg: #F7F0E3;
   --ink-color: #2B2E3A;
   --ink-muted: #6B6559;
-  --border-color: #E4D7C3;
+  --border-color: #D9C9AE;
   --color-terracotta-rgb: 200 60 35;
   --color-ochre-rgb: 212 155 106;
-  --color-bamboo-rgb: 68 101 87;
+  --color-bamboo-rgb: 82 109 87;
   --ease-zen: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -24,7 +24,7 @@
   --border-color: #3A3D44;
   --color-terracotta-rgb: 200 60 35;
   --color-ochre-rgb: 212 155 106;
-  --color-bamboo-rgb: 68 101 87;
+  --color-bamboo-rgb: 82 109 87;
 }
 
 @layer base {

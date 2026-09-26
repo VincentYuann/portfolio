@@ -1,11 +1,10 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { ArrowLeft, Search, ExternalLink, Github, Layers, Calendar } from 'lucide-react';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { StatusBadge } from '../../common/StatusBadge';
-import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
 import { handleImageError } from '../../../lib/constants';
 import { ViewMode } from '../../../App';
 
@@ -24,6 +23,38 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
 
   const allProjects = projects && projects.length > 0 ? projects : [];
 
+  // Deep-linking: sync URL hash with selected project modal
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#project-')) {
+        const rawId = hash.replace('#project-', '').trim().toLowerCase();
+        const target = allProjects.find(
+          (p) =>
+            String(p.id).toLowerCase() === rawId ||
+            p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') === rawId
+        );
+        if (target) {
+          setSelectedProject(target);
+        }
+      }
+    };
+
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, [allProjects]);
+
+  const openProject = (project: Project) => {
+    setSelectedProject(project);
+    window.history.replaceState(null, '', `#project-${project.id}`);
+  };
+
+  const closeProject = () => {
+    setSelectedProject(null);
+    window.history.replaceState(null, '', '#all-projects');
+  };
+
   const filteredProjects = allProjects.filter((project) => {
     const matchesSearch =
       !searchQuery.trim() ||
@@ -37,31 +68,13 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      {/* Floating Vertical Margins in Left & Right Empty Spaces */}
-      <VerticalMarginWidget
-        side="left"
-        top="top-72"
-        {...MARGIN_PRESETS.inkHarmony}
-      />
-      <VerticalMarginWidget
-        side="right"
-        top="top-96"
-        {...MARGIN_PRESETS.codeSoul}
-      />
-      <VerticalMarginWidget
-        side="right"
-        top="top-[68%]"
-        type="minimal"
-        stampChar="創"
-      />
-
       <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Detail Modal (Loaded dynamically on-demand) */}
         {selectedProject && (
           <Suspense fallback={null}>
             <ProjectDetailModal
               project={selectedProject}
-              onClose={() => setSelectedProject(null)}
+              onClose={closeProject}
             />
           </Suspense>
         )}
@@ -202,7 +215,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                   <div className="pt-3 border-t border-light-border/60 dark:border-dark-border/60 flex items-center justify-between text-xs">
                     <button
                       type="button"
-                      onClick={() => setSelectedProject(project)}
+                      onClick={() => openProject(project)}
                       className="font-sans text-[11px] font-medium text-terracotta hover:underline flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none rounded py-0.5 cursor-pointer"
                     >
                       <span>Inspect System</span>

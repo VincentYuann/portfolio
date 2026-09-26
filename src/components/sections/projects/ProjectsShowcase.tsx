@@ -4,9 +4,7 @@ import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { Badge } from '../../ui/badge';
-import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
-import { MarginBambooFlanks } from '../../common/MarginBambooFlanks';
 import { SectionHeading } from '../../common/SectionHeading';
 import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
@@ -26,6 +24,18 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
   const allProjects = projects && projects.length > 0 ? projects : [];
   const featured = allProjects.filter((p) => p.isFeatured);
   const displayedProjects = (featured.length > 0 ? featured : allProjects).slice(0, 3);
+
+  const openProject = (project: Project) => {
+    setSelectedProject(project);
+    window.history.replaceState(null, '', `#project-${project.id}`);
+  };
+
+  const closeProject = () => {
+    setSelectedProject(null);
+    if (window.location.hash.startsWith('#project-')) {
+      window.history.replaceState(null, '', '#featured-works');
+    }
+  };
 
   if (displayedProjects.length === 0) {
     return null;
@@ -51,21 +61,6 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
 
   return (
     <section id="featured-works" className="relative w-full overflow-hidden py-16 lg:py-24">
-      {/* Subtle Japanese Sumi-e Arts in Left & Right Empty Margins */}
-      <MarginBambooFlanks />
-
-      {/* Floating Vertical Margins */}
-      <VerticalMarginWidget
-        side="left"
-        top="top-1/2 -translate-y-1/2"
-        {...MARGIN_PRESETS.inkHarmony}
-      />
-      <VerticalMarginWidget
-        side="right"
-        top="top-1/2 -translate-y-1/2"
-        {...MARGIN_PRESETS.codeSoul}
-      />
-
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & View All Action */}
         <SectionHeading
@@ -86,7 +81,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
             return (
               <article
                 key={project.id}
-                onClick={() => setSelectedProject(project)}
+                onClick={() => openProject(project)}
                 className="interactive-card group relative w-full bg-light-surface-card dark:bg-dark-surface-card hover:bg-light-surface dark:hover:bg-dark-surface border border-light-border dark:border-dark-border rounded-xl p-4 sm:p-8 transition-all duration-300 shadow-sm hover:shadow-akari dark:hover:shadow-night-glow classical-card-frame overflow-visible cursor-pointer"
               >
                 {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered project card */}
@@ -219,7 +214,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
         <Suspense fallback={null}>
           <ProjectDetailModal
             project={selectedProject}
-            onClose={() => setSelectedProject(null)}
+            onClose={closeProject}
           />
         </Suspense>
       )}

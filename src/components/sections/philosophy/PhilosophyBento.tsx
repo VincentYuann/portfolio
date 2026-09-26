@@ -3,7 +3,6 @@ import { Compass, Feather, ShieldCheck } from 'lucide-react';
 import { BambooArt } from '../../common/BambooArt';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { CornerBrackets } from '../../common/CornerBrackets';
-import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
 import { useSiteData } from '../../../context/SiteDataContext';
 
 const TRAJECTORY_THEMES = [
@@ -11,28 +10,24 @@ const TRAJECTORY_THEMES = [
     eraColor: 'text-ochre dark:text-ochre',
     tagBg: 'bg-ochre/10 dark:bg-ochre/20 text-ochre dark:text-ochre border-ochre/30',
     borderHover: 'hover:border-ochre/50',
-    accentBar: 'border-l-2 border-l-ochre/70 dark:border-l-ochre/70',
     glow: 'hover:shadow-[0_4px_20px_rgba(212,155,106,0.12)]',
   },
   {
     eraColor: 'text-bamboo dark:text-bamboo',
     tagBg: 'bg-bamboo/10 dark:bg-bamboo/20 text-bamboo dark:text-bamboo border-bamboo/30',
     borderHover: 'hover:border-bamboo/50',
-    accentBar: 'border-l-2 border-l-bamboo/70 dark:border-l-bamboo/70',
     glow: 'hover:shadow-[0_4px_20px_rgba(82,109,87,0.12)]',
   },
   {
     eraColor: 'text-terracotta dark:text-terracotta',
     tagBg: 'bg-terracotta/10 dark:bg-terracotta/20 text-terracotta dark:text-terracotta border-terracotta/30',
     borderHover: 'hover:border-terracotta/50',
-    accentBar: 'border-l-2 border-l-terracotta/70 dark:border-l-terracotta/70',
     glow: 'hover:shadow-[0_4px_20px_rgba(200,60,35,0.12)]',
   },
   {
     eraColor: 'text-ochre dark:text-ochre',
     tagBg: 'bg-ochre/10 dark:bg-ochre/20 text-ochre dark:text-ochre border-ochre/30',
     borderHover: 'hover:border-ochre/50',
-    accentBar: 'border-l-2 border-l-ochre/70 dark:border-l-ochre/70',
     glow: 'hover:shadow-[0_4px_20px_rgba(212,155,106,0.12)]',
   },
 ];
@@ -163,20 +158,6 @@ export const PhilosophyBento: React.FC = () => {
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-light-canvas via-light-canvas/80 to-transparent dark:from-dark-canvas dark:via-dark-canvas/80 z-10 pointer-events-none" />
       </div>
 
-      {/* Left Empty Margin Japanese Vertical Floating Widget (Visible on wide screens) */}
-      <VerticalMarginWidget
-        side="left"
-        top="top-1/2 -translate-y-1/2"
-        {...MARGIN_PRESETS.maWabi}
-      />
-
-      {/* Right Empty Margin Japanese Vertical Floating Widget (Visible on wide screens) */}
-      <VerticalMarginWidget
-        side="right"
-        top="top-1/2 -translate-y-1/2"
-        {...MARGIN_PRESETS.craftSpec}
-      />
-
       {/* Main Philosophy Bento Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
@@ -243,7 +224,7 @@ export const PhilosophyBento: React.FC = () => {
                   return (
                     <div
                       key={idx}
-                      className={`group p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between ${tTheme.borderHover} ${tTheme.accentBar} ${tTheme.glow} transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm`}
+                      className={`group p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between ${tTheme.borderHover} ${tTheme.glow} transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm`}
                     >
                       {/* Celestial Ensō Orbital Circle */}
                       <EnsoOrbital

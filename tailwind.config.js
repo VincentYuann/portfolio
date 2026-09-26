@@ -5,17 +5,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Akari Day tokens
+        // Akari Day tokens (Canonical DESIGN.md specification)
         light: {
-          canvas: '#FCF9F8',
+          canvas: '#F2E9DA',
           surface: '#F7F0E3',
           'surface-raised': '#FBF6EC',
           'surface-muted': '#EDE1CE',
-          'surface-card': '#F9F5EE',
+          'surface-card': '#F7F0E3',
           ink: '#2B2E3A',
           'ink-muted': '#6B6559',
           'ink-subtle': '#8B8375',
-          border: '#E4D7C3',
+          border: '#D9C9AE',
           'border-strong': '#BDAA89',
           'button-dark': '#26262E',
           'on-dark': '#F7F0E3',
@@ -43,7 +43,7 @@ export default {
           glow: 'rgba(200, 60, 35, 0.35)',
         },
         bamboo: {
-          DEFAULT: '#446557',
+          DEFAULT: '#526D57',
           light: '#658B7B',
           dark: '#2D4D40',
         },
@@ -55,7 +55,7 @@ export default {
       },
       fontFamily: {
         serif: ['Noto Serif', 'Canela', 'Georgia', 'serif'],
-        sans: ['Plus Jakarta Sans', 'Montserrat', 'Inter', 'sans-serif'],
+        sans: ['Montserrat', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'SFMono-Regular', 'Consolas', 'monospace'],
         vertical: ['Noto Serif JP', 'Noto Serif', 'Songti TC', 'serif'],
       },
@@ -78,7 +78,7 @@ export default {
         md: '8px',
         lg: '12px',
         xl: '16px',
-        '2xl': '24px',
+        '2xl': '20px',
       },
     },
   },

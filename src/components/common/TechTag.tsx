@@ -39,7 +39,7 @@ export const TechTag: React.FC<TechTagProps> = ({
   return (
     <Comp
       onClick={onClick}
-      className={`inline-flex items-center font-mono font-medium rounded-md border tracking-tight transition-all duration-150 ease-out select-none ${sizeStyle.pill} bg-light-surface dark:bg-[#16171D] border-light-border dark:border-[#333640] text-light-ink dark:text-dark-ink hover:border-terracotta hover:text-terracotta dark:hover:border-terracotta dark:hover:text-terracotta hover:-translate-y-0.5 active:translate-y-0 shadow-[0_1px_2px_rgba(43,46,58,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.4)] ${className}`}
+      className={`inline-flex items-center font-mono font-medium rounded-md border tracking-tight transition-all duration-150 ease-out select-none ${sizeStyle.pill} bg-light-surface dark:bg-dark-surface-card border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta hover:text-terracotta dark:hover:border-terracotta dark:hover:text-terracotta hover:-translate-y-0.5 active:translate-y-0 shadow-[0_1px_2px_rgba(43,46,58,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.4)] ${className}`}
     >
       {showIcon && isOfficialBrand && Icon && (
         <Icon

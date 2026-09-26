@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Search, Layers } from 'lucide-react';
 import { useSiteData } from '../../../context/SiteDataContext';
-import { VerticalMarginWidget, MARGIN_PRESETS } from '../../common/VerticalMarginWidget';
 import { ViewMode } from '../../../App';
 import { HobbyCard } from './HobbyCard';
 
@@ -32,7 +31,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
             m.value.toLowerCase().includes(searchQuery.toLowerCase())
         ));
 
-    const matchesCategory =
+  const matchesCategory =
       selectedCategory === 'all' || (hobby.category && hobby.category.toLowerCase() === selectedCategory.toLowerCase());
 
     return matchesSearch && matchesCategory;
@@ -40,24 +39,6 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      {/* Floating Vertical Margins in Left & Right Empty Spaces */}
-      <VerticalMarginWidget
-        side="left"
-        top="top-72"
-        {...MARGIN_PRESETS.shokuninCraft}
-      />
-      <VerticalMarginWidget
-        side="right"
-        top="top-96"
-        {...MARGIN_PRESETS.akariSimplicity}
-      />
-      <VerticalMarginWidget
-        side="left"
-        top="top-[68%]"
-        type="minimal"
-        stampChar="遊"
-      />
-
       <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Back navigation button */}
         <div className="mb-6 sm:mb-8">
