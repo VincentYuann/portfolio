@@ -32,27 +32,28 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <img
           src="./images/hero-sumie-landscape-bamboo-banner.jpg"
           alt="Panoramic sumi-e landscape and bamboo ink wash painting backdrop"
-          className="absolute inset-0 w-full h-full object-cover object-left sm:object-center opacity-85 dark:opacity-50 mix-blend-multiply dark:mix-blend-screen dark:invert animate-gentle-drift"
+          className="absolute inset-0 w-full h-full object-cover object-left sm:object-center opacity-85 dark:opacity-25 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-[1.85] dark:brightness-[0.72] animate-gentle-drift transition-all duration-500"
           loading="eager"
           fetchPriority="high"
           decoding="async"
           style={{
-            maskImage: 'radial-gradient(ellipse 98% 90% at 50% 50%, black 50%, transparent 95%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 98% 90% at 50% 50%, black 50%, transparent 95%)',
+            maskImage: 'radial-gradient(ellipse 92% 82% at 50% 50%, black 35%, transparent 88%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 92% 82% at 50% 50%, black 35%, transparent 88%)',
           }}
         />
 
-        {/* Dedicated Japanese Sumi-e Pine Tree (Matsu 松) prominently anchoring the left */}
-        <div className="absolute left-0 sm:left-2 lg:left-6 bottom-0 h-4/5 max-h-[720px] w-auto max-w-lg hidden sm:block pointer-events-none z-0">
+        {/* Dedicated Japanese Sumi-e Pine Tree (Matsu 松) prominently anchoring the left in Light Mode only */}
+        {/* Hidden in Dark Mode to prevent inverted branches from colliding with headline text and creating a rectangular paper haze */}
+        <div className="absolute left-0 sm:left-2 lg:left-6 bottom-0 h-4/5 max-h-[720px] w-auto max-w-lg hidden sm:block dark:hidden pointer-events-none z-0">
           <img
             src="./images/sumie-pine-tree-left.jpg"
             alt="Sumi-e pine tree art"
-            className="w-full h-full object-contain object-bottom-left opacity-80 dark:opacity-55 mix-blend-multiply dark:mix-blend-screen dark:invert transition-opacity duration-300"
+            className="w-full h-full object-contain object-bottom-left opacity-80 mix-blend-multiply transition-opacity duration-300"
             loading="lazy"
             decoding="async"
             style={{
-              maskImage: 'radial-gradient(ellipse 92% 90% at 35% 65%, black 50%, transparent 90%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 92% 90% at 35% 65%, black 50%, transparent 90%)',
+              maskImage: 'radial-gradient(ellipse 88% 88% at 35% 65%, black 40%, transparent 85%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 88% 88% at 35% 65%, black 40%, transparent 85%)',
             }}
           />
         </div>
@@ -62,27 +63,27 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           <img
             src="./images/sumie-bamboo-bg.jpg"
             alt="Sumi-e bamboo background"
-            className="w-full h-full object-contain object-bottom opacity-55 dark:opacity-35 mix-blend-multiply dark:mix-blend-screen dark:invert"
+            className="w-full h-full object-contain object-bottom opacity-55 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-[1.85] dark:brightness-[0.72] transition-all duration-500"
             loading="lazy"
             decoding="async"
             style={{
-              maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 85%)',
+              maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 35%, transparent 80%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 35%, transparent 80%)',
             }}
           />
         </div>
 
-        {/* Subtle Japanese Washi Dot Texture Layer */}
-        <div className="absolute inset-0 bg-transparent washi-pattern opacity-40 dark:opacity-20 pointer-events-none" />
+        {/* Subtle Japanese Washi Dot Texture Layer (Only in Day mode, zero noise in dark mode) */}
+        <div className="absolute inset-0 bg-transparent washi-pattern opacity-30 dark:opacity-0 pointer-events-none" />
 
-        {/* Soft atmospheric gradient for crisp typography legibility without washing out the pine tree */}
-        <div className="absolute inset-y-0 left-0 w-full sm:w-1/2 lg:w-2/5 bg-gradient-to-r from-light-canvas/75 via-light-canvas/30 to-transparent dark:from-dark-canvas/70 dark:via-dark-canvas/25 to-transparent z-10 pointer-events-none" />
+        {/* Soft atmospheric gradient for crisp typography legibility and seamless canvas blend */}
+        <div className="absolute inset-y-0 left-0 w-full sm:w-1/2 lg:w-2/5 bg-gradient-to-r from-light-canvas/75 via-light-canvas/30 to-transparent dark:from-dark-canvas dark:via-dark-canvas/70 to-transparent z-10 pointer-events-none" />
 
         {/* Top atmospheric fade under fixed appbar */}
-        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/70 z-10 pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/75 to-transparent z-10 pointer-events-none" />
 
         {/* Bottom atmospheric fade */}
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-light-canvas via-light-canvas/90 to-transparent dark:from-dark-canvas dark:via-dark-canvas/90 z-10 pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-light-canvas via-light-canvas/90 to-transparent dark:from-dark-canvas dark:via-dark-canvas/95 to-transparent z-10 pointer-events-none" />
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
@@ -95,7 +96,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             </h1>
 
             {/* Narrative Paragraph */}
-            <p className="font-sans text-sm sm:text-base lg:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed font-light">
+            <p className="font-sans text-sm sm:text-base lg:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed font-normal">
               {tagline}
             </p>
 

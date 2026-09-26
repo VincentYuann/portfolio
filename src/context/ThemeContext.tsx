@@ -14,9 +14,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [theme, setThemeState] = useState<Theme>(() => {
     const saved = localStorage.getItem('profolio-theme');
     if (saved === 'day' || saved === 'night') return saved;
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'night';
-    }
     return 'day';
   });
 
@@ -25,11 +22,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (theme === 'night') {
       root.classList.add('dark');
       root.style.colorScheme = 'dark';
-      root.style.backgroundColor = '#121317';
+      root.style.backgroundColor = '#090A0C';
     } else {
       root.classList.remove('dark');
       root.style.colorScheme = 'light';
-      root.style.backgroundColor = '#FCF9F8';
+      root.style.backgroundColor = '#F2E9DA';
     }
     localStorage.setItem('profolio-theme', theme);
   }, [theme]);

@@ -20,20 +20,20 @@ export default {
           'button-dark': '#26262E',
           'on-dark': '#F7F0E3',
         },
-        // Charcoal Night tokens (Canonical DESIGN.md specification)
+        // Classic Obsidian Night tokens (Deep, grounded, high-contrast)
         dark: {
-          canvas: '#1E1F24',
-          surface: '#2A2C32',
-          'surface-raised': '#32343B',
-          'surface-muted': '#24262C',
-          'surface-card': '#1B1C22',
-          ink: '#E8E6DF',
-          'ink-muted': '#A7A398',
-          'ink-subtle': '#797A7E',
-          border: '#3A3D44',
-          'border-strong': '#565A63',
-          'button-light': '#E8E6DF',
-          'on-light': '#1E1F24',
+          canvas: '#090A0C',
+          surface: '#111215',
+          'surface-card': '#141519',
+          'surface-raised': '#1B1C22',
+          'surface-muted': '#0D0E11',
+          ink: '#F5F3EF',
+          'ink-muted': '#BDB9AE',
+          'ink-subtle': '#7E7C75',
+          border: 'rgba(255, 255, 255, 0.08)',
+          'border-strong': 'rgba(255, 255, 255, 0.16)',
+          'button-light': '#F5F3EF',
+          'on-light': '#090A0C',
         },
         // Brand & Accent tokens
         terracotta: {
@@ -70,7 +70,7 @@ export default {
       boxShadow: {
         akari: '0 8px 24px rgba(43, 46, 58, 0.06)',
         'akari-raised': '0 16px 40px rgba(43, 46, 58, 0.1)',
-        'night-glow': '0 10px 30px rgba(0, 0, 0, 0.45)',
+        'night-glow': '0 12px 36px -4px rgba(0, 0, 0, 0.75)',
         'hanko-glow': '0 0 16px rgba(200, 60, 35, 0.4)',
       },
       borderRadius: {

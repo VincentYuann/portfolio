@@ -10,22 +10,21 @@
     <!-- Zero-flash theme initialization before first paint -->
     <style>
       html, body {
-        background-color: #121317;
-      }
-      html:not(.dark) {
         background-color: #F2E9DA;
+      }
+      html.dark, html.dark body {
+        background-color: #090A0C;
       }
     </style>
     <script>
       (function() {
         try {
           var saved = localStorage.getItem('profolio-theme');
-          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-          // Default to night if saved === 'night', or if no saved preference and system prefers dark (or default)
-          var isNight = saved === 'night' || (!saved && prefersDark) || (!saved && saved !== 'day');
+          // Default to Day mode unless explicitly set to night
+          var isNight = saved === 'night';
           if (isNight) {
             document.documentElement.classList.add('dark');
-            document.documentElement.style.backgroundColor = '#121317';
+            document.documentElement.style.backgroundColor = '#090A0C';
             document.documentElement.style.colorScheme = 'dark';
           } else {
             document.documentElement.classList.remove('dark');

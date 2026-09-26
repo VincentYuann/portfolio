@@ -174,18 +174,27 @@ export async function sendToAiAgent({
                 }
               } else if (event.type === 'tool_start') {
                 onToolStart?.(event.name);
+              } else if (event.type === 'error') {
+                throw new Error(event.detail || 'An error occurred during streaming.');
               } else if (event.type === 'done') {
                 if (event.interaction_id) finalInteractionId = event.interaction_id;
                 if (event.model) resolvedModel = event.model;
               }
-            } catch {
-              // Ignore malformed JSON chunks
+            } catch (jsonErr: any) {
+              // Re-throw genuine streaming error events from server
+              if (jsonErr instanceof Error && jsonStr.includes('"type": "error"')) {
+                throw jsonErr;
+              }
             }
           }
         }
       }
     } finally {
       reader.releaseLock();
+    }
+
+    if (!accumulatedText.trim()) {
+      throw new Error('Rate limit or quota reached. Please check your Gemini plan/billing or wait a moment.');
     }
 
     return {

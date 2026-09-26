@@ -114,7 +114,7 @@ export const PhilosophyBento: React.FC = () => {
         <img
           src="./images/hero-sumie-landscape-bamboo-banner.jpg"
           alt="Sumi-e landscape behind philosophy cards"
-          className="absolute inset-0 w-full h-full object-cover opacity-25 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen dark:invert"
+          className="absolute inset-0 w-full h-full object-cover opacity-25 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen dark:invert"
           loading="lazy"
           decoding="async"
           style={{
@@ -175,8 +175,8 @@ export const PhilosophyBento: React.FC = () => {
                 原点と哲学
               </span>
             </h2>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed">
-              Software is not merely mechanical logic; it is a spatial environment shaped by curious exploration, system boundaries, and genuine human empathy.
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed">
+              Rooted in the Japanese aesthetics of <span className="font-medium text-light-ink dark:text-dark-ink">Akari</span> (illumination) and <span className="font-medium text-light-ink dark:text-dark-ink">Wabi-Sabi</span> (organic simplicity and evolutionary resilience). Software is not merely mechanical logic; it is a spatial architecture shaped by deliberate negative space (<em>Ma</em> 間), system balance, and human empathy.
             </p>
           </div>
         </div>
@@ -209,7 +209,7 @@ export const PhilosophyBento: React.FC = () => {
                   </h3>
                 )}
                 {originStory?.leadParagraph && (
-                  <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-light">
+                  <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-normal">
                     {originStory.leadParagraph}
                   </p>
                 )}
@@ -255,7 +255,7 @@ export const PhilosophyBento: React.FC = () => {
                           </p>
                         )}
                         {m.description && (
-                          <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mt-2.5 relative z-10">
+                          <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal mt-2.5 relative z-10">
                             {m.description}
                           </p>
                         )}
@@ -335,7 +335,7 @@ export const PhilosophyBento: React.FC = () => {
                         </span>
                       )}
                     </h3>
-                    <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 leading-relaxed font-light break-words">
+                    <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 leading-relaxed font-normal break-words">
                       {pillar.description}
                     </p>
                   </div>

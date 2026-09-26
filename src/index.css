@@ -16,12 +16,12 @@
 }
 
 .dark {
-  --canvas-bg: #1E1F24;
-  --pattern-dot: #3A3D44;
-  --surface-bg: #2A2C32;
-  --ink-color: #E8E6DF;
-  --ink-muted: #A7A398;
-  --border-color: #3A3D44;
+  --canvas-bg: #090A0C;
+  --pattern-dot: rgba(255, 255, 255, 0.03);
+  --surface-bg: #111215;
+  --ink-color: #F5F3EF;
+  --ink-muted: #BDB9AE;
+  --border-color: rgba(255, 255, 255, 0.08);
   --color-terracotta-rgb: 200 60 35;
   --color-ochre-rgb: 212 155 106;
   --color-bamboo-rgb: 82 109 87;
@@ -46,11 +46,10 @@
 @layer utilities {
   /* Washi Paper Texture Subtle Background */
   .washi-pattern {
-    background-color: var(--canvas-bg);
-    background-image: radial-gradient(var(--pattern-dot) 0.8px, transparent 0.8px),
-      radial-gradient(var(--pattern-dot) 0.8px, var(--canvas-bg) 0.8px);
+    background-color: transparent;
+    background-image: radial-gradient(var(--pattern-dot) 0.65px, transparent 0.65px);
     background-size: 24px 24px;
-    background-position: 0 0, 12px 12px;
+    background-position: 0 0;
   }
 
   /* Japanese Tategaki (Vertical Writing Mode) */
@@ -306,6 +305,14 @@
 
 .classical-card-frame:hover::before {
   border-color: rgb(var(--color-terracotta-rgb) / 0.28);
+}
+
+.dark .classical-card-frame::before {
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+.dark .classical-card-frame:hover::before {
+  border-color: rgb(var(--color-terracotta-rgb) / 0.32);
 }
 
 /* Corner Hairline Brackets interactive highlights (supports both .interactive-card and .group) */
