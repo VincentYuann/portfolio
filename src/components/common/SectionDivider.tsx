@@ -165,17 +165,17 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
 
   return (
     <div
-      className={`relative w-full max-w-7xl mx-auto px-4 sm:px-6 my-6 sm:my-10 flex flex-col items-center justify-center select-none ${className}`}
+      className={`relative w-full max-w-7xl mx-auto px-4 sm:px-6 my-3 sm:my-5 flex flex-col items-center justify-center select-none ${className}`}
     >
       {/* Top Seigaiha Wave Arch Motif */}
-      <div className="mb-2 sm:mb-2.5 flex items-center justify-center pointer-events-none">
+      <div className="mb-1.5 sm:mb-2 flex items-center justify-center pointer-events-none">
         <SeigaihaMotif className="w-12 sm:w-16 h-8 sm:h-11 text-light-ink/70 dark:text-dark-ink/60" />
       </div>
 
       {/* Horizontal Divider Line with Dashed Hairlines, Diamond Crests & Center Section Description */}
-      <div className="w-full flex items-center justify-center gap-2 sm:gap-3.5 max-w-4xl">
+      <div className="w-full flex items-center justify-center gap-2 sm:gap-3.5 max-w-7xl">
         {/* Left Dashed Hairline Line */}
-        <div className="flex-1 min-w-[20px] flex items-center overflow-hidden">
+        <div className="flex-1 min-w-[28px] sm:min-w-[48px] flex items-center overflow-hidden">
           <svg className="w-full h-[2px]" fill="none" xmlns="http://www.w3.org/2000/svg">
             <line
               x1="0"
@@ -206,7 +206,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
         <DiamondCrest className="w-3.5 h-3 sm:w-4 sm:h-3.5 text-light-ink-subtle/50 dark:text-dark-ink-subtle/40" />
 
         {/* Right Dashed Hairline Line */}
-        <div className="flex-1 min-w-[20px] flex items-center overflow-hidden">
+        <div className="flex-1 min-w-[28px] sm:min-w-[48px] flex items-center overflow-hidden">
           <svg className="w-full h-[2px]" fill="none" xmlns="http://www.w3.org/2000/svg">
             <line
               x1="0"

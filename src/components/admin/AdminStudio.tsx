@@ -168,9 +168,9 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
   );
 
   return (
-    <div className="relative min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-20 pb-20 overflow-hidden">
+    <div className="relative min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-20 pb-20 overflow-x-clip">
       {/* Simple Tactile Cedar Wood Background for Editorial Workshop */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+      <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         <img
           src="./background/white wood.jpg"
           alt=""

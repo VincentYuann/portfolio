@@ -10,11 +10,56 @@ import {
   Mail,
   Compass,
 } from 'lucide-react';
-import { useSiteData } from '../../../context/SiteDataContext';
+import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
+import { HankoStamp } from '../../common/HankoStamp';
+import { EnsoOrbital } from '../../common/EnsoOrbital';
+import { TechTag } from '../../common/TechTag';
 
 interface HeroAkariStudioProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
 }
+
+const getPillarIcon = (label: string, idx: number) => {
+  const norm = (label || '').toLowerCase();
+  if (
+    norm.includes('ai') ||
+    norm.includes('intelligence') ||
+    norm.includes('rag') ||
+    norm.includes('agent')
+  ) {
+    return Sparkles;
+  }
+  if (
+    norm.includes('front') ||
+    norm.includes('ui') ||
+    norm.includes('craft') ||
+    norm.includes('web')
+  ) {
+    return Code2;
+  }
+  if (norm.includes('lang') || norm.includes('code')) {
+    return Code2;
+  }
+  if (
+    norm.includes('system') ||
+    norm.includes('cloud') ||
+    norm.includes('tool') ||
+    norm.includes('back')
+  ) {
+    return Cpu;
+  }
+  return idx === 0 ? Cpu : idx === 1 ? Sparkles : Code2;
+};
+
+const getPillarBadge = (label: string, idx: number) => {
+  const norm = (label || '').toLowerCase();
+  if (norm.includes('ai')) return 'INTELLIGENCE';
+  if (norm.includes('tool') || norm.includes('system')) return 'PLATFORM';
+  if (norm.includes('lang')) return 'POLYGLOT';
+  if (norm.includes('front') || norm.includes('ui')) return 'CRAFT';
+  if (norm.includes('back') || norm.includes('cloud')) return 'BACKEND';
+  return `DOMAIN 0${idx + 1}`;
+};
 
 export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) => {
   const { profile } = useSiteData();
@@ -27,15 +72,54 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   const displayName = profile?.name || 'Vincent Yuan';
   const displayRole = profile?.role || 'Software & Generative AI Engineer';
 
+  // Dynamic Hanko Card Configuration (from DB profile.hanko_card)
+  const hanko = profile?.hanko_card;
+  const defaultHankoLines = [
+    { text: '間と余白の美学', label: 'MA · 間', tooltip: 'Aesthetics of Negative Space (Ma)' },
+    { text: '静寂と簡素な調和', label: 'WA · 調和', tooltip: 'Silence and Simple Harmony (Wa)' },
+    { text: '職人の精緻な組手', label: 'CRAFT · 職人', tooltip: 'Artisan Precision and Joinery (Shokunin)' },
+  ];
+  const hankoLines =
+    Array.isArray(hanko?.lines) && hanko.lines.length > 0 ? hanko.lines : defaultHankoLines;
+
+  // Dynamic Technical Domains (synced directly with DB profile.capability_pillars)
+  const capabilityPillars =
+    Array.isArray(profile?.capability_pillars) && profile.capability_pillars.length > 0
+      ? profile.capability_pillars
+      : [
+          {
+            label: 'SYSTEMS & CLOUD',
+            items: 'Python · FastAPI · PostgreSQL · Node.js · Docker',
+            tags: ['Python', 'FastAPI', 'PostgreSQL', 'Node.js', 'Docker'],
+          },
+          {
+            label: 'FRONTEND & UI',
+            items: 'React 19 · TypeScript · Tailwind · Next.js · Vite',
+            tags: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js', 'Vite'],
+          },
+          {
+            label: 'AGENTIC AI & RAG',
+            items: 'Qdrant · LlamaIndex · Gemini API · LangChain · RAG',
+            tags: ['Qdrant', 'Claude', 'Gemini API', 'LangChain'],
+          },
+        ];
+
+  // Formatted Profile Links from DB
+  const githubUrl = profile?.github || 'https://github.com/VincentYuann';
+  const rawLinkedin = profile?.linkedin || 'www.linkedin.com/in/yuanvincent';
+  const linkedinUrl = rawLinkedin.startsWith('http') ? rawLinkedin : `https://${rawLinkedin}`;
+  const rawEmail = profile?.email || 'vincentyuan1020@gmail.com';
+  const emailUrl = rawEmail.startsWith('mailto:') ? rawEmail : `mailto:${rawEmail}`;
+
   return (
     <section
       id="home"
-      className="relative w-full min-h-[92vh] lg:min-h-screen pt-28 lg:pt-36 pb-16 lg:pb-24 flex flex-col justify-between overflow-hidden"
+      className="relative w-full pt-28 lg:pt-36 pb-12 lg:pb-16 flex flex-col justify-start overflow-hidden"
     >
       {/* 
         FIXED PINNED HERO BACKDROP (The Division Effect)
         Layer 1: 16:9 Tactile Texture Ground (Washi Paper / Tactile Linen)
-        Layer 2: Panoramic Sumi-e Mountain Landscape & Mist (Naturally placed on right)
+        Layer 2: Panoramic Sumi-e Mountain Landscape & Mist (Naturally placed on right behind Hanko card)
         Layer 3: Sumi-e Pine / Bamboo accents & subtle mist gradients
       */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
@@ -57,28 +141,28 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           />
         </div>
 
-        {/* Layer 2: Refined Sumi-e Landscape Artwork (Appropriate size, anchored on the right) */}
+        {/* Layer 2: Refined Sumi-e Landscape Artwork (Seamlessly feathered, zero blue cast in night mode) */}
         <div
           className="absolute right-0 top-0 bottom-0 h-full w-full lg:w-[46%] pointer-events-none overflow-hidden transition-opacity duration-700"
           style={{
             maskImage:
-              'radial-gradient(ellipse 90% 80% at 70% 50%, black 35%, transparent 95%), linear-gradient(to bottom, black 85%, transparent 100%)',
+              'radial-gradient(ellipse 85% 75% at 85% 45%, black 25%, transparent 85%)',
             WebkitMaskImage:
-              'radial-gradient(ellipse 90% 80% at 70% 50%, black 35%, transparent 95%), linear-gradient(to bottom, black 85%, transparent 100%)',
+              'radial-gradient(ellipse 85% 75% at 85% 45%, black 25%, transparent 85%)',
           }}
         >
           {/* Day Mode: Sumi-e Mountain Ridges & Pagoda in warm ink wash */}
           <img
             src="./background/hero-sumie-landscape-banner.jpg"
             alt="Sumi-e landscape mountains and mist"
-            className="w-full h-full object-contain sm:object-right dark:hidden mix-blend-multiply opacity-60 transition-opacity duration-700"
+            className="w-full h-full object-contain sm:object-right dark:hidden mix-blend-multiply opacity-55 transition-opacity duration-700"
             loading="eager"
           />
           {/* Night Mode: Ethereal Silver-Ash Sumi-e Mountain Peaks */}
           <img
             src="./background/hero-sumie-landscape-banner.jpg"
             alt="Sumi-e landscape mountains in night mist"
-            className="w-full h-full object-contain sm:object-right hidden dark:block mix-blend-screen opacity-35 filter invert contrast-125 brightness-90 transition-opacity duration-700"
+            className="w-full h-full object-contain sm:object-right hidden dark:block mix-blend-screen opacity-30 filter invert grayscale contrast-150 brightness-75 transition-opacity duration-700"
             loading="eager"
           />
         </div>
@@ -115,130 +199,21 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           />
         </div>
 
-        {/* Layer 4: Gentle Atmospheric Wash Gradients for Text Legibility */}
+        {/* Atmospheric Wash Gradients for Text Legibility */}
         <div className="absolute inset-0 bg-gradient-to-r from-light-canvas/75 via-light-canvas/35 to-transparent dark:from-dark-canvas/80 dark:via-dark-canvas/40 dark:to-transparent pointer-events-none" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-light-canvas dark:from-dark-canvas to-transparent pointer-events-none" />
       </div>
 
-      {/* Main Studio Frame Layout (Sidebar + Hero Content) */}
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8 flex-1 flex flex-col justify-between relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start h-full">
+      {/* Main Studio Frame Layout: Left Workspace + Right Hanko Card */}
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 flex flex-col gap-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start">
           
           {/* 
-            LEFT PERSISTENT EDITORIAL SPINE (Studio Colophon & Atelier Dossier)
-            Addresses navbar duplication by:
-            1. Omitting redundant second Hanko stamp (header has the canonical seal)
-            2. Omitting redundant internal nav links (header already has them)
-            3. Providing real curatorial telemetry, coordinates, and external profiles
+            LEFT MAIN WORKSPACE (Akari Canvas - 8 Columns)
+            Display headline in Zen Old Mincho, body copy in Mulish, Action buttons,
+            and Dynamic Tech Domains Ribbon mapped directly from the DB profile.
           */}
-          <aside className="lg:col-span-4 xl:col-span-3 border-b lg:border-b-0 lg:border-r border-light-border dark:border-dark-border pb-6 lg:pb-0 pr-0 lg:pr-8 flex flex-col justify-between gap-6 h-full">
-            
-            {/* Atelier Identity Block */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-xs font-chakra uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-semibold">
-                <span className="w-2 h-2 rounded-[1px] bg-terracotta inline-block" />
-                <span>ATELIER DOSSIER · 工匠の記録</span>
-              </div>
-
-              <div>
-                <h2 className="font-zen text-2xl lg:text-3xl font-medium tracking-tight text-light-ink dark:text-dark-ink">
-                  {displayName}
-                </h2>
-                <p className="font-chakra text-xs uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-medium mt-1">
-                  {displayRole}
-                </p>
-              </div>
-
-              {/* Japanese Tategaki Marginalia */}
-              <div className="pt-4 border-t border-light-border/60 dark:border-dark-border/60">
-                <p className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest leading-relaxed">
-                  HANDMADE SYSTEMS INSPIRED BY TRADITION. DESIGNED TO SCALE.
-                </p>
-                <div className="mt-3 flex items-center gap-4">
-                  <div className="writing-vertical-rl font-zen text-xs tracking-[0.25em] text-light-ink-muted dark:text-dark-ink-muted select-none opacity-80">
-                    間と余白の美学
-                  </div>
-                  <div className="writing-vertical-rl font-zen text-xs tracking-[0.25em] text-light-ink-muted dark:text-dark-ink-muted select-none opacity-80">
-                    職人の精緻な組手
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Atelier Telemetry & Geolocation (Replaces redundant nav links) */}
-            <div className="space-y-3 pt-5 border-t border-light-border/60 dark:border-dark-border/60 text-xs">
-              <div className="flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
-                <Compass className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted shrink-0" />
-                <span className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted tracking-tight">
-                  PHILLY, PA · 39.9526° N, 75.1652° W
-                </span>
-              </div>
-              <div className="text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
-                EDUCATION // DREXEL UNIVERSITY (BS CS)
-              </div>
-              <div className="text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
-                TIMEZONE // EST (UTC-5) · ACTIVE ATELIER
-              </div>
-            </div>
-
-            {/* External Channels (Channels not in top navbar) */}
-            <div className="space-y-3 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
-              <div className="text-2xs font-chakra uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-semibold">
-                DIRECT CHANNELS &amp; REPOSITORIES
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <a
-                  href="https://github.com/VincentYuann"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
-                  title="GitHub Profile"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  <span>GitHub</span>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/vincent-yuan"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
-                  title="LinkedIn Profile"
-                >
-                  <Linkedin className="w-3.5 h-3.5" />
-                  <span>LinkedIn</span>
-                </a>
-                <a
-                  href="mailto:vincentyuan1020@gmail.com"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
-                  title="Send Email"
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Email</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Status Consultation Badge (Matching moodboard cinnabar status dot) */}
-            <div className="flex items-center gap-3 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
-              <div className="relative w-6 h-6 rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border flex items-center justify-center shrink-0">
-                <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
-              </div>
-              <div>
-                <p className="font-chakra text-2xs uppercase tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle">
-                  CURRENT AVAILABILITY
-                </p>
-                <p className="font-sans text-xs font-medium text-light-ink dark:text-dark-ink">
-                  Open to Full-Stack &amp; AI Roles
-                </p>
-              </div>
-            </div>
-          </aside>
-
-          {/* 
-            RIGHT MAIN WORKSPACE (Akari Canvas)
-            Display headline in Zen Old Mincho, body copy in Mulish, and the 3 Core Tech Stacks
-          */}
-          <main className="lg:col-span-8 xl:col-span-9 flex flex-col justify-between gap-8 h-full">
+          <main className="lg:col-span-8 xl:col-span-8 flex flex-col gap-8 order-2 lg:order-1">
             <div className="space-y-6 max-w-4xl">
               {/* Category Eyebrow with quiet neutral dot */}
               <div className="flex items-center gap-2">
@@ -291,73 +266,174 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             </div>
 
             {/* 
-              3 TECH STACK CORE PILLARS (Replaces generic distributed scale / shokunin journey)
-              Presents concrete engineering capabilities:
-              1. Systems & Backend Runtimes
-              2. Frontend & Interaction Craft
-              3. Agentic AI & Data Pipelines
+              3 TECH STACK CORE PILLARS (Rendered dynamically from DB profile.capability_pillars)
+              Synchronized seamlessly with the edit profile page
             */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-light-border/60 dark:border-dark-border/60">
-              
-              {/* Stack 1: Systems & Backend */}
-              <div className="flex flex-col gap-2 p-4.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border">
-                <div className="flex items-center justify-between text-light-ink dark:text-dark-ink">
-                  <div className="flex items-center gap-2">
-                    <Cpu className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
-                    <span className="font-chakra text-xs uppercase tracking-wider font-semibold">
-                      SYSTEMS &amp; CLOUD
-                    </span>
-                  </div>
-                  <span className="font-mono text-2xs text-light-ink-subtle">BACKEND</span>
-                </div>
-                <div className="text-[11px] font-mono font-medium text-bamboo dark:text-bamboo-light">
-                  Python · FastAPI · PostgreSQL · Node.js · Docker
-                </div>
-                <p className="font-mulish text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
-                  High-throughput async APIs, distributed task workers, and relational schemas built for high availability and low latency.
-                </p>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-6 border-t border-light-border/60 dark:border-dark-border/60">
+              {capabilityPillars.map((pillar, idx) => {
+                const tags = parsePillarTags(pillar);
+                const Icon = getPillarIcon(pillar.label, idx);
+                const badge = getPillarBadge(pillar.label, idx);
 
-              {/* Stack 2: Frontend & Interaction */}
-              <div className="flex flex-col gap-2 p-4.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border">
-                <div className="flex items-center justify-between text-light-ink dark:text-dark-ink">
-                  <div className="flex items-center gap-2">
-                    <Code2 className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
-                    <span className="font-chakra text-xs uppercase tracking-wider font-semibold">
-                      FRONTEND &amp; UI
-                    </span>
-                  </div>
-                  <span className="font-mono text-2xs text-light-ink-subtle">CRAFT</span>
-                </div>
-                <div className="text-[11px] font-mono font-medium text-bamboo dark:text-bamboo-light">
-                  React 19 · TypeScript · Tailwind · Next.js · Vite
-                </div>
-                <p className="font-mulish text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
-                  Type-safe component joinery, sub-100ms micro-interactions, responsive fluid physics, and wabi-sabi tactile elegance.
-                </p>
-              </div>
+                return (
+                  <div
+                    key={pillar.label || idx}
+                    className="flex flex-col justify-between gap-3 p-4 rounded-[2px] bg-light-surface-card/90 dark:bg-dark-surface-card/90 craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-300 shadow-2xs group"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between text-light-ink dark:text-dark-ink">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Icon className="w-3.5 h-3.5 text-terracotta shrink-0" />
+                          <span className="font-chakra text-xs uppercase tracking-wider font-semibold truncate">
+                            {pillar.label}
+                          </span>
+                        </div>
+                        <span className="font-mono text-2xs text-light-ink-subtle uppercase px-1.5 py-0.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border/60 dark:border-dark-border/60 shrink-0">
+                          {badge}
+                        </span>
+                      </div>
+                    </div>
 
-              {/* Stack 3: Agentic AI & RAG */}
-              <div className="flex flex-col gap-2 p-4.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border">
-                <div className="flex items-center justify-between text-light-ink dark:text-dark-ink">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
-                    <span className="font-chakra text-xs uppercase tracking-wider font-semibold">
-                      AGENTIC AI &amp; RAG
-                    </span>
+                    {/* Dynamic official technology tags from DB */}
+                    {tags.length > 0 && (
+                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        {tags.map((tag) => (
+                          <TechTag
+                            key={tag}
+                            tag={tag}
+                            size="sm"
+                            className="bg-light-surface dark:bg-dark-surface border-light-border/50 dark:border-dark-border/50 text-[10px]"
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <span className="font-mono text-2xs text-light-ink-subtle">INTELLIGENCE</span>
-                </div>
-                <div className="text-[11px] font-mono font-medium text-bamboo dark:text-bamboo-light">
-                  Qdrant · LlamaIndex · Gemini API · LangChain · RAG
-                </div>
-                <p className="font-mulish text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
-                  Autonomous agent tool-calling, semantic vector indexing, hybrid retrieval chunking, and grounded prompt engineering.
-                </p>
-              </div>
-
+                );
+              })}
             </div>
           </main>
+
+          {/* 
+            RIGHT COLUMN: CLASSICAL HANKO SHOWCASE CARD (4 Columns)
+            Framed with Blueprint Double Hairline Frame, Breathing Stamp Seal,
+            Ensō Background, Vertical Tategaki Prose, and Direct Telemetry Channels.
+            Fully synchronized with DB profile.hanko_card & profile contacts.
+          */}
+          <aside className="lg:col-span-4 xl:col-span-4 flex flex-col items-center lg:items-end justify-start order-1 lg:order-2 relative w-full">
+            <div className="craft-card double-frame-simple classical-card-frame bg-light-surface-card/95 dark:bg-dark-surface-card/95 backdrop-blur-md border border-light-border dark:border-dark-border rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 shadow-2xs w-full max-w-md relative group">
+              
+              {/* Celestial Ensō Orbital Circle: interactive hover & aura */}
+              <EnsoOrbital placement="top-left" size={132} interactive={true} />
+
+              {/* Box Header: Header Label & Archive Coordinate from DB */}
+              <div className="w-full flex items-center justify-between pb-2.5 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
+                <div className="flex items-center gap-1.5 font-chakra uppercase text-2xs tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta inline-block" />
+                  <span>{hanko?.headerLabel || 'DREXEL UNIVERSITY'}</span>
+                </div>
+                <span className="font-mono text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest text-2xs">
+                  {hanko?.locationArchive || 'PHILADELPHIA, PA'}
+                </span>
+              </div>
+
+              {/* Red Seal Mark: Authentic Hanko Stamp with Breathing Pulse */}
+              <div className="relative p-2 flex flex-col items-center justify-center z-10">
+                <div className="relative p-1.5 flex items-center justify-center animate-seal-breathe">
+                  <HankoStamp
+                    char={hanko?.stampCharacter || '原'}
+                    className="w-16 h-16 sm:w-18 sm:h-18 transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                {hanko?.statusBadge && (
+                  <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-2xs font-mono font-medium text-terracotta tracking-wider uppercase shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-terracotta animate-pulse" />
+                    <span>{hanko.statusBadge}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Identity & Role Block */}
+              <div className="text-center relative z-10">
+                <h2 className="font-zen text-2xl font-medium tracking-tight text-light-ink dark:text-dark-ink">
+                  {displayName}
+                </h2>
+                <p className="font-chakra text-2xs uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-medium mt-1">
+                  {displayRole}
+                </p>
+              </div>
+
+              {/* Vertical Tategaki Japanese Prose (Synced dynamically from DB hanko_card.lines) */}
+              {hankoLines.length > 0 && (
+                <div className="w-full pt-4 border-t border-light-border/60 dark:border-dark-border/60 flex flex-col items-center justify-center relative z-10">
+                  <div className="flex items-center justify-center gap-6 sm:gap-7 w-full">
+                    {hankoLines.map((line, lIdx) => (
+                      <div
+                        key={lIdx}
+                        title={line.tooltip || line.label}
+                        className={`writing-vertical-rl font-zen text-xs sm:text-[13px] tracking-[0.25em] min-h-[110px] leading-relaxed transition-all cursor-default whitespace-nowrap select-none ${
+                          lIdx === 1
+                            ? 'text-terracotta dark:text-[#E85D44] font-medium hover:scale-105'
+                            : 'text-light-ink-muted dark:text-dark-ink-muted opacity-80 hover:opacity-100'
+                        }`}
+                      >
+                        {line.text}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-2.5 pt-2 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-2xs font-mono tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle uppercase px-1">
+                    {hankoLines.map((line, lIdx) => (
+                      <span key={lIdx}>{line.label}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Telemetry & Direct Channels */}
+              <div className="w-full pt-4 border-t border-light-border/60 dark:border-dark-border/60 space-y-3 relative z-10">
+                <div className="flex items-center justify-between text-2xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
+                  <span className="flex items-center gap-1.5">
+                    <Compass className="w-3 h-3 text-terracotta shrink-0" />
+                    <span>PHILLY, PA · 39.95° N, 75.16° W</span>
+                  </span>
+                  <span>UTC-5</span>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 pt-1">
+                  {githubUrl && (
+                    <a
+                      href={githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-2xs font-mono transition-colors shadow-2xs"
+                    >
+                      <Github className="w-3 h-3" />
+                      <span>GitHub</span>
+                    </a>
+                  )}
+                  {linkedinUrl && (
+                    <a
+                      href={linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-2xs font-mono transition-colors shadow-2xs"
+                    >
+                      <Linkedin className="w-3 h-3" />
+                      <span>LinkedIn</span>
+                    </a>
+                  )}
+                  {emailUrl && (
+                    <a
+                      href={emailUrl}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-2xs font-mono transition-colors shadow-2xs"
+                    >
+                      <Mail className="w-3 h-3" />
+                      <span>Email</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </section>

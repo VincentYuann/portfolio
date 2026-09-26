@@ -159,14 +159,14 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="interactive-card group relative bg-light-surface-card dark:bg-[#292B31] border border-light-border dark:border-[#3A3D44] hover:border-light-border-strong dark:hover:border-[#4E525D] rounded-xl overflow-visible p-5 shadow-sm transition-all duration-300 flex flex-col justify-between"
+                className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card classical-card-frame border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] overflow-visible p-5 shadow-sm transition-all duration-300 flex flex-col justify-between"
               >
                 {/* Corner Hairline Brackets (Subtle) */}
                 <CornerBrackets size="sm" />
 
                 <div>
                   {/* Thumbnail Image Header */}
-                  <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden mb-4 bg-light-surface-muted dark:bg-dark-surface-muted">
+                  <div className="relative aspect-[16/9] w-full rounded-[2px] overflow-hidden mb-4 bg-light-surface-muted dark:bg-dark-surface-muted">
                     <img
                       src={project.image}
                       alt={project.title}

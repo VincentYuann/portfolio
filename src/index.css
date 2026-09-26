@@ -9,6 +9,8 @@
   --ink-color: #282E3A;
   --ink-muted: #686559;
   --border-color: #D9C9AE;
+  --border-inner: #C8AA7E;
+  --border-inner-soft: rgba(200, 170, 126, 0.55);
   --color-terracotta-rgb: 181 72 46;
   --color-ochre-rgb: 212 155 106;
   --color-bamboo-rgb: 82 109 87;
@@ -24,6 +26,8 @@
   --ink-color: #E8E6DF;
   --ink-muted: #A7A398;
   --border-color: #3A3D44;
+  --border-inner: #4E525D;
+  --border-inner-soft: rgba(78, 82, 93, 0.55);
   --color-terracotta-rgb: 181 72 46;
   --color-ochre-rgb: 212 155 106;
   --color-bamboo-rgb: 82 109 87;
@@ -420,31 +424,66 @@
   box-shadow: 0 0 0 1px var(--border-color), inset 0 0 0 1px var(--border-color), inset 0 0 0 4px var(--surface-bg), inset 0 0 0 5px rgb(var(--color-ochre-rgb) / 0.25);
 }
 
-/* Classical Card Frame with delicate inner perimeter */
-.classical-card-frame:not(.fixed) {
+/* ==============================================================================
+   Blueprint Double Hairline Frame (Stationery Joinery Architecture)
+   Matches the blueprint: Outer 1px border, 4px-5px gap, inner 1px border
+   ============================================================================== */
+.double-frame {
+  position: relative;
+  padding: 10px;
+  background: var(--surface-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+}
+
+.double-frame::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--border-inner);
+  border-radius: 2px;
+  pointer-events: none;
+  transition: border-color 0.3s var(--ease-zen);
+}
+
+.double-frame__content {
+  position: relative;
+  z-index: 1;
+  padding: 24px;
+}
+
+/* Compact / Integrated double hairline frame across all cards */
+.double-frame-simple,
+.craft-card,
+.classical-card-frame {
   position: relative;
 }
 
+.double-frame-simple::before,
+.craft-card::before,
 .classical-card-frame::before {
-  content: '';
+  content: "";
   position: absolute;
-  inset: 6px;
-  border: 1px solid rgb(var(--color-ochre-rgb) / 0.12);
-  pointer-events: none;
+  inset: 4px; /* Slightly thinner blueprint gap (4px inset) */
+  border: 1px solid var(--border-inner-soft);
   border-radius: 2px;
-  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  transition: border-color 0.3s var(--ease-zen);
+  z-index: 1;
 }
 
+.double-frame:hover::before,
+.double-frame-simple:hover::before,
+.craft-card:hover::before,
 .classical-card-frame:hover::before {
-  border-color: rgb(var(--color-terracotta-rgb) / 0.28);
+  border-color: rgba(181, 72, 46, 0.4);
 }
 
-.dark .classical-card-frame::before {
-  border-color: rgba(255, 255, 255, 0.04);
-}
-
+.dark .double-frame:hover::before,
+.dark .double-frame-simple:hover::before,
+.dark .craft-card:hover::before,
 .dark .classical-card-frame:hover::before {
-  border-color: rgb(var(--color-terracotta-rgb) / 0.32);
+  border-color: rgba(181, 72, 46, 0.45);
 }
 
 /* Corner Hairline Brackets: Restrained Japanese Craft joinery (Whisper-quiet opacity, no HUD translation) */
