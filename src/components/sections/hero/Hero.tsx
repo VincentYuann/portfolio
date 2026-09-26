@@ -4,7 +4,6 @@ import { BambooArt } from '../../common/BambooArt';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { HankoStamp } from '../../common/HankoStamp';
 import { TechTag } from '../../common/TechTag';
-import { JapaneseSpineArt } from '../../common/JapaneseSpineArt';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 
 interface HeroProps {
@@ -45,11 +44,11 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
         {/* Dedicated Japanese Sumi-e Pine Tree (Matsu 松) prominently anchoring the left in Light Mode only */}
         {/* Hidden in Dark Mode to prevent inverted branches from colliding with headline text and creating a rectangular paper haze */}
-        <div className="absolute -left-14 sm:-left-10 lg:-left-6 bottom-0 h-4/5 max-h-[720px] w-auto max-w-lg hidden sm:block dark:hidden pointer-events-none z-0">
+        <div className="absolute left-0 sm:left-2 lg:left-4 bottom-0 h-4/5 max-h-[720px] w-auto max-w-lg hidden sm:block dark:hidden pointer-events-none z-0">
           <img
             src="./images/sumie-pine-tree-left.jpg"
             alt="Sumi-e pine tree art"
-            className="w-full h-full object-contain object-bottom-left opacity-35 mix-blend-multiply transition-opacity duration-300"
+            className="w-full h-full object-contain object-bottom-left opacity-60 mix-blend-multiply transition-opacity duration-300"
             loading="lazy"
             decoding="async"
             style={{
@@ -87,8 +86,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-light-canvas via-light-canvas/90 to-transparent dark:from-dark-canvas dark:via-dark-canvas/95 to-transparent z-10 pointer-events-none" />
       </div>
 
-      {/* Ambient Decorative Japanese Spine Calligraphy & Hanko (Randomized Placement on Side) */}
-      <JapaneseSpineArt char={hanko?.stampCharacter || '原'} />
+      {/* Spine decorations now rendered globally from App.tsx */}
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
@@ -191,7 +189,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               <BambooArt className="w-40 h-56" sway={true} opacity={0.75} />
             </div>
 
-            <div className="relative z-10 w-full max-w-sm bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-md border border-light-border dark:border-dark-border classical-card-frame p-4 sm:p-5 lg:p-6 rounded-xl shadow-sm hover:shadow-akari dark:hover:shadow-night-glow hover:border-terracotta/40 dark:hover:border-terracotta/40 flex flex-col items-center text-center transition-all duration-300 group overflow-visible">
+            <div className="relative z-10 w-full max-w-sm bg-light-surface-card/95 dark:bg-dark-surface/95 backdrop-blur-md border border-light-border dark:border-dark-border p-4 sm:p-5 lg:p-6 rounded-xl shadow-sm hover:shadow-akari hover:border-terracotta/40 dark:hover:border-terracotta/40 flex flex-col items-center text-center transition-all duration-300 group overflow-visible">
               {/* Celestial Ensō Orbital Circle */}
               <EnsoOrbital placement="top-left" size={136} interactive={true} />
 

@@ -145,7 +145,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-xl overflow-visible p-5 shadow-akari dark:shadow-night-glow hover:border-terracotta/40 transition-all duration-300 flex flex-col justify-between classical-card-frame"
+                className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-xl overflow-visible p-5 shadow-akari hover:border-terracotta/40 transition-all duration-300 flex flex-col justify-between"
               >
                 {/* Ensō Bloom: Top-left only on hover */}
                 <EnsoOrbital

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 export interface JapaneseSpinePhrase {
   text: string;
@@ -18,99 +18,104 @@ export const JAPANESE_SPINE_PHRASES: JapaneseSpinePhrase[] = [
   { text: '一意専心、無限の創造。', label: 'FOCUS', meaning: 'Single-minded devotion, boundless creation' },
 ];
 
-// Curated aesthetic placement presets along the side margins
-const PLACEMENT_SPOTS = [
-  { top: '16%', left: '1.25rem', right: 'auto', side: 'left' },
-  { top: '22%', left: '1.75rem', right: 'auto', side: 'left' },
-  { top: '28%', left: '1.25rem', right: 'auto', side: 'left' },
-  { top: '34%', left: '1.5rem', right: 'auto', side: 'left' },
-  { top: '20%', left: 'auto', right: '1.5rem', side: 'right' },
-  { top: '28%', left: 'auto', right: '1.75rem', side: 'right' },
-];
-
 export interface JapaneseSpineArtProps {
   className?: string;
+  /** @deprecated Use seal image instead */
   char?: string;
+  /** Which side of the viewport to pin to */
+  side?: 'left' | 'right';
+  /** Fixed top offset (CSS value) */
+  topOffset?: string;
+  /** Unique key for deterministic random phrase selection */
+  seed?: number;
 }
 
+/**
+ * Purely decorative Japanese calligraphy spine accent.
+ * Non-interactive (pointer-events-none), no click handlers.
+ * Designed to be placed on the left/right margins of the page at various heights.
+ */
 export const JapaneseSpineArt: React.FC<JapaneseSpineArtProps> = ({
   className = '',
-  char = '原',
+  side = 'left',
+  topOffset,
+  seed = 0,
 }) => {
-  const [mounted, setMounted] = useState(false);
-  const [phraseIdx, setPhraseIdx] = useState(0);
-  const [spotIdx, setSpotIdx] = useState(0);
-  const [isRotating, setIsRotating] = useState(false);
+  // Deterministic phrase selection based on seed
+  const phrase = useMemo(() => {
+    const idx = seed % JAPANESE_SPINE_PHRASES.length;
+    return JAPANESE_SPINE_PHRASES[idx];
+  }, [seed]);
 
-  useEffect(() => {
-    // Randomize initial phrase and placement on client mount
-    const initialPhrase = Math.floor(Math.random() * JAPANESE_SPINE_PHRASES.length);
-    const initialSpot = Math.floor(Math.random() * 4); // Default to left side spots for balanced hero alignment
-    setPhraseIdx(initialPhrase);
-    setSpotIdx(initialSpot);
-    setMounted(false);
-    const timer = setTimeout(() => setMounted(true), 50);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleNext = () => {
-    setIsRotating(true);
-    setTimeout(() => {
-      setPhraseIdx((prev) => (prev + 1) % JAPANESE_SPINE_PHRASES.length);
-      setSpotIdx((prev) => (prev + 1) % PLACEMENT_SPOTS.length);
-      setIsRotating(false);
-    }, 200);
-  };
-
-  const currentPhrase = JAPANESE_SPINE_PHRASES[phraseIdx];
-  const currentSpot = PLACEMENT_SPOTS[spotIdx];
+  const sidePosition = side === 'left'
+    ? { left: '0.75rem' }
+    : { right: '0.75rem' };
 
   return (
     <aside
-      aria-label="Decorative Japanese Calligraphy Accent"
-      onClick={handleNext}
-      title={`${currentPhrase.meaning} (Click to shuffle)`}
-      className={`hidden md:flex flex-col items-center gap-2 select-none cursor-pointer group/spine z-20 transition-all duration-700 ease-out ${
-        mounted ? 'opacity-100' : 'opacity-0'
-      } ${className}`}
+      aria-hidden="true"
+      className={`hidden lg:flex flex-col items-center gap-2 select-none pointer-events-none z-10 absolute ${className}`}
       style={{
-        top: currentSpot.top,
-        left: currentSpot.left !== 'auto' ? currentSpot.left : undefined,
-        right: currentSpot.right !== 'auto' ? currentSpot.right : undefined,
+        top: topOffset,
+        ...sidePosition,
       }}
     >
-      {/* Top Vermilion Cinnabar Sun Dot */}
-      <div className="relative flex items-center justify-center">
-        <span className="w-1.5 h-1.5 rounded-full bg-terracotta group-hover/spine:scale-125 transition-transform duration-300" />
-        <span className="absolute w-3 h-3 rounded-full bg-terracotta/30 animate-ping pointer-events-none" />
-      </div>
+      {/* Top Vermilion Cinnabar Dot */}
+      <span className="w-1.5 h-1.5 rounded-full bg-terracotta/60" />
 
       {/* Vertical Japanese Calligraphy Text */}
       <div
-        className={`writing-vertical-rl font-vertical text-xs tracking-[0.32em] text-light-ink-muted/80 dark:text-dark-ink-muted/80 group-hover/spine:text-terracotta font-medium transition-all duration-300 py-1.5 drop-shadow-2xs ${
-          isRotating ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-        }`}
+        className="writing-vertical-rl font-vertical text-[11px] tracking-[0.3em] text-light-ink-muted/50 dark:text-dark-ink-muted/40 font-medium py-1"
+        style={{ writingMode: 'vertical-rl' }}
       >
-        {currentPhrase.text}
+        {phrase.text}
       </div>
 
       {/* Thin Vertical Hairline Divider */}
-      <div className="w-[1px] h-16 sm:h-24 bg-gradient-to-b from-terracotta/40 via-light-border dark:via-dark-border to-terracotta/60 group-hover/spine:h-28 transition-all duration-300" />
+      <div className="w-[1px] h-14 bg-gradient-to-b from-terracotta/30 via-light-border/40 dark:via-dark-border/30 to-transparent" />
 
-      {/* Custom Japanese Art-Styled Logo / Hanko Seal Stamp */}
-      <div className="relative group-hover/spine:scale-110 transition-transform duration-300">
-        {/* Outer Stamp Frame with Double Hairline */}
-        <div className="w-7 h-7 rounded-[3px] border border-terracotta/90 bg-light-canvas/90 dark:bg-dark-canvas/90 backdrop-blur-xs flex items-center justify-center shadow-2xs relative overflow-hidden">
-          {/* Subtle Inner Hairline Frame */}
-          <div className="absolute inset-[2px] border border-terracotta/30 rounded-[1px] pointer-events-none" />
-          {/* Kanji Monogram */}
-          <span className="font-serif font-bold text-xs text-terracotta leading-none relative z-10 select-none">
-            {char}
-          </span>
-        </div>
-        {/* Ambient Seal Glow on Hover */}
-        <div className="absolute -inset-1 rounded-sm bg-terracotta/15 blur-[6px] opacity-0 group-hover/spine:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      {/* Custom Generated Hanko Seal Stamp (replaces hardcoded 原) */}
+      <div className="w-7 h-7 rounded-[3px] overflow-hidden opacity-70">
+        <img
+          src="./images/custom-hanko-seal.jpg"
+          alt=""
+          className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-screen dark:invert"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
     </aside>
+  );
+};
+
+/**
+ * Renders multiple JapaneseSpineArt decorations scattered along both sides
+ * of the page at randomized heights. Drop this into App.tsx as a global overlay.
+ */
+export const JapaneseSpineDecorations: React.FC = () => {
+  // Pre-computed decoration positions — alternating left/right at varied heights
+  const decorations = useMemo(() => [
+    { side: 'left' as const, top: '12%', seed: 0 },
+    { side: 'right' as const, top: '22%', seed: 1 },
+    { side: 'left' as const, top: '38%', seed: 2 },
+    { side: 'right' as const, top: '52%', seed: 3 },
+    { side: 'left' as const, top: '65%', seed: 4 },
+    { side: 'right' as const, top: '78%', seed: 5 },
+  ], []);
+
+  return (
+    <div
+      aria-hidden="true"
+      className="fixed inset-0 pointer-events-none z-[5] overflow-hidden hidden lg:block"
+    >
+      {decorations.map((d, i) => (
+        <JapaneseSpineArt
+          key={i}
+          side={d.side}
+          topOffset={d.top}
+          seed={d.seed}
+        />
+      ))}
+    </div>
   );
 };

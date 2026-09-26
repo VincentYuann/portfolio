@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import { ThemedToaster } from './components/layout/ThemedToaster';
 import { AiChatWidget } from './components/common/AiChatWidget';
 import { TooltipProvider } from './components/ui/tooltip';
+import { JapaneseSpineDecorations } from './components/common/JapaneseSpineArt';
 
 import {
   ProjectsPageSkeleton,
@@ -327,6 +328,9 @@ export const App: React.FC = () => {
       <TooltipProvider delayDuration={200}>
         <SiteDataProvider>
           <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta">
+            {/* Global decorative Japanese calligraphy spines on page margins */}
+            <JapaneseSpineDecorations />
+
             <Header
               currentView={currentView}
               onNavigate={handleNavigate}
