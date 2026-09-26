@@ -315,7 +315,7 @@ export const PhilosophyEditor: React.FC = () => {
             {/* 4 Milestones */}
             <div className="space-y-4 pt-2 border-t border-light-border/60 dark:border-dark-border/60">
               <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted block">
-                Four Trajectory Milestones (Phases 01–04)
+                Four Trajectory Milestones (Phases 01-04)
               </Label>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
