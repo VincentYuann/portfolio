@@ -42,7 +42,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
           )}
         </h2>
         {description && (
-          <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-prose">
+          <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-xl">
             {description}
           </p>
         )}

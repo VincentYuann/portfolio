@@ -155,7 +155,7 @@ export const ContactSection: React.FC = () => {
             <div className="lg:col-span-6 flex flex-col gap-6">
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-serif text-terracotta text-sm">06 //</span>
-                <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle tracking-widest">
+                <span className="font-mono text-xs sm:text-sm font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                   Dialogue &amp; Correspondence · 対話と通信
                 </span>
               </div>
@@ -167,7 +167,7 @@ export const ContactSection: React.FC = () => {
                 </span>
               </h2>
 
-              <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light max-w-prose">
+              <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light max-w-xl">
                 Currently open to engineering collaborations, distributed systems design, generative AI architectures, and technical dialogue. Let us discuss possibilities over a message.
               </p>
 
@@ -233,7 +233,7 @@ export const ContactSection: React.FC = () => {
             </div>
 
             {/* Right Column: Inquiries Form */}
-            <div className="lg:col-span-6 w-full bg-light-surface/70 dark:bg-dark-surface-card/60 p-5 sm:p-7 rounded-xl border border-light-border/60 dark:border-dark-border/60 shadow-xs">
+            <div className="lg:col-span-6 w-full lg:pl-8 lg:border-l lg:border-light-border/40 lg:dark:border-dark-border/40 pt-6 lg:pt-0">
               <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink mb-5">
                 Send a Message
               </h3>

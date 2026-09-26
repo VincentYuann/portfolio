@@ -319,7 +319,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                         {/* High-Level Narrative Overview (Always visible) */}
                         {overviewText && (
-                          <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-3 max-w-2xl">
+                          <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-3 max-w-xl">
                             {overviewText}
                           </p>
                         )}

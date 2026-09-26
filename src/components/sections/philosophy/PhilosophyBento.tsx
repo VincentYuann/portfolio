@@ -42,7 +42,7 @@ const PILLAR_CONFIGS = [
     hoverBorder: 'hover:border-ochre/50',
     watermark: (
       <svg
-        className="w-32 h-32 absolute -right-6 -bottom-6 text-ochre/15 dark:text-ochre/10 pointer-events-none"
+        className="w-28 h-28 absolute right-1 bottom-1 text-ochre/15 dark:text-ochre/10 pointer-events-none"
         viewBox="0 0 100 100"
         fill="none"
         stroke="currentColor"
@@ -61,7 +61,7 @@ const PILLAR_CONFIGS = [
     dotColor: 'bg-terracotta',
     hoverBorder: 'hover:border-terracotta/50',
     watermark: (
-      <div className="absolute -right-4 -bottom-4 w-32 h-36 opacity-20 dark:opacity-10 pointer-events-none">
+      <div className="absolute right-1 bottom-1 w-28 h-32 opacity-20 dark:opacity-10 pointer-events-none">
         <img
           src="./images/sumie-pine-tree-left.jpg"
           alt="Pine motif"
@@ -80,7 +80,7 @@ const PILLAR_CONFIGS = [
     dotColor: 'bg-bamboo',
     hoverBorder: 'hover:border-bamboo/50',
     watermark: (
-      <div className="absolute -right-4 -bottom-4 w-28 h-40 opacity-25 dark:opacity-15 pointer-events-none">
+      <div className="absolute right-1 bottom-1 w-24 h-36 opacity-25 dark:opacity-15 pointer-events-none">
         <BambooArt className="w-full h-full" sway={false} opacity={0.8} />
       </div>
     ),
@@ -180,7 +180,7 @@ export const PhilosophyBento: React.FC = () => {
                 原点と哲学
               </span>
             </h2>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-prose">
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-xl">
               Rooted in the Japanese aesthetics of <span className="font-medium text-light-ink dark:text-dark-ink">Akari</span> (illumination) and <span className="font-medium text-light-ink dark:text-dark-ink">Wabi-Sabi</span> (organic simplicity and evolutionary resilience). Software is not merely mechanical logic; it is a spatial architecture shaped by deliberate negative space (<em>Ma</em> 間), system balance, and human empathy.
             </p>
           </div>
@@ -214,22 +214,22 @@ export const PhilosophyBento: React.FC = () => {
                   </h3>
                 )}
                 {originStory?.leadParagraph && (
-                  <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-normal max-w-prose">
+                  <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-normal max-w-xl">
                     {originStory.leadParagraph}
                   </p>
                 )}
               </div>
             )}
 
-            {/* Trajectory Milestones Responsive Grid */}
+            {/* Trajectory Milestones Architectural Grid - Un-nested Columns */}
             {milestones.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative z-10">
                 {milestones.map((m, idx) => {
                   const tTheme = TRAJECTORY_THEMES[idx % TRAJECTORY_THEMES.length];
                   return (
                     <div
                       key={idx}
-                      className={`group p-4 sm:p-4.5 rounded-lg bg-light-surface-raised/80 dark:bg-dark-surface-raised/80 border border-light-border/70 dark:border-dark-border/70 flex flex-col justify-between ${tTheme.borderHover} ${tTheme.glow} transition-all duration-300 relative overflow-visible shadow-2xs hover:shadow-sm`}
+                      className="group p-3 sm:p-4 flex flex-col justify-between transition-all duration-300 relative border-t-2 border-ochre/40 dark:border-ochre/30 hover:border-terracotta/70 dark:hover:border-terracotta/70 pt-3.5"
                     >
                       {/* Celestial Ensō Orbital Circle */}
                       <EnsoOrbital
@@ -255,7 +255,7 @@ export const PhilosophyBento: React.FC = () => {
                           </h4>
                         )}
                         {m.subtitle && (
-                          <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 font-normal relative z-10">
+                          <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1 font-normal relative z-10">
                             {m.subtitle}
                           </p>
                         )}
@@ -278,7 +278,7 @@ export const PhilosophyBento: React.FC = () => {
           <div className="mb-6 pt-2 pb-3 flex items-center justify-between border-b border-light-border/60 dark:border-dark-border/60">
             <div className="flex items-center gap-2">
               <span className="font-serif text-terracotta text-sm">04.2 //</span>
-              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle tracking-widest">
+              <span className="font-sans text-xs sm:text-sm font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                 Three Architectural Pillars · 三つの信条
               </span>
             </div>
@@ -357,7 +357,7 @@ export const PhilosophyBento: React.FC = () => {
                 )}
 
                 {/* Thematic Watermark Motif behind card content */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-xl">
+                <div className="absolute inset-0 pointer-events-none rounded-xl">
                   {config.watermark}
                 </div>
               </div>

@@ -218,9 +218,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                       </p>
                     </div>
 
-                    {/* Vertical Tategaki Japanese Prose snippet */}
+                    {/* Vertical Tategaki Japanese Prose snippet - Clean Typography without Nested Card */}
                     {hankoLines.length > 0 && (
-                      <div className="w-full mt-3 sm:mt-4 pt-3 sm:pt-4 bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border/70 dark:border-dark-border/70 rounded-md p-3 sm:p-4 flex flex-col items-center justify-center group-hover:border-terracotta/30 transition-colors duration-300 relative z-10">
+                      <div className="w-full mt-4 pt-4 border-t border-light-border/60 dark:border-dark-border/60 flex flex-col items-center justify-center relative z-10">
                         <div className="flex items-center justify-center gap-5 sm:gap-6 w-full">
                           {hankoLines.map((line, lIdx) => (
                             <div
