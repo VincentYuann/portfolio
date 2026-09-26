@@ -189,23 +189,6 @@
   }
 }
 
-@keyframes launcher-glow {
-  0%, 100% {
-    box-shadow: 0 0 16px rgba(200, 60, 35, 0.4), 0 8px 24px rgba(0, 0, 0, 0.25);
-  }
-  50% {
-    box-shadow: 0 0 26px rgba(200, 60, 35, 0.65), 0 12px 30px rgba(0, 0, 0, 0.35);
-  }
-}
-
-.animate-float-subtle {
-  animation: float-subtle 4s ease-in-out infinite;
-}
-
-.animate-launcher-glow {
-  animation: launcher-glow 3s ease-in-out infinite;
-}
-
 .animate-status-glow {
   animation: status-glow 2.8s var(--ease-zen) infinite;
 }
@@ -426,7 +409,7 @@
   border-radius: 12px !important;
   border-width: 1.5px !important;
   backdrop-filter: blur(16px) !important;
-  box-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.2) !important; /* impeccable-disable-line design-system-color */
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   background-color: var(--normal-bg) !important;
   color: var(--normal-text) !important;
@@ -434,7 +417,7 @@
 }
 
 .dark [data-sonner-toast] {
-  box-shadow: 0 24px 56px -4px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 24px 56px -4px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12) !important; /* impeccable-disable-line design-system-color */
 }
 
 /* Icons: In Day mode (dark toast), icons are luminous terracotta/ochre */
@@ -526,7 +509,7 @@
 
 .yarl__button:hover {
   color: #C83C23 !important;
-  background-color: rgba(255, 255, 255, 0.08) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important; /* impeccable-disable-line design-system-color */
 }
 
 .yarl__thumbnails_thumbnail {

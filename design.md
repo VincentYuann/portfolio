@@ -14,6 +14,7 @@ colors:
   terracotta: "#C83C23"
   ochre: "#D49B6A"
   bamboo: "#526D57"
+  toast-button-light: "#E8E6DF"
 
   # Light theme: canonical Akari palette
   light-canvas: "#F2E9DA"
@@ -33,19 +34,20 @@ colors:
   light-warning: "#9A6B2E"
   light-error: "#B5482E"
 
-  # Dark theme: blue-charcoal night counterpart
-  dark-canvas: "#1E1F24"
-  dark-surface: "#2A2C32"
-  dark-surface-card: "#1B1C22"
-  dark-surface-raised: "#32343B"
-  dark-surface-muted: "#24262C"
-  dark-ink: "#E8E6DF"
-  dark-ink-muted: "#A7A398"
-  dark-ink-subtle: "#797A7E"
+  # Dark theme: Obsidian night counterpart
+  dark-canvas: "#090A0C"
+  dark-canvas-deep: "#090A0C"
+  dark-surface: "#111215"
+  dark-surface-card: "#141519"
+  dark-surface-raised: "#1B1C22"
+  dark-surface-muted: "#0D0E11"
+  dark-ink: "#F5F3EF"
+  dark-ink-muted: "#BDB9AE"
+  dark-ink-subtle: "#7E7C75"
   dark-border: "#3A3D44"
   dark-border-strong: "#565A63"
-  dark-button-light: "#E8E6DF"
-  dark-on-light: "#1E1F24"
+  dark-button-light: "#F5F3EF"
+  dark-on-light: "#090A0C"
   dark-focus: "#C65B42"
   dark-success: "#87A889"
   dark-warning: "#D3A45B"
@@ -53,55 +55,55 @@ colors:
 
 typography:
   display-xl:
-    fontFamily: "Canela, Iowan Old Style, Georgia, serif"
+    fontFamily: "Canela, Oxanium, Chakra Petch, Iowan Old Style, Georgia, serif"
     fontSize: "64px"
     fontWeight: 400
     lineHeight: 1.02
     letterSpacing: "-0.035em"
   display-lg:
-    fontFamily: "Canela, Iowan Old Style, Georgia, serif"
+    fontFamily: "Canela, Oxanium, Chakra Petch, Iowan Old Style, Georgia, serif"
     fontSize: "52px"
     fontWeight: 400
     lineHeight: 1.05
     letterSpacing: "-0.03em"
   headline-lg:
-    fontFamily: "Canela, Iowan Old Style, Georgia, serif"
+    fontFamily: "Canela, Oxanium, Chakra Petch, Iowan Old Style, Georgia, serif"
     fontSize: "40px"
     fontWeight: 400
     lineHeight: 1.12
     letterSpacing: "-0.02em"
   headline-md:
-    fontFamily: "Canela, Iowan Old Style, Georgia, serif"
+    fontFamily: "Canela, Oxanium, Chakra Petch, Iowan Old Style, Georgia, serif"
     fontSize: "30px"
     fontWeight: 400
     lineHeight: 1.18
     letterSpacing: "-0.015em"
   headline-sm:
-    fontFamily: "Montserrat, Inter, Arial, sans-serif"
+    fontFamily: "Montserrat, Inter, Noto Serif, Noto Serif JP, Arial, sans-serif"
     fontSize: "20px"
     fontWeight: 500
     lineHeight: 1.3
     letterSpacing: "0.01em"
   body-lg:
-    fontFamily: "Montserrat, Inter, Arial, sans-serif"
+    fontFamily: "Montserrat, Inter, Noto Serif, Noto Serif JP, Arial, sans-serif"
     fontSize: "18px"
     fontWeight: 400
     lineHeight: 1.65
     letterSpacing: "0em"
   body-md:
-    fontFamily: "Montserrat, Inter, Arial, sans-serif"
+    fontFamily: "Montserrat, Inter, Noto Serif, Noto Serif JP, Arial, sans-serif"
     fontSize: "15px"
     fontWeight: 400
     lineHeight: 1.6
     letterSpacing: "0em"
   body-sm:
-    fontFamily: "Montserrat, Inter, Arial, sans-serif"
+    fontFamily: "Montserrat, Inter, Noto Serif, Noto Serif JP, JetBrains Mono, Arial, sans-serif"
     fontSize: "13px"
     fontWeight: 400
     lineHeight: 1.55
     letterSpacing: "0.005em"
   label-lg:
-    fontFamily: "Montserrat, Inter, Arial, sans-serif"
+    fontFamily: "Montserrat, Inter, Noto Serif, Noto Serif JP, JetBrains Mono, Material Symbols Outlined, Arial, sans-serif"
     fontSize: "13px"
     fontWeight: 600
     lineHeight: 1.15

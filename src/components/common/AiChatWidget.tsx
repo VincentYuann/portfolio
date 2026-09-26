@@ -882,7 +882,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
               ? `translate3d(${windowPos.x}px, ${windowPos.y}px, 0)`
               : undefined,
             transition: isMobile
-              ? 'height 0.28s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1)'
+              ? 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)'
               : undefined,
           }}
           className={`fixed z-[60] flex flex-col ${
