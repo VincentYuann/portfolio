@@ -1,121 +1,161 @@
 import React, { useMemo } from 'react';
 
-export interface JapaneseSpinePhrase {
-  text: string;
-  label?: string;
-  meaning?: string;
-}
-
-export const JAPANESE_SPINE_PHRASES: JapaneseSpinePhrase[] = [
-  { text: '未来を描き、共に創る。', label: 'CO-CREATION', meaning: 'Drawing the future, creating together' },
-  { text: '簡潔な構造美、確固たる論理。', label: 'CLEAN ARCH', meaning: 'Beauty of concise structure, resolute logic' },
-  { text: '不断の研鑽、道の探求。', label: 'SHOKUNIN', meaning: 'Continuous refinement, pursuit of the way' },
-  { text: '静寂の中に、光を見出す。', label: 'SERENITY', meaning: 'Finding light within the silence' },
-  { text: '虚空に宿る、無限の可能性。', label: 'VOID & POTENTIAL', meaning: 'Infinite possibilities residing in the void' },
-  { text: '間と余白に宿る美意識。', label: 'MA · 間', meaning: 'Aesthetic consciousness living in negative space' },
-  { text: '技を研ぎ澄まし、知を紡ぐ。', label: 'CRAFT & AI', meaning: 'Honing the craft, weaving intelligence' },
-  { text: '変革の風に、帆を掲げて。', label: 'INNOVATION', meaning: 'Hoisting sails to the winds of transformation' },
-  { text: '一意専心、無限の創造。', label: 'FOCUS', meaning: 'Single-minded devotion, boundless creation' },
+const PHRASES = [
+  '未来を描く',
+  '侘寂',
+  '木漏れ日',
+  '間',
+  '一期一会',
+  '花鳥風月',
+  '幽玄',
+  '渋い',
+  '物の哀れ',
+  '静寂',
+  '無心',
+  '風雅',
 ];
 
-export interface JapaneseSpineArtProps {
-  className?: string;
-  /** @deprecated Use seal image instead */
-  char?: string;
-  /** Which side of the viewport to pin to */
-  side?: 'left' | 'right';
-  /** Fixed top offset (CSS value) */
-  topOffset?: string;
-  /** Unique key for deterministic random phrase selection */
-  seed?: number;
-}
-
 /**
- * Purely decorative Japanese calligraphy spine accent.
- * Non-interactive (pointer-events-none), no click handlers.
- * Designed to be placed on the left/right margins of the page at various heights.
+ * A single tiny decorative Japanese accent — just a short vertical phrase
+ * with a small vermilion dot. No seal image, no vertical line, minimal.
+ * Purely ornamental, fully non-interactive.
  */
-export const JapaneseSpineArt: React.FC<JapaneseSpineArtProps> = ({
-  className = '',
-  side = 'left',
-  topOffset,
-  seed = 0,
-}) => {
-  // Deterministic phrase selection based on seed
-  const phrase = useMemo(() => {
-    const idx = seed % JAPANESE_SPINE_PHRASES.length;
-    return JAPANESE_SPINE_PHRASES[idx];
-  }, [seed]);
-
-  const sidePosition = side === 'left'
-    ? { left: '0.75rem' }
-    : { right: '0.75rem' };
-
-  return (
-    <aside
-      aria-hidden="true"
-      className={`hidden lg:flex flex-col items-center gap-2 select-none pointer-events-none z-10 absolute ${className}`}
-      style={{
-        top: topOffset,
-        ...sidePosition,
-      }}
-    >
-      {/* Top Vermilion Cinnabar Dot */}
-      <span className="w-1.5 h-1.5 rounded-full bg-terracotta/60" />
-
-      {/* Vertical Japanese Calligraphy Text */}
-      <div
-        className="writing-vertical-rl font-vertical text-[11px] tracking-[0.3em] text-light-ink-muted/50 dark:text-dark-ink-muted/40 font-medium py-1"
-        style={{ writingMode: 'vertical-rl' }}
-      >
-        {phrase.text}
-      </div>
-
-      {/* Thin Vertical Hairline Divider */}
-      <div className="w-[1px] h-14 bg-gradient-to-b from-terracotta/30 via-light-border/40 dark:via-dark-border/30 to-transparent" />
-
-      {/* Custom Generated Hanko Seal Stamp (replaces hardcoded 原) */}
-      <div className="w-7 h-7 rounded-[3px] overflow-hidden opacity-70">
-        <img
-          src="./images/custom-hanko-seal.jpg"
-          alt=""
-          className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-screen dark:invert"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-    </aside>
-  );
-};
-
-/**
- * Renders multiple JapaneseSpineArt decorations scattered along both sides
- * of the page at randomized heights. Drop this into App.tsx as a global overlay.
- */
-export const JapaneseSpineDecorations: React.FC = () => {
-  // Pre-computed decoration positions — alternating left/right at varied heights
-  const decorations = useMemo(() => [
-    { side: 'left' as const, top: '12%', seed: 0 },
-    { side: 'right' as const, top: '22%', seed: 1 },
-    { side: 'left' as const, top: '38%', seed: 2 },
-    { side: 'right' as const, top: '52%', seed: 3 },
-    { side: 'left' as const, top: '65%', seed: 4 },
-    { side: 'right' as const, top: '78%', seed: 5 },
-  ], []);
+const SpineAccent: React.FC<{
+  phrase: string;
+  top: string;
+  side: 'left' | 'right';
+  opacity: number;
+}> = ({ phrase, top, side, opacity }) => {
+  const posStyle: React.CSSProperties = {
+    position: 'fixed',
+    top,
+    ...(side === 'left' ? { left: '0.6rem' } : { right: '0.6rem' }),
+    opacity,
+  };
 
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-[5] overflow-hidden hidden lg:block"
+      className="hidden xl:flex flex-col items-center gap-1.5 pointer-events-none select-none z-[5]"
+      style={posStyle}
     >
-      {decorations.map((d, i) => (
-        <JapaneseSpineArt
-          key={i}
-          side={d.side}
-          topOffset={d.top}
-          seed={d.seed}
-        />
-      ))}
+      {/* Tiny vermilion dot */}
+      <span className="w-1 h-1 rounded-full bg-terracotta/40" />
+
+      {/* Short vertical text */}
+      <div
+        className="font-vertical text-[10px] tracking-[0.25em] text-light-ink-muted/30 dark:text-dark-ink-muted/20 font-light"
+        style={{ writingMode: 'vertical-rl' }}
+      >
+        {phrase}
+      </div>
     </div>
   );
 };
+
+/**
+ * A standalone hanko seal stamp decoration — just the seal image
+ * with proper blending against both light and dark backgrounds.
+ */
+const SealAccent: React.FC<{
+  top: string;
+  side: 'left' | 'right';
+  opacity: number;
+}> = ({ top, side, opacity }) => {
+  const posStyle: React.CSSProperties = {
+    position: 'fixed',
+    top,
+    ...(side === 'left' ? { left: '0.5rem' } : { right: '0.5rem' }),
+    opacity,
+  };
+
+  return (
+    <div
+      aria-hidden="true"
+      className="hidden xl:block pointer-events-none select-none z-[5]"
+      style={posStyle}
+    >
+      <img
+        src="./images/custom-hanko-seal.jpg"
+        alt=""
+        className="w-5 h-5 object-cover rounded-[2px] mix-blend-multiply dark:mix-blend-lighten dark:opacity-30"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  );
+};
+
+/**
+ * Seeded pseudo-random number generator for deterministic but varied placement.
+ * Uses a simple linear congruential generator.
+ */
+function seededRandom(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 16807 + 0) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+/**
+ * Renders a few scattered Japanese decorative accents along the left and right
+ * viewport margins. Each element is isolated — NOT stacked in a vertical strip.
+ *
+ * - Only 3-4 small text accents + 1-2 seal stamps, widely spaced
+ * - Positions are randomized via a seeded PRNG (stable across renders)
+ * - Very low opacity so they feel like subtle watermarks, not UI elements
+ * - Only visible on xl+ screens (1280px+) to avoid crowding narrower layouts
+ */
+export const JapaneseSpineDecorations: React.FC = () => {
+  const decorations = useMemo(() => {
+    const rng = seededRandom(42);
+
+    // Pick 4 random phrases (no duplicates)
+    const shuffled = [...PHRASES].sort(() => rng() - 0.5);
+    const picked = shuffled.slice(0, 4);
+
+    // Generate well-spaced vertical positions between 10% and 85%
+    // Each zone gets one element, with jitter within the zone
+    const zones = [
+      { min: 8, max: 20 },   // top area
+      { min: 30, max: 45 },  // upper-mid
+      { min: 55, max: 68 },  // lower-mid
+      { min: 75, max: 88 },  // bottom area
+    ];
+
+    const textAccents = zones.map((zone, i) => {
+      const top = zone.min + rng() * (zone.max - zone.min);
+      const side = rng() > 0.5 ? 'left' as const : 'right' as const;
+      const opacity = 0.35 + rng() * 0.25; // 0.35–0.60
+      return { type: 'text' as const, phrase: picked[i], top: `${top.toFixed(1)}%`, side, opacity };
+    });
+
+    // 1-2 seal stamps placed in gaps between text accents
+    const sealAccents = [
+      {
+        type: 'seal' as const,
+        top: `${(22 + rng() * 8).toFixed(1)}%`,
+        side: rng() > 0.5 ? 'left' as const : 'right' as const,
+        opacity: 0.5,
+      },
+    ];
+
+    return [...textAccents, ...sealAccents];
+  }, []);
+
+  return (
+    <>
+      {decorations.map((d, i) =>
+        d.type === 'text' ? (
+          <SpineAccent key={`t${i}`} phrase={d.phrase} top={d.top} side={d.side} opacity={d.opacity} />
+        ) : (
+          <SealAccent key={`s${i}`} top={d.top} side={d.side} opacity={d.opacity} />
+        )
+      )}
+    </>
+  );
+};
+
+// Keep the named export for backwards compat with Hero import
+export const JapaneseSpineArt = SpineAccent;
