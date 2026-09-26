@@ -177,7 +177,7 @@ export const Header: React.FC<HeaderProps> = ({
                     : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
-                <span className="opacity-40 text-[10px] font-mono">{item.num}</span>
+                <span className="opacity-40 text-[11px] font-mono">{item.num}</span>
                 <span>{item.label}</span>
                 <span
                   className={`absolute bottom-0 left-0 h-[1.5px] bg-terracotta rounded-full transition-all duration-300 ${
@@ -192,7 +192,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Right side cluster: always neatly aligned with zero overlap */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {/* Day / Night segmented toggle */}
-          <div className="flex items-center p-0.5 rounded-full bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[10px] sm:text-[11px] select-none shrink-0 shadow-2xs">
+          <div className="flex items-center p-0.5 rounded-full bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[11px] sm:text-xs select-none shrink-0 shadow-2xs">
             <button
               onClick={() => setTheme('day')}
               className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
@@ -347,10 +347,10 @@ export const Header: React.FC<HeaderProps> = ({
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 animate-pulse" />}
+                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0" />}
                     <span className="font-medium">{item.fullLabel || item.label}</span>
                   </div>
-                  <span className="font-mono text-[10px] opacity-50">{item.num}</span>
+                  <span className="font-mono text-[11px] opacity-50">{item.num}</span>
                 </a>
               );
             })}

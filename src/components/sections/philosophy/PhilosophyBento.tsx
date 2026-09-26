@@ -10,25 +10,25 @@ const TRAJECTORY_THEMES = [
     eraColor: 'text-ochre dark:text-ochre',
     tagBg: 'bg-ochre/10 dark:bg-ochre/20 text-ochre dark:text-ochre border-ochre/30',
     borderHover: 'hover:border-ochre/50',
-    glow: 'hover:shadow-[0_4px_20px_rgba(212,155,106,0.12)]',
+    glow: 'hover:shadow-sm',
   },
   {
     eraColor: 'text-bamboo dark:text-bamboo',
     tagBg: 'bg-bamboo/10 dark:bg-bamboo/20 text-bamboo dark:text-bamboo border-bamboo/30',
     borderHover: 'hover:border-bamboo/50',
-    glow: 'hover:shadow-[0_4px_20px_rgba(82,109,87,0.12)]',
+    glow: 'hover:shadow-sm',
   },
   {
     eraColor: 'text-terracotta dark:text-terracotta',
     tagBg: 'bg-terracotta/10 dark:bg-terracotta/20 text-terracotta dark:text-terracotta border-terracotta/30',
     borderHover: 'hover:border-terracotta/50',
-    glow: 'hover:shadow-[0_4px_20px_rgba(200,60,35,0.12)]',
+    glow: 'hover:shadow-sm',
   },
   {
     eraColor: 'text-ochre dark:text-ochre',
     tagBg: 'bg-ochre/10 dark:bg-ochre/20 text-ochre dark:text-ochre border-ochre/30',
     borderHover: 'hover:border-ochre/50',
-    glow: 'hover:shadow-[0_4px_20px_rgba(212,155,106,0.12)]',
+    glow: 'hover:shadow-sm',
   },
 ];
 
@@ -107,7 +107,12 @@ export const PhilosophyBento: React.FC = () => {
   }
 
   return (
-    <section id="philosophy" className="relative w-full overflow-hidden py-16 lg:py-24">
+    <section id="philosophy" className="relative w-full py-16 lg:py-24">
+      {/* Architectural Background Chamber for Philosophy */}
+      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/35 to-light-canvas dark:from-dark-canvas dark:via-[#101115]/70 dark:to-dark-canvas pointer-events-none z-0 border-y border-light-border/40 dark:border-dark-border/40" />
+      {/* Zen Ambient Mist Radial Wash */}
+      <div className="absolute inset-0 bg-radial-[at_50%_50%] from-ochre/[0.03] dark:from-ochre/[0.02] to-transparent pointer-events-none z-0" />
+
       {/* Full-Bleed Atmospheric Background Behind Philosophy Cards */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
         {/* Panoramic Mist Landscape backdrop spanning across the section */}
@@ -175,7 +180,7 @@ export const PhilosophyBento: React.FC = () => {
                 原点と哲学
               </span>
             </h2>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed">
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-prose">
               Rooted in the Japanese aesthetics of <span className="font-medium text-light-ink dark:text-dark-ink">Akari</span> (illumination) and <span className="font-medium text-light-ink dark:text-dark-ink">Wabi-Sabi</span> (organic simplicity and evolutionary resilience). Software is not merely mechanical logic; it is a spatial architecture shaped by deliberate negative space (<em>Ma</em> 間), system balance, and human empathy.
             </p>
           </div>
@@ -193,7 +198,7 @@ export const PhilosophyBento: React.FC = () => {
               <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                 {originStory?.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
               </span>
-              <div className="flex items-center gap-1.5 font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider">
+              <div className="flex items-center gap-1.5 font-mono text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider">
                 <span>PHILADELPHIA, PA</span>
                 <span className="opacity-40">·</span>
                 <span className="text-terracotta font-medium">SWE · SYSTEMS · FULL-STACK</span>
@@ -209,7 +214,7 @@ export const PhilosophyBento: React.FC = () => {
                   </h3>
                 )}
                 {originStory?.leadParagraph && (
-                  <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-normal">
+                  <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 leading-relaxed font-normal max-w-prose">
                     {originStory.leadParagraph}
                   </p>
                 )}
@@ -235,11 +240,11 @@ export const PhilosophyBento: React.FC = () => {
                       />
                       <div>
                         <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
-                          <span className={`font-mono text-[10px] font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
+                          <span className={`font-mono text-[11px] font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
                             {m.era || `PHASE 0${idx + 1}`}
                           </span>
                           {m.tag && (
-                            <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${tTheme.tagBg} tracking-wider uppercase`}>
+                            <span className={`font-mono text-[11px] px-1.5 py-0.5 rounded border ${tTheme.tagBg} tracking-wider uppercase`}>
                               {m.tag}
                             </span>
                           )}
@@ -273,11 +278,11 @@ export const PhilosophyBento: React.FC = () => {
           <div className="mb-6 pt-2 pb-3 flex items-center justify-between border-b border-light-border/60 dark:border-dark-border/60">
             <div className="flex items-center gap-2">
               <span className="font-serif text-terracotta text-sm">04.2 //</span>
-              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                THREE ARCHITECTURAL PILLARS · 三つの信条
+              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle tracking-widest">
+                Three Architectural Pillars · 三つの信条
               </span>
             </div>
-            <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle tracking-widest uppercase hidden sm:inline">
+            <span className="font-mono text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle tracking-widest uppercase hidden sm:inline">
               PRINCIPLES &amp; SYSTEM CRAFT
             </span>
           </div>
@@ -317,7 +322,7 @@ export const PhilosophyBento: React.FC = () => {
                       {pillar.kanji}
                     </span>
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                      <span className="font-mono text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
                         {num}
                       </span>
                       <div className="w-7 h-7 rounded-full bg-light-surface-raised dark:bg-dark-surface-card border border-light-border dark:border-dark-border flex items-center justify-center">
@@ -345,7 +350,7 @@ export const PhilosophyBento: React.FC = () => {
                 {pillar.tag && (
                   <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-dark-border/40 flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
                     <span className={`w-1.5 h-1.5 rounded-full ${config.dotColor}`} />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] font-medium truncate">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.18em] font-medium truncate">
                       {pillar.tag}
                     </span>
                   </div>

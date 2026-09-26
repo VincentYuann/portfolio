@@ -113,7 +113,11 @@ export const ContactSection: React.FC = () => {
   )}` : '#';
 
   return (
-    <section id="contact" className="relative w-full overflow-hidden py-14 lg:py-20 mb-8">
+    <section id="contact" className="relative w-full py-14 lg:py-20 mb-8">
+      {/* Architectural Background Chamber for Contact */}
+      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface-card/40 to-light-canvas dark:from-dark-canvas dark:via-[#121318]/70 dark:to-dark-canvas pointer-events-none z-0 border-t border-light-border/50 dark:border-dark-border/50" />
+      <div className="absolute inset-0 bg-radial-[at_50%_40%] from-terracotta/[0.03] dark:from-terracotta/[0.02] to-transparent pointer-events-none z-0" />
+
       <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
         <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-8 sm:p-12 overflow-visible shadow-akari dark:shadow-night-glow classical-card-frame hover:border-terracotta/40 transition-colors duration-500">
           {/* Celestial Ensō Orbital Circle: appears ONLY on the hovered card */}
@@ -151,8 +155,8 @@ export const ContactSection: React.FC = () => {
             <div className="lg:col-span-6 flex flex-col gap-6">
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-serif text-terracotta text-sm">06 //</span>
-                <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                  DIALOGUE &amp; CORRESPONDENCE · 対話と通信
+                <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle tracking-widest">
+                  Dialogue &amp; Correspondence · 対話と通信
                 </span>
               </div>
 
@@ -163,7 +167,7 @@ export const ContactSection: React.FC = () => {
                 </span>
               </h2>
 
-              <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
+              <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light max-w-prose">
                 Currently open to engineering collaborations, distributed systems design, generative AI architectures, and technical dialogue. Let us discuss possibilities over a message.
               </p>
 

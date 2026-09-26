@@ -43,22 +43,22 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   // Custom theme overrides from experience milestones
   const activeClass = bg && border && text
     ? `${bg} ${border} ${text} border shadow-xs`
-    : 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-terracotta-soft dark:shadow-[0_0_10px_rgba(200,60,35,0.25)]';
+    : 'bg-terracotta/15 border border-terracotta/50 text-terracotta dark:text-[#E85D44] shadow-xs';
 
   const completedClass =
     'bg-stone-100 border border-stone-300 text-stone-600 dark:bg-dark-surface dark:border-dark-border dark:text-dark-ink-muted';
 
-  const dotActiveClass = dotBg || 'bg-terracotta shadow-[0_0_6px_rgba(200,60,35,0.8)]';
+  const dotActiveClass = dotBg || 'bg-terracotta';
 
   return (
     <span
       className={`inline-flex items-center font-mono font-bold uppercase tracking-wider transition-colors select-none ${
-        isSm ? 'gap-1 px-2 py-0.5 text-[10px] rounded-full' : 'gap-1.5 px-2.5 py-0.5 text-[10px] sm:text-[11px] rounded-full'
+        isSm ? 'gap-1 px-2 py-0.5 text-[11px] rounded-full' : 'gap-1.5 px-2.5 py-0.5 text-[11px] rounded-full'
       } ${isActive ? activeClass : completedClass} ${customClass}`}
     >
       <span
         className={`rounded-full shrink-0 ${isSm ? 'w-1 h-1' : 'w-1.5 h-1.5'} ${
-          isActive ? `${dotActiveClass} animate-pulse` : 'bg-stone-400 dark:bg-neutral-500'
+          isActive ? dotActiveClass : 'bg-stone-400 dark:bg-neutral-500'
         }`}
       />
       <span>{label}</span>

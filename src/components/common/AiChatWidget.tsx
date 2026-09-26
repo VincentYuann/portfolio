@@ -846,7 +846,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
             <span className="font-serif text-xs sm:text-sm font-medium tracking-tight">
               Ask Vincent's AI
             </span>
-            <kbd className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-medium rounded border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface text-light-ink-subtle dark:text-dark-ink-subtle">
+            <kbd className="inline-flex items-center px-1.5 py-0.5 text-[11px] font-mono font-medium rounded border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface text-light-ink-muted dark:text-stone-300">
               ⌘K
             </kbd>
           </div>

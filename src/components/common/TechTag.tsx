@@ -11,7 +11,7 @@ interface TechTagProps {
 
 const SIZE_STYLES: Record<'sm' | 'md' | 'lg', { pill: string; icon: string }> = {
   sm: {
-    pill: 'px-2 py-0.5 text-[10px] gap-1.5',
+    pill: 'px-2 py-0.5 text-[11px] gap-1.5',
     icon: 'w-2.5 h-2.5',
   },
   md: {

@@ -60,7 +60,12 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
   );
 
   return (
-    <section id="featured-works" className="relative w-full overflow-hidden py-16 lg:py-24">
+    <section id="featured-works" className="relative w-full py-16 lg:py-24">
+      {/* Architectural Background Chamber for Featured Works */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface-card/30 to-transparent dark:via-[#0e1014]/60 pointer-events-none z-0 border-y border-light-border/40 dark:border-dark-border/40" />
+      {/* Subtle Japanese Minimal Grid Pattern */}
+      <div className="absolute right-0 sm:right-16 top-1/3 w-[32rem] h-[32rem] bg-radial-[at_center] from-terracotta/[0.03] dark:from-terracotta/[0.02] to-transparent pointer-events-none z-0" />
+
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & View All Action */}
         <SectionHeading
@@ -105,7 +110,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700 ease-out"
+                        className="w-full h-full object-cover object-center group-hover:opacity-95 transition-opacity duration-300"
                         loading="lazy"
                         decoding="async"
                         onError={handleImageError()}
@@ -122,7 +127,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                     {/* Unified Metadata Strip: Order + Date + Active Status Pill */}
                     <div>
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                        <Badge variant="terracotta" className="font-mono text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5">
+                        <Badge variant="terracotta" className="font-mono text-[11px] sm:text-xs px-1.5 sm:px-2 py-0.5">
                           #{String(index + 1).padStart(2, '0')}
                         </Badge>
 
@@ -149,7 +154,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       </p>
                     </div>
 
-                    <p className="font-sans text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal">
+                    <p className="font-sans text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal max-w-prose">
                       {project.description}
                     </p>
 

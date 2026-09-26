@@ -40,19 +40,19 @@ interface MilestoneTheme {
 // Canonical Terracotta Cinnabar theme strictly adhering to DESIGN.md single-accent discipline
 const CANONICAL_MILESTONE_THEME: MilestoneTheme = {
   primary: '#C83C23',
-  textClass: 'text-terracotta dark:text-terracotta',
+  textClass: 'text-terracotta dark:text-[#E85D44]',
   badgeBg: 'bg-terracotta/15 dark:bg-terracotta/20',
   badgeBorder: 'border-terracotta/50 dark:border-terracotta/60',
-  badgeText: 'text-terracotta dark:text-terracotta',
+  badgeText: 'text-terracotta dark:text-[#E85D44]',
   emblemBorder: 'border-terracotta/70 dark:border-terracotta/80',
-  emblemShadow: 'shadow-[0_0_12px_rgba(200,60,35,0.3)]',
+  emblemShadow: 'shadow-xs border-terracotta/80',
   cardActiveBorder: 'border-terracotta/60 dark:border-terracotta/60',
-  cardActiveRing: 'ring-1 ring-terracotta/25',
-  cardActiveGlow: 'shadow-[0_12px_40px_-8px_rgba(200,60,35,0.25),0_0_24px_-4px_rgba(200,60,35,0.12)]',
+  cardActiveRing: 'ring-1 ring-terracotta/30',
+  cardActiveGlow: 'shadow-lg shadow-black/20 dark:shadow-black/40',
   nodeActiveBg: 'bg-terracotta',
   nodeActiveBorder: 'border-terracotta',
-  nodeActiveShadow: 'shadow-[0_0_12px_2px_rgba(200,60,35,0.7)]',
-  bulletOrdinalClass: 'text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-[0_0_8px_rgba(200,60,35,0.15)]',
+  nodeActiveShadow: 'shadow-xs ring-2 ring-terracotta/40',
+  bulletOrdinalClass: 'text-terracotta dark:text-[#E85D44] bg-terracotta/10 dark:bg-terracotta/20 border-terracotta/30 shadow-2xs',
 };
 
 const getMilestoneTheme = (_idx: number): MilestoneTheme => {
@@ -130,7 +130,12 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
   const allOpen = list.every((exp, idx) => expandedCards[exp.id || idx]);
 
   return (
-    <section id="experience" className="relative w-full overflow-hidden py-16 lg:py-24">
+    <section id="experience" className="relative w-full py-16 lg:py-24">
+      {/* Architectural Background Chamber for Experience */}
+      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/40 to-light-canvas dark:from-dark-canvas dark:via-[#111215]/85 dark:to-dark-canvas pointer-events-none z-0 border-y border-light-border/40 dark:border-dark-border/40" />
+      {/* Subtle Japanese Joinery Axis Ambient Glow */}
+      <div className="absolute left-0 sm:left-24 top-1/4 w-96 h-96 bg-radial-[at_center] from-ochre/[0.04] dark:from-ochre/[0.025] to-transparent pointer-events-none z-0" />
+
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & Standardized Layout */}
         <SectionHeading
@@ -178,7 +183,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
           <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-px bg-gradient-to-b from-terracotta via-ochre/40 to-light-border/60 dark:to-dark-border/60 -translate-x-1/2 pointer-events-none z-0" />
 
           {/* Milestone Cards Stack */}
-          <div className="space-y-8 sm:space-y-12">
+          <div className="flex flex-col gap-8 sm:gap-12">
             {list.map((exp, idx) => {
               const cardKey = exp.id || idx;
               const isCardActive = String(activeCardId) === String(cardKey);
@@ -260,7 +265,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             <span className={`font-serif font-black ${theme.textClass} text-2xl sm:text-3xl leading-none tracking-normal`}>
                               {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
                             </span>
-                            <span className={`text-[10px] font-mono tracking-wider ${theme.textClass} uppercase font-bold leading-none mt-1 opacity-90`}>
+                            <span className={`text-[11px] font-mono tracking-wider ${theme.textClass} uppercase font-bold leading-none mt-1 opacity-90`}>
                               {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
                             </span>
                           </div>
@@ -272,7 +277,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         {/* Metadata Strip: Dates + High-Contrast Active/Completed Pill */}
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
                           {/* Order index */}
-                          <Badge variant="terracotta" className="font-mono text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5">
+                          <Badge variant="terracotta" className="font-mono text-[11px] sm:text-xs px-1.5 sm:px-2 py-0.5">
                             #{String(idx + 1).padStart(2, '0')}
                           </Badge>
 
@@ -314,7 +319,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                         {/* High-Level Narrative Overview (Always visible) */}
                         {overviewText && (
-                          <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-3">
+                          <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-3 max-w-2xl">
                             {overviewText}
                           </p>
                         )}
@@ -347,7 +352,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             {/* Engineering Impact Bullets */}
                             {bullets.length > 0 && (
                               <div>
-                                <div className={`text-[10px] sm:text-[11px] font-mono uppercase tracking-widest ${theme.textClass} font-semibold mb-2.5 flex items-center gap-1.5`}>
+                                <div className={`text-xs sm:text-[13px] font-mono tracking-wide ${theme.textClass} font-semibold mb-2.5 flex items-center gap-1.5`}>
                                   <ListChecks className={`w-3.5 h-3.5 ${theme.textClass}`} />
                                   Engineering Contributions &amp; Quantified Impact
                                 </div>
@@ -357,7 +362,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                                       key={pIdx}
                                       className="p-3 sm:p-3.5 rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface-raised/60 dark:bg-dark-surface-card/60 hover:border-terracotta/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet"
                                     >
-                                      <span className={`font-mono text-[10px] sm:text-[11px] font-semibold ${theme.bulletOrdinalClass} rounded px-1.5 py-0.5 shrink-0 select-none mt-0.5`}>
+                                      <span className={`font-mono text-[11px] sm:text-xs font-semibold ${theme.bulletOrdinalClass} rounded px-1.5 py-0.5 shrink-0 select-none mt-0.5`}>
                                         #{String(pIdx + 1).padStart(2, '0')}
                                       </span>
                                       <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">

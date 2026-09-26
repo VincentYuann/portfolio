@@ -47,11 +47,11 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
         <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-dark-border/60">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="font-mono text-[10px] font-bold text-terracotta tracking-wider uppercase">
+              <span className="font-mono text-[11px] font-bold text-terracotta tracking-wider uppercase">
                 {`0${index + 1}`} · {hobby.kanji || '工芸'}
               </span>
               <span
-                className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider border font-medium ${categoryStyle}`}
+                className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono uppercase tracking-wider border font-medium ${categoryStyle}`}
               >
                 {hobby.category || 'Passion'}
               </span>
@@ -81,7 +81,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                 <img
                   src={heroImage}
                   alt={`${hobby.title} active photo`}
-                  className="w-full h-full object-cover group-hover/hero:scale-103 transition-transform duration-500 cursor-pointer"
+                  className="w-full h-full object-cover group-hover/hero:opacity-95 transition-opacity duration-300 cursor-pointer"
                   onClick={() => setIsLightboxOpen(true)}
                   loading="lazy"
                   decoding="async"
@@ -102,7 +102,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                 </button>
 
                 {/* Image Counter Pill */}
-                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[10px] font-mono text-white/90 flex items-center gap-1">
+                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[11px] font-mono text-white/90 flex items-center gap-1">
                   <ImageIcon className="w-3 h-3 text-terracotta" />
                   <span>
                     {activeImageIndex + 1} / {images.length}
@@ -125,7 +125,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                       <img
                         src={img}
                         alt={`${hobby.title} thumbnail ${idx + 1}`}
-                        className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover/thumb:opacity-90 transition-opacity duration-300"
                         loading="lazy"
                         decoding="async"
                       />
