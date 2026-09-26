@@ -58,6 +58,8 @@ export default {
         sans: ['Montserrat', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'SFMono-Regular', 'Consolas', 'monospace'],
         vertical: ['Noto Serif JP', 'Noto Serif', 'Songti TC', 'serif'],
+        display: ['Oxanium', 'Chakra Petch', 'system-ui', 'sans-serif'],
+        chamfer: ['Oxanium', 'Chakra Petch', 'monospace'],
       },
       spacing: {
         gutter: '1.5rem',

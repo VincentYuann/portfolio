@@ -4,6 +4,7 @@ import { BambooArt } from '../../common/BambooArt';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { HankoStamp } from '../../common/HankoStamp';
 import { TechTag } from '../../common/TechTag';
+import { JapaneseSpineArt } from '../../common/JapaneseSpineArt';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 
 interface HeroProps {
@@ -44,11 +45,11 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
         {/* Dedicated Japanese Sumi-e Pine Tree (Matsu 松) prominently anchoring the left in Light Mode only */}
         {/* Hidden in Dark Mode to prevent inverted branches from colliding with headline text and creating a rectangular paper haze */}
-        <div className="absolute left-0 sm:left-2 lg:left-6 bottom-0 h-4/5 max-h-[720px] w-auto max-w-lg hidden sm:block dark:hidden pointer-events-none z-0">
+        <div className="absolute -left-14 sm:-left-10 lg:-left-6 bottom-0 h-4/5 max-h-[720px] w-auto max-w-lg hidden sm:block dark:hidden pointer-events-none z-0">
           <img
             src="./images/sumie-pine-tree-left.jpg"
             alt="Sumi-e pine tree art"
-            className="w-full h-full object-contain object-bottom-left opacity-80 mix-blend-multiply transition-opacity duration-300"
+            className="w-full h-full object-contain object-bottom-left opacity-35 mix-blend-multiply transition-opacity duration-300"
             loading="lazy"
             decoding="async"
             style={{
@@ -77,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="absolute inset-0 bg-transparent washi-pattern opacity-30 dark:opacity-0 pointer-events-none" />
 
         {/* Soft atmospheric gradient for crisp typography legibility and seamless canvas blend */}
-        <div className="absolute inset-y-0 left-0 w-full sm:w-1/2 lg:w-2/5 bg-gradient-to-r from-light-canvas/75 via-light-canvas/30 to-transparent dark:from-dark-canvas dark:via-dark-canvas/70 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-full sm:w-3/5 lg:w-1/2 bg-gradient-to-r from-light-canvas via-light-canvas/85 to-transparent dark:from-dark-canvas dark:via-dark-canvas/80 to-transparent z-10 pointer-events-none" />
 
         {/* Top atmospheric fade under fixed appbar */}
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/75 to-transparent z-10 pointer-events-none" />
@@ -86,16 +87,19 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-light-canvas via-light-canvas/90 to-transparent dark:from-dark-canvas dark:via-dark-canvas/95 to-transparent z-10 pointer-events-none" />
       </div>
 
+      {/* Ambient Decorative Japanese Spine Calligraphy & Hanko (Randomized Placement on Side) */}
+      <JapaneseSpineArt char={hanko?.stampCharacter || '原'} />
+
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Main Content Column (8 cols) */}
+          {/* Main Content Column (8 cols) - 100% Dynamically typed from Site Profile */}
           <div className="lg:col-span-8 flex flex-col gap-5 sm:gap-6 pt-1 sm:pt-2">
-            {/* Display Headline: Bold Editorial Serifs with High Contrast */}
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink leading-[1.14] sm:leading-[1.12] tracking-tight font-bold text-balance">
+            {/* Display Headline in Chamfered Oxanium Typography */}
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-light-ink dark:text-dark-ink leading-[1.08] sm:leading-[1.04] tracking-tight uppercase select-text text-balance">
               {headline}
             </h1>
 
-            {/* Narrative Paragraph */}
+            {/* Narrative Tagline Paragraph */}
             <p className="font-sans text-sm sm:text-base lg:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed font-normal">
               {tagline}
             </p>
