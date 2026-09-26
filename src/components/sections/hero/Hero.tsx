@@ -55,13 +55,13 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           <img
             src="/images/sumie-pine-tree-left.jpg"
             alt="Sumi-e pine tree art"
-            className="w-full h-full object-contain object-bottom-left opacity-85 dark:opacity-50 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-125 transition-all duration-500"
+            className="w-full h-full object-contain object-bottom-left opacity-85 dark:opacity-55 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-[1.65] dark:brightness-[0.85] transition-all duration-500"
             loading="eager"
             fetchPriority="high"
             decoding="async"
             style={{
-              maskImage: 'radial-gradient(ellipse 92% 90% at 35% 65%, black 50%, transparent 90%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 92% 90% at 35% 65%, black 50%, transparent 90%)',
+              maskImage: 'radial-gradient(ellipse 72% 82% at 20% 60%, black 25%, transparent 72%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 72% 82% at 20% 60%, black 25%, transparent 72%)',
             }}
           />
         </div>
@@ -71,12 +71,12 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           <img
             src="/images/sumie-bamboo-bg.jpg"
             alt="Sumi-e bamboo background"
-            className="w-full h-full object-contain object-bottom opacity-65 dark:opacity-35 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-125 transition-all duration-500"
+            className="w-full h-full object-contain object-bottom opacity-65 dark:opacity-35 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-[1.65] dark:brightness-[0.85] transition-all duration-500"
             loading="lazy"
             decoding="async"
             style={{
-              maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 35%, transparent 80%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 35%, transparent 80%)',
+              maskImage: 'radial-gradient(ellipse 75% 78% at 50% 50%, black 30%, transparent 76%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 75% 78% at 50% 50%, black 30%, transparent 76%)',
             }}
           />
         </div>
