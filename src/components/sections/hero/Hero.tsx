@@ -42,18 +42,17 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           }}
         />
 
-        {/* Dedicated Japanese Sumi-e Pine Tree (Matsu 松) prominently anchoring the left in Light Mode only */}
-        {/* Hidden in Dark Mode to prevent inverted branches from colliding with headline text and creating a rectangular paper haze */}
-        <div className="absolute left-0 sm:left-2 lg:left-4 bottom-0 h-4/5 max-h-[720px] w-auto max-w-lg hidden sm:block dark:hidden pointer-events-none z-0">
+        {/* Dedicated Japanese Sumi-e Pine Tree (Matsu 松) prominently anchoring the left */}
+        <div className="absolute left-0 sm:left-2 lg:left-4 bottom-0 h-4/5 max-h-[720px] w-auto max-w-xs sm:max-w-md lg:max-w-lg pointer-events-none z-0">
           <img
             src="./images/sumie-pine-tree-left.jpg"
             alt="Sumi-e pine tree art"
-            className="w-full h-full object-contain object-bottom-left opacity-60 mix-blend-multiply transition-opacity duration-300"
-            loading="lazy"
+            className="w-full h-full object-contain object-bottom-left opacity-75 dark:opacity-30 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-[1.85] dark:brightness-[0.72] transition-all duration-500"
+            loading="eager"
             decoding="async"
             style={{
-              maskImage: 'radial-gradient(ellipse 88% 88% at 35% 65%, black 40%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 88% 88% at 35% 65%, black 40%, transparent 85%)',
+              maskImage: 'radial-gradient(ellipse 90% 90% at 30% 60%, black 45%, transparent 88%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 90% 90% at 30% 60%, black 45%, transparent 88%)',
             }}
           />
         </div>
@@ -86,7 +85,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-light-canvas via-light-canvas/90 to-transparent dark:from-dark-canvas dark:via-dark-canvas/95 to-transparent z-10 pointer-events-none" />
       </div>
 
-      {/* Spine decorations now rendered globally from App.tsx */}
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
