@@ -28,9 +28,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     <section id="home" className="relative w-full overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24">
       {/* Full-Bleed Stretched Landscape Hero Banner with Sumi-e Mountains & Bamboo Art */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
-        {/* Stretched Panoramic Sumi-e Landscape & Bamboo Masterpiece Banner */}
+        {/* Layer 1: Stretched Panoramic Sumi-e Landscape & Bamboo Masterpiece Banner */}
         <img
-          src="./images/hero-sumie-landscape-bamboo-banner.jpg"
+          src="/images/hero-sumie-landscape-bamboo-banner.jpg"
           alt="Panoramic sumi-e landscape and bamboo ink wash painting backdrop"
           className="absolute inset-0 w-full h-full object-cover object-left sm:object-center opacity-85 dark:opacity-25 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-[1.85] dark:brightness-[0.72] animate-gentle-drift transition-all duration-500"
           loading="eager"
@@ -42,27 +42,36 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           }}
         />
 
-        {/* Dedicated Japanese Sumi-e Pine Tree (Matsu 松) prominently anchoring the left */}
-        <div className="absolute left-0 sm:left-2 lg:left-4 bottom-0 h-4/5 max-h-[720px] w-auto max-w-xs sm:max-w-md lg:max-w-lg pointer-events-none z-0">
+        {/* Layer 2: Subtle Japanese Washi Dot Texture Layer (Only in Day mode, zero noise in dark mode) */}
+        <div className="absolute inset-0 bg-transparent washi-pattern opacity-30 dark:opacity-0 pointer-events-none" />
+
+        {/* Layer 3: Soft atmospheric gradient over the panoramic landscape for crisp text legibility */}
+        <div className="absolute inset-y-0 left-0 w-full sm:w-1/2 lg:w-2/5 bg-gradient-to-r from-light-canvas/70 via-light-canvas/30 to-transparent dark:from-dark-canvas/70 dark:via-dark-canvas/30 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-light-canvas via-light-canvas/60 to-transparent dark:from-dark-canvas dark:via-dark-canvas/60 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/75 to-transparent pointer-events-none" />
+
+        {/* Layer 4: Dedicated Japanese Sumi-e Pine Tree (Matsu 松) prominently anchoring the left */}
+        <div className="absolute left-0 sm:left-2 lg:left-6 bottom-0 h-[82%] max-h-[760px] w-auto max-w-sm sm:max-w-md lg:max-w-xl pointer-events-none z-10">
           <img
-            src="./images/sumie-pine-tree-left.jpg"
+            src="/images/sumie-pine-tree-left.jpg"
             alt="Sumi-e pine tree art"
-            className="w-full h-full object-contain object-bottom-left opacity-75 dark:opacity-30 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-[1.85] dark:brightness-[0.72] transition-all duration-500"
+            className="w-full h-full object-contain object-bottom-left opacity-85 dark:opacity-50 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-125 transition-all duration-500"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             style={{
-              maskImage: 'radial-gradient(ellipse 90% 90% at 30% 60%, black 45%, transparent 88%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 90% 90% at 30% 60%, black 45%, transparent 88%)',
+              maskImage: 'radial-gradient(ellipse 92% 90% at 35% 65%, black 50%, transparent 90%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 92% 90% at 35% 65%, black 50%, transparent 90%)',
             }}
           />
         </div>
 
-        {/* Dedicated Sumi-e Bamboo Art rising in the background behind the seal area */}
-        <div className="absolute right-4 sm:right-12 lg:right-28 bottom-6 h-4/5 max-h-[700px] w-auto max-w-md hidden sm:block animate-bamboo-sway pointer-events-none z-0">
+        {/* Layer 5: Dedicated Sumi-e Bamboo Art rising in the background behind the seal area */}
+        <div className="absolute right-4 sm:right-12 lg:right-28 bottom-6 h-4/5 max-h-[700px] w-auto max-w-md hidden sm:block animate-bamboo-sway pointer-events-none z-10">
           <img
-            src="./images/sumie-bamboo-bg.jpg"
+            src="/images/sumie-bamboo-bg.jpg"
             alt="Sumi-e bamboo background"
-            className="w-full h-full object-contain object-bottom opacity-55 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-[1.85] dark:brightness-[0.72] transition-all duration-500"
+            className="w-full h-full object-contain object-bottom opacity-65 dark:opacity-35 mix-blend-multiply dark:mix-blend-screen dark:invert dark:contrast-125 transition-all duration-500"
             loading="lazy"
             decoding="async"
             style={{
@@ -71,18 +80,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             }}
           />
         </div>
-
-        {/* Subtle Japanese Washi Dot Texture Layer (Only in Day mode, zero noise in dark mode) */}
-        <div className="absolute inset-0 bg-transparent washi-pattern opacity-30 dark:opacity-0 pointer-events-none" />
-
-        {/* Soft atmospheric gradient for crisp typography legibility and seamless canvas blend */}
-        <div className="absolute inset-y-0 left-0 w-full sm:w-3/5 lg:w-1/2 bg-gradient-to-r from-light-canvas via-light-canvas/85 to-transparent dark:from-dark-canvas dark:via-dark-canvas/80 to-transparent z-10 pointer-events-none" />
-
-        {/* Top atmospheric fade under fixed appbar */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-light-canvas via-light-canvas/70 to-transparent dark:from-dark-canvas dark:via-dark-canvas/75 to-transparent z-10 pointer-events-none" />
-
-        {/* Bottom atmospheric fade */}
-        <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-light-canvas via-light-canvas/90 to-transparent dark:from-dark-canvas dark:via-dark-canvas/95 to-transparent z-10 pointer-events-none" />
       </div>
 
 
