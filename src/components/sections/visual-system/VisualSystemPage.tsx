@@ -8,7 +8,6 @@ import {
   Sun,
   Moon,
   Sparkles,
-  ArrowRight,
   ChevronLeft,
   ChevronRight,
   RotateCcw,
@@ -27,8 +26,6 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
   const { theme, setTheme } = useTheme();
   const [hoveredVariant, setHoveredVariant] = useState<TypographyVariantId | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [carouselIndex, setCarouselIndex] = useState(0);
 
   // The active or temporarily previewed variant
   const activeVariantId = hoveredVariant || variant;
@@ -36,8 +33,9 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
 
   const handleApplyVariant = (id: TypographyVariantId) => {
     setVariant(id);
+    setHoveredVariant(null);
     toast.success(`Activated ${TYPOGRAPHY_VARIANTS[id]?.name || id}`, {
-      duration: 1800,
+      duration: 1600,
     });
   };
 
@@ -53,42 +51,8 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
     hoverTimeoutRef.current = setTimeout(() => {
       setHoveredVariant(null);
       hoverTimeoutRef.current = null;
-    }, 500);
+    }, 400);
   }, []);
-
-  // Carousel navigation for mobile
-  const scrollCarousel = useCallback((direction: 'prev' | 'next') => {
-    const el = carouselRef.current;
-    if (!el) return;
-    const newIndex = direction === 'next'
-      ? Math.min(carouselIndex + 1, variantsList.length - 1)
-      : Math.max(carouselIndex - 1, 0);
-    const child = el.children[newIndex] as HTMLElement | undefined;
-    if (child) {
-      child.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
-    setCarouselIndex(newIndex);
-    // Auto-preview the navigated-to archetype
-    const targetVariant = variantsList[newIndex];
-    if (targetVariant) {
-      setHoveredVariant(targetVariant.id);
-    }
-  }, [carouselIndex, variantsList]);
-
-  // Sync carousel scroll position and auto-preview the visible archetype
-  const handleCarouselScroll = useCallback(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    const scrollLeft = el.scrollLeft;
-    const cardWidth = el.scrollWidth / variantsList.length;
-    const index = Math.round(scrollLeft / cardWidth);
-    setCarouselIndex(index);
-    // Auto-preview: show the swiped-to archetype in the specimen stage
-    const visibleVariant = variantsList[index];
-    if (visibleVariant) {
-      setHoveredVariant(visibleVariant.id);
-    }
-  }, [variantsList]);
 
   const handleResetDefaults = () => {
     setVariant('v4');
@@ -97,7 +61,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
   };
 
   return (
-    <div className="relative min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-24 lg:pt-28 pb-24 transition-colors duration-300">
+    <div className="relative min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink pt-20 sm:pt-24 lg:pt-28 pb-20 sm:pb-24 transition-colors duration-300">
       {/* Subtle Japanese Paper Texture Background */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
         <img
@@ -113,20 +77,28 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Back Navigation — matches Hobbies/Resume pattern */}
-        <div className="mb-4">
+        {/* Back navigation & Reset Defaults bar — exact match with other archive pages */}
+        <div className="mb-6 sm:mb-8 flex items-center justify-between gap-3">
           <button
             onClick={() => onNavigate('home')}
-            className="group inline-flex items-center gap-1.5 text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors cursor-pointer py-2 whitespace-nowrap"
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors group cursor-pointer py-1"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-            <span className="sm:hidden">Back</span>
-            <span className="hidden sm:inline">Return to Portfolio</span>
+            <span>Return to Portfolio</span>
+          </button>
+
+          <button
+            onClick={handleResetDefaults}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-mono border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer shadow-2xs whitespace-nowrap shrink-0"
+            title="Reset to default settings"
+          >
+            <RotateCcw className="w-3 h-3" />
+            <span>Reset Defaults</span>
           </button>
         </div>
 
-        {/* Header Title Section — consistent with Hobbies & Resume */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-8 sm:mb-10">
+        {/* Header Title Section — matching Hobbies & Resume structure */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-6 sm:mb-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
@@ -141,44 +113,24 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               </span>
             </h1>
             <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-prose">
-              Explore and customize the real-time design tokens, theme lighting, and 7 curated Japanese-Scandinavian typographic voices across the portfolio.
+              Real-time design tokens, theme lighting, and 7 curated Japanese-Scandinavian typographic voices across the portfolio.
             </p>
-          </div>
-
-          <div className="flex items-center gap-2.5 shrink-0">
-            <button
-              onClick={handleResetDefaults}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-[2px] text-xs font-mono border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer shadow-2xs min-h-[44px]"
-              title="Reset to default settings"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset Defaults</span>
-            </button>
-
-            <button
-              onClick={() => onNavigate('home')}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[2px] text-xs font-sans font-semibold bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity cursor-pointer shadow-xs min-h-[44px]"
-            >
-              <span>Apply &amp; Return</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
           </div>
         </div>
 
-        {/* 2-Column Split Studio Layout: Left Controls + Right Live Interactive Preview */}
-        {/* On mobile: Preview FIRST (order-first), Controls SECOND (order-last) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        {/* 2-Column Split Studio Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
           
-          {/* ── LEFT COLUMN: CONTROL SUITE (5 Cols) ── */}
-          <div className="lg:col-span-5 flex flex-col gap-6 order-last lg:order-first">
+          {/* ── DESKTOP ONLY: LEFT COLUMN CONTROL SUITE (5 Cols) ── */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col gap-6">
             
-            {/* Control Pack 1: Lighting Atmosphere & Theme Pack — Desktop: first, Mobile: second (below archetypes) */}
-            <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 shadow-2xs craft-card double-hairline order-last lg:order-first">
+            {/* Desktop Control Pack 1: Lighting Atmosphere */}
+            <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 shadow-2xs craft-card double-hairline">
               <div className="flex items-center justify-between pb-3 mb-4 border-b border-light-border/50 dark:border-dark-border/60">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">01</span>
                   <h2 className="text-sm font-semibold text-light-ink dark:text-dark-ink">
-                    Lighting Atmosphere &amp; Canvas Mode
+                    Lighting Atmosphere
                   </h2>
                 </div>
                 <span className="text-xs font-mono font-semibold text-terracotta dark:text-ochre">
@@ -243,8 +195,8 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               </div>
             </div>
 
-            {/* Control Pack 2: Typographic Voices — Desktop: vertical list, Mobile: horizontal carousel (shown FIRST on mobile) */}
-            <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 shadow-2xs craft-card double-hairline order-first lg:order-last">
+            {/* Desktop Control Pack 2: Typographic Voices List */}
+            <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 shadow-2xs craft-card double-hairline">
               <div className="flex items-center justify-between pb-3 mb-4 border-b border-light-border/50 dark:border-dark-border/60">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">02</span>
@@ -253,120 +205,11 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   </h2>
                 </div>
                 <span className="text-xs font-mono font-medium text-light-ink-muted dark:text-dark-ink-muted">
-                  Select to Activate
+                  Click to Activate
                 </span>
               </div>
 
-              {/* ── MOBILE: Horizontal Swipeable Carousel ── */}
-              <div className="lg:hidden">
-                {/* Carousel Navigation Header */}
-                <div className="flex items-center justify-between mb-3">
-                  <button
-                    onClick={() => scrollCarousel('prev')}
-                    disabled={carouselIndex === 0}
-                    className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer disabled:cursor-default"
-                    aria-label="Previous archetype"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <span className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
-                    {carouselIndex + 1} / {variantsList.length}
-                  </span>
-                  <button
-                    onClick={() => scrollCarousel('next')}
-                    disabled={carouselIndex === variantsList.length - 1}
-                    className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer disabled:cursor-default"
-                    aria-label="Next archetype"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {/* Swipeable Carousel Container */}
-                <div
-                  ref={carouselRef}
-                  onScroll={handleCarouselScroll}
-                  className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-1 px-1"
-                  style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
-                >
-                  {variantsList.map((v) => {
-                    const isSelected = v.id === variant;
-                    return (
-                      <div
-                        key={v.id}
-                        onClick={() => handleApplyVariant(v.id)}
-                        className={`snap-center shrink-0 w-[calc(100%-8px)] p-4 rounded-[2px] transition-all duration-200 cursor-pointer border ${
-                          isSelected
-                            ? 'border-terracotta dark:border-ochre bg-terracotta/10 dark:bg-ochre/10 shadow-2xs ring-1 ring-terracotta/30 dark:ring-ochre/30'
-                            : 'border-light-border/50 dark:border-dark-border/50 bg-light-surface/40 dark:bg-dark-surface/40'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">
-                              0{v.numericKey}
-                            </span>
-                            <span className="text-sm font-semibold text-light-ink dark:text-dark-ink">
-                              {v.name}
-                            </span>
-                            <span className="w-5 h-5 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-[11px] font-serif text-light-ink dark:text-dark-ink select-none shrink-0">
-                              {v.kanji}
-                            </span>
-                          </div>
-                          {isSelected && (
-                            <div className="flex items-center gap-1 px-2.5 py-1 bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas text-xs font-mono font-bold rounded-xs">
-                              <Check className="w-3.5 h-3.5" />
-                              <span>Active</span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="text-xs text-light-ink/90 dark:text-dark-ink/90 font-mono mb-1">
-                          <span className="font-semibold text-terracotta dark:text-ochre">{v.displayFont}</span>
-                          <span className="opacity-60"> · {v.bodyFont}</span>
-                        </div>
-                        <div className="text-xs text-light-ink-muted dark:text-dark-ink-muted italic">
-                          {v.tagline}
-                        </div>
-                        {!isSelected && (
-                          <button
-                            onClick={(e) => { e.stopPropagation(); handleApplyVariant(v.id); }}
-                            className="mt-3 w-full py-2.5 text-xs font-mono font-medium rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre hover:bg-terracotta/10 dark:hover:bg-ochre/10 transition-colors cursor-pointer"
-                          >
-                            Apply This Voice →
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Dot Indicators */}
-                <div className="flex items-center justify-center gap-0.5 pt-2">
-                  {variantsList.map((v, i) => (
-                    <button
-                      key={v.id}
-                      onClick={() => {
-                        setCarouselIndex(i);
-                        setHoveredVariant(v.id);
-                        carouselRef.current?.children[i]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-                      }}
-                      className="flex items-center justify-center min-w-[44px] min-h-[44px] cursor-pointer"
-                      aria-label={`Go to ${v.name}`}
-                    >
-                      <span className={`block rounded-full transition-all duration-200 ${
-                        i === carouselIndex
-                          ? 'w-5 h-2 bg-terracotta dark:bg-ochre'
-                          : v.id === variant
-                            ? 'w-2 h-2 bg-terracotta/50 dark:bg-ochre/50'
-                            : 'w-2 h-2 bg-light-border dark:bg-dark-border'
-                      }`} />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* ── DESKTOP: Vertical List (unchanged) ── */}
-              <div className="hidden lg:block space-y-2.5">
+              <div className="space-y-2.5">
                 {variantsList.map((v) => {
                   const isSelected = v.id === variant;
                   return (
@@ -422,19 +265,127 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
             </div>
           </div>
 
-          {/* ── RIGHT COLUMN: INTERACTIVE VISUALIZATION STUDIO (7 Cols) ── */}
-          <div className="lg:col-span-7 flex flex-col gap-6 lg:sticky lg:top-28 order-first lg:order-last">
+          {/* ── RIGHT / PRIMARY COLUMN: LIVE SPECIMEN STAGE WITH MOBILE QUICK CONTROLS ── */}
+          <div className="w-full lg:col-span-7 flex flex-col gap-5 lg:sticky lg:top-24">
             
-            {/* Live Interactive Specimen Stage */}
-            <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-6 sm:p-8 shadow-sm craft-card double-hairline relative">
+            {/* ── MOBILE QUICK SWITCHER BAR (Visible on mobile/tablet, sitting directly on top of the stage) ── */}
+            <div className="lg:hidden bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-4 shadow-sm craft-card double-hairline flex flex-col gap-3.5">
+              
+              {/* Row 1: Section label & Theme Lighting Pills */}
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-terracotta dark:text-ochre">
+                    Voice &amp; Theme
+                  </span>
+                </div>
+
+                {/* Compact Theme Pill Toggle */}
+                <div className="inline-flex p-0.5 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border">
+                  <button
+                    onClick={() => setTheme('day')}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-[2px] text-xs font-mono transition-all cursor-pointer ${
+                      theme === 'day'
+                        ? 'bg-light-surface-card dark:bg-dark-surface-raised text-terracotta font-bold shadow-2xs'
+                        : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink'
+                    }`}
+                  >
+                    <Sun className="w-3 h-3 text-terracotta dark:text-ochre" />
+                    <span>Day</span>
+                  </button>
+                  <button
+                    onClick={() => setTheme('night')}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-[2px] text-xs font-mono transition-all cursor-pointer ${
+                      theme === 'night'
+                        ? 'bg-light-surface-card dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-bold shadow-2xs'
+                        : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
+                    }`}
+                  >
+                    <Moon className="w-3 h-3 text-terracotta dark:text-ochre" />
+                    <span>Night</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Row 2: Segmented 1 to 7 Archetype Numbers Bar */}
+              <div>
+                <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+                  {variantsList.map((v) => {
+                    const isSelected = v.id === variant;
+                    return (
+                      <button
+                        key={v.id}
+                        onClick={() => handleApplyVariant(v.id)}
+                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-[2px] border text-center transition-all cursor-pointer min-h-[44px] ${
+                          isSelected
+                            ? 'border-terracotta dark:border-ochre bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas font-bold shadow-xs scale-[1.02]'
+                            : 'border-light-border/70 dark:border-dark-border/70 bg-light-surface/60 dark:bg-dark-surface/60 text-light-ink dark:text-dark-ink hover:border-terracotta/50 dark:hover:border-ochre/50'
+                        }`}
+                        title={v.name}
+                        aria-label={`Select voice 0${v.numericKey}: ${v.name}`}
+                      >
+                        <span className="text-xs font-mono font-bold">0{v.numericKey}</span>
+                        <span className={`text-[10px] font-serif leading-none mt-0.5 ${isSelected ? 'opacity-90' : 'opacity-60'}`}>
+                          {v.kanji}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Row 3: Current Selected Archetype Summary with quick Next/Prev steppers */}
+              <div className="flex items-center justify-between pt-1 border-t border-light-border/40 dark:border-dark-border/50">
+                <button
+                  onClick={() => {
+                    const curIdx = variantsList.findIndex((v) => v.id === variant);
+                    const prevIdx = (curIdx - 1 + variantsList.length) % variantsList.length;
+                    handleApplyVariant(variantsList[prevIdx].id);
+                  }}
+                  className="p-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre transition-colors cursor-pointer"
+                  aria-label="Previous voice"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                <div className="text-center px-2 flex-1 min-w-0">
+                  <div className="flex items-center justify-center gap-1.5 text-xs font-mono">
+                    <span className="font-bold text-terracotta dark:text-ochre truncate">
+                      0{activeInfo.numericKey} · {activeInfo.name}
+                    </span>
+                    <span className="text-[10px] font-serif text-light-ink-muted dark:text-dark-ink-muted">
+                      ({activeInfo.kanji})
+                    </span>
+                  </div>
+                  <div className="text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted truncate mt-0.5">
+                    {activeInfo.displayFont} + {activeInfo.bodyFont}
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    const curIdx = variantsList.findIndex((v) => v.id === variant);
+                    const nextIdx = (curIdx + 1) % variantsList.length;
+                    handleApplyVariant(variantsList[nextIdx].id);
+                  }}
+                  className="p-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre transition-colors cursor-pointer"
+                  aria-label="Next voice"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Live Interactive Specimen Stage Card */}
+            <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-7 lg:p-8 shadow-sm craft-card double-hairline relative">
               <CornerBrackets size="md" />
 
               {/* Stage Top Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-light-border/50 dark:border-dark-border/60">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 sm:mb-6 border-b border-light-border/50 dark:border-dark-border/60">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-terracotta dark:text-ochre" />
                   <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre uppercase tracking-wider">
-                    [Live Specimen &amp; Component Stage]
+                    [Live Specimen Stage]
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs sm:text-sm font-mono">
