@@ -132,18 +132,10 @@ export const PhilosophyBento: React.FC = () => {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <div className="relative mb-12 sm:mb-16 pb-6 border-b border-light-border/70 dark:border-dark-border/80">
-          {/* Ambient Akari Paper Lantern Radial Glow */}
-          <div
-            className="pointer-events-none absolute -top-12 -left-12 w-96 h-48 rounded-full opacity-60 dark:opacity-40 blur-3xl z-0"
-            style={{
-              background: 'radial-gradient(circle, rgba(232, 162, 86, 0.08) 0%, rgba(232, 162, 86, 0.02) 50%, transparent 80%)'
-            }}
-          />
-
           <div className="max-w-3xl relative z-10">
             <div className="flex items-center gap-2 mb-2">
               <span className="font-serif text-terracotta text-sm">04 //</span>
-              <span className="font-mono text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                 ORIGIN &amp; PHILOSOPHY · 原点と哲学
               </span>
               <span
@@ -249,13 +241,13 @@ export const PhilosophyBento: React.FC = () => {
         {displayPillars.length > 0 && (
           <div className="mb-6 pt-2 pb-3 flex items-center justify-between border-b border-light-border/60 dark:border-dark-border/60">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-light-ink-subtle dark:text-dark-ink-subtle font-medium">04.2 //</span>
-              <span className="font-sans text-xs sm:text-sm font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">04.2 //</span>
+              <span className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink">
                 Three Architectural Pillars · 三つの信条
               </span>
             </div>
-            <span className="font-mono text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle tracking-widest uppercase hidden sm:inline">
-              PRINCIPLES &amp; SYSTEM CRAFT
+            <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted tracking-wider uppercase hidden sm:inline">
+              Principles &amp; System Craft
             </span>
           </div>
         )}
@@ -291,7 +283,7 @@ export const PhilosophyBento: React.FC = () => {
                       {pillar.kanji}
                     </span>
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                      <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                         {num}
                       </span>
                       <div className="w-7 h-7 rounded-full bg-light-surface dark:bg-dark-surface-raised border border-light-border dark:border-dark-border flex items-center justify-center">
@@ -317,9 +309,9 @@ export const PhilosophyBento: React.FC = () => {
 
                 {/* Bottom Tag */}
                 {pillar.tag && (
-                  <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-dark-border/40 flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle">
+                  <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-dark-border/40 flex items-center gap-2 text-light-ink-muted dark:text-dark-ink-muted">
                     <span className={`w-1.5 h-1.5 rounded-full ${config.dotColor}`} />
-                    <span className="font-mono text-[11px] uppercase tracking-[0.18em] font-medium truncate">
+                    <span className="font-mono text-xs uppercase tracking-wider font-medium truncate">
                       {pillar.tag}
                     </span>
                   </div>

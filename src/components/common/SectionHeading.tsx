@@ -27,10 +27,11 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       className={`relative flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-light-border/70 dark:border-dark-border/80 gap-6 overflow-hidden ${className}`}
     >
       {/* Ambient Radial Lantern Glow simulating an Akari paper lamp */}
+      {/* Soft Ambient Akari Lantern Warmth: Diffused gently without tight focal spotlight */}
       <div
-        className="pointer-events-none absolute -left-12 -top-10 w-full max-w-[32rem] h-64 -z-10 select-none opacity-90 dark:opacity-60"
+        className="pointer-events-none absolute -left-12 -top-10 w-full max-w-[32rem] h-64 -z-10 select-none opacity-40 dark:opacity-20"
         style={{
-          background: 'radial-gradient(ellipse 65% 55% at 30% 35%, rgba(232, 162, 86, 0.08) 0%, rgba(232, 162, 86, 0.02) 60%, transparent 80%)',
+          background: 'radial-gradient(ellipse 70% 60% at 30% 35%, rgba(232, 162, 86, 0.04) 0%, rgba(232, 162, 86, 0.01) 70%, transparent 90%)',
         }}
         aria-hidden="true"
       />
@@ -44,8 +45,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
           >
             原
           </span>
-          <span className="font-mono text-xs text-light-ink-subtle dark:text-dark-ink-subtle font-medium">{numeral}</span>
-          <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+          <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">{numeral}</span>
+          <span className="font-sans text-[11px] font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
             {categoryTag}
           </span>
         </div>

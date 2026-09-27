@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Github, Linkedin, Send, CheckCircle2, AlertCircle, Copy, Check } from 'lucide-react';
 import { sendContactMessage } from '../../../lib/supabase';
-import { BambooArt } from '../../common/BambooArt';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
@@ -138,32 +137,12 @@ export const ContactSection: React.FC = () => {
           {/* Corner Hairline Brackets (Subtle) */}
           <CornerBrackets size="lg" />
 
-          {/* Sumi-e Mountain Silhouette Mask Backdrop: Anchored Clearly on Left Side */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-full lg:w-[50%] select-none overflow-hidden opacity-50 dark:opacity-25 mix-blend-multiply dark:mix-blend-luminosity dark:filter dark:brightness-75 animate-gentle-drift rounded-l-[3px]">
-            <img
-              src="./decorators/mountain.jpg"
-              alt="Sumi-e mountain backdrop"
-              className="w-full h-full object-cover object-[65%_center]"
-              loading="lazy"
-              decoding="async"
-              style={{
-                maskImage: 'radial-gradient(ellipse 95% 90% at 35% 50%, black 55%, transparent 95%)',
-                WebkitMaskImage: 'radial-gradient(ellipse 95% 90% at 35% 50%, black 55%, transparent 95%)',
-              }}
-            />
-          </div>
-
-          {/* Architectural Corner Bamboo Art with Gentle Sway */}
-          <div className="absolute top-4 left-4 w-10 h-14 opacity-35 dark:opacity-25 pointer-events-none">
-            <BambooArt className="w-full h-full" sway={true} opacity={0.75} />
-          </div>
-
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             {/* Left Column: Narrative & Direct Links */}
             <div className="lg:col-span-6 flex flex-col gap-6">
               <div className="flex items-center gap-2 mb-2">
-                <span className="font-mono text-xs text-light-ink-subtle dark:text-dark-ink-subtle font-medium">06 //</span>
-                <span className="font-mono text-xs sm:text-sm font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">06 //</span>
+                <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                   Dialogue &amp; Correspondence · 対話と通信
                 </span>
               </div>
@@ -175,37 +154,37 @@ export const ContactSection: React.FC = () => {
                 </span>
               </h2>
 
-              <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light max-w-xl">
+              <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal max-w-prose">
                 Currently open to engineering collaborations, distributed systems design, generative AI architectures, and technical dialogue. Let us discuss possibilities over a message.
               </p>
 
               {/* Direct Contact Links */}
               {(contactEmail || contactGithub || contactLinkedin) && (
-                <div className="pt-2 flex flex-wrap items-center gap-3">
+                <div className="pt-2 flex flex-wrap items-center gap-2.5">
                   {contactEmail && (
                     <>
                       <a
                         href={mailtoHref}
-                        className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-95 font-sans text-xs uppercase tracking-widest rounded-[2px] shadow-sm transition-all"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-95 font-sans text-xs font-medium rounded-[2px] shadow-sm transition-all"
                       >
-                        <Mail className="w-4 h-4 text-terracotta" />
+                        <Mail className="w-3.5 h-3.5 text-terracotta" />
                         <span>{contactEmail}</span>
                       </a>
 
                       <button
                         type="button"
                         onClick={handleCopyEmail}
-                        className="inline-flex items-center gap-1.5 px-4 py-3 bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest rounded-[2px] shadow-xs transition-all duration-200 cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs font-medium rounded-[2px] shadow-xs transition-all duration-200 cursor-pointer"
                         title="Copy email to clipboard"
                       >
                         {copiedEmail ? (
                           <>
-                            <Check className="w-4 h-4 text-bamboo" />
+                            <Check className="w-3.5 h-3.5 text-bamboo" />
                             <span className="text-bamboo font-medium">Copied!</span>
                           </>
                         ) : (
                           <>
-                            <Copy className="w-4 h-4 text-light-ink-muted" />
+                            <Copy className="w-3.5 h-3.5 text-light-ink-muted" />
                             <span>Copy Email</span>
                           </>
                         )}
@@ -218,10 +197,10 @@ export const ContactSection: React.FC = () => {
                       href={contactGithub}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-3 bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest rounded-[2px] shadow-xs transition-all duration-200"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs font-medium rounded-[2px] shadow-xs transition-all duration-200"
                     >
-                      <Github className="w-4 h-4" />
-                      <span className="tracking-widest">Github</span>
+                      <Github className="w-3.5 h-3.5" />
+                      <span>GitHub</span>
                     </a>
                   )}
 
@@ -230,10 +209,10 @@ export const ContactSection: React.FC = () => {
                       href={contactLinkedin}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-3 bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest rounded-[2px] shadow-xs transition-all duration-200"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs font-medium rounded-[2px] shadow-xs transition-all duration-200"
                     >
-                      <Linkedin className="w-4 h-4" />
-                      <span className="tracking-widest">Linkedin</span>
+                      <Linkedin className="w-3.5 h-3.5" />
+                      <span>LinkedIn</span>
                     </a>
                   )}
                 </div>

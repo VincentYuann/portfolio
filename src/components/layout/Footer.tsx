@@ -9,12 +9,6 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
     <footer className="w-full bg-light-surface-card dark:bg-dark-surface-card border-t border-light-border dark:border-dark-border mt-16 relative">
-      {/* Decorative Wabi-Sabi Watermark */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-        <div className="absolute right-6 -bottom-6 opacity-[0.03] dark:opacity-[0.05] font-serif text-9xl">
-          侘寂
-        </div>
-      </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-light-border/70 dark:border-dark-border/70">

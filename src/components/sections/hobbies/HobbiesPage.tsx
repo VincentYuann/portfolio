@@ -68,11 +68,10 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
 
         {/* Header Title Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-8 sm:mb-10">
-          <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>
-              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                PERSONAL PURSUITS · 趣味の記録
+              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
+              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+                Personal Pursuits · 趣味の記録
               </span>
             </div>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
@@ -81,7 +80,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
                 日常と趣味
               </span>
             </h1>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-light leading-relaxed max-w-3xl">
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-prose">
               A gallery of interests, creative outlets, and passions outside of software engineering: anime, gaming, fitness, market trading, and dining.
             </p>
           </div>

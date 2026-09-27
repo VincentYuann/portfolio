@@ -108,8 +108,8 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-8 sm:mb-10">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>
-              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">ARCHIVE //</span>
+              <span className="font-sans text-[11px] font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                 SELECTED PORTFOLIO · 作品全集
               </span>
             </div>
@@ -159,7 +159,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card classical-card-frame border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] overflow-visible p-5 shadow-sm transition-all duration-300 flex flex-col justify-between"
+                className="group relative bg-light-surface-card dark:bg-dark-surface-card craft-card classical-card-frame border border-light-border dark:border-dark-border rounded-[3px] overflow-visible p-5 shadow-sm transition-colors duration-200 flex flex-col justify-between"
               >
                 {/* Corner Hairline Brackets (Subtle) */}
                 <CornerBrackets size="sm" />

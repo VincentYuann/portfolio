@@ -1205,10 +1205,10 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                     <ChatBubbleTimestamp>{msg.timestamp}</ChatBubbleTimestamp>
                   </div>
 
-                  {/* Clean Artisan Message Area (Un-nested container, max-w-xl for line length) */}
-                  <div className="relative pl-3.5 pr-3 py-3 border-l border-terracotta/40 bg-light-surface/40 dark:bg-dark-surface-raised/40 select-text max-w-xl group">
+                  {/* Clean Artisan Message Area (Full width fluid text container without nested card boxing) */}
+                  <div className="relative pl-3 pr-2 py-1 select-text w-full group">
                     {/* Copy Response Action */}
-                    <div className="absolute top-2.5 right-2.5 z-20 flex items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100 transition-opacity">
+                    <div className="absolute top-0 right-1 z-20 flex items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100 transition-opacity">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button
@@ -1337,7 +1337,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                           </Badge>
                         </div>
 
-                        <div className="relative pl-3.5 pr-3 py-3 border-l border-terracotta/40 bg-light-surface/40 dark:bg-dark-surface-raised/40 max-w-xl select-text">
+                        <div className="relative pl-3.5 pr-3 py-3 border-l border-terracotta/40 bg-light-surface/40 dark:bg-dark-surface-raised/40 w-full select-text">
                           {displayedStreamingText ? (
                             <>
                               <MarkdownRenderer content={displayedStreamingText} />

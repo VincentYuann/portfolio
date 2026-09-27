@@ -51,16 +51,6 @@ const getPillarIcon = (label: string, idx: number) => {
   return idx === 0 ? Cpu : idx === 1 ? Sparkles : Code2;
 };
 
-const getPillarBadge = (label: string, idx: number) => {
-  const norm = (label || '').toLowerCase();
-  if (norm.includes('ai')) return 'INTELLIGENCE';
-  if (norm.includes('tool') || norm.includes('system')) return 'PLATFORM';
-  if (norm.includes('lang')) return 'POLYGLOT';
-  if (norm.includes('front') || norm.includes('ui')) return 'CRAFT';
-  if (norm.includes('back') || norm.includes('cloud')) return 'BACKEND';
-  return `DOMAIN 0${idx + 1}`;
-};
-
 export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) => {
   const { profile } = useSiteData();
 
@@ -117,92 +107,8 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
       className="relative w-full pt-28 lg:pt-36 pb-12 lg:pb-16 flex flex-col justify-start overflow-hidden"
     >
       {/* 
-        FIXED PINNED HERO BACKDROP (The Division Effect)
-        Layer 1: 16:9 Tactile Texture Ground (Washi Paper / Tactile Linen)
-        Layer 2: Panoramic Sumi-e Mountain Landscape & Mist (Naturally placed on right behind Hanko card)
-        Layer 3: Sumi-e Pine / Bamboo accents & subtle mist gradients
-      */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
-        {/* Layer 1: Full-Bleed Tactile Texture Ground */}
-        <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-          {/* Day Mode: Tactile Washi Paper Texture */}
-          <img
-            src="./background/white paper texture.jpg"
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover dark:hidden mix-blend-multiply opacity-60 transition-opacity duration-700"
-            loading="eager"
-          />
-          {/* Night Mode: Tactile Black Charcoal Washi Paper */}
-          <img
-            src="./background/black paper.jpg"
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover hidden dark:block opacity-45 mix-blend-screen transition-opacity duration-700"
-            loading="eager"
-          />
-        </div>
-
-        {/* Layer 2: Refined Sumi-e Landscape Artwork (Seamlessly feathered, zero blue cast in night mode) */}
-        <div
-          className="absolute right-0 top-0 bottom-0 h-full w-full lg:w-[46%] pointer-events-none overflow-hidden transition-opacity duration-700"
-          style={{
-            maskImage:
-              'radial-gradient(ellipse 85% 75% at 85% 45%, black 25%, transparent 85%)',
-            WebkitMaskImage:
-              'radial-gradient(ellipse 85% 75% at 85% 45%, black 25%, transparent 85%)',
-          }}
-        >
-          {/* Day Mode: Sumi-e Mountain Ridges & Pagoda in warm ink wash */}
-          <img
-            src="./background/hero-sumie-landscape-banner.jpg"
-            alt="Sumi-e landscape mountains and mist"
-            className="w-full h-full object-contain sm:object-right dark:hidden mix-blend-multiply opacity-55 transition-opacity duration-700"
-            loading="eager"
-          />
-          {/* Night Mode: Ethereal Silver-Ash Sumi-e Mountain Peaks */}
-          <img
-            src="./background/hero-sumie-landscape-banner.jpg"
-            alt="Sumi-e landscape mountains in night mist"
-            className="w-full h-full object-contain sm:object-right hidden dark:block mix-blend-screen opacity-30 filter invert grayscale contrast-150 brightness-75 transition-opacity duration-700"
-            loading="eager"
-          />
-        </div>
-
-        {/* Layer 3: Delicate Pine Tree Accent in the West Margin (Tasteful scale) */}
-        <div
-          className="absolute left-0 top-1/4 w-56 lg:w-64 h-56 lg:h-64 pointer-events-none opacity-25 dark:opacity-15 mix-blend-multiply dark:mix-blend-screen"
-          style={{
-            maskImage: 'radial-gradient(ellipse 80% 80% at 35% 50%, black 20%, transparent 80%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 35% 50%, black 20%, transparent 80%)',
-          }}
-        >
-          <img
-            src="./decorators/tree.jpg"
-            alt="Sumi-e pine branch accent"
-            className="w-full h-full object-contain object-left dark:filter dark:invert"
-            loading="lazy"
-          />
-        </div>
-
-        {/* Layer 4: Delicate Sumi-e Bamboo Leaf Accent on East Margin */}
-        <div
-          className="absolute right-0 top-12 w-44 lg:w-56 h-64 lg:h-80 pointer-events-none opacity-20 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen"
-          style={{
-            maskImage: 'radial-gradient(ellipse 85% 85% at 75% 35%, black 25%, transparent 85%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 75% 35%, black 25%, transparent 85%)',
-          }}
-        >
-          <img
-            src="./decorators/bamboo.jpg"
-            alt="Sumi-e bamboo leaves accent"
-            className="w-full h-full object-contain object-right-top dark:filter dark:invert"
-            loading="lazy"
-          />
-        </div>
-
-        {/* Atmospheric Wash Gradients for Text Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-r from-light-canvas/75 via-light-canvas/35 to-transparent dark:from-dark-canvas/80 dark:via-dark-canvas/40 dark:to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-light-canvas dark:from-dark-canvas to-transparent pointer-events-none" />
-      </div>
+      {/* Background layer cleared per user request */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none" />
 
       {/* Main Studio Frame Layout: Left Workspace + Right Hanko Card */}
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 flex flex-col gap-8 relative z-10">
@@ -215,14 +121,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           */}
           <main className="lg:col-span-8 xl:col-span-8 flex flex-col gap-8 order-2 lg:order-1">
             <div className="space-y-6 max-w-4xl">
-              {/* Category Eyebrow with quiet neutral dot */}
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-light-ink-subtle/80 dark:bg-[#787368]" />
-                <span className="font-chakra text-xs uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-semibold">
-                  STUDIO PERSPECTIVE · 空間と調和
-                </span>
-              </div>
-
               {/* Bold Serif Editorial Display Headline in Zen Old Mincho */}
               <h1 className="font-zen text-4xl sm:text-5xl md:text-6xl lg:text-display-lg font-normal text-light-ink dark:text-dark-ink leading-[1.08] tracking-tight text-balance">
                 {headline}
@@ -273,7 +171,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
               {capabilityPillars.map((pillar, idx) => {
                 const tags = parsePillarTags(pillar);
                 const Icon = getPillarIcon(pillar.label, idx);
-                const badge = getPillarBadge(pillar.label, idx);
 
                 return (
                   <div
@@ -281,15 +178,10 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                     className="flex flex-col justify-between gap-3 p-4 rounded-[2px] bg-light-surface-card/90 dark:bg-dark-surface-card/90 craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-300 shadow-2xs group"
                   >
                     <div>
-                      <div className="flex items-center justify-between text-light-ink dark:text-dark-ink">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <Icon className="w-3.5 h-3.5 text-terracotta shrink-0" />
-                          <span className="font-chakra text-xs uppercase tracking-wider font-semibold truncate">
-                            {pillar.label}
-                          </span>
-                        </div>
-                        <span className="font-mono text-2xs text-light-ink-subtle uppercase px-1.5 py-0.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border/60 dark:border-dark-border/60 shrink-0">
-                          {badge}
+                      <div className="flex items-center gap-2 text-light-ink dark:text-dark-ink">
+                        <Icon className="w-4 h-4 text-terracotta shrink-0" />
+                        <span className="font-chakra text-xs uppercase tracking-wider font-semibold truncate">
+                          {pillar.label}
                         </span>
                       </div>
                     </div>
@@ -302,7 +194,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                             key={tag}
                             tag={tag}
                             size="sm"
-                            className="bg-light-surface dark:bg-dark-surface border-light-border/50 dark:border-dark-border/50 text-[10px]"
+                            className="bg-light-surface dark:bg-dark-surface border-light-border/60 dark:border-dark-border/60 text-[11px]"
                           />
                         ))}
                       </div>
@@ -327,11 +219,11 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
               {/* Box Header: Header Label & Archive Coordinate from DB */}
               <div className="w-full flex items-center justify-between pb-2.5 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
-                <div className="flex items-center gap-1.5 font-chakra uppercase text-2xs tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-semibold">
+                <div className="flex items-center gap-1.5 font-chakra uppercase text-xs tracking-wider text-light-ink dark:text-dark-ink font-semibold">
                   <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta inline-block" />
                   <span>{hanko?.headerLabel || 'DREXEL UNIVERSITY'}</span>
                 </div>
-                <span className="font-mono text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest text-2xs">
+                <span className="font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider text-xs font-medium">
                   {hanko?.locationArchive || 'PHILADELPHIA, PA'}
                 </span>
               </div>
@@ -357,7 +249,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 <h2 className="font-zen text-2xl font-medium tracking-tight text-light-ink dark:text-dark-ink">
                   {displayName}
                 </h2>
-                <p className="font-chakra text-2xs uppercase tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle font-medium mt-1">
+                <p className="font-chakra text-xs uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-semibold mt-1">
                   {displayRole}
                 </p>
               </div>
@@ -373,14 +265,14 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                         className={`writing-vertical-rl font-zen text-xs sm:text-[13px] tracking-[0.25em] min-h-[110px] leading-relaxed transition-all cursor-default whitespace-nowrap select-none ${
                           lIdx === 1
                             ? 'text-terracotta dark:text-[#E85D44] font-medium hover:scale-105'
-                            : 'text-light-ink-muted dark:text-dark-ink-muted opacity-80 hover:opacity-100'
+                            : 'text-light-ink dark:text-dark-ink hover:opacity-100'
                         }`}
                       >
                         {line.text}
                       </div>
                     ))}
                   </div>
-                  <div className="mt-2.5 pt-2 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-2xs font-mono tracking-widest text-light-ink-subtle dark:text-dark-ink-subtle uppercase px-1">
+                  <div className="mt-2.5 pt-2 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[11px] font-mono tracking-wider text-light-ink-muted dark:text-dark-ink-muted uppercase px-1 font-medium">
                     {hankoLines.map((line, lIdx) => (
                       <span key={lIdx}>{line.label}</span>
                     ))}
@@ -390,10 +282,10 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
               {/* Telemetry & Direct Channels */}
               <div className="w-full pt-4 border-t border-light-border/60 dark:border-dark-border/60 space-y-3 relative z-10">
-                <div className="flex items-center justify-between text-2xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
+                <div className="flex items-center justify-between text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
                   <span className="flex items-center gap-1.5">
-                    <Compass className="w-3 h-3 text-terracotta shrink-0" />
-                    <span>PHILLY, PA · 39.95° N, 75.16° W</span>
+                    <Compass className="w-3.5 h-3.5 text-terracotta shrink-0" />
+                    <span>PHILLY, PA</span>
                   </span>
                   <span>UTC-5</span>
                 </div>
@@ -404,9 +296,9 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       href={githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-2xs font-mono transition-colors shadow-2xs"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                     >
-                      <Github className="w-3 h-3" />
+                      <Github className="w-3.5 h-3.5" />
                       <span>GitHub</span>
                     </a>
                   )}
@@ -415,18 +307,18 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       href={linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-2xs font-mono transition-colors shadow-2xs"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                     >
-                      <Linkedin className="w-3 h-3" />
+                      <Linkedin className="w-3.5 h-3.5" />
                       <span>LinkedIn</span>
                     </a>
                   )}
                   {emailUrl && (
                     <a
                       href={emailUrl}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-2xs font-mono transition-colors shadow-2xs"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                     >
-                      <Mail className="w-3 h-3" />
+                      <Mail className="w-3.5 h-3.5" />
                       <span>Email</span>
                     </a>
                   )}

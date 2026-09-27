@@ -377,13 +377,13 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                                   <ListChecks className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted" />
                                   Engineering Contributions &amp; Quantified Impact
                                 </div>
-                                <ul className="space-y-2.5">
+                                <ul className="space-y-2">
                                   {bullets.map((pt, pIdx) => (
                                     <li
                                       key={pIdx}
-                                      className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-[#3A3D44]/70 bg-light-surface/50 dark:bg-[#25272D]/50 hover:border-light-border-strong dark:hover:border-[#4E525D] transition-all duration-200 flex items-start gap-3 shadow-2xs group/bullet"
+                                      className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border bg-light-surface-raised/60 dark:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3 group"
                                     >
-                                      <span className="font-mono text-[11px] sm:text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-raised dark:bg-[#292B31] border border-light-border/80 dark:border-[#3A3D44] rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
+                                      <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
                                         #{String(pIdx + 1).padStart(2, '0')}
                                       </span>
                                       <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">

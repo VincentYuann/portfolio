@@ -135,24 +135,21 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
           {hobby.whyDescription}
         </p>
 
-        {/* Metadata Key-Value Badges (Compact & Adaptable Horizontal Pills) */}
+        {/* Metadata Key-Value Badges (Flat architectural typography) */}
         {hobby.metadata && hobby.metadata.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-2 border-t border-light-border/40 dark:border-dark-border/40">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-3 border-t border-light-border/60 dark:border-dark-border/60 text-xs">
             {hobby.metadata.map((item, mIdx) => {
               const rawLabel = (item as any).label || (item as any).key || '';
               const labelText = rawLabel.includes('(')
                 ? rawLabel.split('(')[0].trim()
-                : rawLabel.toUpperCase();
+                : rawLabel.replace(/_/g, ' ');
 
               return (
-                <div
-                  key={mIdx}
-                  className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border shadow-xs"
-                >
-                  <span className="font-semibold text-light-ink dark:text-dark-ink text-[11px] sm:text-xs tracking-tight">
-                    {labelText}
+                <div key={mIdx} className="inline-flex items-center gap-1.5 font-sans">
+                  <span className="font-semibold text-light-ink dark:text-dark-ink text-xs uppercase tracking-wider">
+                    {labelText}:
                   </span>
-                  <span className="font-normal text-light-ink-muted dark:text-dark-ink-muted text-[11px] sm:text-xs">
+                  <span className="text-light-ink-muted dark:text-dark-ink-muted text-xs">
                     {item.value}
                   </span>
                 </div>

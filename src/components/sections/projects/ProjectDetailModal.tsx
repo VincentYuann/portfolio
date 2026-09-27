@@ -46,24 +46,24 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {/* Date Range Strip */}
               <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium tracking-wider uppercase flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-light-ink-subtle dark:text-dark-ink-subtle" />
+                <Calendar className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted" />
                 {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
               </span>
 
               {/* Status Badge with Japanese subtitle across all viewports */}
               <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[2px] font-mono text-[10px] font-bold uppercase tracking-wider ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[2px] font-mono text-[11px] font-semibold uppercase tracking-wider ${
                   project.isActive
                     ? 'bg-bamboo/10 dark:bg-bamboo/20 border border-bamboo/30 dark:border-bamboo/40 text-bamboo-dark dark:text-bamboo-light'
-                    : 'bg-light-surface-muted dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'
+                    : 'bg-light-surface-muted dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink'
                 }`}
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    project.isActive ? 'bg-bamboo dark:bg-bamboo-light animate-pulse' : 'bg-light-ink-subtle/40 dark:bg-dark-ink-subtle/40'
+                    project.isActive ? 'bg-bamboo dark:bg-bamboo-light animate-pulse' : 'bg-light-ink-muted dark:bg-dark-ink-muted'
                   }`}
                 />
-                <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'}</span>
+                <span>{project.isActive ? 'Active · 稼働中' : 'Completed · 完了'}</span>
               </span>
             </div>
 
@@ -127,9 +127,9 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                 )}
               </div>
 
-              {/* Technologies & Substrates Card */}
-              <div className="p-4 rounded-[2px] bg-light-surface-raised/60 dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border space-y-2.5">
-                <div className="font-sans text-[11px] uppercase tracking-wider font-semibold text-light-ink-subtle dark:text-dark-ink-subtle">
+              {/* Technologies & Substrates */}
+              <div className="space-y-2 pt-2 border-t border-light-border/60 dark:border-dark-border/60">
+                <div className="font-sans text-xs uppercase tracking-wider font-semibold text-light-ink-muted dark:text-dark-ink-muted">
                   Technologies &amp; Infrastructure
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
@@ -148,7 +148,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                   <Layers className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
                   <span>Architectural Overview</span>
                 </h3>
-                <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal">
+                <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal max-w-prose">
                   {project.overview}
                 </p>
               </div>
@@ -164,9 +164,9 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                     {project.bullets.map((point, idx) => (
                       <li
                         key={idx}
-                        className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border bg-light-surface-raised/60 dark:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3 group"
+                        className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border bg-light-surface-card/60 dark:bg-dark-surface-card hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3 group"
                       >
-                        <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
+                        <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
                           #{String(idx + 1).padStart(2, '0')}
                         </span>
                         <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
@@ -181,19 +181,19 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
               {/* System Metrics (if present) */}
               {project.metrics && project.metrics.length > 0 && (
                 <div className="space-y-2 pt-1">
-                  <div className="font-sans text-[11px] uppercase tracking-wider font-semibold text-light-ink-subtle dark:text-dark-ink-subtle">
+                  <div className="font-sans text-xs uppercase tracking-wider font-semibold text-light-ink-muted dark:text-dark-ink-muted">
                     Operational Metrics
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                     {project.metrics.map((metric, idx) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-raised/50 dark:bg-dark-surface-raised"
+                        className="p-3 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card"
                       >
                         <div className="font-serif text-lg font-bold text-light-ink dark:text-dark-ink">
                           {metric.value}
                         </div>
-                        <div className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted">
+                        <div className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
                           {metric.label}
                         </div>
                       </div>
@@ -208,7 +208,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
         {/* Modal Footer */}
         <div className="px-4 sm:px-7 py-3 sm:py-3.5 border-t border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised flex items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase">
+            <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted uppercase">
               Project Specification
             </span>
           </div>

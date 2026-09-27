@@ -102,7 +102,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
               <article
                 key={project.id}
                 onClick={() => openProject(project)}
-                className="interactive-card group relative w-full bg-light-surface-card dark:bg-dark-surface-card craft-card hover:bg-light-surface dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-4 sm:p-8 transition-all duration-300 shadow-2xs overflow-visible cursor-pointer"
+                className="group relative w-full bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-8 transition-colors duration-200 shadow-2xs overflow-visible cursor-pointer"
               >
                 {/* Corner Hairline Brackets (Subtle) */}
                 <CornerBrackets size="md" />
