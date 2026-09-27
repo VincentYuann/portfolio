@@ -201,34 +201,34 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
       />
-      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+      <div className="w-full pt-20 sm:pt-28 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
         {/* Back navigation button */}
-        <div className="mb-6 sm:mb-8">
+        <div className="mb-4 sm:mb-8">
           <button
             onClick={() => onNavigate?.('home')}
-            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors group cursor-pointer"
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors group cursor-pointer py-1"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Return to Portfolio</span>
           </button>
         </div>
 
-        {/* Top Header Section */}
-        <div className="mb-8 sm:mb-10 pb-8 border-b border-light-border/70 dark:border-dark-border/80 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        {/* Top Header Section — distilled on mobile */}
+        <div className="mb-5 sm:mb-10 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
-              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+            <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
+              <span className="font-mono text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
+              <span className="font-mono text-[11px] sm:text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                 Curriculum Vitae · 履歴書
               </span>
             </div>
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
+            <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-tight">
               Curriculum Vitae{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-lg sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block">
                 履歴書
               </span>
             </h1>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 max-w-prose font-normal leading-relaxed">
+            <p className="font-sans text-xs sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 max-w-prose font-normal leading-relaxed">
               Complete technical qualifications, research background, and systems engineering experience of Vincent Yuan.
             </p>
           </div>

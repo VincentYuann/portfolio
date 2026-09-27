@@ -77,8 +77,8 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Back navigation & Reset Defaults bar — exact match with other archive pages */}
-        <div className="mb-6 sm:mb-8 flex items-center justify-between gap-3">
+        {/* Back navigation & Reset Defaults bar */}
+        <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <button
             onClick={() => onNavigate('home')}
             className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors group cursor-pointer py-1"
@@ -89,7 +89,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
 
           <button
             onClick={handleResetDefaults}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-mono border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer shadow-2xs whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-[2px] text-xs font-mono border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer shadow-2xs whitespace-nowrap shrink-0"
             title="Reset to default settings"
           >
             <RotateCcw className="w-3 h-3" />
@@ -97,22 +97,22 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
           </button>
         </div>
 
-        {/* Header Title Section — matching Hobbies & Resume structure */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-6 sm:mb-8">
+        {/* Header Title Section — streamlined and distilled on mobile */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-5 sm:mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
-              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+            <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
+              <span className="font-mono text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
+              <span className="font-mono text-[11px] sm:text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                 Visual System · 設定
               </span>
             </div>
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
+            <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-tight">
               Design System &amp; Typographic Voices{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
+              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-lg sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block">
                 設計系統
               </span>
             </h1>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-prose">
+            <p className="font-sans text-xs sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 font-normal leading-relaxed max-w-prose">
               Real-time design tokens, theme lighting, and 7 curated Japanese-Scandinavian typographic voices across the portfolio.
             </p>
           </div>
