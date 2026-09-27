@@ -3,34 +3,107 @@
 @tailwind utilities;
 
 :root {
-  --canvas-bg: #F2E9DA;
-  --pattern-dot: #D9C9AE;
-  --surface-bg: #F7F0E3;
+  --canvas-bg: #EAE0CE;
+  --pattern-dot: transparent;
+  --surface-bg: #FAF6EE;
+  --surface-card-bg: #FAF6EE;
+  --surface-raised-bg: #FFFFFF;
+  --surface-muted-bg: #E4D8C3;
   --ink-color: #282E3A;
   --ink-muted: #686559;
-  --border-color: #D9C9AE;
-  --border-inner: #C8AA7E;
-  --border-inner-soft: rgba(200, 170, 126, 0.55);
+  --ink-subtle: #8B8375;
+  --border-color: #D4C4AA;
+  --border-channel-fill: transparent;
+  --border-inner: transparent;
+  --border-strong: #BDAB8F;
+  --button-primary-bg: #26262E;
+  --button-primary-text: #FAF6EE;
   --color-terracotta-rgb: 181 72 46;
-  --color-ochre-rgb: 212 155 106;
+  --color-ochre-rgb: 212 168 83;
   --color-bamboo-rgb: 82 109 87;
+  --accent-color: #B5482E;
   --ease-zen: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Default Typography Tokens: Variant 1 (Kyoto Wabi-Sabi Monograph) */
+  --font-display: 'Zen Old Mincho', 'Noto Serif JP', Georgia, serif;
+  --font-body: 'Mulish', 'Montserrat', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Azeret Mono', 'JetBrains Mono', monospace;
+  --font-accent: 'Chakra Petch', 'Azeret Mono', sans-serif;
+  --font-vertical: 'Zen Old Mincho', 'Noto Serif JP', serif;
+  --font-heading-tracking: -0.02em;
+  --font-body-tracking: 0em;
+}
+
+/* Variant 1: Kyoto Wabi-Sabi Monograph (Poetic Literary Mincho & Warm Humanist Sans) */
+[data-font-variant="v1"],
+body.font-variant-v1 {
+  --font-display: 'Zen Old Mincho', 'Noto Serif JP', Georgia, serif;
+  --font-body: 'Mulish', 'Montserrat', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Azeret Mono', 'JetBrains Mono', monospace;
+  --font-accent: 'Chakra Petch', 'Azeret Mono', sans-serif;
+  --font-vertical: 'Zen Old Mincho', 'Noto Serif JP', serif;
+  --font-heading-tracking: -0.02em;
+  --font-body-tracking: 0em;
+}
+
+/* Variant 2: Tokyo Brutalist & Structural Joinery (Sculptural Avant-Garde & High-Velocity Modern) */
+[data-font-variant="v2"],
+body.font-variant-v2 {
+  --font-display: 'Syne', 'Chakra Petch', 'Space Grotesk', sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Space Mono', 'JetBrains Mono', monospace;
+  --font-accent: 'Chakra Petch', 'Space Mono', sans-serif;
+  --font-vertical: 'Chakra Petch', 'Noto Sans JP', sans-serif;
+  --font-heading-tracking: -0.035em;
+  --font-body-tracking: -0.01em;
+}
+
+/* Variant 3: Editorial Broadside & Timeless Haute (High-Contrast Garamond Serif & Curatorial Typewriter) */
+[data-font-variant="v3"],
+body.font-variant-v3 {
+  --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-body: 'Source Serif 4', 'Lora', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  --font-accent: 'Playfair Display', 'Cormorant Garamond', serif;
+  --font-vertical: 'Noto Serif JP', 'Zen Old Mincho', serif;
+  --font-heading-tracking: -0.015em;
+  --font-body-tracking: 0.005em;
+}
+
+/* Variant 4: Kyoto Neo-Grotesque & Algorithmic Minimal (Contemporary Ink-Trap Grotesque & Crisp Monospace) */
+[data-font-variant="v4"],
+body.font-variant-v4 {
+  --font-display: 'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Azeret Mono', monospace;
+  --font-accent: 'Space Grotesk', 'Bricolage Grotesque', sans-serif;
+  --font-vertical: 'Noto Sans JP', 'DM Sans', sans-serif;
+  --font-heading-tracking: -0.03em;
+  --font-body-tracking: -0.005em;
 }
 
 .dark {
-  --canvas-bg: #16171B;
-  --panel-bg: #23252C;
-  --surface-bg: #23252C;
-  --card-bg: #23252C;
-  --pattern-dot: rgba(212, 168, 83, 0.05);
+  --canvas-bg: #121316;
+  --panel-bg: #23262F;
+  --surface-bg: #23262F;
+  --surface-card-bg: #23262F;
+  --card-bg: #23262F;
+  --surface-raised-bg: #2C303B;
+  --surface-muted-bg: #0E0F12;
+  --pattern-dot: transparent;
   --ink-color: #E8E6DF;
   --ink-muted: #9E9A8E;
-  --border-color: #383B43;
-  --border-inner: #4E535E;
-  --border-inner-soft: rgba(78, 83, 94, 0.55);
+  --ink-subtle: #736F64;
+  --border-color: #383B44;
+  --border-channel-fill: transparent;
+  --border-inner: transparent;
+  --border-strong: #4E5362;
+  --button-primary-bg: #D4A853;
+  --button-primary-text: #121316;
   --color-terracotta-rgb: 181 72 46;
   --color-ochre-rgb: 212 168 83;
   --color-bamboo-rgb: 101 139 123;
+  --accent-color: #D4A853;
   --color-night-accent: #D4A853;
   --color-night-accent-rgb: 212 168 83;
 }
@@ -45,6 +118,7 @@
   body {
     overscroll-behavior: none;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-family: var(--font-body);
     background-color: var(--canvas-bg);
     color: var(--ink-color);
     transition: background-color 0.25s ease, color 0.25s ease;
@@ -59,96 +133,77 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 40;
-    opacity: 0.06; /* 6% tactile washi paper tooth on light cream canvas */
+    z-index: 9999; /* Overlay entire page, cards, and modals seamlessly */
+    opacity: 0.055; /* Tactile washi paper tooth on cream canvas */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)'/%3E%3C/svg%3E");
   }
 
   .dark body::before {
-    opacity: 0.045; /* 4.5% tactile micro-tooth on dark charred cedar canvas */
+    opacity: 0.045; /* Tactile micro-tooth on dark charred cedar canvas */
   }
 }
 
 @layer utilities {
   .font-zen {
-    font-family: 'Zen Old Mincho', 'Noto Serif JP', 'Noto Serif', serif;
+    font-family: var(--font-display);
   }
   .font-mulish {
-    font-family: 'Mulish', 'Montserrat', 'Inter', sans-serif;
+    font-family: var(--font-body);
   }
   .font-azeret {
-    font-family: 'Azeret Mono', 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
   }
   .font-chakra {
-    font-family: 'Chakra Petch', 'Azeret Mono', sans-serif;
+    font-family: var(--font-accent);
   }
 }
 
 @layer utilities {
-  /* Double Hairline Frame: Outer 1px border, 3px gap, inner 1px border */
+  /* Hairline Frame */
   .double-hairline {
     position: relative;
     border: 1px solid var(--border-color);
     border-radius: 3px;
   }
-  .double-hairline::after {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    border: 1px solid var(--border-color);
-    pointer-events: none;
-    border-radius: 2px;
-  }
 
-  /* Washi Paper Texture Subtle Background */
+  /* Washi Paper Subtle Background (Zero dotted noise) */
   .washi-pattern {
     background-color: transparent;
-    background-image: radial-gradient(var(--pattern-dot) 0.65px, transparent 0.65px);
-    background-size: 24px 24px;
-    background-position: 0 0;
   }
 
-  /* Tactile Craft Surfaces (Card, Modal, Panel, Chat): Solid Charred Cedar Surfaces with Crisp Hairlines */
-  .craft-card,
-  .craft-panel,
-  .washi-card {
-    position: relative;
-    border-radius: 3px;
-  }
-
-  .craft-modal {
-    border-radius: 3px;
-  }
-
-  /* Solid Clean Craft Cards (Light & Dark) */
+  /* Solid Clean Craft Cards (Light & Dark) with Delicate Hairline Borders */
   .card-akari-translucent,
   .craft-card,
   .craft-panel,
   .washi-card,
-  .interactive-card {
-    background-color: #23252C;
-    border-color: #383B43;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  .interactive-card,
+  .classical-card-frame {
+    background-color: var(--surface-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(40, 46, 58, 0.04);
+    border-radius: 3px;
+    position: relative;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  :root:not(.dark) .card-akari-translucent,
-  :root:not(.dark) .craft-card,
-  :root:not(.dark) .craft-panel,
-  :root:not(.dark) .washi-card,
-  :root:not(.dark) .interactive-card {
-    background-color: #F7F0E3;
-    border-color: #D9C9AE;
-    box-shadow: 0 1px 3px rgba(40, 46, 58, 0.04);
+  .dark .card-akari-translucent,
+  .dark .craft-card,
+  .dark .craft-panel,
+  .dark .washi-card,
+  .dark .interactive-card,
+  .dark .classical-card-frame {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   }
 
   .craft-modal {
-    background-color: #23252C;
-    border-color: #383B43;
+    background-color: var(--surface-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
   }
 
-  :root:not(.dark) .craft-modal {
-    background-color: #F7F0E3;
-    border-color: #D9C9AE;
+  .dark .craft-modal {
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
   }
 
   /* Japanese Tategaki (Vertical Writing Mode) */
@@ -403,33 +458,34 @@
 .craft-card,
 .classical-card-frame {
   position: relative;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border-color);
+  box-shadow: 
+    inset 0 0 0 2px var(--border-channel-fill),
+    inset 0 0 0 3px var(--border-color);
 }
 
-.double-frame-simple::before,
-.craft-card::before,
-.classical-card-frame::before {
-  content: "";
-  position: absolute;
-  inset: 4px; /* Slightly thinner blueprint gap (4px inset) */
-  border: 1px solid var(--border-inner-soft);
-  border-radius: 2px;
-  pointer-events: none;
-  transition: border-color 0.3s var(--ease-zen);
-  z-index: 1;
+.craft-card:hover,
+.classical-card-frame:hover,
+.double-frame-simple:hover,
+.interactive-card:hover {
+  border-color: #B5482E;
+  box-shadow: 
+    inset 0 0 0 2px rgba(181, 72, 46, 0.12),
+    inset 0 0 0 3px #B5482E,
+    0 2px 8px rgba(181, 72, 46, 0.12);
 }
 
-.double-frame:hover::before,
-.double-frame-simple:hover::before,
-.craft-card:hover::before,
-.classical-card-frame:hover::before {
-  border-color: rgba(181, 72, 46, 0.4);
-}
-
-.dark .double-frame:hover::before,
-.dark .double-frame-simple:hover::before,
-.dark .craft-card:hover::before,
-.dark .classical-card-frame:hover::before {
+.dark .craft-card:hover,
+.dark .classical-card-frame:hover,
+.dark .double-frame-simple:hover,
+.dark .interactive-card:hover {
   border-color: rgba(212, 168, 83, 0.45);
+  box-shadow: 
+    inset 0 0 0 1.5px #1B1D23,
+    inset 0 0 0 2.5px rgba(212, 168, 83, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Corner Hairline Brackets: Restrained Japanese Craft joinery (Whisper-quiet opacity, no HUD translation) */

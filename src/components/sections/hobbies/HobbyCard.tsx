@@ -2,6 +2,7 @@ import React, { useState, Suspense, lazy } from 'react';
 import { Image as ImageIcon, Maximize2 } from 'lucide-react';
 import { HobbyItem } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../common/CornerBrackets';
+import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { getCategoryStyle } from '../../../lib/hobbyTheme';
 
 // Lazy-load Lightbox module so yet-another-react-lightbox isn't in initial bundle
@@ -33,6 +34,13 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
     <article
       className="bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-7 shadow-sm relative overflow-visible classical-card-frame group hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface dark:hover:bg-dark-surface transition-all duration-300 flex flex-col justify-between"
     >
+      {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
+      <EnsoOrbital
+        placement="top-left"
+        size={112}
+        hoverOnly={true}
+      />
+
       <CornerBrackets size="md" />
 
       {/* Card Header */}
@@ -51,7 +59,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                 </span>
               )}
             </div>
-            <h3 className="font-serif text-xl sm:text-2xl font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors leading-tight">
+            <h3 className="font-serif text-xl sm:text-2xl font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors leading-tight">
               {hobby.title}
             </h3>
           </div>

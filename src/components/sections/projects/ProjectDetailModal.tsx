@@ -164,7 +164,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                     {project.bullets.map((point, idx) => (
                       <li
                         key={idx}
-                        className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border bg-light-surface-card/60 dark:bg-dark-surface-card hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3 group"
+                        className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/60 dark:border-dark-border/60 bg-light-surface-raised dark:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3 group"
                       >
                         <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
                           #{String(idx + 1).padStart(2, '0')}
@@ -188,7 +188,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                     {project.metrics.map((metric, idx) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card"
+                        className="p-3 rounded-[2px] border border-light-border/60 dark:border-dark-border/60 bg-light-surface-raised dark:bg-dark-surface-raised"
                       >
                         <div className="font-serif text-lg font-bold text-light-ink dark:text-dark-ink">
                           {metric.value}

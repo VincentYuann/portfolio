@@ -126,10 +126,10 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
             d="M 106,16
                A 86 86 0 0 1 184,124"
             fill="none"
-            stroke="#D4A853"
+            stroke="currentColor"
             strokeWidth="3.2"
             strokeLinecap="round"
-            className="opacity-95 dark:opacity-90 animate-enso-draw"
+            className="text-ochre opacity-95 dark:opacity-90 animate-enso-draw"
             filter="url(#gold-glow)"
           />
 
@@ -142,7 +142,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
             strokeWidth="1.8"
             strokeDasharray="4 6"
             strokeLinecap="round"
-            className="text-terracotta dark:text-[#D4A853] opacity-80 dark:opacity-90 animate-dash-flow transition-colors"
+            className="text-terracotta dark:text-ochre opacity-80 dark:opacity-90 animate-dash-flow transition-colors"
           />
 
           {/* Outer Fine Golden Tracking Ring */}
@@ -151,16 +151,16 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
             cy="100"
             r="86"
             fill="none"
-            stroke="#D4A853"
+            stroke="currentColor"
             strokeWidth="0.6"
             strokeDasharray="1 8"
-            className="opacity-30 dark:opacity-25"
+            className="text-ochre opacity-30 dark:opacity-25"
           />
 
           {/* Glowing Ruby/Vermilion Bead in Day, Luminous Amber Gold Pearl at Night */}
           <g className="animate-ruby-pulse" style={{ transformOrigin: '106px 16px' }}>
             {/* Ambient Aura */}
-            <circle cx="106" cy="16" r="6" className="fill-terracotta dark:fill-[#D4A853] opacity-40 transition-colors" />
+            <circle cx="106" cy="16" r="6" className="fill-terracotta dark:fill-ochre opacity-40 transition-colors" />
             {/* Core Solid Bead */}
             <circle
               cx="106"
@@ -168,16 +168,16 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
               r="3.6"
               stroke="#FFF"
               strokeWidth="0.8"
-              className="fill-terracotta dark:fill-[#D4A853] transition-colors"
+              className="fill-terracotta dark:fill-ochre transition-colors"
               filter="url(#ruby-glow)"
             />
           </g>
 
           {/* Celestial Dust Particles */}
-          <circle cx="124" cy="12" r="1.6" className="fill-[#323236] dark:fill-[#797A7E] opacity-70" />
-          <circle cx="138" cy="15" r="1.2" className="fill-[#D4A853] opacity-85" />
-          <circle cx="190" cy="80" r="1.8" className="fill-[#323236] dark:fill-[#797A7E] opacity-60" />
-          <circle cx="194" cy="94" r="1.3" className="fill-terracotta dark:fill-[#D4A853] opacity-80 transition-colors" />
+          <circle cx="124" cy="12" r="1.6" className="fill-light-ink/70 dark:fill-dark-ink-muted/70" />
+          <circle cx="138" cy="15" r="1.2" className="fill-ochre opacity-85" />
+          <circle cx="190" cy="80" r="1.8" className="fill-light-ink/60 dark:fill-dark-ink-muted/60" />
+          <circle cx="194" cy="94" r="1.3" className="fill-terracotta dark:fill-ochre opacity-80 transition-colors" />
         </g>
       </svg>
     </div>

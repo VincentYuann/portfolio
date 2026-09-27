@@ -28,6 +28,9 @@ export function useDraggableWindow({
   const handleDesktopDragStart = (e: React.PointerEvent) => {
     if (disabled || e.button !== 0) return;
 
+    // Prevent text selection during drag
+    e.preventDefault();
+
     const target = e.currentTarget as HTMLElement;
     try {
       target.setPointerCapture(e.pointerId);
@@ -70,10 +73,11 @@ export function useDraggableWindow({
       curY += dy;
 
       const widgetWidth = chatWindowRef.current?.offsetWidth || windowSize.width;
+      const widgetHeight = chatWindowRef.current?.offsetHeight || windowSize.height;
       const minX = 8;
       const minY = 8;
       const maxX = Math.max(minX, window.innerWidth - widgetWidth - 8);
-      const maxY = Math.max(minY, window.innerHeight - 56);
+      const maxY = Math.max(minY, window.innerHeight - widgetHeight - 16);
 
       curX = Math.max(minX, Math.min(curX, maxX));
       curY = Math.max(minY, Math.min(curY, maxY));

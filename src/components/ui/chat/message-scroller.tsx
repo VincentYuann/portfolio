@@ -113,7 +113,7 @@ export const MessageScrollerViewport = React.forwardRef<
       aria-live="polite"
       aria-relevant="additions text"
       aria-atomic="false"
-      className={cn('flex-1 overflow-y-auto scrollbar-none washi-pattern', className)}
+      className={cn('flex-1 overflow-y-auto scrollbar-none bg-light-surface-card dark:bg-dark-surface-card', className)}
       {...props}
     >
       {children}

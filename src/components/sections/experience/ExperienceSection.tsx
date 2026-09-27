@@ -204,8 +204,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
         {/* Timeline Container */}
         <div className="relative timeline-container">
-          {/* Vertical Joinery Axis Line: Subtle, quiet hairline */}
-          <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-px bg-light-border/60 dark:bg-dark-border/40 -translate-x-1/2 pointer-events-none z-0" />
+          {/* Vertical Joinery Axis Line: Crisp architectural spine rail */}
+          <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B] to-[#CDB38B]/40 dark:from-[#404450] dark:via-[#D4A853]/60 dark:to-[#404450]/40 -translate-x-1/2 pointer-events-none z-0 rounded-full shadow-2xs" />
 
           {/* Milestone Cards Stack */}
           <div className="flex flex-col gap-8 sm:gap-12">
@@ -244,7 +244,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                   }`}
                   id={`milestone-${idx + 1}`}
                 >
-                  {/* Editorial Timeline Marker: Exact 8px marker without ring or orbit */}
+                  {/* Editorial Timeline Marker: Distinct bordered craft node */}
                   <button
                     type="button"
                     aria-label={`Jump to ${exp.company} milestone`}
@@ -252,12 +252,16 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                       e.stopPropagation();
                       setActiveCardId(cardKey);
                     }}
-                    className={`timeline-node absolute left-3.5 sm:left-5 top-7 sm:top-8 w-2 h-2 rounded-full -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300 cursor-pointer ${
+                    className={`timeline-node absolute left-3.5 sm:left-5 top-7 sm:top-8 w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300 cursor-pointer shadow-xs ${
                       isCardActive
-                        ? 'bg-terracotta border border-terracotta dark:bg-[#D4A853] dark:border-[#D4A853]'
-                        : 'border border-light-ink-muted/50 dark:border-[#787368] bg-light-canvas dark:bg-[#16171B] hover:border-terracotta dark:hover:border-[#D4A853]'
+                        ? 'bg-terracotta border-2 border-[#F7F0E3] dark:border-[#23252C] ring-2 ring-terracotta dark:bg-[#D4A853] dark:ring-[#D4A853] scale-110'
+                        : 'border-2 border-[#CDB38B] dark:border-[#6B7280] bg-[#F7F0E3] dark:bg-[#23252C] hover:border-terracotta dark:hover:border-[#D4A853] hover:scale-105'
                     }`}
-                  />
+                  >
+                    {!isCardActive && (
+                      <span className="block w-1 h-1 rounded-full bg-[#CDB38B] dark:bg-[#6B7280] m-auto" />
+                    )}
+                  </button>
 
                   {/* Milestone Card Frame */}
                   <div

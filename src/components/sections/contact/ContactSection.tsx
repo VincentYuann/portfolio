@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Github, Linkedin, Send, CheckCircle2, AlertCircle, Copy, Check } from 'lucide-react';
 import { sendContactMessage } from '../../../lib/supabase';
 import { CornerBrackets } from '../../common/CornerBrackets';
+import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
@@ -140,6 +141,13 @@ export const ContactSection: React.FC = () => {
 
       <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
         <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-8 sm:p-12 overflow-visible shadow-sm classical-card-frame transition-colors duration-300">
+          {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
+          <EnsoOrbital
+            placement="top-left"
+            size={132}
+            hoverOnly={true}
+          />
+
           {/* Corner Hairline Brackets (Subtle) */}
           <CornerBrackets size="lg" />
 

@@ -54,7 +54,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     onNavigate('home', 'home');
                   }
                 }}
-                className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
+                className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
                 Home Overview
               </a>
@@ -66,7 +66,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     onNavigate('home', 'experience');
                   }
                 }}
-                className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
+                className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
                 Work Experience
               </a>
@@ -78,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     onNavigate('home', 'featured-works');
                   }
                 }}
-                className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
+                className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
                 Featured Works
               </a>
@@ -90,7 +90,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     onNavigate('home', 'philosophy');
                   }
                 }}
-                className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
+                className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
                 Philosophy &amp; Craft
               </a>
@@ -102,7 +102,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     onNavigate('home', 'hobbies');
                   }
                 }}
-                className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
+                className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
                 Hobbies &amp; Interests
               </a>
@@ -114,7 +114,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     onNavigate('home', 'contact');
                   }
                 }}
-                className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
+                className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
                 Initiate Dialogue
               </a>
@@ -126,7 +126,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     onNavigate('resume');
                   }
                 }}
-                className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
+                className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
                 Curriculum Vitae
               </a>
@@ -137,13 +137,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Hairline Bottom Bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-light-ink-subtle dark:text-dark-ink-subtle text-xs font-sans">
-            <span className="font-serif text-terracotta dark:text-[#D4A853]">❖</span>
+            <span className="font-serif text-terracotta dark:text-ochre">❖</span>
             <span>© {new Date().getFullYear()} Vincent Yuan.</span>
           </div>
 
           <div className="flex items-center gap-3 text-light-ink-subtle dark:text-dark-ink-subtle text-xs font-sans">
             <span className="uppercase tracking-widest text-[11px] font-mono">Ma · Wabi-Sabi · Shokunin</span>
-            <span className="text-terracotta dark:text-[#D4A853] text-xs">✦</span>
+            <span className="text-terracotta dark:text-ochre text-xs">✦</span>
             <span className="uppercase tracking-widest text-[11px]">Solid Washi</span>
           </div>
         </div>

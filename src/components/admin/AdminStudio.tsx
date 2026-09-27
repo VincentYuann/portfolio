@@ -216,7 +216,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
                   <Icon
                     className={`w-3.5 h-3.5 transition-colors shrink-0 ${
                       isCurrent
-                        ? 'text-terracotta dark:text-[#D4A853]'
+                        ? 'text-terracotta dark:text-ochre'
                         : isSectionDirty
                         ? 'text-amber-600 dark:text-amber-400'
                         : 'text-light-ink-muted dark:text-dark-ink-muted group-hover:text-light-ink dark:group-hover:text-dark-ink'
@@ -242,7 +242,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 pl-1 sm:pl-2">
             <button
               onClick={handleExit}
-              className="inline-flex items-center gap-1.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors whitespace-nowrap cursor-pointer py-1.5 px-2.5 sm:px-3 min-h-[42px] rounded-lg hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised shrink-0 border border-transparent hover:border-light-border dark:hover:border-dark-border"
+              className="inline-flex items-center gap-1.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors whitespace-nowrap cursor-pointer py-1.5 px-2.5 sm:px-3 min-h-[42px] rounded-lg hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised shrink-0 border border-transparent hover:border-light-border dark:hover:border-dark-border"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Return to Portfolio</span>

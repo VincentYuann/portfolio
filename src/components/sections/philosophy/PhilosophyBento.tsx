@@ -2,6 +2,7 @@ import React from 'react';
 import { Compass, Feather, ShieldCheck } from 'lucide-react';
 import { BambooArt } from '../../common/BambooArt';
 import { CornerBrackets } from '../../common/CornerBrackets';
+import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
@@ -140,12 +141,12 @@ export const PhilosophyBento: React.FC = () => {
         <div className="relative mb-12 sm:mb-16 pb-6 border-b border-light-border/70 dark:border-dark-border/80">
           <div className="max-w-3xl relative z-10">
             <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-terracotta dark:text-[#D4A853] text-sm">04 //</span>
+              <span className="font-serif text-terracotta dark:text-ochre text-sm">04 //</span>
               <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                 ORIGIN &amp; PHILOSOPHY · 原点と哲学
               </span>
               <span
-                className="inline-flex items-center justify-center w-4 h-4 rounded-[2px] bg-terracotta/10 dark:bg-[#D4A853]/10 text-terracotta dark:text-[#D4A853] text-[9px] font-serif border border-terracotta/30 dark:border-[#D4A853]/30 select-none ml-1"
+                className="inline-flex items-center justify-center w-4 h-4 rounded-[2px] bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre text-[9px] font-serif border border-terracotta/30 dark:border-ochre/30 select-none ml-1"
                 title="Hanko Seal: 哲 (Philosophy)"
               >
                 哲
@@ -166,8 +167,15 @@ export const PhilosophyBento: React.FC = () => {
         {/* 04.1 Origin Trajectory Bento Box */}
         {hasOriginStory && (
           <div
-            className="mb-10 sm:mb-12 bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors duration-300"
+            className="group mb-10 sm:mb-12 bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors duration-300"
           >
+            {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
+            <EnsoOrbital
+              placement="top-left"
+              size={112}
+              hoverOnly={true}
+            />
+
             <CornerBrackets size="md" />
 
             {/* Card Top Sub-Header */}
@@ -280,6 +288,13 @@ export const PhilosophyBento: React.FC = () => {
                 key={pillar.position || idx}
                 className="interactive-card bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group hover:bg-light-surface dark:hover:bg-dark-surface hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-300 classical-card-frame min-h-[280px]"
               >
+                {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
+                <EnsoOrbital
+                  placement="top-left"
+                  size={100}
+                  hoverOnly={true}
+                />
+
                 {/* Corner Hairline Brackets (Subtle) */}
                 <CornerBrackets size="md" />
 
@@ -300,7 +315,7 @@ export const PhilosophyBento: React.FC = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-serif text-lg sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors break-words">
+                    <h3 className="font-serif text-lg sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors break-words">
                       {pillar.romaji}
                       {pillar.title && (
                         <span className="font-sans text-xs sm:text-sm font-light text-light-ink-muted dark:text-dark-ink-muted ml-2 block sm:inline">

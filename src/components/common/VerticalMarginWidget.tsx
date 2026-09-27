@@ -92,28 +92,28 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
       ? 'bg-bamboo/80 animate-status-glow origin-center'
       : pulseColor === 'ochre'
       ? 'bg-ochre/80 animate-status-glow origin-center'
-      : 'bg-terracotta/80 dark:bg-[#D4A853]/80 animate-ruby-pulse origin-center';
+      : 'bg-terracotta/80 dark:bg-ochre/80 animate-ruby-pulse origin-center';
 
   const topHairlineGradient =
     side === 'left'
-      ? 'bg-gradient-to-b from-transparent via-terracotta/40 dark:via-[#D4A853]/40 to-ochre/40'
-      : 'bg-gradient-to-b from-transparent via-bamboo/40 to-ochre/40';
+      ? 'bg-gradient-to-b from-transparent via-terracotta/60 dark:via-ochre/60 to-[#CDB38B]'
+      : 'bg-gradient-to-b from-transparent via-bamboo/60 to-[#CDB38B]';
 
   const bottomHairlineGradient =
     side === 'left'
-      ? 'bg-gradient-to-b from-ochre/40 via-terracotta/30 dark:via-[#D4A853]/30 to-transparent'
-      : 'bg-gradient-to-b from-ochre/40 via-bamboo/30 to-transparent';
+      ? 'bg-gradient-to-b from-[#CDB38B] via-terracotta/50 dark:via-ochre/50 to-transparent'
+      : 'bg-gradient-to-b from-[#CDB38B] via-bamboo/50 to-transparent';
 
   return (
     <aside
       aria-hidden="true"
-      className={`${positionClass} ${sideClass} ${top} hidden 2xl:flex flex-col items-center gap-3 text-light-ink-muted/70 dark:text-dark-ink-muted/60 pointer-events-none select-none z-20 ${className}`}
+      className={`${positionClass} ${sideClass} ${top} hidden 2xl:flex flex-col items-center gap-3 text-light-ink-muted/80 dark:text-dark-ink-muted/70 pointer-events-none select-none z-20 ${className}`}
     >
       {type === 'minimal' ? (
         <>
           {/* Minimalist vertical line with Hanko seal box at bottom */}
-          <div className="w-px h-28 sm:h-36 bg-gradient-to-b from-transparent via-ochre/40 to-terracotta/40 dark:to-[#D4A853]/40" />
-          <div className="w-5 h-5 border border-terracotta/70 dark:border-[#D4A853]/70 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-[#D4A853] shadow-2xs">
+          <div className="w-[1.5px] h-28 sm:h-36 bg-gradient-to-b from-transparent via-[#CDB38B] to-terracotta/70 dark:to-ochre/70" />
+          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-ochre shadow-2xs">
             {stampChar}
           </div>
         </>
@@ -132,14 +132,14 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
           {/* Bottom Hairline */}
           <div className={`w-px h-16 ${bottomHairlineGradient}`} />
           {/* Stamp Box */}
-          <div className="w-5 h-5 border border-terracotta/70 dark:border-[#D4A853]/70 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-[#D4A853] shadow-2xs">
+          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-ochre shadow-2xs">
             {stampChar}
           </div>
         </>
       ) : (
         <>
           {/* Full Japanese Architectural Margin Accent */}
-          <div className={`w-px h-20 ${topHairlineGradient}`} />
+          <div className={`w-[1.5px] h-20 ${topHairlineGradient}`} />
           {motto && (
             <div className="writing-vertical-rl font-mono text-[10px] tracking-[0.3em] uppercase opacity-90">
               {motto} {submotto && `// ${submotto}`}
@@ -151,8 +151,8 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
               {coordinate}
             </div>
           )}
-          <div className={`w-px h-16 ${bottomHairlineGradient}`} />
-          <div className="w-5 h-5 border border-terracotta/70 dark:border-[#D4A853]/70 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-[#D4A853] shadow-2xs">
+          <div className={`w-[1.5px] h-16 ${bottomHairlineGradient}`} />
+          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-ochre shadow-2xs">
             {stampChar}
           </div>
         </>

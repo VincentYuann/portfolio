@@ -180,7 +180,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="opacity-40 text-[11px] font-mono">{item.num}</span>
                 <span>{item.label}</span>
                 <span
-                  className={`absolute bottom-0 left-0 h-[1.5px] bg-terracotta dark:bg-[#D4A853] rounded-full transition-all duration-300 ${
+                  className={`absolute bottom-0 left-0 h-[1.5px] bg-terracotta dark:bg-ochre rounded-full transition-all duration-300 ${
                     isActive ? 'w-full' : 'w-0 group-hover:w-full'
                   }`}
                 />
@@ -216,7 +216,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Night Mode"
               aria-label="Switch to Night Mode"
             >
-              <Moon className={`w-3 h-3 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 scale-105 text-[#D4A853]' : 'rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
+              <Moon className={`w-3 h-3 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 scale-105 text-ochre' : 'rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
               <span className="hidden sm:inline">NIGHT</span>
             </button>
           </div>
@@ -242,8 +242,8 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => onNavigate?.(currentView === 'edit' ? 'home' : 'edit')}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans border transition-colors cursor-pointer ${
                   currentView === 'edit'
-                    ? 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light border-terracotta dark:border-[#D4A853] shadow-xs'
-                    : 'text-terracotta dark:text-[#D4A853] border-terracotta/40 dark:border-[#D4A853]/40 bg-terracotta/10 dark:bg-[#D4A853]/10 hover:bg-terracotta/20 dark:hover:bg-[#D4A853]/20 hover:border-terracotta dark:hover:border-[#D4A853]'
+                    ? 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light border-terracotta dark:border-ochre shadow-xs'
+                    : 'text-terracotta dark:text-ochre border-terracotta/40 dark:border-ochre/40 bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta/20 dark:hover:bg-ochre/20 hover:border-terracotta dark:hover:border-ochre'
                 }`}
                 title={currentView === 'edit' ? 'Exit Studio & view public site' : 'Open Studio to edit portfolio'}
                 aria-label={currentView === 'edit' ? 'View Site' : 'Edit Site'}
@@ -303,14 +303,14 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => setMobileDrawerOpen((prev) => !prev)}
               className={`w-9 h-9 flex items-center justify-center rounded-[2px] border transition-all duration-200 select-none cursor-pointer shrink-0 ${
                 mobileDrawerOpen
-                  ? 'border-terracotta dark:border-[#D4A853] bg-terracotta/10 dark:bg-[#D4A853]/10 text-terracotta dark:text-[#D4A853] shadow-xs'
-                  : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 hover:text-terracotta dark:hover:text-[#D4A853]'
+                  ? 'border-terracotta dark:border-ochre bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre shadow-xs'
+                  : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta/60 dark:hover:border-ochre/60 hover:text-terracotta dark:hover:text-ochre'
               }`}
               aria-label={mobileDrawerOpen ? 'Close menu' : 'Open menu'}
               title="Menu"
             >
               {mobileDrawerOpen ? (
-                <X className="w-4 h-4 text-terracotta dark:text-[#D4A853] transition-transform duration-200" />
+                <X className="w-4 h-4 text-terracotta dark:text-ochre transition-transform duration-200" />
               ) : (
                 <span className="font-serif text-base font-medium leading-none tracking-tight">三</span>
               )}
@@ -342,12 +342,12 @@ export const Header: React.FC<HeaderProps> = ({
                   onClick={(e) => handleNavClick(e, item)}
                   className={`flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-sans uppercase tracking-wider transition-colors ${
                     isActive
-                      ? 'bg-terracotta/10 dark:bg-[#D4A853]/10 text-terracotta dark:text-[#D4A853] font-semibold'
+                      ? 'bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre font-semibold'
                       : 'text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-light-ink dark:hover:text-dark-ink'
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-[#D4A853] shrink-0" />}
+                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0" />}
                     <span className="font-medium">{item.fullLabel || item.label}</span>
                   </div>
                   <span className="font-mono text-[11px] opacity-50">{item.num}</span>

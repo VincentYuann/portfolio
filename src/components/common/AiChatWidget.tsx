@@ -108,22 +108,22 @@ const BroomIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) 
 const UNIVERSAL_PROMPT_PILLS = [
   {
     id: 'arch',
-    label: 'AI Architecture & Latency',
+    label: 'AI Architecture',
     prompt: 'How do you approach AI systems architecture, latency, and engineering craft?',
   },
   {
     id: 'works',
-    label: 'Explore Featured Works',
+    label: 'Featured Works',
     prompt: 'What are your most significant engineering projects and technical accomplishments?',
   },
   {
     id: 'philosophy',
-    label: 'Wabi-Sabi Journey',
+    label: 'Design Philosophy',
     prompt: 'How do Ma (間) and Wabi-Sabi (侘寂) influence your software architecture?',
   },
   {
     id: 'dialogue',
-    label: 'Initiate Dialogue & Availability',
+    label: 'Work With Vincent',
     prompt: 'Are you available for engineering roles or architectural collaborations?',
   },
 ];
@@ -229,13 +229,13 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     if (typeof window !== 'undefined') {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const maxH = Math.max(360, Math.min(580, vh - 48));
+      const maxH = Math.max(360, Math.min(560, vh - 64));
       return {
         width: Math.min(440, vw - 32),
         height: maxH,
       };
     }
-    return { width: 440, height: 580 };
+    return { width: 440, height: 560 };
   });
   const [windowPos, setWindowPos] = useState<{ x: number; y: number } | null>(null);
   const chatWindowRef = useRef<HTMLDivElement>(null);
@@ -245,18 +245,8 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     {
       id: 'welcome-msg',
       sender: 'ai',
-      text: "Greetings. I am Vincent's AI Companion. I synthesize his architectural philosophies, systems engineering lineage, and selected works. Ask about distributed systems, low-latency AI pipelines, or our artisan philosophy.",
-      timestamp: 'ONLINE · SYNTHESIS READY',
-      specCard: {
-        title: 'Spec: Telemetry // Komorebi Architecture',
-        actionText: 'Explore Projects →',
-        view: 'projects',
-      },
-      telemetry: {
-        model: 'Vincent Architectural Kernel',
-        latencyMs: 8,
-        isFallback: true,
-      },
+      text: "Welcome. I'm Vincent's AI assistant. I can walk you through his portfolio if you have any questions about him.",
+      timestamp: '',
     },
   ]);
 
@@ -276,7 +266,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           setWindowPos(null);
         } else {
           setIsExpandedMobile(false);
-          const maxAllowedH = Math.max(340, vh - 24);
+          const maxAllowedH = Math.max(340, vh - 48);
           setWindowSize((prev) => ({
             width: Math.max(300, Math.min(prev.width, vw - 16)),
             height: Math.max(340, Math.min(prev.height, maxAllowedH)),
@@ -287,7 +277,8 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
             const minX = 8;
             const minY = 8;
             const maxX = Math.max(minX, vw - 320);
-            const maxY = Math.max(minY, vh - 64);
+            const currentH = chatWindowRef.current?.offsetHeight || 500;
+            const maxY = Math.max(minY, vh - currentH - 16);
             return {
               x: Math.max(minX, Math.min(prev.x, maxX)),
               y: Math.max(minY, Math.min(prev.y, maxY)),
@@ -346,8 +337,12 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       chatWindowRef.current.style.right = '';
       chatWindowRef.current.style.bottom = '';
       chatWindowRef.current.style.transform = '';
+      if (!isMobile) {
+        chatWindowRef.current.style.width = `${windowSize.width}px`;
+        chatWindowRef.current.style.height = `${windowSize.height}px`;
+      }
     }
-  }, [windowPos]);
+  }, [windowPos, isMobile, windowSize.width, windowSize.height]);
 
   // Global hotkeys: Cmd+K / Ctrl+K toggles widget, Escape closes it, Tab cycles focus within modal
   useEffect(() => {
@@ -420,7 +415,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       id: userMsgId,
       sender: 'user',
       text: trimmed || (currentFile ? `[Uploaded attachment: ${currentFile.name}]` : ''),
-      timestamp: `YOU · ${getTimestamp()}`,
+      timestamp: getTimestamp(),
       attachmentName: currentFile?.name,
       attachmentUrl: currentPreviewUrl || undefined,
     };
@@ -474,7 +469,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
         id: `ai-${Date.now()}`,
         sender: 'ai',
         text: fullText,
-        timestamp: `VINCENT AI · ${getTimestamp()}`,
+        timestamp: getTimestamp(),
         userType: data.user_type,
         telemetry: {
           model: data.model ? data.model.replace(/^models\//, '') : 'gemini-3.5-flash-lite',
@@ -517,7 +512,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
         id: `ai-${Date.now()}`,
         sender: 'ai',
         text: userFacingText,
-        timestamp: `VINCENT AI · ${getTimestamp()}`,
+        timestamp: getTimestamp(),
         telemetry: {
           model: 'Error Diagnostic',
           latencyMs,
@@ -544,28 +539,35 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
       {
         id: `marker-${Date.now()}`,
         sender: 'system',
-        text: 'Dialogue Thread Refreshed · Context Reset',
+        text: 'Dialogue thread refreshed',
         timestamp: getTimestamp(),
       },
       {
         id: `welcome-${Date.now()}`,
         sender: 'ai',
-        text: 'Dialogue thread refreshed. All architectural contexts and synthesis tools are online.',
-        timestamp: `VINCENT AI · ${getTimestamp()}`,
+        text: "Dialogue thread refreshed. I'm ready to walk you through Vincent's portfolio.",
+        timestamp: '',
       },
     ]);
     toast.success('Conversation thread refreshed');
   };
 
   const handleDockToCorner = () => {
+    const vw = typeof window !== 'undefined' ? window.innerWidth : 1200;
+    const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
+    const defaultW = Math.min(440, vw - 32);
+    const defaultH = Math.max(360, Math.min(560, vh - 64));
+
     if (chatWindowRef.current) {
       chatWindowRef.current.style.top = '';
       chatWindowRef.current.style.left = '';
       chatWindowRef.current.style.right = '';
       chatWindowRef.current.style.bottom = '';
       chatWindowRef.current.style.transform = '';
-      chatWindowRef.current.style.width = '';
-      chatWindowRef.current.style.height = '';
+      if (!isMobile) {
+        chatWindowRef.current.style.width = `${defaultW}px`;
+        chatWindowRef.current.style.height = `${defaultH}px`;
+      }
       chatWindowRef.current.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
       setTimeout(() => {
         if (chatWindowRef.current) {
@@ -573,11 +575,9 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
         }
       }, 260);
     }
-    const vw = typeof window !== 'undefined' ? window.innerWidth : 1200;
-    const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
     setWindowSize({
-      width: Math.min(440, vw - 32),
-      height: Math.max(360, Math.min(580, vh - 48)),
+      width: defaultW,
+      height: defaultH,
     });
     setWindowPos(null);
   };
@@ -851,7 +851,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           ref={launcherRef}
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2.5 p-1.5 sm:pl-2 sm:pr-3.5 sm:py-1.5 rounded-full bg-light-surface-card dark:bg-dark-surface-card border border-terracotta/40 hover:border-terracotta dark:border-[#D4A853]/40 dark:hover:border-[#D4A853] text-light-ink dark:text-dark-ink shadow-md hover:shadow-hanko-glow transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:ring-offset-2 active:scale-95 cursor-pointer min-h-[48px] min-w-[48px]"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2.5 p-1.5 sm:pl-2 sm:pr-3.5 sm:py-1.5 rounded-full bg-light-surface-card dark:bg-dark-surface-card border border-terracotta/40 hover:border-terracotta dark:border-ochre/40 dark:hover:border-ochre text-light-ink dark:text-dark-ink shadow-md hover:shadow-hanko-glow transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:ring-offset-2 active:scale-95 cursor-pointer min-h-[48px] min-w-[48px]"
           aria-label="Open Vincent's AI Companion (Press Cmd+K or Ctrl+K)"
           aria-haspopup="dialog"
           aria-expanded={false}
@@ -905,20 +905,20 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
               ? 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)'
               : undefined,
           }}
-          className={`fixed z-[60] flex flex-col modal dialog craft-modal ${
+          className={`!fixed z-[60] flex flex-col craft-modal ${
             windowPos && !isMobile
               ? 'top-0 left-0 right-auto bottom-auto'
-              : 'bottom-0 left-0 right-0 sm:top-auto sm:bottom-6 sm:right-6 sm:left-auto'
-          } rounded-t-[3px] sm:rounded-[3px] border border-light-border dark:border-dark-border bg-[#F7F0E3] dark:bg-[#23252C] shadow-2xl overflow-hidden animate-in fade-in duration-200`}
+              : 'bottom-0 left-0 right-0 sm:top-auto sm:bottom-6 sm:right-6 sm:left-auto sm:w-[440px] sm:max-w-[calc(100vw-32px)] sm:h-[560px] sm:max-h-[calc(100vh-24px)]'
+          } rounded-t-[3px] sm:rounded-[3px] bg-light-surface-card dark:bg-dark-surface-card shadow-2xl overflow-hidden animate-in fade-in duration-200`}
           role="dialog"
           aria-modal="true"
           aria-labelledby="ai-chat-title"
         >
           {/* Subtle Outer Joinery Corner Brackets (Desktop Only) */}
-          <div className="hidden sm:block absolute top-1.5 left-1.5 w-2.5 h-2.5 border-t border-l border-terracotta/50 dark:border-[#D4A853]/40 pointer-events-none z-40" />
-          <div className="hidden sm:block absolute top-1.5 right-1.5 w-2.5 h-2.5 border-t border-r border-terracotta/50 dark:border-[#D4A853]/40 pointer-events-none z-40" />
-          <div className="hidden sm:block absolute bottom-1.5 left-1.5 w-2.5 h-2.5 border-b border-l border-terracotta/50 dark:border-[#D4A853]/40 pointer-events-none z-40" />
-          <div className="hidden sm:block absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-b border-r border-terracotta/50 dark:border-[#D4A853]/40 pointer-events-none z-40" />
+          <div className="hidden sm:block absolute top-1.5 left-1.5 w-2.5 h-2.5 border-t border-l border-terracotta/50 dark:border-ochre/40 pointer-events-none z-40" />
+          <div className="hidden sm:block absolute top-1.5 right-1.5 w-2.5 h-2.5 border-t border-r border-terracotta/50 dark:border-ochre/40 pointer-events-none z-40" />
+          <div className="hidden sm:block absolute bottom-1.5 left-1.5 w-2.5 h-2.5 border-b border-l border-terracotta/50 dark:border-ochre/40 pointer-events-none z-40" />
+          <div className="hidden sm:block absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-b border-r border-terracotta/50 dark:border-ochre/40 pointer-events-none z-40" />
 
           {/* Desktop Resizing Affordances */}
           <div
@@ -929,19 +929,19 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           />
           <div
             onPointerDown={(e) => handleResizeStart(e, 'n')}
-            className="hidden sm:block absolute top-0 left-6 right-6 h-2 cursor-ns-resize z-40 hover:bg-terracotta/20 dark:hover:bg-[#D4A853]/20 transition-colors"
+            className="hidden sm:block absolute top-0 left-6 right-6 h-2 cursor-ns-resize z-40 hover:bg-terracotta/20 dark:hover:bg-ochre/20 transition-colors"
             title="Resize vertically"
             aria-hidden="true"
           />
           <div
             onPointerDown={(e) => handleResizeStart(e, 'w')}
-            className="hidden sm:block absolute left-0 top-6 bottom-6 w-2 cursor-ew-resize z-40 hover:bg-terracotta/20 dark:hover:bg-[#D4A853]/20 transition-colors"
+            className="hidden sm:block absolute left-0 top-6 bottom-6 w-2 cursor-ew-resize z-40 hover:bg-terracotta/20 dark:hover:bg-ochre/20 transition-colors"
             title="Resize horizontally"
             aria-hidden="true"
           />
           <div
             onPointerDown={(e) => handleResizeStart(e, 'se')}
-            className="hidden sm:flex absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-50 items-end justify-end p-1.5 text-terracotta dark:text-[#D4A853] opacity-70 hover:opacity-100 transition-opacity"
+            className="hidden sm:flex absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-50 items-end justify-end p-1.5 text-terracotta dark:text-ochre opacity-70 hover:opacity-100 transition-opacity"
             title="Resize window"
             aria-hidden="true"
           >
@@ -954,7 +954,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
 
           {/* Drag & Drop File Overlay */}
           {isDraggingFile && (
-            <div className="absolute inset-0 z-50 bg-terracotta/95 dark:bg-[#2A2C32]/95 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-white border-2 border-dashed border-white/70 animate-in fade-in duration-150 pointer-events-none select-none text-center">
+            <div className="absolute inset-0 z-50 bg-terracotta/95 dark:bg-dark-surface-raised/95 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-white border-2 border-dashed border-white/70 animate-in fade-in duration-150 pointer-events-none select-none text-center">
               <div className="w-12 h-12 rounded-[2px] bg-white/20 flex items-center justify-center mb-2.5 shadow-sm">
                 {isAdmin ? <Upload className="w-6 h-6 text-white" /> : <Lock className="w-6 h-6 text-white" />}
               </div>
@@ -974,16 +974,16 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
             type="button"
             onPointerDown={handleHeaderPointerDown}
             onClick={() => setIsExpandedMobile((prev) => !prev)}
-            className="sm:hidden flex flex-col items-center justify-center pt-2.5 pb-1 w-full bg-[#FBF6EC] dark:bg-[#2D3038] cursor-grab active:cursor-grabbing touch-none select-none border-none outline-hidden focus-visible:ring-1 focus-visible:ring-terracotta"
+            className="sm:hidden flex flex-col items-center justify-center pt-2.5 pb-1 w-full bg-light-surface-raised dark:bg-dark-surface-raised cursor-grab active:cursor-grabbing touch-none select-none border-none outline-hidden focus-visible:ring-1 focus-visible:ring-terracotta"
             aria-label={isExpandedMobile ? "Collapse chat sheet" : "Expand chat to fullscreen"}
           >
-            <div className="w-10 h-1.5 rounded-[2px] bg-light-ink-subtle/30 dark:bg-dark-ink-subtle/30 hover:bg-terracotta/50 dark:hover:bg-[#D4A853]/50 transition-colors" />
+            <div className="w-10 h-1.5 rounded-[2px] bg-light-ink-subtle/30 dark:bg-dark-ink-subtle/30 hover:bg-terracotta/50 dark:hover:bg-ochre/50 transition-colors" />
           </button>
 
           {/* ─── MODAL HEADER ─── */}
           <div
             onPointerDown={handleHeaderPointerDown}
-            className="relative z-30 flex items-center justify-between px-4 py-3 border-b border-light-border dark:border-dark-border bg-[#FBF6EC] dark:bg-[#2D3038] sm:cursor-grab active:cursor-grabbing select-none touch-none"
+            className="relative z-30 flex items-center justify-between px-4 py-3 border-b border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised sm:cursor-grab active:cursor-grabbing select-none touch-none"
             title="Drag header to move or swipe down on mobile"
           >
             <div className="flex items-center gap-2.5">
@@ -998,18 +998,18 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                   id="ai-chat-title"
                   className="font-serif text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-tight flex items-center gap-1.5"
                 >
-                  <span className="text-terracotta dark:text-[#D4A853]">問答</span>
+                  <span className="text-terracotta dark:text-ochre">問答</span>
                   <span className="text-light-ink-subtle dark:text-dark-ink-subtle font-mono text-xs">·</span>
-                  <span>Vincent's AI Companion</span>
+                  <span>Vincent's AI Assistant</span>
                 </h3>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-bamboo animate-pulse" />
-                  <span className="font-mono text-xs tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle uppercase">
+                  <span className="font-mono text-xs tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle">
                     {isStreaming
                       ? 'Synthesizing...'
                       : callerContext
-                      ? `${callerContext.userType.toUpperCase()} · ONLINE`
-                      : 'ONLINE · READY'}
+                      ? `${callerContext.userType} · Online`
+                      : 'Online'}
                   </span>
                 </div>
               </div>
@@ -1027,7 +1027,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                       variant="ghost"
                       size="icon"
                       onClick={handleDockToCorner}
-                      className="w-9 h-9 sm:w-8 sm:h-8 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
+                      className="w-9 h-9 sm:w-8 sm:h-8 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre hover:bg-terracotta/10 dark:hover:bg-ochre/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
                       aria-label="Dock to bottom-right corner"
                     >
                       <RotateCcw className="w-4 h-4" />
@@ -1043,7 +1043,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                       variant="ghost"
                       size="icon"
                       onClick={() => setIsExpandedMobile((prev) => !prev)}
-                      className="w-9 h-9 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 min-w-[36px] min-h-[36px]"
+                      className="w-9 h-9 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre hover:bg-terracotta/10 dark:hover:bg-ochre/10 min-w-[36px] min-h-[36px]"
                       aria-label={isExpandedMobile ? "Collapse to standard view" : "Expand to fullscreen"}
                     >
                       {isExpandedMobile ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
@@ -1060,7 +1060,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                     variant="ghost"
                     size="icon"
                     onClick={handleClearHistory}
-                    className="w-9 h-9 sm:w-8 sm:h-8 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
+                    className="w-9 h-9 sm:w-8 sm:h-8 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre hover:bg-terracotta/10 dark:hover:bg-ochre/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
                     aria-label="Refresh conversation thread"
                   >
                     <BroomIcon className="w-4 h-4" />
@@ -1074,7 +1074,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsOpen(false)}
-                    className="w-9 h-9 sm:w-8 sm:h-8 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
+                    className="w-9 h-9 sm:w-8 sm:h-8 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-terracotta/10 dark:hover:bg-ochre/10 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px]"
                     aria-label="Close assistant"
                   >
                     <X className="w-4 h-4" />
@@ -1086,16 +1086,16 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           </div>
 
           {/* ─── QUICK TOPIC PROMPTS (NON-CLIPPING HORIZONTAL SCROLLER) ─── */}
-          <div className="relative z-30 px-3 py-2 border-b border-light-border/40 dark:border-dark-border/40 bg-[#F7F0E3] dark:bg-[#23252C] overflow-x-auto scrollbar-none flex items-center gap-1.5 whitespace-nowrap">
+          <div className="relative z-30 px-3 py-2 border-b border-light-border/40 dark:border-dark-border/40 bg-light-surface dark:bg-dark-surface overflow-x-auto scrollbar-none flex items-center gap-1.5 whitespace-nowrap">
             {UNIVERSAL_PROMPT_PILLS.map((pill) => (
               <button
                 key={pill.id}
                 type="button"
                 onClick={() => handleSendMessage(pill.prompt)}
                 disabled={isStreaming}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-3 sm:py-1 rounded-[2px] border border-light-border dark:border-dark-border bg-[#FBF6EC] dark:bg-[#2D3038] hover:border-terracotta dark:hover:border-[#D4A853] hover:text-terracotta dark:hover:text-[#D4A853] text-light-ink dark:text-dark-ink text-xs font-sans transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 shadow-2xs cursor-pointer min-h-[38px] sm:min-h-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:ring-offset-1"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-3 sm:py-1 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta dark:hover:border-ochre hover:text-terracotta dark:hover:text-ochre text-light-ink dark:text-dark-ink text-xs font-sans transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 shadow-2xs cursor-pointer min-h-[38px] sm:min-h-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:ring-offset-1"
               >
-                <Sparkles className="w-3 h-3 text-terracotta dark:text-[#D4A853]" />
+                <Sparkles className="w-3 h-3 text-terracotta dark:text-ochre" />
                 <span>{pill.label}</span>
               </button>
             ))}
@@ -1179,31 +1179,23 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                         <div className="flex flex-col space-y-1.5 animate-in fade-in duration-150">
                           {/* Assistant Identity Row */}
                           <div className="flex items-center justify-between px-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded bg-terracotta dark:bg-dark-button-light flex items-center justify-center text-white dark:text-dark-on-light text-xs font-serif font-bold shadow-2xs">
-                        原
-                      </div>
-                      <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
-                        Vincent AI
-                      </span>
-                      {msg.userType && (
-                        <Badge variant="terracotta" className="text-xs px-2 py-0.5 h-auto">
-                          {msg.userType}
-                        </Badge>
-                      )}
-                      <Badge
-                        variant="outline"
-                        className={`text-xs px-2 py-0.5 h-auto font-mono ${
-                          msg.telemetry?.isFallback
-                            ? 'text-ochre border-ochre/40 bg-ochre/5'
-                            : 'text-terracotta dark:text-[#D4A853] border-terracotta/40 dark:border-[#D4A853]/40 bg-terracotta/5 dark:bg-[#D4A853]/10'
-                        }`}
-                      >
-                        {msg.telemetry?.isFallback ? 'ARCHIVE' : 'GEMINI'}
-                      </Badge>
-                    </div>
-                    <ChatBubbleTimestamp>{msg.timestamp}</ChatBubbleTimestamp>
-                  </div>
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 rounded bg-terracotta dark:bg-dark-button-light flex items-center justify-center text-white dark:text-dark-on-light text-xs font-serif font-bold shadow-2xs">
+                                問
+                              </div>
+                              <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
+                                Vincent AI
+                              </span>
+                              {msg.userType && (
+                                <Badge variant="terracotta" className="text-xs px-2 py-0.5 h-auto">
+                                  {msg.userType}
+                                </Badge>
+                              )}
+                            </div>
+                            {msg.timestamp && (
+                              <ChatBubbleTimestamp>{msg.timestamp}</ChatBubbleTimestamp>
+                            )}
+                          </div>
 
                   {/* Clean Artisan Message Area (Full width fluid text container without nested card boxing) */}
                   <div className="relative pl-3 pr-2 py-1 select-text w-full group">
@@ -1221,7 +1213,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                               toast.success('Response copied to clipboard');
                               setTimeout(() => setCopiedMessageId(null), 2000);
                             }}
-                            className="w-8 h-8 sm:w-7 sm:h-7 rounded-[2px] text-light-ink-subtle hover:text-terracotta dark:hover:text-[#D4A853] bg-light-surface/90 dark:bg-dark-surface/90 shadow-2xs min-w-[32px] min-h-[32px]"
+                            className="w-8 h-8 sm:w-7 sm:h-7 rounded-[2px] text-light-ink-subtle hover:text-terracotta dark:hover:text-ochre bg-light-surface/90 dark:bg-dark-surface/90 shadow-2xs min-w-[32px] min-h-[32px]"
                             aria-label="Copy response"
                           >
                             {copiedMessageId === msg.id ? (
@@ -1243,7 +1235,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                         <button
                           type="button"
                           onClick={() => handleActionClick(msg.specCard)}
-                          className="w-full flex items-center justify-between p-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface hover:border-terracotta dark:hover:border-[#D4A853] transition-all text-left group/card cursor-pointer shadow-2xs"
+                          className="w-full flex items-center justify-between p-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta dark:hover:border-ochre transition-all text-left group/card cursor-pointer shadow-2xs"
                         >
                           <div className="flex items-center gap-2 min-w-0 pr-2">
                             <div className="w-6 h-6 rounded-[2px] bg-terracotta dark:bg-dark-button-light flex items-center justify-center text-white dark:text-dark-on-light shrink-0">
@@ -1253,7 +1245,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                               {msg.specCard.title}
                             </span>
                           </div>
-                          <span className="font-sans text-xs font-semibold text-terracotta dark:text-[#D4A853] group-hover/card:translate-x-0.5 transition-transform shrink-0">
+                          <span className="font-sans text-xs font-semibold text-terracotta dark:text-ochre group-hover/card:translate-x-0.5 transition-transform shrink-0">
                             {msg.specCard.actionText}
                           </span>
                         </button>
@@ -1271,11 +1263,11 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                             prev === msg.id ? null : msg.id
                           )
                         }
-                        className="inline-flex items-center gap-1.5 text-xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle hover:text-terracotta dark:hover:text-[#D4A853] transition-colors py-0.5 cursor-pointer select-none"
+                        className="inline-flex items-center gap-1.5 text-xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle hover:text-terracotta dark:hover:text-ochre transition-colors py-0.5 cursor-pointer select-none"
                         aria-expanded={expandedTelemetryId === msg.id}
                         aria-label={expandedTelemetryId === msg.id ? 'Collapse telemetry drawer' : 'Inspect telemetry'}
                       >
-                        <Activity className="w-3 h-3 text-terracotta dark:text-[#D4A853]" />
+                        <Activity className="w-3 h-3 text-terracotta dark:text-ochre" />
                         <span>{expandedTelemetryId === msg.id ? 'Hide Telemetry' : 'Inspect Telemetry'}</span>
                         <ChevronDown
                           className={`w-3 h-3 transition-transform duration-150 ${
@@ -1341,11 +1333,11 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                           {displayedStreamingText ? (
                             <>
                               <MarkdownRenderer content={displayedStreamingText} />
-                              <span className="inline-block w-1.5 h-3.5 bg-terracotta dark:bg-[#D4A853] ml-1 animate-pulse align-middle" aria-hidden="true" />
+                              <span className="inline-block w-1.5 h-3.5 bg-terracotta dark:bg-ochre ml-1 animate-pulse align-middle" aria-hidden="true" />
                             </>
                           ) : (
                             <div className="flex items-center gap-2 text-xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle py-1">
-                              <span className="w-2 h-2 rounded-full bg-terracotta dark:bg-[#D4A853] animate-pulse" />
+                              <span className="w-2 h-2 rounded-full bg-terracotta dark:bg-ochre animate-pulse" />
                               <span>Synthesizing response...</span>
                             </div>
                           )}
@@ -1360,7 +1352,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           </MessageScrollerProvider>
 
           {/* ─── INPUT DOCK BAR ─── */}
-          <div className="relative z-30 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-light-border/40 dark:border-dark-border/40 bg-[#F7F0E3] dark:bg-[#23252C]">
+          <div className="relative z-30 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-light-border/40 dark:border-dark-border/40 bg-light-surface dark:bg-dark-surface">
             {/* Staged file preview with canonical shadcn Attachment */}
             {attachedFile && (
               <div className="mb-2 animate-in fade-in duration-150">
@@ -1397,9 +1389,9 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
 
             {/* Live speech dictation indicator */}
             {isAdmin && isSttListening && (
-              <div className="mb-2 flex items-center justify-between px-3 py-1.5 rounded-[2px] bg-terracotta/10 dark:bg-[#D4A853]/10 border border-terracotta/20 dark:border-[#D4A853]/30 text-xs text-terracotta dark:text-[#D4A853] animate-in fade-in duration-150">
+              <div className="mb-2 flex items-center justify-between px-3 py-1.5 rounded-[2px] bg-terracotta/10 dark:bg-ochre/10 border border-terracotta/20 dark:border-ochre/30 text-xs text-terracotta dark:text-ochre animate-in fade-in duration-150">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-terracotta dark:bg-[#D4A853] animate-ping shrink-0" />
+                  <span className="w-2 h-2 rounded-full bg-terracotta dark:bg-ochre animate-ping shrink-0" />
                   <span className="font-sans font-medium text-xs">
                     Listening to microphone... Speak to dictate.
                   </span>
@@ -1407,7 +1399,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                 <button
                   type="button"
                   onClick={() => stopStt()}
-                  className="font-mono text-xs underline hover:text-terracotta-hover dark:hover:text-[#D4A853] transition-colors ml-2 cursor-pointer"
+                  className="font-mono text-xs underline hover:text-terracotta-hover dark:hover:text-ochre transition-colors ml-2 cursor-pointer"
                 >
                   Done
                 </button>
@@ -1419,7 +1411,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="relative flex items-end rounded-[2px] border border-light-border dark:border-dark-border bg-[#FBF6EC] dark:bg-[#2D3038] p-1.5 focus-within:border-terracotta dark:focus-within:border-[#D4A853] focus-within:ring-1 focus-within:ring-terracotta/30 dark:focus-within:ring-[#D4A853]/30 transition-all"
+              className="relative flex items-end rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised p-1.5 focus-within:border-terracotta dark:focus-within:border-ochre focus-within:ring-1 focus-within:ring-terracotta/30 dark:focus-within:ring-ochre/30 transition-all"
             >
               {isAdmin && (
                 <>
@@ -1443,7 +1435,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                         size="icon"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={isStreaming}
-                        className="w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-[2px] shrink-0 mb-0.5 cursor-pointer text-light-ink-subtle hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10"
+                        className="w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-[2px] shrink-0 mb-0.5 cursor-pointer text-light-ink-subtle hover:text-terracotta dark:hover:text-ochre hover:bg-terracotta/10 dark:hover:bg-ochre/10"
                         aria-label="Attach file (PNG, JPG, WEBP, GIF, PDF, DOCX up to 50 MB)"
                       >
                         <Paperclip className="w-4 h-4" />
@@ -1491,8 +1483,8 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                         disabled={isStreaming}
                         className={`w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-[2px] shrink-0 transition-colors ${
                           isSttListening
-                            ? 'text-terracotta dark:text-[#D4A853] bg-terracotta/20 dark:bg-[#D4A853]/20 ring-2 ring-terracotta/40 dark:ring-[#D4A853]/40 animate-pulse'
-                            : 'text-light-ink-subtle hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10'
+                            ? 'text-terracotta dark:text-ochre bg-terracotta/20 dark:bg-ochre/20 ring-2 ring-terracotta/40 dark:ring-ochre/40 animate-pulse'
+                            : 'text-light-ink-subtle hover:text-terracotta dark:hover:text-ochre hover:bg-terracotta/10 dark:hover:bg-ochre/10'
                         }`}
                         aria-label={
                           isSttListening
@@ -1503,7 +1495,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                         }
                       >
                         {isSttListening ? (
-                          <MicOff className="w-4 h-4 text-terracotta dark:text-[#D4A853] animate-pulse" />
+                          <MicOff className="w-4 h-4 text-terracotta dark:text-ochre animate-pulse" />
                         ) : (
                           <Mic className="w-4 h-4" />
                         )}

@@ -22,11 +22,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (theme === 'night') {
       root.classList.add('dark');
       root.style.colorScheme = 'dark';
-      root.style.backgroundColor = '#16171B';
+      root.style.backgroundColor = '#121316';
     } else {
       root.classList.remove('dark');
       root.style.colorScheme = 'light';
-      root.style.backgroundColor = '#F2E9DA';
+      root.style.backgroundColor = '#EAE0CE';
     }
     localStorage.setItem('profolio-theme', theme);
   }, [theme]);

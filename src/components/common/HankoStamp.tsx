@@ -14,7 +14,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
   const len = chars.length;
 
   return (
-    <div className={`relative inline-flex items-center justify-center select-none text-terracotta dark:text-[#D4A853] transition-colors duration-300 ${className}`}>
+    <div className={`relative inline-flex items-center justify-center select-none text-terracotta dark:text-ochre transition-colors duration-300 ${className}`}>
       <svg
         viewBox="0 0 200 200"
         fill="none"
