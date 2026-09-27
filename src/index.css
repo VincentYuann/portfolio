@@ -13,8 +13,8 @@
   --ink-muted: #686559;
   --ink-subtle: #8B8375;
   --border-color: #D4C4AA;
-  --border-channel-fill: transparent;
-  --border-inner: transparent;
+  --border-channel-fill: #FAF6EE;
+  --border-inner: #D4C4AA;
   --border-strong: #BDAB8F;
   --button-primary-bg: #26262E;
   --button-primary-text: #FAF6EE;
@@ -95,8 +95,8 @@ body.font-variant-v4 {
   --ink-muted: #9E9A8E;
   --ink-subtle: #736F64;
   --border-color: #383B44;
-  --border-channel-fill: transparent;
-  --border-inner: transparent;
+  --border-channel-fill: #23262F;
+  --border-inner: #383B44;
   --border-strong: #4E5362;
   --button-primary-bg: #D4A853;
   --button-primary-text: #121316;
@@ -456,25 +456,27 @@ body.font-variant-v4 {
 /* Compact / Integrated double hairline frame across all cards */
 .double-frame-simple,
 .craft-card,
-.classical-card-frame {
+.classical-card-frame,
+.interactive-card {
   position: relative;
   border-width: 1px;
   border-style: solid;
   border-color: var(--border-color);
   box-shadow: 
-    inset 0 0 0 2px var(--border-channel-fill),
-    inset 0 0 0 3px var(--border-color);
+    inset 0 0 0 1.5px var(--border-channel-fill),
+    inset 0 0 0 2.5px var(--border-color);
+  transition: border-color 0.25s var(--ease-zen), box-shadow 0.25s var(--ease-zen), background-color 0.25s var(--ease-zen);
 }
 
 .craft-card:hover,
 .classical-card-frame:hover,
 .double-frame-simple:hover,
 .interactive-card:hover {
-  border-color: #B5482E;
+  border-color: rgba(181, 72, 46, 0.45);
   box-shadow: 
-    inset 0 0 0 2px rgba(181, 72, 46, 0.12),
-    inset 0 0 0 3px #B5482E,
-    0 2px 8px rgba(181, 72, 46, 0.12);
+    inset 0 0 0 1.5px var(--surface-bg),
+    inset 0 0 0 2.5px rgba(181, 72, 46, 0.25),
+    0 2px 8px rgba(181, 72, 46, 0.08);
 }
 
 .dark .craft-card:hover,
