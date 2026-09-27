@@ -40,7 +40,7 @@ export const FontVariantSwitcher: React.FC = () => {
             </div>
 
             <p className="text-[11px] text-light-ink-muted dark:text-dark-ink-muted mb-3 leading-relaxed">
-              Experience 4 curated typographic voices across the entire portfolio in real time.
+              Experience 7 curated typographic voices across the entire portfolio in real time.
             </p>
 
             <div className="space-y-1.5">
@@ -94,7 +94,7 @@ export const FontVariantSwitcher: React.FC = () => {
                 Compare Specimen Sheet
               </button>
               <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
-                Active: {currentInfo.numericKey}/4
+                Active: {currentInfo.numericKey}/7
               </span>
             </div>
           </div>
@@ -114,7 +114,7 @@ export const FontVariantSwitcher: React.FC = () => {
             {currentInfo.kanji}
           </span>
           <span className="text-[10px] px-1.5 py-0.5 rounded bg-light-canvas dark:bg-dark-canvas text-light-ink-muted dark:text-dark-ink-muted font-mono">
-            {currentInfo.numericKey}/4
+            {currentInfo.numericKey}/7
           </span>
         </button>
       </div>
@@ -136,7 +136,7 @@ export const FontVariantSwitcher: React.FC = () => {
                     [Typography Tasting Laboratory]
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-light-canvas dark:bg-dark-canvas text-light-ink-muted dark:text-dark-ink-muted">
-                    4 Distinct Aesthetics
+                    7 Distinct Aesthetics
                   </span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif text-light-ink dark:text-dark-ink font-normal tracking-tight">
@@ -261,7 +261,7 @@ export const FontVariantSwitcher: React.FC = () => {
             <div className="mt-8 pt-4 border-t border-light-border/40 dark:border-dark-border/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-light-ink-muted dark:text-dark-ink-muted">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-bamboo" />
-                <span>Selection is saved automatically to your browser and accessible via query param <code className="font-mono text-terracotta dark:text-ochre">?font=v1..v4</code></span>
+                <span>Selection is saved automatically to your browser and accessible via query param <code className="font-mono text-terracotta dark:text-ochre">?font=v1..v7</code></span>
               </div>
               <button
                 onClick={() => setShowSpecimenModal(false)}

@@ -68,7 +68,7 @@ export default {
         sans: ['var(--font-body)', 'Mulish', 'Plus Jakarta Sans', 'DM Sans', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'Azeret Mono', 'JetBrains Mono', 'Space Mono', 'IBM Plex Mono', 'monospace'],
         vertical: ['var(--font-vertical)', 'Zen Old Mincho', 'Noto Serif JP', 'serif'],
-        display: ['var(--font-display)', 'Zen Old Mincho', 'Syne', 'Bricolage Grotesque', 'serif'],
+        display: ['var(--font-display)', 'Zen Old Mincho', 'Syne', 'Unbounded', 'Bricolage Grotesque', 'serif'],
         chamfer: ['var(--font-accent)', 'Chakra Petch', 'Space Grotesk', 'sans-serif'],
         chakra: ['var(--font-accent)', 'Chakra Petch', 'Space Grotesk', 'sans-serif'],
         zen: ['var(--font-display)', 'Zen Old Mincho', 'Noto Serif JP', 'serif'],

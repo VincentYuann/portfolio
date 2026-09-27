@@ -24,14 +24,14 @@
   --accent-color: #B5482E;
   --ease-zen: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Default Typography Tokens: Variant 1 (Kyoto Wabi-Sabi Monograph) */
-  --font-display: 'Zen Old Mincho', 'Noto Serif JP', Georgia, serif;
-  --font-body: 'Mulish', 'Montserrat', 'Inter', system-ui, sans-serif;
-  --font-mono: 'Azeret Mono', 'JetBrains Mono', monospace;
-  --font-accent: 'Chakra Petch', 'Azeret Mono', sans-serif;
-  --font-vertical: 'Zen Old Mincho', 'Noto Serif JP', serif;
-  --font-heading-tracking: -0.02em;
-  --font-body-tracking: 0em;
+  /* Default Typography Tokens: Variant 4 (Kyoto Neo-Grotesque & Algorithmic Minimal) */
+  --font-display: 'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Azeret Mono', monospace;
+  --font-accent: 'Space Grotesk', 'Bricolage Grotesque', sans-serif;
+  --font-vertical: 'Noto Sans JP', 'DM Sans', sans-serif;
+  --font-heading-tracking: -0.03em;
+  --font-body-tracking: -0.005em;
 }
 
 /* Variant 1: Kyoto Wabi-Sabi Monograph (Poetic Literary Mincho & Warm Humanist Sans) */
@@ -80,6 +80,42 @@ body.font-variant-v4 {
   --font-vertical: 'Noto Sans JP', 'DM Sans', sans-serif;
   --font-heading-tracking: -0.03em;
   --font-body-tracking: -0.005em;
+}
+
+/* Variant 5: Neo-Tokyo Cyber-Joinery (Chamfered Mechanical Display, Humanist Body, Dense Monospace) */
+[data-font-variant="v5"],
+body.font-variant-v5 {
+  --font-display: 'Chakra Petch', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Mulish', 'Montserrat', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Azeret Mono', 'JetBrains Mono', monospace;
+  --font-accent: 'Chakra Petch', 'Azeret Mono', sans-serif;
+  --font-vertical: 'Zen Old Mincho', 'Noto Serif JP', serif;
+  --font-heading-tracking: 0.015em;
+  --font-body-tracking: 0.005em;
+}
+
+/* Variant 6: Avant-Garde Hyper-Scale (Expansive Ultra-Wide Grotesque & Spatial Architecture) */
+[data-font-variant="v6"],
+body.font-variant-v6 {
+  --font-display: 'Unbounded', 'Syne', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
+  --font-accent: 'Space Grotesk', 'Unbounded', sans-serif;
+  --font-vertical: 'Noto Sans JP', 'Zen Old Mincho', sans-serif;
+  --font-heading-tracking: -0.04em;
+  --font-body-tracking: -0.005em;
+}
+
+/* Variant 7: Algorithmic Monospace Poster (Raw Monospace Titling & Algorithmic Blueprint Grid) */
+[data-font-variant="v7"],
+body.font-variant-v7 {
+  --font-display: 'Azeret Mono', 'Space Mono', 'JetBrains Mono', monospace;
+  --font-body: 'DM Sans', 'Mulish', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Space Mono', 'Azeret Mono', monospace;
+  --font-accent: 'Bricolage Grotesque', 'Space Grotesk', sans-serif;
+  --font-vertical: 'Zen Old Mincho', 'Noto Serif JP', serif;
+  --font-heading-tracking: -0.025em;
+  --font-body-tracking: 0em;
 }
 
 .dark {

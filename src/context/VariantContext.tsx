@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type TypographyVariantId = 'v1' | 'v2' | 'v3' | 'v4';
+export type TypographyVariantId = 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7';
 
 export interface TypographyVariantInfo {
   id: TypographyVariantId;
-  numericKey: '1' | '2' | '3' | '4';
+  numericKey: '1' | '2' | '3' | '4' | '5' | '6' | '7';
   name: string;
   kanji: string;
   tagline: string;
@@ -69,6 +69,45 @@ export const TYPOGRAPHY_VARIANTS: Record<TypographyVariantId, TypographyVariantI
     vibe: 'Silicon Valley AI founder meets Scandinavian-Japanese functional minimalism.',
     description: 'Punchy neo-grotesque titles with contemporary ink-traps (Bricolage Grotesque) paired with airy, calm DM Sans body prose and IDE-grade JetBrains Mono.',
   },
+  v5: {
+    id: 'v5',
+    numericKey: '5',
+    name: 'Neo-Tokyo Cyber-Joinery',
+    kanji: '斬 · 削角',
+    tagline: 'Chamfered Cyber-Constructivism & High-Tech Joinery',
+    displayFont: 'Chakra Petch',
+    bodyFont: 'Mulish',
+    monoFont: 'Azeret Mono',
+    accentFont: 'Chakra Petch',
+    vibe: 'Japanese mecha joinery, aerospace telemetry, high-precision engineering portfolio.',
+    description: 'Striking 45-degree chamfered mechanical titles (Chakra Petch) paired with crystalline geometric sans body prose (Mulish) and dense architectural monospace telemetry (Azeret Mono).',
+  },
+  v6: {
+    id: 'v6',
+    numericKey: '6',
+    name: 'Avant-Garde Hyper-Scale',
+    kanji: '極 · 尖端',
+    tagline: 'Expansive Ultra-Wide Grotesque & Spatial Architecture',
+    displayFont: 'Unbounded',
+    bodyFont: 'Plus Jakarta Sans',
+    monoFont: 'JetBrains Mono',
+    accentFont: 'Space Grotesk',
+    vibe: 'Spatial computing, high-concept European creative agency, boundary-pushing contemporary AI studio.',
+    description: 'Audacious, ultra-wide contemporary geometric display headlines (Unbounded) with expansive letterforms, paired with high-velocity modern sans (Plus Jakarta) and razor-sharp IDE monospace.',
+  },
+  v7: {
+    id: 'v7',
+    numericKey: '7',
+    name: 'Algorithmic Monospace Poster',
+    kanji: '符 · 暗号',
+    tagline: 'Raw Monospace Titling & Algorithmic Blueprint Grid',
+    displayFont: 'Azeret Mono',
+    bodyFont: 'DM Sans',
+    monoFont: 'Space Mono',
+    accentFont: 'Bricolage Grotesque',
+    vibe: 'Code-as-art, terminal constructivism, algorithmic systems engineer manifesto.',
+    description: 'Bold code-first brutalist poster headlines typeset in tight, characterful monospace (Azeret Mono), contrasted with airy humanized sans body prose (DM Sans) and vintage lab telemetry (Space Mono).',
+  },
 };
 
 // Aliases for backwards compatibility
@@ -85,12 +124,15 @@ interface VariantContextType {
 const VariantContext = createContext<VariantContextType | undefined>(undefined);
 
 const normalizeVariant = (val: string | null): TypographyVariantId => {
-  if (!val) return 'v1';
+  if (!val) return 'v4';
   if (val === 'v1' || val === '1' || val === 'tokonoma') return 'v1';
   if (val === 'v2' || val === '2' || val === 'akari') return 'v2';
   if (val === 'v3' || val === '3' || val === 'shokunin') return 'v3';
   if (val === 'v4' || val === '4') return 'v4';
-  return 'v1';
+  if (val === 'v5' || val === '5') return 'v5';
+  if (val === 'v6' || val === '6') return 'v6';
+  if (val === 'v7' || val === '7') return 'v7';
+  return 'v4';
 };
 
 export const VariantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -106,14 +148,14 @@ export const VariantProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const saved = localStorage.getItem('profolio-typography-variant') || localStorage.getItem('profolio-design-variant');
       return normalizeVariant(saved);
     }
-    return 'v1';
+    return 'v4';
   });
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-font-variant', variant);
       document.body.className = document.body.className
-        .replace(/\bfont-variant-v[1-4]\b/g, '')
+        .replace(/\bfont-variant-v[1-7]\b/g, '')
         .trim();
       document.body.classList.add(`font-variant-${variant}`);
     }
@@ -132,7 +174,7 @@ export const VariantProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const toggleVariant = () => {
-    const order: TypographyVariantId[] = ['v1', 'v2', 'v3', 'v4'];
+    const order: TypographyVariantId[] = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7'];
     const nextIndex = (order.indexOf(variant) + 1) % order.length;
     setVariant(order[nextIndex]);
   };
