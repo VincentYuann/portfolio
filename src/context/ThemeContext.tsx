@@ -22,7 +22,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (theme === 'night') {
       root.classList.add('dark');
       root.style.colorScheme = 'dark';
-      root.style.backgroundColor = '#1E1F24';
+      root.style.backgroundColor = '#16171B';
     } else {
       root.classList.remove('dark');
       root.style.colorScheme = 'light';

@@ -254,8 +254,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     }}
                     className={`timeline-node absolute left-3.5 sm:left-5 top-7 sm:top-8 w-2 h-2 rounded-full -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300 cursor-pointer ${
                       isCardActive
-                        ? 'bg-terracotta border border-terracotta'
-                        : 'border border-light-ink-muted/50 dark:border-[#787368] bg-light-canvas dark:bg-[#1F1E1D] hover:border-terracotta'
+                        ? 'bg-terracotta border border-terracotta dark:bg-[#D4A853] dark:border-[#D4A853]'
+                        : 'border border-light-ink-muted/50 dark:border-[#787368] bg-light-canvas dark:bg-[#16171B] hover:border-terracotta dark:hover:border-[#D4A853]'
                     }`}
                   />
 
@@ -335,7 +335,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         </div>
 
                         {/* Title & Company */}
-                        <h3 className="font-serif text-xl sm:text-2xl font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta transition-colors leading-snug">
+                        <h3 className="font-serif text-xl sm:text-2xl font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors leading-snug">
                           {exp.title}
                         </h3>
 

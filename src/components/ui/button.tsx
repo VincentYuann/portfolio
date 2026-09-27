@@ -4,18 +4,19 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-xs font-semibold uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta/50 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-xs font-semibold uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta/50 dark:focus-visible:ring-[#D4A853]/50 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer',
   {
     variants: {
       variant: {
-        default: 'bg-terracotta text-white shadow-xs hover:bg-terracotta-hover',
+        default: 'bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-xs hover:opacity-95 dark:hover:bg-[#DE9E36]',
+        terracotta: 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light shadow-xs hover:bg-terracotta-hover dark:hover:bg-[#DE9E36]',
         destructive: 'bg-red-500 text-white shadow-xs hover:bg-red-600',
         outline:
-          'border border-light-border dark:border-dark-border bg-transparent text-light-ink dark:text-dark-ink hover:border-terracotta hover:text-terracotta',
+          'border border-light-border dark:border-dark-border bg-transparent text-light-ink dark:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong hover:text-terracotta dark:hover:text-[#D4A853]',
         secondary:
-          'bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta/40',
-        ghost: 'hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised text-light-ink dark:text-dark-ink hover:text-terracotta',
-        link: 'text-terracotta underline-offset-4 hover:underline normal-case',
+          'bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong',
+        ghost: 'hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-[#D4A853]',
+        link: 'text-terracotta dark:text-[#D4A853] underline-offset-4 hover:underline normal-case',
       },
       size: {
         default: 'h-9 px-4 py-2',

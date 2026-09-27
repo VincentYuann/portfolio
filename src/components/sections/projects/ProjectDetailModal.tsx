@@ -30,7 +30,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
         {/* Modal Top Bar: Left Archive Info + Unblocked Dedicated Zone for Close Button */}
         <div className="flex items-center justify-between gap-3 px-4 sm:px-7 py-3 sm:py-3.5 border-b border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised shrink-0 pr-14 sm:pr-16">
           <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-            <span className="font-serif text-terracotta text-lg sm:text-2xl font-bold shrink-0" aria-hidden="true">
+            <span className="font-serif text-terracotta dark:text-[#D4A853] text-lg sm:text-2xl font-bold shrink-0" aria-hidden="true">
               {project.kanji || '案'}
             </span>
             <span className="font-mono text-[10px] sm:text-xs uppercase font-semibold text-light-ink-muted dark:text-dark-ink-muted tracking-wider truncate">
@@ -108,7 +108,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                     href={project.links.live}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white transition-colors focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none shadow-xs"
+                    className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-[#DE9E36] transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none shadow-xs"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>Live Deployment</span>
@@ -119,7 +119,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                     href={project.links.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface text-light-ink dark:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
+                    className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface text-light-ink dark:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none"
                   >
                     <Github className="w-3.5 h-3.5" />
                     <span>Repository</span>
@@ -216,7 +216,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
           <button
             type="button"
             onClick={onClose}
-            className="text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none rounded-[2px] px-3 py-1.5 cursor-pointer font-medium transition-colors"
+            className="text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded-[2px] px-3 py-1.5 cursor-pointer font-medium transition-colors"
           >
             Close ✕
           </button>

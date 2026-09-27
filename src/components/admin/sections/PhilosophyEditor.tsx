@@ -255,7 +255,7 @@ export const PhilosophyEditor: React.FC = () => {
           aria-expanded={!collapsed.origin}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
               <Compass className="w-4 h-4" />
             </div>
             <div>
@@ -269,7 +269,7 @@ export const PhilosophyEditor: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             {!collapsed.origin ? (
-              <ChevronDown className="w-4 h-4 text-terracotta" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
@@ -329,7 +329,7 @@ export const PhilosophyEditor: React.FC = () => {
                         value={milestone.era}
                         onChange={(e) => updateMilestone(idx, { era: e.target.value })}
                         placeholder={`PHASE 0${idx + 1}`}
-                        className="w-28 font-mono font-bold text-terracotta text-xs h-8 uppercase"
+                        className="w-28 font-mono font-bold text-terracotta dark:text-[#D4A853] text-xs h-8 uppercase"
                       />
                       <Input
                         value={milestone.tag || ''}
@@ -378,7 +378,7 @@ export const PhilosophyEditor: React.FC = () => {
           aria-expanded={!collapsed.pillars}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
               <ScrollText className="w-4 h-4" />
             </div>
             <div>
@@ -395,7 +395,7 @@ export const PhilosophyEditor: React.FC = () => {
               {pillars.length}/3 PILLARS
             </span>
             {!collapsed.pillars ? (
-              <ChevronDown className="w-4 h-4 text-terracotta" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
             )}
@@ -409,7 +409,7 @@ export const PhilosophyEditor: React.FC = () => {
               {pillars.map((pillar) => (
                 <div
                   key={pillar.position}
-                  className="relative rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface/40 dark:bg-dark-surface/40 p-4 sm:p-5 shadow-2xs group hover:border-terracotta/40 transition-colors"
+                  className="relative rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface/40 dark:bg-dark-surface/40 p-4 sm:p-5 shadow-2xs group hover:border-terracotta/40 dark:hover:border-[#D4A853]/40 transition-colors"
                 >
                   <div className="space-y-4">
                     {/* Header Pill & Delete */}

@@ -26,7 +26,7 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-sans font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-light-surface-raised dark:data-[state=active]:bg-dark-surface-raised data-[state=active]:text-terracotta data-[state=active]:font-semibold data-[state=active]:shadow-xs cursor-pointer',
+      'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-sans font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-light-surface-raised dark:data-[state=active]:bg-dark-surface-raised data-[state=active]:text-terracotta dark:data-[state=active]:text-[#D4A853] data-[state=active]:font-semibold data-[state=active]:shadow-xs cursor-pointer',
       className,
     )}
     {...props}
@@ -41,7 +41,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta',
+      'mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853]',
       className,
     )}
     {...props}

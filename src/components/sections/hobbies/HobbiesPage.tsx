@@ -59,7 +59,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
         <div className="mb-6 sm:mb-8">
           <button
             onClick={() => onNavigate?.('home', 'hobbies')}
-            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors group cursor-pointer"
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors group cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Return to Portfolio</span>
@@ -94,7 +94,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
               placeholder="Search passions, shows, workouts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60"
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60 dark:focus:border-[#D4A853]/60"
             />
           </div>
         </div>
@@ -109,8 +109,8 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3.5 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                   selectedCategory.toLowerCase() === cat.toLowerCase()
-                    ? 'bg-terracotta text-white shadow-xs'
-                    : 'bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50'
+                    ? 'bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-xs'
+                    : 'bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50 dark:hover:border-[#D4A853]/50'
                 }`}
               >
                 {cat === 'all' ? 'All Passions' : cat}
@@ -134,7 +134,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
                 setSearchQuery('');
                 setSelectedCategory('all');
               }}
-              className="mt-4 px-4 py-2 bg-terracotta hover:bg-terracotta/90 text-white text-xs font-sans rounded-md transition-colors cursor-pointer"
+              className="mt-4 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans rounded-md transition-opacity hover:opacity-90 cursor-pointer"
             >
               Reset Filters
             </button>

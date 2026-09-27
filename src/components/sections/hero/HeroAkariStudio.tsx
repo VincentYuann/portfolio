@@ -158,11 +158,11 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   return (
                     <div
                       key={pillar.label || idx}
-                      className="flex flex-col justify-between gap-3 p-4 rounded-[2px] bg-light-surface-card/90 dark:bg-dark-surface-card/90 craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-300 shadow-2xs group"
+                      className="flex flex-col justify-between gap-3 p-4 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-300 shadow-2xs group"
                     >
                       <div>
                         <div className="flex items-center gap-2 text-light-ink dark:text-dark-ink">
-                          <Icon className="w-4 h-4 text-terracotta shrink-0" />
+                          <Icon className="w-4 h-4 text-terracotta dark:text-[#D4A853] shrink-0" />
                           <span className="font-chakra text-xs uppercase tracking-wider font-semibold truncate">
                             {pillar.label}
                           </span>
@@ -196,7 +196,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             Fully synchronized with DB profile.hanko_card & profile contacts.
           */}
           <aside className="lg:col-span-4 xl:col-span-4 flex flex-col items-center lg:items-end justify-start order-1 lg:order-2 relative w-full">
-            <div className="craft-card double-frame-simple classical-card-frame bg-light-surface-card/95 dark:bg-dark-surface-card/95 backdrop-blur-md border border-light-border dark:border-dark-border rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 shadow-2xs w-full max-w-md relative group">
+            <div className="craft-card double-frame-simple classical-card-frame bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 shadow-2xs w-full max-w-md relative group">
               
               {/* Celestial Ensō Orbital Circle: interactive hover & aura */}
               <EnsoOrbital placement="top-left" size={132} interactive={true} />
@@ -206,7 +206,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 <div className="w-full flex items-center justify-between pb-2.5 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
                   {hanko?.headerLabel ? (
                     <div className="flex items-center gap-1.5 font-chakra uppercase text-xs tracking-wider text-light-ink dark:text-dark-ink font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta inline-block" />
+                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-[#D4A853] inline-block" />
                       <span>{hanko.headerLabel}</span>
                     </div>
                   ) : <div />}
@@ -227,8 +227,8 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   />
                 </div>
                 {hanko?.statusBadge && (
-                  <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-2xs font-mono font-medium text-terracotta tracking-wider uppercase shadow-2xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-terracotta animate-pulse" />
+                  <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-2xs font-mono font-medium text-terracotta dark:text-[#D4A853] tracking-wider uppercase shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-[#D4A853] animate-pulse" />
                     <span>{hanko.statusBadge}</span>
                   </div>
                 )}
@@ -260,7 +260,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                         title={line.tooltip || line.label}
                         className={`writing-vertical-rl font-zen text-xs sm:text-[13px] tracking-[0.25em] min-h-[110px] leading-relaxed transition-all cursor-default whitespace-nowrap select-none ${
                           lIdx === 1
-                            ? 'text-terracotta dark:text-[#E85D44] font-medium hover:scale-105'
+                            ? 'text-terracotta dark:text-[#D4A853] font-medium hover:scale-105'
                             : 'text-light-ink dark:text-dark-ink hover:opacity-100'
                         }`}
                       >
@@ -282,7 +282,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   {hanko?.locationArchive && (
                     <div className="flex items-center justify-between text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
                       <span className="flex items-center gap-1.5">
-                        <Compass className="w-3.5 h-3.5 text-terracotta shrink-0" />
+                        <Compass className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0" />
                         <span>{hanko.locationArchive}</span>
                       </span>
                     </div>
@@ -295,7 +295,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                           href={githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                         >
                           <Github className="w-3.5 h-3.5" />
                           <span>GitHub</span>
@@ -306,7 +306,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                           href={linkedinUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                         >
                           <Linkedin className="w-3.5 h-3.5" />
                           <span>LinkedIn</span>
@@ -315,7 +315,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       {emailUrl && (
                         <a
                           href={emailUrl}
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                         >
                           <Mail className="w-3.5 h-3.5" />
                           <span>Email</span>

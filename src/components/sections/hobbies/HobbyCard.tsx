@@ -51,7 +51,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                 </span>
               )}
             </div>
-            <h3 className="font-serif text-xl sm:text-2xl font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta transition-colors leading-tight">
+            <h3 className="font-serif text-xl sm:text-2xl font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors leading-tight">
               {hobby.title}
             </h3>
           </div>
@@ -100,7 +100,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
 
                 {/* Image Counter Pill */}
                 <div className="absolute top-2 left-2 px-2 py-0.5 rounded-[2px] bg-black/60 backdrop-blur-xs text-[11px] font-mono text-white/90 flex items-center gap-1">
-                  <ImageIcon className="w-3 h-3 text-terracotta" />
+                  <ImageIcon className="w-3 h-3 text-terracotta dark:text-[#D4A853]" />
                   <span>
                     {activeImageIndex + 1} / {images.length}
                   </span>
@@ -115,7 +115,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                       key={idx}
                       type="button"
                       onClick={() => setActiveImageIndex(idx)}
-                      className="relative flex-1 rounded-[2px] overflow-hidden border border-light-border dark:border-dark-border hover:border-terracotta transition-colors group/thumb cursor-pointer bg-light-surface-muted dark:bg-dark-surface-muted"
+                      className="relative flex-1 rounded-[2px] overflow-hidden border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-[#D4A853] transition-colors group/thumb cursor-pointer bg-light-surface-muted dark:bg-dark-surface-muted"
                       title={`Switch to image ${idx + 1}`}
                       aria-label={`Switch to photo ${idx + 1}`}
                     >

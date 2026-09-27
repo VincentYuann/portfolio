@@ -140,12 +140,12 @@ export const PhilosophyBento: React.FC = () => {
         <div className="relative mb-12 sm:mb-16 pb-6 border-b border-light-border/70 dark:border-dark-border/80">
           <div className="max-w-3xl relative z-10">
             <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-terracotta text-sm">04 //</span>
+              <span className="font-serif text-terracotta dark:text-[#D4A853] text-sm">04 //</span>
               <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                 ORIGIN &amp; PHILOSOPHY · 原点と哲学
               </span>
               <span
-                className="inline-flex items-center justify-center w-4 h-4 rounded-[2px] bg-terracotta/10 text-terracotta text-[9px] font-serif border border-terracotta/30 select-none ml-1"
+                className="inline-flex items-center justify-center w-4 h-4 rounded-[2px] bg-terracotta/10 dark:bg-[#D4A853]/10 text-terracotta dark:text-[#D4A853] text-[9px] font-serif border border-terracotta/30 dark:border-[#D4A853]/30 select-none ml-1"
                 title="Hanko Seal: 哲 (Philosophy)"
               >
                 哲
@@ -300,7 +300,7 @@ export const PhilosophyBento: React.FC = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-serif text-lg sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta transition-colors break-words">
+                    <h3 className="font-serif text-lg sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors break-words">
                       {pillar.romaji}
                       {pillar.title && (
                         <span className="font-sans text-xs sm:text-sm font-light text-light-ink-muted dark:text-dark-ink-muted ml-2 block sm:inline">

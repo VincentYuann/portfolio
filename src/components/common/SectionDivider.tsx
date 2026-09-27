@@ -194,12 +194,12 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
 
         {/* Section Description in the Middle */}
         <div className="relative z-10 inline-flex items-center gap-2 px-3 sm:px-4 py-1 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border shadow-2xs transition-colors shrink-0">
-          <span className="text-[10px] text-terracotta select-none">◇</span>
+          <span className="text-[10px] text-terracotta dark:text-[#D4A853] select-none">◇</span>
           <span className="font-chakra font-medium tracking-widest text-light-ink dark:text-dark-ink uppercase text-[11px]">
             <span className="sm:hidden">{displayShort}</span>
             <span className="hidden sm:inline">{label}</span>
           </span>
-          <span className="text-[10px] text-terracotta select-none">◇</span>
+          <span className="text-[10px] text-terracotta dark:text-[#D4A853] select-none">◇</span>
         </div>
 
         {/* Right Concentric Diamond Crest */}

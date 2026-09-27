@@ -13,7 +13,7 @@ interface MarkdownRendererProps {
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content }) => {
   return (
-    <div className="markdown-content select-text selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-terracotta/30 dark:selection:text-ochre">
+    <div className="markdown-content select-text selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-[#D4A853]/25 dark:selection:text-[#D4A853]">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
@@ -54,7 +54,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           blockquote({ children }) {
             return (
-              <blockquote className="my-2.5 border-l border-terracotta/40 bg-terracotta/5 dark:bg-terracotta/10 px-3.5 py-1.5 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink italic rounded-r-md">
+              <blockquote className="my-2.5 border-l border-terracotta/40 dark:border-[#D4A853]/40 bg-terracotta/5 dark:bg-[#D4A853]/10 px-3.5 py-1.5 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink italic rounded-r-md">
                 {children}
               </blockquote>
             );
@@ -64,14 +64,14 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           h1({ children }) {
             return (
-              <h1 className="font-serif font-bold text-sm sm:text-base text-terracotta my-2 pb-1 border-b border-light-border dark:border-dark-border">
+              <h1 className="font-serif font-bold text-sm sm:text-base text-terracotta dark:text-[#D4A853] my-2 pb-1 border-b border-light-border dark:border-dark-border">
                 {children}
               </h1>
             );
           },
           h2({ children }) {
             return (
-              <h2 className="font-serif font-bold text-xs sm:text-sm text-terracotta my-2">
+              <h2 className="font-serif font-bold text-xs sm:text-sm text-terracotta dark:text-[#D4A853] my-2">
                 {children}
               </h2>
             );
@@ -89,7 +89,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-terracotta underline hover:text-terracotta-hover underline-offset-2 transition-colors font-medium"
+                className="text-terracotta dark:text-[#D4A853] underline hover:text-terracotta-hover dark:hover:text-[#DE9E36] underline-offset-2 transition-colors font-medium"
               >
                 {children}
               </a>
@@ -98,7 +98,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           code({ inline, className, children }: any) {
             if (inline) {
               return (
-                <code className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-terracotta/10 text-terracotta dark:text-ochre border border-terracotta/20 select-text">
+                <code className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-terracotta/10 dark:bg-[#D4A853]/10 text-terracotta dark:text-[#D4A853] border border-terracotta/20 dark:border-[#D4A853]/20 select-text">
                   {children}
                 </code>
               );
@@ -115,7 +115,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
                       navigator.clipboard.writeText(codeString);
                       toast.success('Code copied to clipboard');
                     }}
-                    className="hover:text-terracotta transition-colors flex items-center gap-1 cursor-pointer py-0.5 px-1"
+                    className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors flex items-center gap-1 cursor-pointer py-0.5 px-1"
                     title="Copy code"
                     aria-label="Copy code block"
                   >
@@ -140,7 +140,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           th({ children }) {
             return (
-              <th className="px-3 py-1.5 bg-light-surface-raised dark:bg-dark-surface-raised font-serif font-semibold text-terracotta text-left">
+              <th className="px-3 py-1.5 bg-light-surface-raised dark:bg-dark-surface-raised font-serif font-semibold text-terracotta dark:text-[#D4A853] text-left">
                 {children}
               </th>
             );

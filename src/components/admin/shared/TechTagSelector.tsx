@@ -41,7 +41,7 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
           variant="ghost"
           size="sm"
           onClick={() => setModalOpen(true)}
-          className="text-terracotta hover:text-terracotta hover:bg-terracotta/10 text-xs h-7 px-2 cursor-pointer"
+          className="text-terracotta dark:text-[#D4A853] hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 text-xs h-7 px-2 cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5 mr-1" />
           Add Tag
@@ -52,7 +52,7 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
         {cleanTags.map((tag, idx) => (
           <span
             key={`${tag}-${idx}`}
-            className="inline-flex items-center gap-1 group bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/50 rounded-md pr-1.5 shadow-2xs transition-colors"
+            className="inline-flex items-center gap-1 group bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/50 dark:hover:border-[#D4A853]/50 rounded-md pr-1.5 shadow-2xs transition-colors"
           >
             <TechTag tag={tag} size="sm" className="border-0 shadow-none bg-transparent dark:bg-transparent" />
             <button
@@ -70,7 +70,7 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
           <button
             type="button"
             onClick={() => setModalOpen(true)}
-            className="font-sans text-xs text-light-ink-subtle dark:text-dark-ink-subtle italic hover:text-terracotta transition-colors cursor-pointer py-0.5"
+            className="font-sans text-xs text-light-ink-subtle dark:text-dark-ink-subtle italic hover:text-terracotta dark:hover:text-[#D4A853] transition-colors cursor-pointer py-0.5"
           >
             + Click to select official technology logo tags…
           </button>

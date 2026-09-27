@@ -267,7 +267,7 @@ export const IntroEditor: React.FC = () => {
           aria-expanded={!collapsed.identity}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
               <User className="w-4 h-4" />
             </div>
             <div>
@@ -281,7 +281,7 @@ export const IntroEditor: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             {!collapsed.identity ? (
-              <ChevronDown className="w-4 h-4 text-terracotta" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
@@ -357,7 +357,7 @@ export const IntroEditor: React.FC = () => {
           aria-expanded={!collapsed.social}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
               <Globe className="w-4 h-4" />
             </div>
             <div>
@@ -371,7 +371,7 @@ export const IntroEditor: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             {!collapsed.social ? (
-              <ChevronDown className="w-4 h-4 text-terracotta" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
@@ -438,7 +438,7 @@ export const IntroEditor: React.FC = () => {
           aria-expanded={!collapsed.domains}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
               <ScrollText className="w-4 h-4" />
             </div>
             <div>
@@ -455,7 +455,7 @@ export const IntroEditor: React.FC = () => {
               {data.capability_pillars.length}/3 DOMAINS
             </span>
             {!collapsed.domains ? (
-              <ChevronDown className="w-4 h-4 text-terracotta" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
             )}
@@ -474,7 +474,7 @@ export const IntroEditor: React.FC = () => {
                   variant="ghost"
                   size="sm"
                   onClick={addPillar}
-                  className="text-terracotta hover:text-terracotta hover:bg-terracotta/10 text-xs h-7 px-2 cursor-pointer"
+                  className="text-terracotta dark:text-[#D4A853] hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 text-xs h-7 px-2 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5 mr-1" />
                   Add Domain
@@ -547,7 +547,7 @@ export const IntroEditor: React.FC = () => {
           aria-expanded={!collapsed.hanko}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
               <HankoStamp char="原" className="w-5 h-5" />
             </div>
             <div>
@@ -561,7 +561,7 @@ export const IntroEditor: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             {!collapsed.hanko ? (
-              <ChevronDown className="w-4 h-4 text-terracotta" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
@@ -603,7 +603,7 @@ export const IntroEditor: React.FC = () => {
                   Stamp Seal Character (認印)
                 </Label>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
                     <HankoStamp char={hankoData.stampCharacter || '原'} className="w-5 h-5" />
                   </div>
                   <Input
@@ -618,10 +618,10 @@ export const IntroEditor: React.FC = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => setKanjiModalOpen(true)}
-                    className="h-8 px-2.5 text-xs font-mono text-light-ink-muted hover:text-terracotta border-light-border dark:border-dark-border cursor-pointer shrink-0"
+                    className="h-8 px-2.5 text-xs font-mono text-light-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] border-light-border dark:border-dark-border cursor-pointer shrink-0"
                     title="Choose Kanji"
                   >
-                    <BookOpen className="w-3.5 h-3.5 mr-1 text-terracotta" />
+                    <BookOpen className="w-3.5 h-3.5 mr-1 text-terracotta dark:text-[#D4A853]" />
                     Picker
                   </Button>
                 </div>
@@ -656,7 +656,7 @@ export const IntroEditor: React.FC = () => {
                           lines: preset.lines as [HankoCardLine, HankoCardLine, HankoCardLine],
                         })
                       }
-                      className="px-2.5 py-1 text-xs font-mono rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta transition-colors cursor-pointer"
+                      className="px-2.5 py-1 text-xs font-mono rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/50 dark:hover:border-[#D4A853]/50 hover:text-terracotta dark:hover:text-[#D4A853] transition-colors cursor-pointer"
                     >
                       {preset.name}
                     </button>

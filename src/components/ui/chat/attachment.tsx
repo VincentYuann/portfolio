@@ -33,7 +33,7 @@ export const Attachment = React.forwardRef<HTMLDivElement, AttachmentProps>(
           size === 'sm' && 'p-2 gap-2',
           size === 'xs' && 'p-1.5 gap-1.5',
           state === 'error' && 'border-red-500/50 bg-red-500/5 dark:bg-red-500/10',
-          (state === 'uploading' || state === 'processing') && 'border-terracotta/40 bg-terracotta/5',
+          (state === 'uploading' || state === 'processing') && 'border-terracotta/40 dark:border-[#D4A853]/40 bg-terracotta/5 dark:bg-[#D4A853]/5',
           className
         )}
         {...props}
@@ -57,7 +57,7 @@ export const AttachmentMedia = React.forwardRef<HTMLDivElement, AttachmentMediaP
         data-variant={variant}
         className={cn(
           'flex items-center justify-center shrink-0 rounded overflow-hidden',
-          variant === 'icon' && 'size-9 bg-terracotta/10 text-terracotta border border-terracotta/30',
+          variant === 'icon' && 'size-9 bg-terracotta/10 dark:bg-[#D4A853]/10 text-terracotta dark:text-[#D4A853] border border-terracotta/30 dark:border-[#D4A853]/30',
           variant === 'image' && 'size-9 object-cover border border-light-border dark:border-dark-border',
           className
         )}
@@ -138,7 +138,7 @@ export const AttachmentAction = React.forwardRef<
       ref={ref}
       type="button"
       className={cn(
-        'size-7 rounded-[2px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta hover:bg-terracotta/10 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta',
+        'size-7 rounded-[2px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853]',
         className
       )}
       {...props}

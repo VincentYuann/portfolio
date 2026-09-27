@@ -53,9 +53,9 @@ export const EditorSectionHeader: React.FC<EditorSectionHeaderProps> = ({
               size="sm"
               onClick={onAdd}
               disabled={addDisabled}
-              className="text-xs h-9 px-3.5 flex-1 sm:flex-initial border-light-border dark:border-dark-border hover:border-terracotta/60 hover:text-terracotta cursor-pointer"
+              className="text-xs h-9 px-3.5 flex-1 sm:flex-initial border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 hover:text-terracotta dark:hover:text-[#D4A853] cursor-pointer"
             >
-              <Plus className="w-3.5 h-3.5 mr-1.5 text-terracotta shrink-0" />
+              <Plus className="w-3.5 h-3.5 mr-1.5 text-terracotta dark:text-[#D4A853] shrink-0" />
               <span>{addLabel}</span>
             </Button>
           )}
@@ -70,7 +70,7 @@ export const EditorSectionHeader: React.FC<EditorSectionHeaderProps> = ({
                 ? 'bg-emerald-600 hover:bg-emerald-600 text-white'
                 : saveState === 'error'
                 ? 'bg-rose-600 hover:bg-rose-600 text-white'
-                : 'bg-terracotta hover:bg-terracotta-hover text-white shadow-xs'
+                : 'bg-terracotta dark:bg-dark-button-light hover:bg-terracotta-hover dark:hover:bg-white text-white dark:text-dark-on-light shadow-xs'
             }`}
           >
             {saveState === 'saving' ? (

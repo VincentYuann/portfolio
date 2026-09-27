@@ -92,16 +92,16 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
       ? 'bg-bamboo/80 animate-status-glow origin-center'
       : pulseColor === 'ochre'
       ? 'bg-ochre/80 animate-status-glow origin-center'
-      : 'bg-terracotta/80 animate-ruby-pulse origin-center';
+      : 'bg-terracotta/80 dark:bg-[#D4A853]/80 animate-ruby-pulse origin-center';
 
   const topHairlineGradient =
     side === 'left'
-      ? 'bg-gradient-to-b from-transparent via-terracotta/40 to-ochre/40'
+      ? 'bg-gradient-to-b from-transparent via-terracotta/40 dark:via-[#D4A853]/40 to-ochre/40'
       : 'bg-gradient-to-b from-transparent via-bamboo/40 to-ochre/40';
 
   const bottomHairlineGradient =
     side === 'left'
-      ? 'bg-gradient-to-b from-ochre/40 via-terracotta/30 to-transparent'
+      ? 'bg-gradient-to-b from-ochre/40 via-terracotta/30 dark:via-[#D4A853]/30 to-transparent'
       : 'bg-gradient-to-b from-ochre/40 via-bamboo/30 to-transparent';
 
   return (
@@ -112,8 +112,8 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
       {type === 'minimal' ? (
         <>
           {/* Minimalist vertical line with Hanko seal box at bottom */}
-          <div className="w-px h-28 sm:h-36 bg-gradient-to-b from-transparent via-ochre/40 to-terracotta/40" />
-          <div className="w-5 h-5 border border-terracotta/70 dark:border-terracotta/80 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta shadow-2xs">
+          <div className="w-px h-28 sm:h-36 bg-gradient-to-b from-transparent via-ochre/40 to-terracotta/40 dark:to-[#D4A853]/40" />
+          <div className="w-5 h-5 border border-terracotta/70 dark:border-[#D4A853]/70 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-[#D4A853] shadow-2xs">
             {stampChar}
           </div>
         </>
@@ -132,7 +132,7 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
           {/* Bottom Hairline */}
           <div className={`w-px h-16 ${bottomHairlineGradient}`} />
           {/* Stamp Box */}
-          <div className="w-5 h-5 border border-terracotta/70 dark:border-terracotta/80 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta shadow-2xs">
+          <div className="w-5 h-5 border border-terracotta/70 dark:border-[#D4A853]/70 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-[#D4A853] shadow-2xs">
             {stampChar}
           </div>
         </>
@@ -152,7 +152,7 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
             </div>
           )}
           <div className={`w-px h-16 ${bottomHairlineGradient}`} />
-          <div className="w-5 h-5 border border-terracotta/70 dark:border-terracotta/80 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta shadow-2xs">
+          <div className="w-5 h-5 border border-terracotta/70 dark:border-[#D4A853]/70 rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-[#D4A853] shadow-2xs">
             {stampChar}
           </div>
         </>

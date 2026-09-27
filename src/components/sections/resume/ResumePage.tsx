@@ -205,7 +205,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
         <div className="mb-6 sm:mb-8">
           <button
             onClick={() => onNavigate?.('home')}
-            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors group cursor-pointer"
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors group cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Return to Portfolio</span>
@@ -240,7 +240,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
               onClick={() => setActiveTab('pdf')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-sans tracking-wide transition-all ${
                 activeTab === 'pdf'
-                  ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta font-semibold shadow-xs'
+                  ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-[#D4A853] font-semibold shadow-xs'
                   : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
               }`}
             >
@@ -251,7 +251,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
               onClick={() => setActiveTab('latex')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-sans tracking-wide transition-all ${
                 activeTab === 'latex'
-                  ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta font-semibold shadow-xs'
+                  ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-[#D4A853] font-semibold shadow-xs'
                   : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
               }`}
             >
@@ -264,7 +264,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
           {activeTab === 'pdf' ? (
             <button
               onClick={handleDownloadPdf}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-terracotta hover:bg-terracotta-hover text-white text-xs font-sans font-medium rounded-lg shadow-sm transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-lg shadow-sm hover:opacity-95 transition-all"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Download PDF</span>
@@ -273,14 +273,14 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleCopyLatex}
-                className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-lg hover:border-terracotta transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-lg hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-bamboo" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copied ? 'Copied' : 'Copy LaTeX'}</span>
               </button>
               <button
                 onClick={handleDownloadTex}
-                className="inline-flex items-center gap-1.5 px-3 py-2 bg-terracotta hover:bg-terracotta-hover text-white text-xs font-sans font-medium rounded-lg shadow-sm transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-lg shadow-sm hover:opacity-95 transition-all"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download .tex</span>
@@ -299,7 +299,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             {/* Top Bar for PDF Viewer */}
             <div className="px-4 py-2.5 bg-light-surface-muted/90 dark:bg-dark-surface-muted border-b border-light-border dark:border-dark-border flex items-center justify-between text-xs text-light-ink-muted dark:text-dark-ink-muted">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-terracotta/70 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-terracotta/70 dark:bg-[#D4A853]/70 inline-block" />
                 <span className="font-mono">Vincent_Yuan_Resume.pdf</span>
               </div>
               <div className="flex items-center gap-4">
@@ -307,7 +307,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                   href={supabasePdfUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-[11px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors"
+                  className="inline-flex items-center gap-1 text-[11px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
                 >
                   <ExternalLink className="w-3 h-3" />
                   <span>Open in New Window</span>
@@ -324,7 +324,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
               >
                 {/* Fallback if browser cannot embed PDF */}
                 <div className="flex flex-col items-center justify-center p-8 text-center space-y-4 max-w-md mx-auto">
-                  <FileText className="w-12 h-12 text-terracotta opacity-80" />
+                  <FileText className="w-12 h-12 text-terracotta dark:text-[#D4A853] opacity-80" />
                   <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink">
                     Resume Document Available
                   </h3>
@@ -334,7 +334,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                   <div className="flex items-center gap-3">
                     <button
                       onClick={handleDownloadPdf}
-                      className="px-4 py-2 bg-terracotta text-white text-xs font-sans rounded-[2px] shadow-xs cursor-pointer"
+                      className="px-4 py-2 bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light text-xs font-sans rounded-[2px] shadow-xs cursor-pointer"
                     >
                       Download Resume PDF
                     </button>

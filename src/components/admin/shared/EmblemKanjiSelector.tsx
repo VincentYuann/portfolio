@@ -69,7 +69,7 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
         <div className="flex items-center gap-3">
           {/* Visual Seal Preview Box */}
           <div
-            className={`relative shrink-0 flex items-center justify-center rounded-xl border border-terracotta/60 bg-terracotta/5 dark:bg-terracotta/10 overflow-hidden shadow-inner p-1 ${
+            className={`relative shrink-0 flex items-center justify-center rounded-xl border border-terracotta/60 dark:border-[#D4A853]/40 bg-terracotta/5 dark:bg-[#D4A853]/10 overflow-hidden shadow-inner p-1 ${
               isEmbedded ? 'w-12 h-12' : 'w-14 h-14'
             }`}
           >
@@ -82,7 +82,7 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
             ) : (
               <div className="w-full h-full flex items-center justify-center select-none text-center">
                 <span
-                  className={`font-serif font-black text-terracotta leading-tight break-all ${
+                  className={`font-serif font-black text-terracotta dark:text-[#D4A853] leading-tight break-all ${
                     (kanji?.length || 0) > 2
                       ? 'text-xs tracking-tighter'
                       : (kanji?.length || 0) === 2
@@ -104,18 +104,18 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
               variant="outline"
               size="sm"
               onClick={() => setKanjiModalOpen(true)}
-              className="w-full text-xs h-7.5 sm:h-8 px-2.5 sm:px-3 border-light-border dark:border-dark-border hover:border-terracotta/60 hover:text-terracotta cursor-pointer justify-between font-medium"
+              className="w-full text-xs h-7.5 sm:h-8 px-2.5 sm:px-3 border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 hover:text-terracotta dark:hover:text-[#D4A853] cursor-pointer justify-between font-medium"
             >
               <div className="flex items-center gap-1.5 min-w-0">
                 <BookOpen className="w-3.5 h-3.5 text-ochre shrink-0" />
                 <span className="truncate text-xs">
                   Symbol:{' '}
-                  <span className="font-serif font-bold text-terracotta text-sm ml-0.5">
+                  <span className="font-serif font-bold text-terracotta dark:text-[#D4A853] text-sm ml-0.5">
                     {kanji || 'None'}
                   </span>
                 </span>
               </div>
-              <span className="text-xs font-mono text-terracotta font-semibold uppercase tracking-wider shrink-0">
+              <span className="text-xs font-mono text-terracotta dark:text-[#D4A853] font-semibold uppercase tracking-wider shrink-0">
                 Browse →
               </span>
             </Button>
@@ -163,7 +163,7 @@ export const EmblemKanjiSelector: React.FC<EmblemKanjiSelectorProps> = ({
                     size="sm"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className="text-xs h-8 px-2.5 shrink-0 border-light-border dark:border-dark-border hover:border-terracotta/50 hover:text-terracotta cursor-pointer"
+                    className="text-xs h-8 px-2.5 shrink-0 border-light-border dark:border-dark-border hover:border-terracotta/50 dark:hover:border-[#D4A853]/50 hover:text-terracotta dark:hover:text-[#D4A853] cursor-pointer"
                     title="Upload image file"
                   >
                     {uploading ? (

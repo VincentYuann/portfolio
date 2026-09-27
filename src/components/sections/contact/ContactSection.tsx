@@ -173,7 +173,7 @@ export const ContactSection: React.FC = () => {
                         href={mailtoHref}
                         className="inline-flex items-center gap-2 px-4 py-2.5 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-95 font-sans text-xs font-medium rounded-[2px] shadow-sm transition-all"
                       >
-                        <Mail className="w-3.5 h-3.5 text-terracotta" />
+                        <Mail className="w-3.5 h-3.5 text-terracotta dark:text-dark-canvas" />
                         <span>{contactEmail}</span>
                       </a>
 
@@ -258,7 +258,7 @@ export const ContactSection: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="contact-name" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                        Your Name <span className="text-terracotta">*</span>
+                        Your Name <span className="text-terracotta dark:text-[#D4A853]">*</span>
                       </label>
                       <input
                         id="contact-name"
@@ -274,7 +274,7 @@ export const ContactSection: React.FC = () => {
                         className={`w-full px-3 py-2 rounded-[2px] text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors ${
                           touched.name && errors.name
                             ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
-                            : 'border-light-border dark:border-dark-border focus:border-terracotta focus-visible:ring-terracotta/40'
+                            : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-[#D4A853] focus-visible:ring-terracotta/40 dark:focus-visible:ring-[#D4A853]/40'
                         }`}
                       />
                       {touched.name && errors.name && (
@@ -286,7 +286,7 @@ export const ContactSection: React.FC = () => {
                     </div>
                     <div>
                       <label htmlFor="contact-email" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                        Email Address <span className="text-terracotta">*</span>
+                        Email Address <span className="text-terracotta dark:text-[#D4A853]">*</span>
                       </label>
                       <input
                         id="contact-email"
@@ -302,7 +302,7 @@ export const ContactSection: React.FC = () => {
                         className={`w-full px-3 py-2 rounded-[2px] text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors ${
                           touched.email && errors.email
                             ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
-                            : 'border-light-border dark:border-dark-border focus:border-terracotta focus-visible:ring-terracotta/40'
+                            : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-[#D4A853] focus-visible:ring-terracotta/40 dark:focus-visible:ring-[#D4A853]/40'
                         }`}
                       />
                       {touched.email && errors.email && (
@@ -316,7 +316,7 @@ export const ContactSection: React.FC = () => {
 
                   <div>
                     <label htmlFor="contact-message" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                      Your Message <span className="text-terracotta">*</span>
+                      Your Message <span className="text-terracotta dark:text-[#D4A853]">*</span>
                     </label>
                     <textarea
                       id="contact-message"
@@ -332,7 +332,7 @@ export const ContactSection: React.FC = () => {
                       className={`w-full px-3 py-2.5 rounded-[2px] text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors resize-none ${
                         touched.message && errors.message
                           ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
-                          : 'border-light-border dark:border-dark-border focus:border-terracotta focus-visible:ring-terracotta/40'
+                          : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-[#D4A853] focus-visible:ring-terracotta/40 dark:focus-visible:ring-[#D4A853]/40'
                       }`}
                     />
                     {touched.message && errors.message && (
@@ -353,7 +353,7 @@ export const ContactSection: React.FC = () => {
                   <button
                     type="submit"
                     disabled={status === 'sending'}
-                    className="w-full py-2.5 px-4 rounded-[2px] font-sans text-sm font-medium bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
+                    className="w-full py-2.5 px-4 rounded-[2px] font-sans text-sm font-medium bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>{status === 'sending' ? 'Transmitting...' : 'Send Message'}</span>

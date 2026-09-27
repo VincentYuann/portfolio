@@ -7,16 +7,14 @@ description: >-
   tactile materiality, and editorial typography, embodying Ma (negative space), Shokunin
   (artisan precision), and Wabi-Sabi (organic harmony), free from cyberpunk or SaaS clichés.
 colors:
-  # Shared brand / identity
-  identity-accent: "#B5482E"
-  identity-accent-hover: "#9E3D27"
-  identity-accent-soft: "#F0D7C7"
-  terracotta: "#B5482E"
-  ochre: "#D49B6A"
-  bamboo: "#526D57"
-  akari-glow: "rgba(232, 162, 86, 0.08)"
+  # Brand & Accent Roles (Dual-Theme Accent Hierarchy)
+  terracotta: "#B5482E"          # Sacred Red: Vermilion Hanko Seal [原] & Live Status Beacon
+  ochre: "#D49B6A"               # Ambient Warmth: Akari Lantern Glow, Dark Mode Linework & Hover Accents
+  ochre-gold: "#C49A4A"          # Warm Gold for Dark Theme Emblems, Waves & Foil Rim
+  bamboo: "#526D57"              # Verdant Accent for Active Roles, Certifications & Success Badges
+  akari-glow: "rgba(232, 162, 86, 0.08)" # Diffused Candlelight through Shoji Washi
 
-  # Light theme: Washi & Akari Paper (Canonical Reference Spec)
+  # Light theme: Washi & Akari Paper (Sunlight on Parchment)
   light-canvas: "#F2E9DA"
   light-surface: "#F7F0E3"
   light-surface-card: "#F7F0E3"
@@ -27,13 +25,13 @@ colors:
   light-ink-subtle: "#8B8375"
   light-border: "#D9C9AE"
   light-border-strong: "#BDAA89"
-  light-button-dark: "#26262E"
+  light-button-dark: "#26262E"   # Primary High-Contrast Button (Dark Charcoal on Cream Canvas)
   light-on-dark: "#F7F0E3"
   light-focus: "#B5482E"
 
-  # Dark theme: Sumi & Charred Cedar (Canonical 4-Tier Reference Spec)
-  dark-canvas: "#1E1F24"
-  dark-panel: "#2A2C32"
+  # Dark theme: Warm Charred Cedar / 焼杉 Yakisugi (Lantern Light on Dark Wood)
+  dark-canvas: "#1E1F24"         # Warm Charred Cedar Ground (Never cold OLED #000000)
+  dark-panel: "#2A2C32"          # Yakisugi Slate Surface
   dark-surface: "#2A2C32"
   dark-card: "#2A2C32"
   dark-surface-card: "#2A2C32"
@@ -45,9 +43,9 @@ colors:
   dark-border: "#3A3D44"
   dark-border-strong: "#4E525D"
   dark-border-subtle: "rgba(182, 175, 162, 0.18)"
-  dark-button-light: "#E8E6DF"
+  dark-button-light: "#E8E6DF"   # Inverted Primary Button (Ivory Cream Button with #1E1F24 text)
   dark-on-light: "#1E1F24"
-  dark-focus: "#B5482E"
+  dark-focus: "#D49B6A"          # Amber Ochre Focus (Prevents Red Alert Glare on Dark Surfaces)
 
 typography:
   display-xl:
@@ -352,10 +350,21 @@ To eliminate visual claustrophobia and "box-in-a-box" clutter:
 3. **Tier 2 (Panels & Cards)**: Elevated content surfaces (`#F7F0E3` / `#2A2C32`) with 1px hairline borders (`#D9C9AE` / `#3A3D44`).
 4. **Tier 3 (Raised Controls & Modals)**: `#FBF6EC` / `#353842` for active segmented controls, floating search bars, and dialog overlays.
 
-### Shadow Philosophy
+### Dual-Theme Accent & Materiality Philosophy: The Sacred Red vs. Ambient Ochre
 
-- Strictly no saturated or neon color drops (no orange/cyan glows).
-- Soft natural contact shadows: `box-shadow: 0 1px 3px rgba(40, 46, 58, 0.04), 0 1px 2px rgba(40, 46, 58, 0.02)`.
+The transition between Day and Night is not a simple chromatic inversion; it reflects the real-world shift between **sunlight on paper** and **candlelight on dark wood**:
+
+1. **The Light Theme (Sunlight on Raw Washi & Pine)**:
+   - **Dominant Field**: Warm cream raw mulberry fibers (`#F2E9DA`), milk washi panels (`#F7F0E3`), and bamboo hairlines (`#D9C9AE`).
+   - **Accent Role**: Terracotta Red (`#B5482E`) operates as calligraphic cinnabar seal paste (*shuniku* 朱肉). It feels earthy, organic, and grounded across badges, interactive links, and Hanko stamps.
+   - **Primary Action**: Deep Charcoal Black button (`#26262E`) with milk text (`#F7F0E3`), providing clear visual grounding.
+
+2. **The Dark Theme (Warm Charred Cedar / 焼杉 Yakisugi & Lantern Shadows)**:
+   - **Dominant Field**: Warm charred cedar charcoal (`#1E1F24`) with tactile 4% washi tooth, yakisugi wood panels (`#2A2C32`), and graphite borders (`#3A3D44`).
+   - **The Anti-Pattern (Pure Red on Dark)**: Saturated red against dark charcoal triggers warning/alert psychology ("error state" or "cyberpunk glow") and eye strain.
+   - **The Solution (Ambient Ochre & Gold)**: Ambient warmth, decorative linework (Seigaiha waves, Ensō orbital rim), focus halos, and active tabs shift to **Warm Ochre / Amber Gold (`#C49A4A` / `#D49B6A`)**, simulating Akari lantern glow reflecting off dark cedar.
+   - **The Sacred Red Rule**: Terracotta Red (`#B5482E`) is preserved **strictly as a precious jewel tone** reserved exclusively for the vermilion Hanko stamp seal (`[原]`) and the pulsing live availability indicator.
+   - **Primary Action (Tactile Inversion)**: Ivory Cream button (`#E8E6DF`) with dark text (`#1E1F24`), delivering immediate tactile clickability and crisp editorial contrast without neon glare.
 
 ---
 

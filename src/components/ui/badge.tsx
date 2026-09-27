@@ -3,12 +3,12 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-mono font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-terracotta focus:ring-offset-2 select-none',
+  'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-mono font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-[#D4A853] focus:ring-offset-2 select-none',
   {
     variants: {
       variant: {
         default:
-          'border-transparent bg-terracotta text-white shadow-2xs hover:bg-terracotta-hover',
+          'border-transparent bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light shadow-2xs hover:bg-terracotta-hover',
         secondary:
           'border-transparent bg-light-surface-raised dark:bg-dark-surface-raised text-light-ink dark:text-dark-ink',
         destructive:
@@ -16,7 +16,7 @@ const badgeVariants = cva(
         outline:
           'border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink bg-light-surface dark:bg-dark-surface-card',
         terracotta:
-          'border-terracotta/30 bg-terracotta/10 text-terracotta dark:text-terracotta-soft',
+          'border-terracotta/30 dark:border-[#D4A853]/30 bg-terracotta/10 dark:bg-[#D4A853]/10 text-terracotta dark:text-[#D4A853]',
       },
     },
     defaultVariants: {

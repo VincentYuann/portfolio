@@ -318,15 +318,15 @@ export const ExperienceEditor: React.FC = () => {
                 >
                   <span
                     className={`w-2 h-2 rounded-full ${
-                      exp.isActive ? 'bg-terracotta' : 'bg-stone-400 dark:bg-neutral-500'
+                      exp.isActive ? 'bg-terracotta dark:bg-[#D4A853]' : 'bg-stone-400 dark:bg-neutral-500'
                     }`}
                   />
                   <span>{exp.isActive ? 'ACTIVE / 現職' : 'COMPLETED / 歴任'}</span>
                 </span>
               }
               emblem={
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 bg-terracotta/5 dark:bg-terracotta/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
-                  <span className={`font-serif font-bold text-terracotta leading-tight text-center ${
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 dark:border-[#D4A853]/40 bg-terracotta/5 dark:bg-[#D4A853]/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
+                  <span className={`font-serif font-bold text-terracotta dark:text-[#D4A853] leading-tight text-center ${
                     (exp.kanji?.length || 0) > 2
                       ? 'text-[10px] tracking-tighter leading-none'
                       : (exp.kanji?.length || 0) === 2
@@ -403,7 +403,7 @@ export const ExperienceEditor: React.FC = () => {
                           type="checkbox"
                           checked={exp.isActive}
                           onChange={(e) => updateEntry(exp.id, { isActive: e.target.checked })}
-                          className="rounded text-terracotta focus:ring-terracotta h-4 w-4"
+                          className="rounded text-terracotta dark:text-[#D4A853] focus:ring-terracotta dark:focus:ring-[#D4A853] h-4 w-4"
                         />
                         <span className="text-xs font-medium text-light-ink dark:text-dark-ink">
                           Current Active Role

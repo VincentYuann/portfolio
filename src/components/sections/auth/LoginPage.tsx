@@ -65,7 +65,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
         <span className="font-serif text-2xl text-light-ink dark:text-dark-ink tracking-wide font-medium">
           Vincent Yuan
         </span>
-        <span className="font-sans text-[11px] font-semibold text-terracotta dark:text-ochre uppercase tracking-widest">
+        <span className="font-sans text-[11px] font-semibold text-terracotta dark:text-[#D4A853] uppercase tracking-widest">
           ADMIN ACCESS · 認印
         </span>
       </div>
@@ -92,7 +92,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
 
             <button
               onClick={() => onNavigate('projects')}
-              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-terracotta hover:bg-terracotta-hover text-white text-xs font-medium tracking-wide transition-colors cursor-pointer shadow-xs"
+              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-[#DE9E36] text-xs font-medium tracking-wide transition-colors cursor-pointer shadow-xs"
             >
               View Projects
             </button>
@@ -101,7 +101,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
               <button
                 onClick={handleGithubLogin}
                 disabled={loading}
-                className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors text-[11px] font-mono cursor-pointer"
+                className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors text-[11px] font-mono cursor-pointer"
               >
                 Switch Account
               </button>
@@ -142,7 +142,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
 
         <button
           onClick={() => onNavigate('home')}
-          className="inline-flex items-center justify-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors group cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors group cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
           <span>Return to Portfolio</span>

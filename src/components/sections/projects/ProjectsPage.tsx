@@ -99,7 +99,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         <div className="mb-6 sm:mb-8">
           <button
             onClick={() => onNavigate?.('home', 'featured-works')}
-            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors group cursor-pointer"
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors group cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Return to Portfolio</span>
@@ -134,7 +134,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
               placeholder="Search projects, technologies..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60"
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60 dark:focus:border-[#D4A853]/60"
             />
           </div>
         </div>
@@ -151,7 +151,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             </p>
             <button
               onClick={() => setSearchQuery('')}
-              className="mt-4 px-4 py-2 bg-terracotta hover:bg-terracotta/90 text-white text-xs font-sans rounded-md transition-colors cursor-pointer"
+              className="mt-4 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans rounded-md transition-opacity hover:opacity-90 cursor-pointer"
             >
               Clear Search
             </button>
@@ -194,8 +194,8 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
 
                   {/* Timeline Strip: Dates + Active Status Badge */}
                   <div className="flex flex-wrap items-center justify-between gap-1.5 mb-2">
-                    <span className="font-mono text-[11px] text-terracotta font-semibold tracking-wider uppercase flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-terracotta" />
+                    <span className="font-mono text-[11px] text-terracotta dark:text-[#D4A853] font-semibold tracking-wider uppercase flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-terracotta dark:text-[#D4A853]" />
                       {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
                     </span>
 
@@ -207,7 +207,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                     />
                   </div>
 
-                  <h3 className="font-serif text-lg font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta transition-colors line-clamp-1">
+                  <h3 className="font-serif text-lg font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors line-clamp-1">
                     {project.title}
                   </h3>
 
@@ -234,7 +234,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                     <button
                       type="button"
                       onClick={() => openProject(project)}
-                      className="font-sans text-[11px] font-medium text-terracotta hover:underline flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none rounded py-0.5 cursor-pointer"
+                      className="font-sans text-[11px] font-medium text-terracotta dark:text-[#D4A853] hover:underline flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded py-0.5 cursor-pointer"
                     >
                       <span>Inspect System</span>
                       <span>→</span>
@@ -246,7 +246,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                           href={project.links.github}
                           target="_blank"
                           rel="noreferrer"
-                          className="p-1 hover:text-light-ink dark:hover:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none rounded"
+                          className="p-1 hover:text-light-ink dark:hover:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded"
                           title="GitHub Repository"
                           aria-label={`${project.title} GitHub Repository`}
                         >
@@ -258,7 +258,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                           href={project.links.live}
                           target="_blank"
                           rel="noreferrer"
-                          className="p-1 hover:text-light-ink dark:hover:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none rounded"
+                          className="p-1 hover:text-light-ink dark:hover:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded"
                           title="Live Deployment"
                           aria-label={`${project.title} Live Deployment`}
                         >

@@ -14,14 +14,14 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
   const len = chars.length;
 
   return (
-    <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
+    <div className={`relative inline-flex items-center justify-center select-none text-terracotta dark:text-[#D4A853] transition-colors duration-300 ${className}`}>
       <svg
         viewBox="0 0 200 200"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full drop-shadow-sm"
       >
-        {/* Weathered cinnabar outer stamp border */}
+        {/* Outer stamp border */}
         <rect
           x="20"
           y="20"
@@ -30,7 +30,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
           rx="22"
           ry="22"
           fill="none"
-          stroke="#C83C23"
+          stroke="currentColor"
           strokeWidth="13"
           strokeLinecap="round"
         />
@@ -43,7 +43,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
           rx="14"
           ry="14"
           fill="none"
-          stroke="#C83C23"
+          stroke="currentColor"
           strokeWidth="2.5"
           opacity="0.65"
         />
@@ -55,7 +55,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
             fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
             fontWeight="900"
             fontSize="98"
-            fill="#C83C23"
+            fill="currentColor"
             textAnchor="middle"
           >
             {chars || '原'}
@@ -68,7 +68,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="52"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[0]}
@@ -79,7 +79,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="52"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[1]}
@@ -93,7 +93,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="36"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[0]}
@@ -104,7 +104,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="36"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[1]}
@@ -115,7 +115,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="36"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[2]}
@@ -130,7 +130,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="40"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[0]}
@@ -141,7 +141,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="40"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[1]}
@@ -152,7 +152,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="40"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[2]}
@@ -163,7 +163,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
               fontFamily="'Noto Serif JP', 'Songti TC', 'Noto Serif', serif"
               fontWeight="900"
               fontSize="40"
-              fill="#C83C23"
+              fill="currentColor"
               textAnchor="middle"
             >
               {chars[3]}
@@ -171,7 +171,7 @@ export const HankoStamp: React.FC<HankoStampProps> = ({
           </>
         )}
         {/* Seal authentication dot */}
-        <circle cx="152" cy="48" r="4.5" fill="#C83C23" />
+        <circle cx="152" cy="48" r="4.5" fill="currentColor" />
       </svg>
     </div>
   );

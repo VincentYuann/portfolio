@@ -184,7 +184,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Sub Navbar: sticks just below main header with smooth horizontal scrolling */}
-      <div className="sticky top-20 z-40 bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-xs">
+      <div className="sticky top-20 z-40 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden relative">
           <div
             role="tablist"
@@ -216,7 +216,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
                   <Icon
                     className={`w-3.5 h-3.5 transition-colors shrink-0 ${
                       isCurrent
-                        ? 'text-terracotta'
+                        ? 'text-terracotta dark:text-[#D4A853]'
                         : isSectionDirty
                         ? 'text-amber-600 dark:text-amber-400'
                         : 'text-light-ink-muted dark:text-dark-ink-muted group-hover:text-light-ink dark:group-hover:text-dark-ink'
@@ -242,7 +242,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 pl-1 sm:pl-2">
             <button
               onClick={handleExit}
-              className="inline-flex items-center gap-1.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta transition-colors whitespace-nowrap cursor-pointer py-1.5 px-2.5 sm:px-3 min-h-[42px] rounded-lg hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised shrink-0 border border-transparent hover:border-light-border dark:hover:border-dark-border"
+              className="inline-flex items-center gap-1.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors whitespace-nowrap cursor-pointer py-1.5 px-2.5 sm:px-3 min-h-[42px] rounded-lg hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised shrink-0 border border-transparent hover:border-light-border dark:hover:border-dark-border"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Return to Portfolio</span>
@@ -271,7 +271,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
           aria-live="polite"
           className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[calc(100%-1.5rem)] animate-in slide-in-from-bottom-5 fade-in duration-200 pointer-events-auto select-none"
         >
-          <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-light-surface/95 dark:bg-dark-surface-card/95 backdrop-blur-md border border-amber-500/40 shadow-2xl text-light-ink dark:text-dark-ink">
+          <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-light-surface dark:bg-dark-surface-card border border-amber-500/40 shadow-2xl text-light-ink dark:text-dark-ink">
             <div className="flex items-center gap-2.5 min-w-0">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
               <div className="min-w-0">
@@ -312,7 +312,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('portfolio-admin-save'))}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[40px] rounded-lg bg-terracotta hover:bg-terracotta-hover text-white font-sans text-xs font-medium shadow-xs transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[40px] rounded-lg bg-terracotta dark:bg-dark-button-light hover:bg-terracotta-hover dark:hover:bg-white text-white dark:text-dark-on-light font-sans text-xs font-medium shadow-xs transition-colors cursor-pointer"
               >
                 <Save className="w-3.5 h-3.5 shrink-0" />
                 <span>Save {activeSectionObj?.shortLabel || 'Section'}</span>

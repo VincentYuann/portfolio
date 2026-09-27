@@ -67,7 +67,7 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
           variant="ghost"
           size="sm"
           onClick={() => addBullet()}
-          className="text-terracotta hover:text-terracotta hover:bg-terracotta/10 text-xs h-7 px-2 cursor-pointer"
+          className="text-terracotta dark:text-[#D4A853] hover:text-terracotta dark:hover:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 text-xs h-7 px-2 cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5 mr-1" />
           Add Point
@@ -77,7 +77,7 @@ export const BulletListEditor: React.FC<BulletListEditorProps> = ({
       <div className="flex flex-col gap-2.5">
         {safeBullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2.5 group">
-            <span className="font-mono text-xs font-semibold text-terracotta dark:text-terracotta bg-terracotta/10 dark:bg-terracotta/15 border border-terracotta/30 rounded px-1.5 py-1 select-none shrink-0 mt-1 shadow-2xs">
+            <span className="font-mono text-xs font-semibold text-terracotta dark:text-[#D4A853] bg-terracotta/10 dark:bg-[#D4A853]/10 border border-terracotta/30 dark:border-[#D4A853]/30 rounded px-1.5 py-1 select-none shrink-0 mt-1 shadow-2xs">
               #{String(idx + 1).padStart(2, '0')}
             </span>
             <Textarea

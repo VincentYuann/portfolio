@@ -40,7 +40,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         {/* Section Anchor & Rubric Seal */}
         <div className="flex items-center gap-2.5 mb-2.5">
           <span
-            className="w-5 h-5 rounded-[2px] bg-terracotta/15 dark:bg-terracotta/20 border border-terracotta/60 flex items-center justify-center text-[10px] font-zen text-terracotta font-medium select-none shadow-2xs"
+            className="w-5 h-5 rounded-[2px] bg-terracotta/15 dark:bg-[#D4A853]/15 border border-terracotta/60 dark:border-[#D4A853]/60 flex items-center justify-center text-[10px] font-zen text-terracotta dark:text-[#D4A853] font-medium select-none shadow-2xs"
             title="Vincent Yuan Seal · 原"
           >
             原

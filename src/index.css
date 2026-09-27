@@ -18,19 +18,21 @@
 }
 
 .dark {
-  --canvas-bg: #1E1F24;
-  --panel-bg: #2A2C32;
-  --surface-bg: #2A2C32;
-  --card-bg: #2A2C32;
-  --pattern-dot: rgba(232, 230, 223, 0.04);
+  --canvas-bg: #16171B;
+  --panel-bg: #23252C;
+  --surface-bg: #23252C;
+  --card-bg: #23252C;
+  --pattern-dot: rgba(212, 168, 83, 0.05);
   --ink-color: #E8E6DF;
-  --ink-muted: #A7A398;
-  --border-color: #3A3D44;
-  --border-inner: #4E525D;
-  --border-inner-soft: rgba(78, 82, 93, 0.55);
+  --ink-muted: #9E9A8E;
+  --border-color: #383B43;
+  --border-inner: #4E535E;
+  --border-inner-soft: rgba(78, 83, 94, 0.55);
   --color-terracotta-rgb: 181 72 46;
-  --color-ochre-rgb: 212 155 106;
-  --color-bamboo-rgb: 82 109 87;
+  --color-ochre-rgb: 212 168 83;
+  --color-bamboo-rgb: 101 139 123;
+  --color-night-accent: #D4A853;
+  --color-night-accent-rgb: 212 168 83;
 }
 
 @layer base {
@@ -46,9 +48,10 @@
     background-color: var(--canvas-bg);
     color: var(--ink-color);
     transition: background-color 0.25s ease, color 0.25s ease;
+    position: relative;
   }
 
-  /* Tactile Washi Paper Tooth Overlay (Fixed low-opacity SVG noise 0.04) */
+  /* Tactile Washi Paper Tooth Overlay (Physical Japanese Paper Fiber Grain for Day & Night) */
   body::before {
     content: '';
     position: fixed;
@@ -56,9 +59,13 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 50;
-    opacity: 0.04;
+    z-index: 40;
+    opacity: 0.06; /* 6% tactile washi paper tooth on light cream canvas */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)'/%3E%3C/svg%3E");
+  }
+
+  .dark body::before {
+    opacity: 0.045; /* 4.5% tactile micro-tooth on dark charred cedar canvas */
   }
 }
 
@@ -101,7 +108,7 @@
     background-position: 0 0;
   }
 
-  /* Tactile Craft Surfaces (Card, Modal, Panel, Chat): Authentic Washi / Charred Cedar Tooth */
+  /* Tactile Craft Surfaces (Card, Modal, Panel, Chat): Solid Charred Cedar Surfaces with Crisp Hairlines */
   .craft-card,
   .craft-panel,
   .washi-card {
@@ -113,96 +120,35 @@
     border-radius: 3px;
   }
 
-  /* Akari Paper Translucent Craft Cards with Micro-Blur */
+  /* Solid Clean Craft Cards (Light & Dark) */
   .card-akari-translucent,
-  .craft-card {
-    background-color: rgba(42, 44, 50, 0.85);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18); /* impeccable-disable-line design-system-color */
+  .craft-card,
+  .craft-panel,
+  .washi-card,
+  .interactive-card {
+    background-color: #23252C;
+    border-color: #383B43;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
   }
 
   :root:not(.dark) .card-akari-translucent,
-  :root:not(.dark) .craft-card {
-    background-color: rgba(247, 240, 227, 0.82);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+  :root:not(.dark) .craft-card,
+  :root:not(.dark) .craft-panel,
+  :root:not(.dark) .washi-card,
+  :root:not(.dark) .interactive-card {
+    background-color: #F7F0E3;
+    border-color: #D9C9AE;
     box-shadow: 0 1px 3px rgba(40, 46, 58, 0.04);
   }
 
   .craft-modal {
-    background-color: rgba(42, 44, 50, 0.92);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background-color: #23252C;
+    border-color: #383B43;
   }
 
   :root:not(.dark) .craft-modal {
-    background-color: rgba(247, 240, 227, 0.92);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-
-  /* Full-bleed Section Art Canvas */
-  .section-art-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Integrated Artwork Layer */
-  .integrated-sumie-art {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-    z-index: 0;
-    mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, black 40%, transparent 95%);
-    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, black 40%, transparent 95%);
-  }
-
-  /* Day Mode: Ink absorbs directly into the paper fibers */
-  :root:not(.dark) .integrated-sumie-art {
-    mix-blend-mode: multiply;
-    opacity: 0.30;
-  }
-
-  /* Night Mode: Inverts the painting into ethereal silver-ash mist */
-  :root.dark .integrated-sumie-art,
-  .dark .integrated-sumie-art {
-    mix-blend-mode: screen;
-    filter: invert(1) contrast(1.1) brightness(0.85);
-    opacity: 0.12;
-  }
-
-  /* Direct Tactile Micro-Tooth Texture Overlay */
-  .craft-card::after,
-  .craft-modal::after,
-  .craft-panel::after,
-  .washi-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    border-radius: inherit;
-    opacity: 0.045;
-    z-index: 1;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)'/%3E%3C/svg%3E");
-  }
-
-  .dark .craft-card::after,
-  .dark .craft-modal::after,
-  .dark .craft-panel::after,
-  .dark .washi-card::after {
-    opacity: 0.065;
-    mix-blend-mode: screen;
+    background-color: #F7F0E3;
+    border-color: #D9C9AE;
   }
 
   /* Japanese Tategaki (Vertical Writing Mode) */
@@ -483,7 +429,7 @@
 .dark .double-frame-simple:hover::before,
 .dark .craft-card:hover::before,
 .dark .classical-card-frame:hover::before {
-  border-color: rgba(181, 72, 46, 0.45);
+  border-color: rgba(212, 168, 83, 0.45);
 }
 
 /* Corner Hairline Brackets: Restrained Japanese Craft joinery (Whisper-quiet opacity, no HUD translation) */
@@ -518,6 +464,10 @@
   box-shadow: 0 8px 24px -4px rgb(var(--color-terracotta-rgb) / 0.45);
 }
 
+.dark .btn-bloom:hover {
+  box-shadow: 0 8px 24px -4px rgba(212, 168, 83, 0.35);
+}
+
 .btn-bloom:active {
   transform: translateY(0);
 }
@@ -538,11 +488,15 @@
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: rgb(var(--color-ochre-rgb) / 0.35);
+  background: rgba(212, 168, 83, 0.3);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(var(--color-terracotta-rgb) / 0.6);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #D4A853;
 }
 
 /* Material Symbols Adjustments */

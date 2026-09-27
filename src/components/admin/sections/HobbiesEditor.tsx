@@ -367,8 +367,8 @@ export const HobbiesEditor: React.FC = () => {
               title={hobby.title || 'Untitled Hobby'}
               subtitle={hobby.subtitle}
               emblem={
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 bg-terracotta/5 dark:bg-terracotta/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
-                  <span className={`font-serif font-bold text-terracotta leading-tight text-center ${
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 dark:border-[#D4A853]/40 bg-terracotta/5 dark:bg-[#D4A853]/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
+                  <span className={`font-serif font-bold text-terracotta dark:text-[#D4A853] leading-tight text-center ${
                     (hobby.kanji?.length || 0) > 2
                       ? 'text-[10px] tracking-tighter leading-none'
                       : (hobby.kanji?.length || 0) === 2
@@ -386,7 +386,7 @@ export const HobbiesEditor: React.FC = () => {
                       {hobby.category}
                     </span>
                   )}
-                  <span className="font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center rounded-md bg-terracotta/15 text-terracotta dark:text-terracotta-soft border border-terracotta/30 font-medium">
+                  <span className="font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center rounded-md bg-terracotta/15 dark:bg-[#D4A853]/15 text-terracotta dark:text-[#D4A853] border border-terracotta/30 dark:border-[#D4A853]/30 font-medium">
                     {imageCount}/{MAX_IMAGES_PER_HOBBY} Photos
                   </span>
                 </div>
@@ -437,10 +437,10 @@ export const HobbiesEditor: React.FC = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => setKanjiPickerTargetId(hobby.id)}
-                        className="h-9 px-2.5 text-xs font-mono text-light-ink-muted hover:text-terracotta border-light-border dark:border-dark-border cursor-pointer shrink-0"
+                        className="h-9 px-2.5 text-xs font-mono text-light-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] border-light-border dark:border-dark-border cursor-pointer shrink-0"
                         title="Choose Kanji Emblem"
                       >
-                        <BookOpen className="w-3.5 h-3.5 mr-1 text-terracotta" />
+                        <BookOpen className="w-3.5 h-3.5 mr-1 text-terracotta dark:text-[#D4A853]" />
                         Picker
                       </Button>
                     </div>
@@ -476,7 +476,7 @@ export const HobbiesEditor: React.FC = () => {
                 <div className="space-y-3 pt-3 border-t border-light-border/50 dark:border-dark-border/50">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <ImageIcon className="w-4 h-4 text-terracotta" />
+                      <ImageIcon className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
                       <span className="font-mono text-xs font-semibold text-light-ink dark:text-dark-ink uppercase tracking-wider">
                         Photo Gallery ({imageCount}/{MAX_IMAGES_PER_HOBBY})
                       </span>
@@ -484,7 +484,7 @@ export const HobbiesEditor: React.FC = () => {
 
                     {/* Direct File Upload Button */}
                     <label
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono border border-terracotta/40 text-terracotta bg-terracotta/5 hover:bg-terracotta/15 cursor-pointer transition-colors shadow-2xs ${
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono border border-terracotta/40 dark:border-[#D4A853]/40 text-terracotta dark:text-[#D4A853] bg-terracotta/5 dark:bg-[#D4A853]/10 hover:bg-terracotta/15 dark:hover:bg-[#D4A853]/20 cursor-pointer transition-colors shadow-2xs ${
                         !canAddMoreImages || isUploading ? 'opacity-50 pointer-events-none' : ''
                       }`}
                     >
@@ -526,7 +526,7 @@ export const HobbiesEditor: React.FC = () => {
                             }}
                           />
                           <div className="min-w-0 flex-1 overflow-hidden">
-                            <span className="font-mono text-xs text-terracotta font-semibold block truncate">
+                            <span className="font-mono text-xs text-terracotta dark:text-[#D4A853] font-semibold block truncate">
                               Photo 0{imgIdx + 1} {imgIdx === 0 && '· Main Display'}
                             </span>
                             <p className="font-mono text-xs text-light-ink dark:text-dark-ink truncate w-full" title={imgUrl}>
@@ -536,7 +536,7 @@ export const HobbiesEditor: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => handleSetMainImage(hobby.id, imgIdx)}
-                                className="text-xs font-mono text-terracotta hover:underline mt-0.5 flex items-center gap-1 cursor-pointer"
+                                className="text-xs font-mono text-terracotta dark:text-[#D4A853] hover:underline mt-0.5 flex items-center gap-1 cursor-pointer"
                               >
                                 <Check className="w-2.5 h-2.5" /> Set as Main
                               </button>
@@ -581,7 +581,7 @@ export const HobbiesEditor: React.FC = () => {
                         onClick={() => handleAddImageUrl(hobby.id)}
                         variant="outline"
                         size="sm"
-                        className="font-mono text-xs border-terracotta/40 text-terracotta hover:bg-terracotta/10 shrink-0 cursor-pointer"
+                        className="font-mono text-xs border-terracotta/40 dark:border-[#D4A853]/40 text-terracotta dark:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 shrink-0 cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5 mr-1" />
                         Add URL

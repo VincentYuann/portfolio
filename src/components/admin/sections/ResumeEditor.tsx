@@ -267,7 +267,7 @@ export const ResumeEditor: React.FC = () => {
           >
             <TabsList className="h-9 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
               <TabsTrigger value="upload" className="text-xs px-3 gap-1.5 cursor-pointer">
-                <Upload className="w-3.5 h-3.5 text-terracotta" />
+                <Upload className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853]" />
                 <span>Upload PDF</span>
               </TabsTrigger>
               <TabsTrigger value="editor" className="text-xs px-3 gap-1.5 cursor-pointer">
@@ -326,9 +326,9 @@ export const ResumeEditor: React.FC = () => {
                   fileInputRef.current?.click();
                 }
               }}
-              className="w-full flex flex-col items-center gap-2.5 sm:gap-3 py-8 sm:py-14 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-xl hover:border-terracotta hover:bg-terracotta/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta"
+              className="w-full flex flex-col items-center gap-2.5 sm:gap-3 py-8 sm:py-14 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-xl hover:border-terracotta dark:hover:border-[#D4A853] hover:bg-terracotta/5 dark:hover:bg-[#D4A853]/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-[#D4A853]"
             >
-              <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta transition-colors" />
+              <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors" />
               <div className="text-center">
                 <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink font-medium">
                   Click or drag PDF / .tex file here
@@ -354,7 +354,7 @@ export const ResumeEditor: React.FC = () => {
           <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <div className="flex items-center gap-1.5 shrink-0">
-                <FileCode2 className="w-3.5 h-3.5 text-terracotta" />
+                <FileCode2 className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853]" />
                 <span className="font-mono text-xs text-light-ink font-medium dark:text-dark-ink">
                   resume.tex
                 </span>
@@ -369,7 +369,7 @@ export const ResumeEditor: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={() => setPreviewMode((v) => !v)}
-              className="gap-1.5 h-7 text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta cursor-pointer"
+              className="gap-1.5 h-7 text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] cursor-pointer"
             >
               {previewMode ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
               <span>{previewMode ? 'Code Mode' : 'Preview Mode'}</span>

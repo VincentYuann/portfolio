@@ -59,7 +59,7 @@ export const MarkerIcon = React.forwardRef<HTMLSpanElement, React.HTMLAttributes
     return (
       <span
         ref={ref}
-        className={cn('inline-flex items-center justify-center shrink-0 text-terracotta', className)}
+        className={cn('inline-flex items-center justify-center shrink-0 text-terracotta dark:text-[#D4A853]', className)}
         {...props}
       >
         {children}

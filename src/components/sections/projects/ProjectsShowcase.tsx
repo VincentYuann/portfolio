@@ -171,7 +171,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       </div>
 
                       <div className="flex items-center justify-between gap-4 mb-1">
-                        <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-medium tracking-tight group-hover:text-terracotta transition-colors duration-200">
+                        <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-medium tracking-tight group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors duration-200">
                           {project.title}
                         </h3>
                         <span className="font-serif text-lg text-light-ink-muted dark:text-dark-ink-muted shrink-0">
@@ -199,12 +199,12 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       <button
                         type="button"
                         onClick={() => setSelectedProject(project)}
-                        className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-medium hover:text-terracotta transition-colors focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none rounded py-1 px-0.5 group/btn cursor-pointer"
+                        className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-medium hover:text-terracotta dark:hover:text-[#D4A853] transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded py-1 px-0.5 group/btn cursor-pointer"
                       >
                         <span>
                           {project.links.caseStudyText || 'View Architecture'}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/btn:text-terracotta" />
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/btn:text-terracotta dark:group-hover/btn:text-[#D4A853]" />
                       </button>
 
                       {/* Direct External Links */}
@@ -214,7 +214,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             href={project.links.github}
                             target="_blank"
                             rel="noreferrer"
-                            className="p-1.5 rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:hover:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
+                            className="p-1.5 rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none"
                             title="GitHub Repository"
                             aria-label={`${project.title} GitHub Repository`}
                           >
@@ -226,7 +226,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             href={project.links.live}
                             target="_blank"
                             rel="noreferrer"
-                            className="p-1.5 rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:hover:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:outline-none"
+                            className="p-1.5 rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none"
                             title="Live Deployment"
                             aria-label={`${project.title} Live Deployment`}
                           >
