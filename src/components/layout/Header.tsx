@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { X, Sun, Moon, LogOut, LogIn, SlidersHorizontal, Eye } from 'lucide-react';
+import { X, Sun, Moon, LogOut, LogIn, SlidersHorizontal, Eye, Palette } from 'lucide-react';
 import { HankoStamp } from '../common/HankoStamp';
-import { FontSettingsMenu } from './FontSettingsMenu';
 
 export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies' | 'visual-system';
 
@@ -192,11 +191,11 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right side cluster: always neatly aligned with zero overlap */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {/* Day / Night segmented toggle with architectural 2px corners */}
-          <div className="flex items-center p-0.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[11px] sm:text-xs select-none shrink-0 shadow-2xs">
+          {/* Day / Night / Art Settings 3-segment unified toggle (DAY | NIGHT | ART on PC, ☀️ | 🌙 | 🎨 on Mobile) */}
+          <div className="flex items-center p-0.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[11px] sm:text-xs select-none shrink-0 shadow-2xs min-h-[44px]">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
                 theme === 'day'
                   ? 'bg-light-surface-raised text-light-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -204,12 +203,12 @@ export const Header: React.FC<HeaderProps> = ({
               title="Day Mode"
               aria-label="Switch to Day Mode"
             >
-              <Sun className={`w-3 h-3 transition-transform duration-300 ${theme === 'day' ? 'rotate-0 scale-105 text-ochre' : '-rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
+              <Sun className={`w-3.5 h-3.5 sm:w-3 sm:h-3 transition-transform duration-300 ${theme === 'day' ? 'rotate-0 scale-105 text-terracotta dark:text-ochre' : '-rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
               <span className="hidden sm:inline">DAY</span>
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
                 theme === 'night'
                   ? 'bg-dark-surface-raised text-dark-ink shadow-sm'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -217,34 +216,30 @@ export const Header: React.FC<HeaderProps> = ({
               title="Night Mode"
               aria-label="Switch to Night Mode"
             >
-              <Moon className={`w-3 h-3 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 scale-105 text-ochre' : 'rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
+              <Moon className={`w-3.5 h-3.5 sm:w-3 sm:h-3 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 scale-105 text-terracotta dark:text-ochre' : 'rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
               <span className="hidden sm:inline">NIGHT</span>
             </button>
+            <button
+              onClick={() => onNavigate?.('visual-system')}
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
+                currentView === 'visual-system'
+                  ? 'bg-terracotta/20 dark:bg-ochre/20 text-terracotta dark:text-ochre shadow-sm'
+                  : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
+              }`}
+              title="Design System & Visual Settings"
+              aria-label="Open Art & Visual Settings"
+            >
+              <Palette className={`w-3.5 h-3.5 sm:w-3 sm:h-3 text-terracotta dark:text-ochre transition-transform duration-300 ${currentView === 'visual-system' ? 'scale-110' : 'group-hover/theme:scale-110'}`} />
+              <span className="hidden sm:inline">ART</span>
+            </button>
           </div>
-
-          {/* Typography & Design System Quick Menu (on the right side of DAY/NIGHT) */}
-          <FontSettingsMenu onNavigate={onNavigate} />
-
-          {/* Contact CTA (shown on sm-lg; hidden on xl+ where 06 Contact is already in the main navbar) */}
-          <a
-            href="#contact"
-            onClick={(e) => {
-              if (onOpenContact) {
-                e.preventDefault();
-                onOpenContact();
-              }
-            }}
-            className="hidden sm:inline-flex xl:hidden items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
-          >
-            <span>Get in Touch</span>
-          </a>
 
           {/* Desktop Action Cluster: Admin controls, Visitor badge, or Sign In button (>= xl) */}
           {isAdmin ? (
             <div className="hidden xl:flex items-center gap-1.5 shrink-0">
               <button
                 onClick={() => onNavigate?.(currentView === 'edit' ? 'home' : 'edit')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans border transition-colors cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] text-xs font-sans border transition-colors cursor-pointer min-h-[44px] ${
                   currentView === 'edit'
                     ? 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light border-terracotta dark:border-ochre shadow-xs'
                     : 'text-terracotta dark:text-ochre border-terracotta/40 dark:border-ochre/40 bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta/20 dark:hover:bg-ochre/20 hover:border-terracotta dark:hover:border-ochre'
@@ -266,7 +261,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               <button
                 onClick={onLogout}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[44px]"
                 title="Sign out of Admin mode"
                 aria-label="Sign Out"
               >
@@ -281,7 +276,7 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
               <button
                 onClick={onLogout}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[44px]"
                 title="Exit Visitor session"
                 aria-label="Exit Visitor"
               >
@@ -292,7 +287,7 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <button
               onClick={() => onNavigate?.('login')}
-              className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0"
+              className="hidden xl:inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[44px]"
               title="Admin Login"
               aria-label="Admin Login"
             >
@@ -305,7 +300,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="relative xl:hidden">
             <button
               onClick={() => setMobileDrawerOpen((prev) => !prev)}
-              className={`w-9 h-9 flex items-center justify-center rounded-[2px] border transition-all duration-200 select-none cursor-pointer shrink-0 ${
+              className={`w-11 h-11 flex items-center justify-center rounded-[2px] border transition-all duration-200 select-none cursor-pointer shrink-0 ${
                 mobileDrawerOpen
                   ? 'border-terracotta dark:border-ochre bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre shadow-xs'
                   : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta/60 dark:hover:border-ochre/60 hover:text-terracotta dark:hover:text-ochre'
@@ -359,8 +354,26 @@ export const Header: React.FC<HeaderProps> = ({
               );
             })}
 
-            {/* Mobile Drawer Typography Settings */}
-            <FontSettingsMenu onNavigate={onNavigate} isMobileDrawer={true} />
+            {/* Mobile Drawer Design & Settings Link */}
+            <div className="pt-2 pb-1 border-t border-light-border/60 dark:border-dark-border/60">
+              <button
+                onClick={() => {
+                  setMobileDrawerOpen(false);
+                  onNavigate?.('visual-system');
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-sans uppercase tracking-wider transition-colors border cursor-pointer ${
+                  currentView === 'visual-system'
+                    ? 'bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre border-terracotta/40 dark:border-ochre/40 font-semibold'
+                    : 'border-light-border/60 dark:border-dark-border/60 text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-light-ink dark:hover:text-dark-ink'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Palette className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                  <span className="font-medium">Design &amp; Settings</span>
+                </div>
+                <span className="font-mono text-[10px] text-terracotta dark:text-ochre font-bold">[設定]</span>
+              </button>
+            </div>
 
             {/* Bottom Actions inside Drawer */}
             <div className="pt-3 mt-2 border-t border-light-border dark:border-dark-border space-y-2">
@@ -385,7 +398,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setMobileDrawerOpen(false);
                       onNavigate?.(currentView === 'edit' ? 'home' : 'edit');
                     }}
-                    className="py-1 text-light-ink dark:text-dark-ink hover:text-terracotta transition-colors font-sans"
+                    className="py-2.5 text-light-ink dark:text-dark-ink hover:text-terracotta transition-colors font-sans"
                   >
                     {currentView === 'edit' ? 'View Site' : 'Edit Portfolio'}
                   </button>
@@ -394,14 +407,14 @@ export const Header: React.FC<HeaderProps> = ({
                       setMobileDrawerOpen(false);
                       onLogout?.();
                     }}
-                    className="py-1 text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors font-sans"
+                    className="py-2.5 text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors font-sans"
                   >
                     Logout
                   </button>
                 </div>
               ) : isVisitor ? (
                 <div className="flex items-center justify-between pt-1 px-1 text-xs">
-                  <span className="py-1 text-amber-600 dark:text-amber-400 text-[11px] font-mono font-medium">
+                  <span className="py-2.5 text-amber-600 dark:text-amber-400 text-[11px] font-mono font-medium">
                     Visitor (View Only)
                   </span>
                   <button
@@ -409,7 +422,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setMobileDrawerOpen(false);
                       onLogout?.();
                     }}
-                    className="py-1 text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors font-sans"
+                    className="py-2.5 text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors font-sans"
                   >
                     Logout
                   </button>
