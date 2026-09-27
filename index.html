@@ -24,13 +24,16 @@
           var isNight = saved === 'night';
           if (isNight) {
             document.documentElement.classList.add('dark');
-            document.documentElement.style.backgroundColor = '#1E1F24';
+            document.documentElement.style.backgroundColor = '#121316';
             document.documentElement.style.colorScheme = 'dark';
           } else {
             document.documentElement.classList.remove('dark');
-            document.documentElement.style.backgroundColor = '#F2E9DA';
+            document.documentElement.style.backgroundColor = '#EAE0CE';
             document.documentElement.style.colorScheme = 'light';
           }
+
+          var savedFont = localStorage.getItem('profolio-typography-variant') || 'v4';
+          document.documentElement.setAttribute('data-font-variant', savedFont);
         } catch (e) {}
       })();
     </script>

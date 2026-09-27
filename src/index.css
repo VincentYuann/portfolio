@@ -35,6 +35,8 @@
 }
 
 /* Variant 1: Kyoto Wabi-Sabi Monograph (Poetic Literary Mincho & Warm Humanist Sans) */
+:root[data-font-variant="v1"],
+html[data-font-variant="v1"],
 [data-font-variant="v1"],
 body.font-variant-v1 {
   --font-display: 'Zen Old Mincho', 'Noto Serif JP', Georgia, serif;
@@ -47,6 +49,8 @@ body.font-variant-v1 {
 }
 
 /* Variant 2: Tokyo Brutalist & Structural Joinery (Sculptural Avant-Garde & High-Velocity Modern) */
+:root[data-font-variant="v2"],
+html[data-font-variant="v2"],
 [data-font-variant="v2"],
 body.font-variant-v2 {
   --font-display: 'Syne', 'Chakra Petch', 'Space Grotesk', sans-serif;
@@ -59,6 +63,8 @@ body.font-variant-v2 {
 }
 
 /* Variant 3: Editorial Broadside & Timeless Haute (High-Contrast Garamond Serif & Curatorial Typewriter) */
+:root[data-font-variant="v3"],
+html[data-font-variant="v3"],
 [data-font-variant="v3"],
 body.font-variant-v3 {
   --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
@@ -71,6 +77,8 @@ body.font-variant-v3 {
 }
 
 /* Variant 4: Kyoto Neo-Grotesque & Algorithmic Minimal (Contemporary Ink-Trap Grotesque & Crisp Monospace) */
+:root[data-font-variant="v4"],
+html[data-font-variant="v4"],
 [data-font-variant="v4"],
 body.font-variant-v4 {
   --font-display: 'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif;
@@ -83,6 +91,8 @@ body.font-variant-v4 {
 }
 
 /* Variant 5: Neo-Tokyo Cyber-Joinery (Chamfered Mechanical Display, Humanist Body, Dense Monospace) */
+:root[data-font-variant="v5"],
+html[data-font-variant="v5"],
 [data-font-variant="v5"],
 body.font-variant-v5 {
   --font-display: 'Chakra Petch', 'Space Grotesk', system-ui, sans-serif;
@@ -95,6 +105,8 @@ body.font-variant-v5 {
 }
 
 /* Variant 6: Avant-Garde Hyper-Scale (Expansive Ultra-Wide Grotesque & Spatial Architecture) */
+:root[data-font-variant="v6"],
+html[data-font-variant="v6"],
 [data-font-variant="v6"],
 body.font-variant-v6 {
   --font-display: 'Unbounded', 'Syne', 'Space Grotesk', system-ui, sans-serif;
@@ -107,6 +119,8 @@ body.font-variant-v6 {
 }
 
 /* Variant 7: Algorithmic Monospace Poster (Raw Monospace Titling & Algorithmic Blueprint Grid) */
+:root[data-font-variant="v7"],
+html[data-font-variant="v7"],
 [data-font-variant="v7"],
 body.font-variant-v7 {
   --font-display: 'Azeret Mono', 'Space Mono', 'JetBrains Mono', monospace;
@@ -155,10 +169,20 @@ body.font-variant-v7 {
     overscroll-behavior: none;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     font-family: var(--font-body);
+    letter-spacing: var(--font-body-tracking);
     background-color: var(--canvas-bg);
     color: var(--ink-color);
     transition: background-color 0.25s ease, color 0.25s ease;
     position: relative;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: var(--font-heading-tracking);
+  }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
   }
 
   /* Tactile Washi Paper Tooth Overlay (Physical Japanese Paper Fiber Grain for Day & Night) */

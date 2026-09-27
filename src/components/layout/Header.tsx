@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { X, Sun, Moon, LogOut, LogIn, SlidersHorizontal, Eye } from 'lucide-react';
 import { HankoStamp } from '../common/HankoStamp';
+import { FontSettingsMenu } from './FontSettingsMenu';
 
 export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies';
 
@@ -191,6 +192,9 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right side cluster: always neatly aligned with zero overlap */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          {/* Typography Voices Menu (Desktop & Tablet) */}
+          <FontSettingsMenu />
+
           {/* Day / Night segmented toggle with architectural 2px corners */}
           <div className="flex items-center p-0.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[11px] sm:text-xs select-none shrink-0 shadow-2xs">
             <button
@@ -354,6 +358,9 @@ export const Header: React.FC<HeaderProps> = ({
                 </a>
               );
             })}
+
+            {/* Mobile Drawer Typography Settings */}
+            <FontSettingsMenu isMobileDrawer={true} />
 
             {/* Bottom Actions inside Drawer */}
             <div className="pt-3 mt-2 border-t border-light-border dark:border-dark-border space-y-2">

@@ -15,7 +15,6 @@ import { ThemedToaster } from './components/layout/ThemedToaster';
 import { AiChatWidget } from './components/common/AiChatWidget';
 import { TooltipProvider } from './components/ui/tooltip';
 import { VariantProvider } from './context/VariantContext';
-import { FontVariantSwitcher } from './components/common/FontVariantSwitcher';
 
 import {
   ProjectsPageSkeleton,
@@ -374,7 +373,6 @@ export const App: React.FC = () => {
             {currentView === 'home' && <Footer onNavigate={handleNavigate} />}
           </div>
           <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
-          <FontVariantSwitcher />
           <ThemedToaster />
         </SiteDataProvider>
       </VariantProvider>

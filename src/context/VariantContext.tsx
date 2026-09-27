@@ -138,15 +138,8 @@ const normalizeVariant = (val: string | null): TypographyVariantId => {
 export const VariantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [variant, setVariantState] = useState<TypographyVariantId>(() => {
     if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlVar = urlParams.get('variant') || urlParams.get('font');
-      if (urlVar) {
-        const normalized = normalizeVariant(urlVar);
-        localStorage.setItem('profolio-typography-variant', normalized);
-        return normalized;
-      }
-      const saved = localStorage.getItem('profolio-typography-variant') || localStorage.getItem('profolio-design-variant');
-      return normalizeVariant(saved);
+      const saved = localStorage.getItem('profolio-typography-variant');
+      if (saved) return normalizeVariant(saved);
     }
     return 'v4';
   });
@@ -159,18 +152,13 @@ export const VariantProvider: React.FC<{ children: React.ReactNode }> = ({ child
         .trim();
       document.body.classList.add(`font-variant-${variant}`);
     }
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('profolio-typography-variant', variant);
+    }
   }, [variant]);
 
   const setVariant = (v: TypographyVariantId) => {
     setVariantState(v);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('profolio-typography-variant', v);
-      localStorage.setItem('profolio-design-variant', v);
-      const url = new URL(window.location.href);
-      url.searchParams.set('font', v);
-      url.searchParams.set('variant', v.replace('v', ''));
-      window.history.replaceState(null, '', url.toString());
-    }
   };
 
   const toggleVariant = () => {
