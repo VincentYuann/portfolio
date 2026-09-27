@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Code2, Download, Copy, Check, ExternalLink, ArrowLeft } from 'lucide-react';
+import { FileText, Code2, Download, Copy, Check, ExternalLink, ArrowLeft, Mail, GraduationCap, Briefcase, Layers, Terminal, Sparkles, MapPin } from 'lucide-react';
 import { tokenizeLatexLine, getTokenClassName } from '../../../lib/latexHighlight';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
@@ -141,7 +141,7 @@ const DEFAULT_RESUME_TEX = `%-------------------------
 `;
 
 export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
-  const [activeTab, setActiveTab] = useState<'pdf' | 'latex'>('pdf');
+  const [activeTab, setActiveTab] = useState<'summary' | 'pdf' | 'latex'>('summary');
   const [latexSource, setLatexSource] = useState(DEFAULT_RESUME_TEX);
   const [copied, setCopied] = useState(false);
 
@@ -233,179 +233,499 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-        {/* Action Controls & Format Switcher */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          {/* View Mode Switcher */}
-          <div className="bg-light-surface-muted dark:bg-dark-surface p-1 rounded-lg border border-light-border dark:border-dark-border flex items-center">
-            <button
-              onClick={() => setActiveTab('pdf')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-sans tracking-wide transition-all ${
-                activeTab === 'pdf'
-                  ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
-                  : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
-              }`}
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>PDF Document</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('latex')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-sans tracking-wide transition-all ${
-                activeTab === 'latex'
-                  ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
-                  : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
-              }`}
-            >
-              <Code2 className="w-3.5 h-3.5" />
-              <span>LaTeX Source (.tex)</span>
-            </button>
-          </div>
-
-          {/* Download Action */}
-          {activeTab === 'pdf' ? (
-            <button
-              onClick={handleDownloadPdf}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-lg shadow-sm hover:opacity-95 transition-all"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Download PDF</span>
-            </button>
-          ) : (
-            <div className="flex items-center gap-2">
+          {/* Action Controls & Format Switcher */}
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* View Mode Switcher */}
+            <div className="bg-light-surface-muted dark:bg-dark-surface p-1 rounded-[3px] border border-light-border dark:border-dark-border flex items-center">
               <button
-                onClick={handleCopyLatex}
-                className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-lg hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors"
+                onClick={() => setActiveTab('summary')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans tracking-wide transition-all ${
+                  activeTab === 'summary'
+                    ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
+                    : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
+                }`}
               >
-                {copied ? <Check className="w-3.5 h-3.5 text-bamboo" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? 'Copied' : 'Copy LaTeX'}</span>
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Executive Summary</span>
               </button>
               <button
-                onClick={handleDownloadTex}
-                className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-lg shadow-sm hover:opacity-95 transition-all"
+                onClick={() => setActiveTab('pdf')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans tracking-wide transition-all ${
+                  activeTab === 'pdf'
+                    ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
+                    : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>PDF Document</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('latex')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans tracking-wide transition-all ${
+                  activeTab === 'latex'
+                    ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
+                    : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
+                }`}
+              >
+                <Code2 className="w-3.5 h-3.5" />
+                <span>LaTeX Source</span>
+              </button>
+            </div>
+
+            {/* Quick Actions */}
+            {activeTab === 'latex' ? (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleCopyLatex}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-[2px] hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer"
+                >
+                  {copied ? <Check className="w-3.5 h-3.5 text-bamboo" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copied ? 'Copied' : 'Copy LaTeX'}</span>
+                </button>
+                <button
+                  onClick={handleDownloadTex}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-[2px] shadow-sm hover:opacity-95 transition-all cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download .tex</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleDownloadPdf}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-[2px] shadow-sm hover:opacity-95 transition-all cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>Download .tex</span>
+                <span>Download Official PDF</span>
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Main Presentation Container */}
-      <div className="w-full relative">
-        {activeTab === 'pdf' ? (
-          /* PDF Viewer Tab */
-          <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] overflow-visible shadow-sm classical-card-frame">
-            {/* Celestial Ensō Orbital Circle with Brushstroke (Appears on card hover) */}
-            <EnsoOrbital
-              placement="top-left"
-              size={120}
-              hoverOnly={true}
-            />
+        {/* Main Presentation Container */}
+        <div className="w-full relative">
+          {activeTab === 'summary' && (
+            /* Touch-Friendly Responsive Executive Summary View */
+            <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] overflow-visible shadow-sm classical-card-frame">
+              <EnsoOrbital placement="top-left" size={120} hoverOnly={true} />
+              <CornerBrackets size="lg" />
 
-            <CornerBrackets size="lg" />
-            {/* Top Bar for PDF Viewer */}
-            <div className="px-4 py-2.5 bg-light-surface-muted/90 dark:bg-dark-surface-muted border-b border-light-border dark:border-dark-border flex items-center justify-between text-xs text-light-ink-muted dark:text-dark-ink-muted rounded-t-[3px]">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-terracotta/70 dark:bg-ochre/70 inline-block" />
-                <span className="font-mono">Vincent_Yuan_Resume.pdf</span>
+              {/* Dossier Header Bar */}
+              <div className="px-4 sm:px-6 py-3 bg-light-surface-muted/90 dark:bg-dark-surface-muted border-b border-light-border dark:border-dark-border flex items-center justify-between text-xs text-light-ink-muted dark:text-dark-ink-muted rounded-t-[3px]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-terracotta dark:bg-ochre inline-block" />
+                  <span className="font-mono font-medium text-light-ink dark:text-dark-ink">Executive Dossier · 職歴概要</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle hidden sm:inline">
+                    Updated 2026 · Drexel University
+                  </span>
+                  <button
+                    onClick={handleDownloadPdf}
+                    className="inline-flex items-center gap-1 text-[11px] text-terracotta dark:text-ochre hover:underline font-mono"
+                  >
+                    <Download className="w-3 h-3" />
+                    <span>Get PDF</span>
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-4">
-                <a
-                  href={supabasePdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-[11px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors"
-                >
-                  <ExternalLink className="w-3 h-3" />
-                  <span>Open in New Window</span>
-                </a>
-              </div>
-            </div>
 
-            {/* Embedded PDF View */}
-            <div className="w-full h-[780px] bg-light-canvas/40 dark:bg-dark-canvas/60 relative flex flex-col items-center justify-center p-0 overflow-hidden">
-              <object
-                data={`${supabasePdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
-                type="application/pdf"
-                className="w-full h-full"
-              >
-                {/* Fallback if browser cannot embed PDF */}
-                <div className="flex flex-col items-center justify-center p-8 text-center space-y-4 max-w-md mx-auto">
-                  <FileText className="w-12 h-12 text-terracotta dark:text-ochre opacity-80" />
-                  <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink">
-                    Resume Document Available
-                  </h3>
-                  <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed">
-                    Your browser does not support inline PDF streaming. You can download the full PDF document directly or inspect the LaTeX source code.
-                  </p>
-                  <div className="flex items-center gap-3">
+              {/* Executive Summary Body */}
+              <div className="p-5 sm:p-8 lg:p-10 space-y-8">
+                {/* Profile & Fast Contacts Card */}
+                <div className="bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-5">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h2 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
+                        Vincent Yuan
+                      </h2>
+                      <span className="px-2 py-0.5 font-mono text-[10px] bg-bamboo/15 text-bamboo dark:text-bamboo border border-bamboo/30 rounded-[2px]">
+                        Available for Opportunities
+                      </span>
+                    </div>
+                    <p className="font-sans text-sm text-light-ink-muted dark:text-dark-ink-muted font-normal">
+                      Full-Stack Software Engineer · Systems Architecture & Applied AI
+                    </p>
+                    <div className="flex items-center gap-4 text-xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle flex-wrap pt-1">
+                      <span className="inline-flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                        Philadelphia, PA
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <GraduationCap className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                        Drexel B.S. CS (GPA: 3.69)
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 1-Tap Mobile Action CTAs */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-2 md:pt-0">
+                    <a
+                      href="mailto:vincentyuan1020@gmail.com"
+                      className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 py-2.5 bg-light-surface dark:bg-dark-surface-raised border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-[2px] hover:border-terracotta dark:hover:border-ochre transition-colors"
+                    >
+                      <Mail className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                      <span>Email Vincent</span>
+                    </a>
                     <button
                       onClick={handleDownloadPdf}
-                      className="px-4 py-2 bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light text-xs font-sans rounded-[2px] shadow-xs cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas text-xs font-sans font-medium rounded-[2px] shadow-xs hover:opacity-90 transition-all cursor-pointer"
                     >
-                      Download Resume PDF
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('latex')}
-                      className="px-4 py-2 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-[2px] cursor-pointer"
-                    >
-                      View LaTeX Source
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download PDF</span>
                     </button>
                   </div>
                 </div>
-              </object>
-            </div>
-          </div>
-        ) : (
-          /* LaTeX Source Tab */
-          <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] overflow-visible shadow-sm classical-card-frame">
-            {/* Celestial Ensō Orbital Circle with Brushstroke (Appears on card hover) */}
-            <EnsoOrbital
-              placement="top-left"
-              size={120}
-              hoverOnly={true}
-            />
 
-            <CornerBrackets size="lg" />
-            {/* Header with quick stats */}
-            <div className="px-4 py-2.5 bg-light-surface-muted/90 dark:bg-dark-surface-muted border-b border-light-border dark:border-dark-border flex items-center justify-between text-xs text-light-ink-muted dark:text-dark-ink-muted">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-bamboo/70 inline-block" />
-                <span className="font-mono">resume.tex (TeX / LaTeX 2e)</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs font-mono">
-                <span>{latexSource.split('\n').length} Lines</span>
-                <span>•</span>
-                <span>UTF-8</span>
-              </div>
-            </div>
-
-            {/* Syntax Highlighted Code Viewer */}
-            <div className="w-full max-h-[780px] overflow-auto p-4 sm:p-6 font-mono text-xs leading-relaxed bg-[#FDFCFA] dark:bg-[#18191D]">
-              <pre className="table w-full">
-                {latexSource.split('\n').map((line, idx) => {
-                  const tokens = tokenizeLatexLine(line);
-                  return (
-                    <div key={idx} className="table-row hover:bg-light-surface-muted/40 dark:hover:bg-dark-surface-muted/30">
-                      <span className="table-cell select-none pr-4 text-right opacity-30 text-[10px] w-10 align-top">
-                        {idx + 1}
-                      </span>
-                      <span className="table-cell whitespace-pre-wrap break-all">
-                        {tokens.map((token, tIdx) => (
-                          <span key={tIdx} className={getTokenClassName(token.type)}>
-                            {token.text}
-                          </span>
-                        ))}
-                      </span>
+                {/* Grid: Education & Core Technical Stack */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  {/* Education Column */}
+                  <div className="lg:col-span-5 bg-light-surface-raised/60 dark:bg-dark-surface/70 border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <GraduationCap className="w-4 h-4 text-terracotta dark:text-ochre" />
+                        <h3 className="font-serif text-base text-light-ink dark:text-dark-ink font-medium">
+                          Academic Foundation
+                        </h3>
+                      </div>
+                      <h4 className="font-sans text-sm font-semibold text-light-ink dark:text-dark-ink">
+                        Drexel University
+                      </h4>
+                      <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+                        College of Computing & Informatics
+                      </p>
+                      <p className="font-mono text-xs text-terracotta dark:text-ochre mt-1">
+                        Bachelor of Science in Computer Science
+                      </p>
+                      <div className="mt-3 pt-3 border-t border-light-border/60 dark:border-dark-border/60 text-xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle space-y-1">
+                        <div>GPA: <span className="font-semibold text-light-ink dark:text-dark-ink">3.69 / 4.0</span></div>
+                        <div>Anticipated Graduation: <span className="font-semibold text-light-ink dark:text-dark-ink">June 2029</span></div>
+                      </div>
                     </div>
-                  );
-                })}
-              </pre>
+                    <div className="mt-4 pt-3 border-t border-light-border/60 dark:border-dark-border/60">
+                      <p className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider mb-1.5">
+                        Selected Coursework
+                      </p>
+                      <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed">
+                        Computing & Informatics Design I–III, Computer Programming I & II, Calculus I–IV, Linear Algebra, Physics I & II.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Skills Substrate Column */}
+                  <div className="lg:col-span-7 bg-light-surface-raised/60 dark:bg-dark-surface/70 border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Terminal className="w-4 h-4 text-terracotta dark:text-ochre" />
+                      <h3 className="font-serif text-base text-light-ink dark:text-dark-ink font-medium">
+                        Technical Competencies
+                      </h3>
+                    </div>
+
+                    <div className="space-y-3.5">
+                      <div>
+                        <span className="font-mono text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider block mb-1.5">
+                          Languages & Core Logic
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {['Python', 'TypeScript', 'JavaScript', 'HTML5 / CSS3', 'SQL', 'Tranquility', 'C / C++'].map((skill) => (
+                            <span
+                              key={skill}
+                              className="px-2.5 py-1 bg-light-surface dark:bg-dark-surface-raised border border-light-border dark:border-dark-border font-mono text-xs text-light-ink dark:text-dark-ink rounded-[2px]"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <span className="font-mono text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider block mb-1.5">
+                          Frameworks, Libraries & Data
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {['React 18', 'Tailwind CSS', 'Vite', 'Pygame', 'PostgreSQL', 'Supabase', 'LaTeX / KaTeX', 'REST APIs'].map((skill) => (
+                            <span
+                              key={skill}
+                              className="px-2.5 py-1 bg-light-surface dark:bg-dark-surface-raised border border-light-border dark:border-dark-border font-mono text-xs text-light-ink dark:text-dark-ink rounded-[2px]"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <span className="font-mono text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider block mb-1.5">
+                          Tools, Systems & Platforms
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {['Linux / Unix CLI', 'SSH (Tux Server)', 'Git / GitLab', 'Google Gemini AI', 'VS Code', 'S3 Storage'].map((skill) => (
+                            <span
+                              key={skill}
+                              className="px-2.5 py-1 bg-light-surface dark:bg-dark-surface-raised border border-light-border dark:border-dark-border font-mono text-xs text-light-ink dark:text-dark-ink rounded-[2px]"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Engineering Projects */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-2 border-b border-light-border dark:border-dark-border">
+                    <div className="flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-terracotta dark:text-ochre" />
+                      <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink font-medium">
+                        Key Engineering Projects
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => onNavigate?.('projects')}
+                      className="font-mono text-xs text-terracotta dark:text-ochre hover:underline inline-flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>Explore Showcase</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Ascension */}
+                    <div className="bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-5 space-y-2">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h4 className="font-serif text-base text-light-ink dark:text-dark-ink font-semibold">
+                          Ascension
+                        </h4>
+                        <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle">
+                          Jan 2025 – June 2025
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs text-terracotta dark:text-ochre">
+                        Python · Pygame · Git · GitLab Agile
+                      </p>
+                      <ul className="list-disc list-inside font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted space-y-1 leading-relaxed">
+                        <li>Level design, gameplay mechanics, and sound integration for 2D Foddian-style platformer.</li>
+                        <li>Applied OOP in Python to encapsulate complex state and modularize physics blueprints.</li>
+                        <li>Practiced Agile sprints, GitLab Kanban boards, and peer code reviews.</li>
+                      </ul>
+                    </div>
+
+                    {/* Virtual Pet Machine */}
+                    <div className="bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-5 space-y-2">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h4 className="font-serif text-base text-light-ink dark:text-dark-ink font-semibold">
+                          Virtual Pet Machine
+                        </h4>
+                        <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle">
+                          Dec 2024
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs text-terracotta dark:text-ochre">
+                        Tranquility · Linux Terminal · SSH
+                      </p>
+                      <ul className="list-disc list-inside font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted space-y-1 leading-relaxed">
+                        <li>Web-based virtual pet built upon finite state machine transitions responding to user actions.</li>
+                        <li>Executed directly on Drexel Tux Linux server via SSH terminal file management.</li>
+                        <li>Engineered timed logic structures simulating dynamic behavior models.</li>
+                      </ul>
+                    </div>
+
+                    {/* John's Farmer Market */}
+                    <div className="bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-5 space-y-2">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h4 className="font-serif text-base text-light-ink dark:text-dark-ink font-semibold">
+                          John's Farmer Market
+                        </h4>
+                        <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle">
+                          Mar 2023 – Apr 2023
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs text-terracotta dark:text-ochre">
+                        JavaScript · HTML5 · CSS3 · Replit
+                      </p>
+                      <ul className="list-disc list-inside font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted space-y-1 leading-relaxed">
+                        <li>Simulated online marketplace with user authentication, cart management, and coupon validation.</li>
+                        <li>Structured responsive storefront interface with dynamic state transitions.</li>
+                      </ul>
+                    </div>
+
+                    {/* Narrative Card Game */}
+                    <div className="bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-5 space-y-2">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h4 className="font-serif text-base text-light-ink dark:text-dark-ink font-semibold">
+                          Narrative Card Engine
+                        </h4>
+                        <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle">
+                          Dec 2022 – Jan 2023
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs text-terracotta dark:text-ochre">
+                        JavaScript · DOM Architecture
+                      </p>
+                      <ul className="list-disc list-inside font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted space-y-1 leading-relaxed">
+                        <li>Branching narrative state engine driven by player decisions and condition evaluators.</li>
+                        <li>Dynamic stat tracking (vitality, resource currency) and game-over resolutions.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Work Experience */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-light-border dark:border-dark-border">
+                    <Briefcase className="w-4 h-4 text-terracotta dark:text-ochre" />
+                    <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink font-medium">
+                      Operational & Professional Experience
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-5 space-y-2">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h4 className="font-serif text-base text-light-ink dark:text-dark-ink font-semibold">
+                          Kung Fu Tea
+                        </h4>
+                        <span className="font-mono text-[10px] text-bamboo font-medium">
+                          Aug 2022 – Present
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted">
+                        Barista & Cashier · Philadelphia, PA
+                      </p>
+                      <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed">
+                        Manage high-volume POS transactions with rigorous accuracy; maintain exceptional customer communication and quality control standards.
+                      </p>
+                    </div>
+
+                    <div className="bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-5 space-y-2">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h4 className="font-serif text-base text-light-ink dark:text-dark-ink font-semibold">
+                          Hung Vuong Supermarket
+                        </h4>
+                        <span className="font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle">
+                          June 2020 – Dec 2020
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted">
+                        Stocker & Logistics · Philadelphia, PA
+                      </p>
+                      <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed">
+                        Managed high-traffic aisle inventory replenishment; streamlined warehouse freight staging and strict FIFO rotation across high-demand grocery lines.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+
+          {activeTab === 'pdf' && (
+            /* PDF Document Tab */
+            <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] overflow-visible shadow-sm classical-card-frame">
+              <EnsoOrbital placement="top-left" size={120} hoverOnly={true} />
+              <CornerBrackets size="lg" />
+
+              {/* Top Bar for PDF Viewer */}
+              <div className="px-4 py-2.5 bg-light-surface-muted/90 dark:bg-dark-surface-muted border-b border-light-border dark:border-dark-border flex items-center justify-between text-xs text-light-ink-muted dark:text-dark-ink-muted rounded-t-[3px]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-terracotta/70 dark:bg-ochre/70 inline-block" />
+                  <span className="font-mono">Vincent_Yuan_Resume.pdf</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <a
+                    href={supabasePdfUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    <span>Open in New Window</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Embedded PDF View */}
+              <div className="w-full h-[780px] bg-light-canvas/40 dark:bg-dark-canvas/60 relative flex flex-col items-center justify-center p-0 overflow-hidden">
+                <object
+                  data={`${supabasePdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
+                  type="application/pdf"
+                  className="w-full h-full"
+                >
+                  {/* Fallback if browser cannot embed PDF */}
+                  <div className="flex flex-col items-center justify-center p-8 text-center space-y-4 max-w-md mx-auto">
+                    <FileText className="w-12 h-12 text-terracotta dark:text-ochre opacity-80" />
+                    <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink">
+                      Resume Document Available
+                    </h3>
+                    <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed">
+                      Your browser does not support inline PDF streaming. You can download the full PDF document directly or inspect the LaTeX source code.
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={handleDownloadPdf}
+                        className="px-4 py-2 bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light text-xs font-sans rounded-[2px] shadow-xs cursor-pointer"
+                      >
+                        Download Resume PDF
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('latex')}
+                        className="px-4 py-2 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-[2px] cursor-pointer"
+                      >
+                        View LaTeX Source
+                      </button>
+                    </div>
+                  </div>
+                </object>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'latex' && (
+            /* LaTeX Source Tab */
+            <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] overflow-visible shadow-sm classical-card-frame">
+              <EnsoOrbital placement="top-left" size={120} hoverOnly={true} />
+              <CornerBrackets size="lg" />
+
+              {/* Header with quick stats */}
+              <div className="px-4 py-2.5 bg-light-surface-muted/90 dark:bg-dark-surface-muted border-b border-light-border dark:border-dark-border flex items-center justify-between text-xs text-light-ink-muted dark:text-dark-ink-muted rounded-t-[3px]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-bamboo/70 inline-block" />
+                  <span className="font-mono">resume.tex (TeX / LaTeX 2e)</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs font-mono">
+                  <span>{latexSource.split('\n').length} Lines</span>
+                  <span>•</span>
+                  <span>UTF-8</span>
+                </div>
+              </div>
+
+              {/* Syntax Highlighted Code Viewer */}
+              <div className="w-full max-h-[780px] overflow-auto p-4 sm:p-6 font-mono text-xs leading-relaxed bg-[#FDFCFA] dark:bg-[#18191D]">
+                <pre className="table w-full">
+                  {latexSource.split('\n').map((line, idx) => {
+                    const tokens = tokenizeLatexLine(line);
+                    return (
+                      <div key={idx} className="table-row hover:bg-light-surface-muted/40 dark:hover:bg-dark-surface-muted/30">
+                        <span className="table-cell select-none pr-4 text-right opacity-30 text-[10px] w-10 align-top">
+                          {idx + 1}
+                        </span>
+                        <span className="table-cell whitespace-pre-wrap break-all">
+                          {tokens.map((token, tIdx) => (
+                            <span key={tIdx} className={getTokenClassName(token.type)}>
+                              {token.text}
+                            </span>
+                          ))}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </pre>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

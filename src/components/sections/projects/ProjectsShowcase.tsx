@@ -40,6 +40,26 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
     }
   };
 
+  const currentIndex = selectedProject
+    ? displayedProjects.findIndex((p) => p.id === selectedProject.id)
+    : -1;
+
+  const handleNextProject = () => {
+    if (currentIndex >= 0 && currentIndex < displayedProjects.length - 1) {
+      openProject(displayedProjects[currentIndex + 1]);
+    } else if (currentIndex === displayedProjects.length - 1) {
+      openProject(displayedProjects[0]);
+    }
+  };
+
+  const handlePrevProject = () => {
+    if (currentIndex > 0) {
+      openProject(displayedProjects[currentIndex - 1]);
+    } else if (currentIndex === 0) {
+      openProject(displayedProjects[displayedProjects.length - 1]);
+    }
+  };
+
   if (displayedProjects.length === 0) {
     return null;
   }
@@ -214,7 +234,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             href={project.links.github}
                             target="_blank"
                             rel="noreferrer"
-                            className="p-1.5 rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none"
+                            className="p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none cursor-pointer"
                             title="GitHub Repository"
                             aria-label={`${project.title} GitHub Repository`}
                           >
@@ -226,7 +246,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             href={project.links.live}
                             target="_blank"
                             rel="noreferrer"
-                            className="p-1.5 rounded-md hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none"
+                            className="p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none cursor-pointer"
                             title="Live Deployment"
                             aria-label={`${project.title} Live Deployment`}
                           >
@@ -249,6 +269,10 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
           <ProjectDetailModal
             project={selectedProject}
             onClose={closeProject}
+            onNext={handleNextProject}
+            onPrev={handlePrevProject}
+            hasNext={displayedProjects.length > 1}
+            hasPrev={displayedProjects.length > 1}
           />
         </Suspense>
       )}

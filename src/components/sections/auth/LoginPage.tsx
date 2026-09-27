@@ -80,7 +80,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
 
         {isVisitor ? (
           <div className="space-y-4 text-center">
-            <div className="p-3.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 text-xs font-sans text-left space-y-1">
+            <div className="p-3.5 rounded-[3px] bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 text-xs font-sans text-left space-y-1">
               <p className="font-semibold text-xs flex items-center gap-1.5">
                 <span className="inline-block w-2 h-2 rounded-full bg-amber-500" />
                 Signed in as Visitor
@@ -92,7 +92,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
 
             <button
               onClick={() => onNavigate('projects')}
-              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-[#DE9E36] text-xs font-medium tracking-wide transition-colors cursor-pointer shadow-xs"
+              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-[#DE9E36] text-xs font-medium tracking-wide transition-colors cursor-pointer shadow-xs"
             >
               View Projects
             </button>
@@ -120,7 +120,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
             <button
               onClick={handleGithubLogin}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-3 px-5 py-3 rounded-lg bg-[#24292e] dark:bg-[#202228] hover:bg-[#1a1e22] dark:hover:bg-[#2a2d36] text-white border border-transparent dark:border-dark-border font-sans text-sm font-medium tracking-wide transition-all duration-200 shadow-sm disabled:opacity-60 cursor-pointer"
+              className="w-full flex items-center justify-center gap-3 px-5 py-3 rounded-[2px] bg-[#24292e] dark:bg-[#202228] hover:bg-[#1a1e22] dark:hover:bg-[#2a2d36] text-white border border-transparent dark:border-dark-border font-sans text-sm font-medium tracking-wide transition-all duration-200 shadow-sm disabled:opacity-60 cursor-pointer"
             >
               {/* GitHub SVG icon */}
               <svg

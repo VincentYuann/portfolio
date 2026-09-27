@@ -68,6 +68,26 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
     return matchesSearch;
   });
 
+  const currentIndex = selectedProject
+    ? filteredProjects.findIndex((p) => p.id === selectedProject.id)
+    : -1;
+
+  const handleNextProject = () => {
+    if (currentIndex >= 0 && currentIndex < filteredProjects.length - 1) {
+      openProject(filteredProjects[currentIndex + 1]);
+    } else if (currentIndex === filteredProjects.length - 1) {
+      openProject(filteredProjects[0]);
+    }
+  };
+
+  const handlePrevProject = () => {
+    if (currentIndex > 0) {
+      openProject(filteredProjects[currentIndex - 1]);
+    } else if (currentIndex === 0) {
+      openProject(filteredProjects[filteredProjects.length - 1]);
+    }
+  };
+
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
       {/* 16:9 Cedar Wood Ground & Dynamic Cresting Wave (Retains exact Projects Showcase identity) */}
@@ -91,6 +111,10 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             <ProjectDetailModal
               project={selectedProject}
               onClose={closeProject}
+              onNext={handleNextProject}
+              onPrev={handlePrevProject}
+              hasNext={filteredProjects.length > 1}
+              hasPrev={filteredProjects.length > 1}
             />
           </Suspense>
         )}
@@ -134,14 +158,14 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
               placeholder="Search projects, technologies..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60 dark:focus:border-[#D4A853]/60"
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60 dark:focus:border-[#D4A853]/60 font-sans"
             />
           </div>
         </div>
 
         {/* Projects Grid: Compact Widgets */}
         {filteredProjects.length === 0 ? (
-          <div className="p-16 text-center rounded-xl bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border">
+          <div className="p-16 text-center rounded-[3px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border">
             <Layers className="w-10 h-10 text-light-ink-subtle dark:text-dark-ink-subtle mx-auto mb-3" />
             <h3 className="font-serif text-lg text-light-ink dark:text-dark-ink">
               No projects matched your criteria
@@ -151,7 +175,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             </p>
             <button
               onClick={() => setSearchQuery('')}
-              className="mt-4 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans rounded-md transition-opacity hover:opacity-90 cursor-pointer"
+              className="mt-4 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans rounded-[2px] transition-opacity hover:opacity-90 cursor-pointer"
             >
               Clear Search
             </button>

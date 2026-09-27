@@ -78,6 +78,7 @@ interface ChatMessage {
   attachmentUrl?: string;
   userType?: string;
   telemetry?: MessageTelemetry;
+  failedPrompt?: string;
 }
 
 interface AiChatWidgetProps {
@@ -513,6 +514,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
         sender: 'ai',
         text: userFacingText,
         timestamp: getTimestamp(),
+        failedPrompt: trimmed || undefined,
         telemetry: {
           model: 'Error Diagnostic',
           latencyMs,
@@ -1248,6 +1250,21 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                           <span className="font-sans text-xs font-semibold text-terracotta dark:text-ochre group-hover/card:translate-x-0.5 transition-transform shrink-0">
                             {msg.specCard.actionText}
                           </span>
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Inline Error Recovery Button for Failed Queries */}
+                    {msg.failedPrompt && (
+                      <div className="pt-2 flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleSendMessage(msg.failedPrompt)}
+                          disabled={isStreaming}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-terracotta/40 dark:border-ochre/40 bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta/20 dark:hover:bg-ochre/20 text-terracotta dark:text-ochre text-xs font-mono font-medium transition-colors cursor-pointer disabled:opacity-50"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                          <span>Retry Query</span>
                         </button>
                       </div>
                     )}

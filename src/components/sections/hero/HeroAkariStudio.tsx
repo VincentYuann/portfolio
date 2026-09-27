@@ -163,7 +163,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       <div>
                         <div className="flex items-center gap-2 text-light-ink dark:text-dark-ink">
                           <Icon className="w-4 h-4 text-terracotta dark:text-[#D4A853] shrink-0" />
-                          <span className="font-chakra text-xs uppercase tracking-wider font-semibold truncate">
+                          <span className="font-mono text-xs uppercase tracking-widest font-medium text-light-ink dark:text-dark-ink truncate">
                             {pillar.label}
                           </span>
                         </div>
@@ -205,7 +205,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
               {(hanko?.headerLabel || hanko?.locationArchive) && (
                 <div className="w-full flex items-center justify-between pb-2.5 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
                   {hanko?.headerLabel ? (
-                    <div className="flex items-center gap-1.5 font-chakra uppercase text-xs tracking-wider text-light-ink dark:text-dark-ink font-semibold">
+                    <div className="flex items-center gap-1.5 font-mono uppercase text-xs tracking-widest text-light-ink dark:text-dark-ink font-semibold">
                       <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-[#D4A853] inline-block" />
                       <span>{hanko.headerLabel}</span>
                     </div>
@@ -243,7 +243,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                     </h2>
                   )}
                   {displayRole && (
-                    <p className="font-chakra text-xs uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-semibold mt-1">
+                    <p className="font-sans text-xs uppercase tracking-widest text-light-ink-muted dark:text-dark-ink-muted font-medium mt-1">
                       {displayRole}
                     </p>
                   )}

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Project } from '../../../context/SiteDataContext';
-import { ExternalLink, Github, ListChecks, Layers, Calendar } from 'lucide-react';
+import { ExternalLink, Github, ListChecks, Layers, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import {
@@ -14,9 +14,39 @@ import {
 interface ProjectDetailModalProps {
   project: Project | null;
   onClose: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
+  hasNext?: boolean;
+  hasPrev?: boolean;
 }
 
-export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClose }) => {
+export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
+  project,
+  onClose,
+  onNext,
+  onPrev,
+  hasNext = true,
+  hasPrev = true,
+}) => {
+  // Keyboard arrow navigation (← / →) for power users
+  useEffect(() => {
+    if (!project) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const targetTag = (e.target as HTMLElement)?.tagName;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(targetTag)) return;
+
+      if (e.key === 'ArrowRight' && onNext) {
+        e.preventDefault();
+        onNext();
+      } else if (e.key === 'ArrowLeft' && onPrev) {
+        e.preventDefault();
+        onPrev();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [project, onNext, onPrev]);
+
   if (!project) return null;
 
   return (
@@ -27,7 +57,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
       >
         <CornerBrackets size="lg" />
 
-        {/* Modal Top Bar: Left Archive Info + Unblocked Dedicated Zone for Close Button */}
+        {/* Modal Top Bar: Left Archive Info + Center Navigation (←/→) + Unblocked Dedicated Zone for Close Button */}
         <div className="flex items-center justify-between gap-3 px-4 sm:px-7 py-3 sm:py-3.5 border-b border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised shrink-0 pr-14 sm:pr-16">
           <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
             <span className="font-serif text-terracotta dark:text-[#D4A853] text-lg sm:text-2xl font-bold shrink-0" aria-hidden="true">
@@ -37,6 +67,34 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
               {project.badge || 'ENGINEERING ARCHIVE'}
             </span>
           </div>
+
+          {/* Quick Prev / Next Navigator */}
+          {(onPrev || onNext) && (
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={onPrev}
+                disabled={!hasPrev}
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-mono rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                title="Previous Project (←)"
+                aria-label="Previous Project"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline text-[10px] text-light-ink-muted dark:text-dark-ink-muted">Prev [←]</span>
+              </button>
+              <button
+                type="button"
+                onClick={onNext}
+                disabled={!hasNext}
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-mono rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                title="Next Project (→)"
+                aria-label="Next Project"
+              >
+                <span className="hidden sm:inline text-[10px] text-light-ink-muted dark:text-dark-ink-muted">Next [→]</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Scrollable Content: Mobile-First Single Column & Desktop 2-Column Split */}
@@ -60,7 +118,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    project.isActive ? 'bg-bamboo dark:bg-bamboo-light animate-pulse' : 'bg-light-ink-muted dark:bg-dark-ink-muted'
+                    project.isActive ? 'bg-bamboo dark:bg-bamboo-light animate-pulse' : 'bg-light-ink-muted dark:text-dark-ink-muted'
                   }`}
                 />
                 <span>{project.isActive ? 'Active · 稼働中' : 'Completed · 完了'}</span>
@@ -207,22 +265,50 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
 
         {/* Modal Footer */}
         <div className="px-4 sm:px-7 py-3 sm:py-3.5 border-t border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised flex items-center justify-between gap-3 shrink-0">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted uppercase">
               Project Specification
             </span>
+            {(onPrev || onNext) && (
+              <span className="hidden sm:inline font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle">
+                Keyboard: <kbd className="px-1 py-0.5 border border-light-border dark:border-dark-border rounded-[2px] bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink">←</kbd> <kbd className="px-1 py-0.5 border border-light-border dark:border-dark-border rounded-[2px] bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink">→</kbd>
+              </span>
+            )}
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded-[2px] px-3 py-1.5 cursor-pointer font-medium transition-colors"
-          >
-            Close ✕
-          </button>
+          <div className="flex items-center gap-2">
+            {(onPrev || onNext) && (
+              <div className="flex items-center gap-1 sm:hidden">
+                <button
+                  type="button"
+                  onClick={onPrev}
+                  disabled={!hasPrev}
+                  className="p-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 cursor-pointer"
+                  aria-label="Previous Project"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={onNext}
+                  disabled={!hasNext}
+                  className="p-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 cursor-pointer"
+                  aria-label="Next Project"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded-[2px] px-3 py-1.5 cursor-pointer font-medium transition-colors"
+            >
+              Close ✕
+            </button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
   );
 };
-
