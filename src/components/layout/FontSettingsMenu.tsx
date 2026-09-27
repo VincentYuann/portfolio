@@ -1,20 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useVariant, TYPOGRAPHY_VARIANTS, TypographyVariantId } from '../../context/VariantContext';
-import { Check, X, ChevronDown, Eye, ChevronRight, Type } from 'lucide-react';
+import { ViewMode } from '../../App';
+import { Check, X, ChevronDown, Sparkles, ArrowRight, Type } from 'lucide-react';
 
 interface FontSettingsMenuProps {
+  onNavigate?: (view: ViewMode) => void;
   isMobileDrawer?: boolean;
 }
 
-export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDrawer = false }) => {
-  const { variant, setVariant, variantsList } = useVariant();
+// Top 3 Curated Core Aesthetics (Fixed exactly to 3)
+const TOP_CURATED_IDS: TypographyVariantId[] = ['v4', 'v1', 'v5'];
+
+export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({
+  onNavigate,
+  isMobileDrawer = false,
+}) => {
+  const { variant, setVariant } = useVariant();
   const [isOpen, setIsOpen] = useState(false);
-  const [showSpecimenModal, setShowSpecimenModal] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const currentInfo = TYPOGRAPHY_VARIANTS[variant] || TYPOGRAPHY_VARIANTS.v4;
 
-  // Close dropdown on click outside
+  // Always show exactly the top 3 curated archetypes in the quick switcher
+  const quickVariants = TOP_CURATED_IDS.map((id) => TYPOGRAPHY_VARIANTS[id]).filter(Boolean);
+
+  // Close dropdown on click outside or escape key
   useEffect(() => {
     if (!isOpen || isMobileDrawer) return;
 
@@ -38,6 +48,11 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
     };
   }, [isOpen, isMobileDrawer]);
 
+  const handleGoToVisualSystem = () => {
+    setIsOpen(false);
+    onNavigate?.('visual-system');
+  };
+
   // Mobile Drawer Inline View
   if (isMobileDrawer) {
     return (
@@ -45,23 +60,23 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
         <div className="flex items-center justify-between mb-2.5 px-1">
           <div className="flex items-center gap-1.5">
             <span className="text-terracotta dark:text-ochre text-[11px] font-mono font-bold uppercase tracking-wider">
-              [字 · 書体]
+              [体系]
             </span>
             <span className="text-xs font-semibold text-light-ink dark:text-dark-ink">
-              Typography Voice
+              Visual System Studio
             </span>
           </div>
           <button
-            onClick={() => setShowSpecimenModal(true)}
+            onClick={handleGoToVisualSystem}
             className="text-[11px] font-mono text-terracotta dark:text-ochre hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <Eye className="w-3 h-3" />
-            Compare
+            <span>Open Studio</span>
+            <ArrowRight className="w-3 h-3" />
           </button>
         </div>
 
         <div className="grid grid-cols-1 gap-1.5">
-          {variantsList.map((v) => {
+          {quickVariants.map((v) => {
             const isSelected = v.id === variant;
             return (
               <button
@@ -76,28 +91,17 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="text-[10px] font-mono font-bold opacity-80">0{v.numericKey}</span>
                   <span className="text-xs truncate">{v.name}</span>
+                </div>
+                <div className="flex items-center gap-2">
                   <span className="text-[10px] font-serif opacity-70 px-1 py-0.2 rounded bg-light-canvas dark:bg-dark-canvas">
                     {v.kanji}
                   </span>
+                  {isSelected && <Check className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />}
                 </div>
-                {isSelected && <Check className="w-3.5 h-3.5 shrink-0" />}
               </button>
             );
           })}
         </div>
-
-        {/* Specimen Modal for Mobile */}
-        {showSpecimenModal && (
-          <SpecimenModal
-            variantsList={variantsList}
-            activeVariant={variant}
-            onSelectVariant={(id) => {
-              setVariant(id);
-              setShowSpecimenModal(false);
-            }}
-            onClose={() => setShowSpecimenModal(false)}
-          />
-        )}
       </div>
     );
   }
@@ -105,7 +109,7 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
   // Desktop Navbar Segmented Popover View
   return (
     <div className="relative" ref={popoverRef}>
-      {/* Navbar Trigger Button: Unified with Day/Night toggle height and styling */}
+      {/* Navbar Trigger Button: Compact 2px corner symbol control right beside DAY/NIGHT */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -114,8 +118,8 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
             ? 'bg-light-surface-raised dark:bg-dark-surface-raised border-terracotta/60 dark:border-ochre/60 text-terracotta dark:text-ochre shadow-xs'
             : 'bg-light-surface-card dark:bg-dark-surface border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised'
         }`}
-        title={`Typography: ${currentInfo.name}`}
-        aria-label="Change Typography Voice"
+        title={`Visual System & Typography (Active: ${currentInfo.name})`}
+        aria-label="Design & Typography Settings"
         aria-expanded={isOpen}
       >
         <Type className="w-3 h-3 text-terracotta dark:text-ochre shrink-0" />
@@ -132,40 +136,36 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
         />
       </button>
 
-      {/* Popover Dropdown Menu */}
+      {/* Popover Quick Access Dropdown Menu (Distilled & Perfectly Positioned) */}
       {isOpen && (
         <div
-          className="absolute right-0 top-[calc(100%+8px)] w-88 max-w-[calc(100vw-24px)] p-3.5 bg-light-surface dark:bg-dark-panel border border-light-border dark:border-dark-border shadow-2xl rounded-sm backdrop-blur-md animate-in fade-in zoom-in-95 duration-150 z-50 double-hairline"
+          className="absolute right-0 top-full mt-2 w-72 p-2.5 bg-light-surface dark:bg-dark-panel border border-light-border dark:border-dark-border shadow-2xl rounded-[2px] backdrop-blur-md animate-in fade-in zoom-in-95 duration-150 z-50 double-hairline"
           style={{
-            boxShadow: '0 20px 48px -8px rgba(0,0,0,0.35), inset 0 0 0 1px var(--border-channel-fill)',
+            boxShadow: '0 20px 48px -8px rgba(0,0,0,0.45), inset 0 0 0 1px var(--border-channel-fill)',
           }}
         >
           {/* Menu Header */}
-          <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-light-border/50 dark:border-dark-border/60">
+          <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-light-border/40 dark:border-dark-border/60">
             <div className="flex items-center gap-1.5">
-              <span className="text-terracotta dark:text-ochre text-xs font-mono font-bold tracking-wider uppercase">
+              <span className="text-terracotta dark:text-ochre text-[11px] font-mono font-bold tracking-wider uppercase">
                 [字 · 書体]
               </span>
-              <span className="text-xs font-semibold text-light-ink dark:text-dark-ink">
-                Typography Voices
+              <span className="text-[11px] font-semibold text-light-ink dark:text-dark-ink">
+                Typography
               </span>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 text-light-ink-subtle dark:text-dark-ink-subtle hover:text-light-ink dark:hover:text-dark-ink transition-colors rounded-sm cursor-pointer"
+              className="p-1 text-light-ink-subtle dark:text-dark-ink-subtle hover:text-light-ink dark:hover:text-dark-ink transition-colors rounded-[2px] cursor-pointer"
               aria-label="Close font switcher"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <p className="text-[11px] text-light-ink-muted dark:text-dark-ink-muted mb-2.5 leading-relaxed">
-            Choose an aesthetic voice for the portfolio. Saved in your browser.
-          </p>
-
-          {/* List of 7 Variants */}
-          <div className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1 [scrollbar-width:thin]">
-            {variantsList.map((v) => {
+          {/* 3 Distilled Curated Options */}
+          <div className="space-y-1 mb-2">
+            {quickVariants.map((v) => {
               const isSelected = v.id === variant;
               return (
                 <button
@@ -173,246 +173,52 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
                   onClick={() => {
                     setVariant(v.id);
                   }}
-                  className={`w-full text-left p-2.5 rounded-sm transition-all flex items-center justify-between group border cursor-pointer ${
+                  className={`w-full text-left px-2.5 py-1.5 rounded-[2px] transition-all flex items-center justify-between group border cursor-pointer ${
                     isSelected
                       ? 'bg-terracotta/10 dark:bg-ochre/10 border-terracotta/40 dark:border-ochre/40 shadow-2xs'
                       : 'border-transparent hover:bg-light-canvas/70 dark:hover:bg-dark-canvas/60 hover:border-light-border/40 dark:hover:border-dark-border/40'
                   }`}
                 >
-                  <div className="flex-1 min-w-0 pr-2.5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">
+                  <div className="flex-1 min-w-0 pr-2">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] font-mono font-bold text-terracotta dark:text-ochre">
                         0{v.numericKey}
                       </span>
-                      <span className="text-xs font-semibold text-light-ink dark:text-dark-ink truncate">
+                      <span className="text-[11px] font-semibold text-light-ink dark:text-dark-ink truncate">
                         {v.name}
                       </span>
                     </div>
-                    <div className="text-[10px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 truncate">
-                      <span className="font-medium text-light-ink dark:text-dark-ink">{v.displayFont}</span> · {v.bodyFont}
+                    <div className="text-[10px] text-light-ink-muted dark:text-dark-ink-muted leading-tight truncate">
+                      <span className="font-medium text-light-ink dark:text-dark-ink">{v.displayFont}</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="w-5 h-5 rounded-[2px] bg-light-canvas dark:bg-dark-canvas border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-[10px] font-serif text-light-ink-subtle dark:text-dark-ink-subtle select-none">
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="w-4 h-4 rounded-[2px] bg-light-canvas dark:bg-dark-canvas border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-[10px] font-serif text-light-ink-subtle dark:text-dark-ink-subtle select-none">
                       {v.kanji}
                     </span>
-                    {isSelected ? (
-                      <Check className="w-4 h-4 text-terracotta dark:text-ochre" />
-                    ) : (
-                      <div className="w-4 h-4" />
-                    )}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />}
                   </div>
                 </button>
               );
             })}
           </div>
 
-          {/* Popover Footer */}
-          <div className="mt-3 pt-2.5 border-t border-light-border/40 dark:border-dark-border/60 flex items-center justify-between">
+          {/* Clean Distilled Entry Point to Visual System Studio */}
+          <div className="pt-1.5 border-t border-light-border/40 dark:border-dark-border/60">
             <button
-              onClick={() => {
-                setShowSpecimenModal(true);
-                setIsOpen(false);
-              }}
-              className="text-[11px] font-mono text-terracotta dark:text-ochre hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap"
+              onClick={handleGoToVisualSystem}
+              className="w-full py-2 px-2.5 rounded-[2px] bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-[11px] font-sans font-semibold flex items-center justify-between hover:opacity-90 transition-opacity cursor-pointer shadow-xs group"
             >
-              <Eye className="w-3.5 h-3.5" />
-              <span>Compare Specimen Sheet</span>
-            </button>
-            <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle whitespace-nowrap">
-              Active: 0{currentInfo.numericKey}/07
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Comparison Specimen Modal */}
-      {showSpecimenModal && (
-        <SpecimenModal
-          variantsList={variantsList}
-          activeVariant={variant}
-          onSelectVariant={(id) => {
-            setVariant(id);
-            setShowSpecimenModal(false);
-          }}
-          onClose={() => setShowSpecimenModal(false)}
-        />
-      )}
-    </div>
-  );
-};
-
-// Reusable Specimen Sheet Modal Component
-interface SpecimenModalProps {
-  variantsList: ReturnType<typeof useVariant>['variantsList'];
-  activeVariant: TypographyVariantId;
-  onSelectVariant: (id: TypographyVariantId) => void;
-  onClose: () => void;
-}
-
-const SpecimenModal: React.FC<SpecimenModalProps> = ({
-  variantsList,
-  activeVariant,
-  onSelectVariant,
-  onClose,
-}) => {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/65 backdrop-blur-sm animate-in fade-in duration-200">
-      <div
-        className="w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-sm p-5 sm:p-8 double-hairline shadow-2xl relative"
-        style={{
-          boxShadow: '0 24px 64px -12px rgba(0,0,0,0.5), inset 0 0 0 1px var(--border-channel-fill)',
-        }}
-      >
-        {/* Modal Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-light-border/50 dark:border-dark-border/60 mb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre uppercase tracking-wider">
-                [Typography Tasting Laboratory]
-              </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-light-canvas dark:bg-dark-canvas text-light-ink-muted dark:text-dark-ink-muted">
-                7 Aesthetic Voices
-              </span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif text-light-ink dark:text-dark-ink font-normal tracking-tight">
-              Typographic Identity Comparison
-            </h2>
-            <p className="text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-2xl leading-relaxed">
-              Evaluate how each type system shapes the hierarchy, tone, and rhythm of Vincent Yuan's portfolio. Click any card to activate it site-wide.
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 text-light-ink-subtle dark:text-dark-ink-subtle hover:text-light-ink dark:hover:text-dark-ink rounded-sm transition-colors cursor-pointer"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* 7 Variants Specimen Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {variantsList.map((v) => {
-            const isActive = v.id === activeVariant;
-            return (
-              <div
-                key={v.id}
-                onClick={() => onSelectVariant(v.id)}
-                className={`relative cursor-pointer p-5 rounded-sm border transition-all duration-300 flex flex-col justify-between ${
-                  isActive
-                    ? 'border-terracotta dark:border-ochre bg-light-canvas/40 dark:bg-dark-canvas/60 shadow-lg ring-1 ring-terracotta/40 dark:ring-ochre/40'
-                    : 'border-light-border/60 dark:border-dark-border/70 bg-light-surface dark:bg-dark-panel hover:border-light-border dark:hover:border-dark-border hover:shadow-md'
-                }`}
-              >
-                <div>
-                  {/* Card Top Metadata: cleanly separated left & right with zero collision */}
-                  <div className="flex items-center justify-between gap-2 pb-2 mb-3 border-b border-light-border/30 dark:border-dark-border/40">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre shrink-0">
-                        0{v.numericKey}
-                      </span>
-                      <span className="w-4 h-4 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-[10px] font-serif text-light-ink font-semibold shrink-0">
-                        {v.kanji}
-                      </span>
-                      <span className="text-[11px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle truncate">
-                        {v.tagline}
-                      </span>
-                    </div>
-
-                    {isActive && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas text-[10px] font-mono font-bold rounded-xs tracking-wider uppercase shrink-0">
-                        <Check className="w-3 h-3" />
-                        ACTIVE
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="text-lg font-bold text-light-ink dark:text-dark-ink mb-1.5">
-                    {v.name}
-                  </h3>
-
-                  {/* Specimen Box */}
-                  <div className="bg-light-surface-raised dark:bg-dark-canvas/80 p-3.5 rounded-xs border border-light-border/40 dark:border-dark-border/50 my-2.5 space-y-2.5">
-                    <div>
-                      <span className="text-[9px] font-mono uppercase tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle block mb-0.5">
-                        Headline ({v.displayFont})
-                      </span>
-                      <div
-                        className="text-xl sm:text-2xl text-light-ink dark:text-dark-ink leading-tight font-medium"
-                        style={{ fontFamily: v.displayFont }}
-                      >
-                        Algorithmic Clarity &amp; Wabi-Sabi
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className="text-[9px] font-mono uppercase tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle block mb-0.5">
-                        Body Prose ({v.bodyFont})
-                      </span>
-                      <div
-                        className="text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed"
-                        style={{ fontFamily: v.bodyFont }}
-                      >
-                        Architecting resilient distributed systems and autonomous agent workflows with human dignity and mathematical precision.
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-1.5 border-t border-light-border/30 dark:border-dark-border/30">
-                      <span className="text-[10px] font-mono text-terracotta dark:text-ochre" style={{ fontFamily: v.monoFont }}>
-                        {`// [LAT: 43.65° N · SYS: v${v.numericKey}]`}
-                      </span>
-                      <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
-                        {v.monoFont}
-                      </span>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed mt-2">
-                    {v.description}
-                  </p>
-                </div>
-
-                {/* Card Action Footer */}
-                <div className="mt-4 pt-3 border-t border-light-border/40 dark:border-dark-border/50 flex items-center justify-between gap-3">
-                  <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle truncate">
-                    {v.displayFont} + {v.bodyFont}
-                  </span>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSelectVariant(v.id);
-                    }}
-                    className={`text-xs font-mono px-3 py-1.5 rounded-xs transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer ${
-                      isActive
-                        ? 'bg-terracotta text-white dark:bg-ochre dark:text-dark-canvas font-semibold shadow-xs'
-                        : 'border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:bg-light-canvas dark:hover:bg-dark-canvas'
-                    }`}
-                  >
-                    {isActive ? 'Current Voice' : 'Apply Voice'}
-                    <ChevronRight className="w-3 h-3" />
-                  </button>
-                </div>
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-ochre shrink-0" />
+                <span>View All in Visual System Studio</span>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Modal Footer */}
-        <div className="mt-8 pt-4 border-t border-light-border/40 dark:border-dark-border/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-light-ink-muted dark:text-dark-ink-muted">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-bamboo" />
-            <span>Choice is automatically preserved in local storage and applied across all sections.</span>
+              <ArrowRight className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5 shrink-0" />
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="px-4 py-1.5 rounded-sm bg-light-surface-raised dark:bg-dark-panel border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink font-mono text-xs cursor-pointer hover:bg-light-surface dark:hover:bg-dark-surface"
-          >
-            Close Tasting Lab
-          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };

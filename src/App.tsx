@@ -31,8 +31,9 @@ const ResumePage = lazy(() => import('./components/sections/resume/ResumePage').
 const HobbiesPage = lazy(() => import('./components/sections/hobbies/HobbiesPage').then((m) => ({ default: m.HobbiesPage })));
 const LoginPage = lazy(() => import('./components/sections/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
 const EditPage = lazy(() => import('./components/admin/AdminStudio').then((m) => ({ default: m.AdminStudio })));
+const VisualSystemPage = lazy(() => import('./components/sections/visual-system/VisualSystemPage').then((m) => ({ default: m.VisualSystemPage })));
 
-export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies';
+export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies' | 'visual-system';
 
 const RouteLoadingFallback: React.FC<{ currentView?: ViewMode }> = ({ currentView }) => {
   switch (currentView) {
@@ -46,6 +47,8 @@ const RouteLoadingFallback: React.FC<{ currentView?: ViewMode }> = ({ currentVie
       return <AdminStudioSkeleton />;
     case 'login':
       return <LoginPageSkeleton />;
+    case 'visual-system':
+      return <DefaultPageSkeleton />;
     default:
       return <DefaultPageSkeleton />;
   }
@@ -57,6 +60,7 @@ const getInitialView = (): ViewMode => {
   if (hash === '#resume' || hash === '#cv') return 'resume';
   if (hash === '#all-projects' || hash === '#projects' || hash === '#archive' || hash.startsWith('#project-')) return 'projects';
   if (hash === '#all-hobbies' || hash === '#hobbies-archive') return 'hobbies';
+  if (hash === '#visual-system' || hash === '#design-system' || hash === '#typography' || hash === '#styles') return 'visual-system';
   if (hash === '#login') return 'login';
   if (hash === '#edit') return 'edit';
   return 'home';
@@ -228,6 +232,9 @@ export const App: React.FC = () => {
       } else if (hash === '#all-hobbies' || hash === '#hobbies-archive') {
         setViewRef.current('hobbies');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#visual-system' || hash === '#design-system' || hash === '#typography' || hash === '#styles') {
+        setViewRef.current('visual-system');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (hash === '#login') {
         setViewRef.current('login');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -278,6 +285,9 @@ export const App: React.FC = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (view === 'hobbies') {
       window.location.hash = '#all-hobbies';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (view === 'visual-system') {
+      window.location.hash = '#visual-system';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (view === 'login') {
       window.location.hash = '#login';
@@ -361,6 +371,10 @@ export const App: React.FC = () => {
 
                   {currentView === 'hobbies' && (
                     <HobbiesPage onNavigate={handleNavigate} />
+                  )}
+
+                  {currentView === 'visual-system' && (
+                    <VisualSystemPage onNavigate={handleNavigate} />
                   )}
 
                   {currentView === 'home' && (
