@@ -9,6 +9,8 @@ import {
   CheckCircle2,
   Download,
   Sparkles,
+  Copy,
+  Check,
 } from 'lucide-react';
 import {
   supabase,
@@ -19,6 +21,7 @@ import {
   formatErrorMessage,
   withTimeout,
 } from '../../../lib/supabase';
+import { tokenizeLatexLine, getTokenClassName } from '../../../lib/latexHighlight';
 import { toast } from 'sonner';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
@@ -160,6 +163,7 @@ export const ResumeEditor: React.FC = () => {
   const [currentPdfUrl, setCurrentPdfUrl] = useState<string>(getResumePdfUrl());
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [stagedPreviewUrl, setStagedPreviewUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
   const [saveState, setSaveState] = useState<SaveState>('idle');
   const [previewMode, setPreviewMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -204,6 +208,25 @@ export const ResumeEditor: React.FC = () => {
   const { notifyDirty, notifyClean } = useAdminDirty('resume', resetResume, () => {
     handleSaveRef.current();
   });
+
+  const handleCopyLatex = () => {
+    navigator.clipboard.writeText(latex);
+    setCopied(true);
+    toast.success('LaTeX source copied to clipboard!');
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleDownloadTex = () => {
+    const blob = new Blob([latex], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Vincent_Yuan_Resume.tex';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -287,7 +310,6 @@ export const ResumeEditor: React.FC = () => {
   handleSaveRef.current = handleSave;
 
   const lineCount = latex.split('\n').length;
-  const charCount = latex.length;
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -474,53 +496,108 @@ export const ResumeEditor: React.FC = () => {
         </div>
       )}
 
-      {/* LaTeX Code Editor */}
+      {/* LaTeX Code Editor & Syntax-Highlighted Themed Viewer */}
       {tab === 'editor' && (
         <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] shadow-xs overflow-hidden classical-card-frame">
           <CornerBrackets size="md" />
-          {/* Editor Header Bar */}
+
+          {/* Editor Header Bar (Unified with ResumePage.tsx) */}
           <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <div className="flex items-center gap-1.5 shrink-0">
-                <FileCode2 className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853]" />
-                <span className="font-mono text-xs text-light-ink font-medium dark:text-dark-ink">
-                  resume.tex
+                <span className="w-2.5 h-2.5 rounded-full bg-bamboo/70 inline-block" />
+                <span className="font-mono text-xs text-light-ink font-semibold dark:text-dark-ink">
+                  resume.tex (TeX / LaTeX 2e)
                 </span>
               </div>
               <span className="text-light-ink-subtle text-xs">·</span>
               <span className="font-mono text-[10px] text-light-ink-muted dark:text-dark-ink-muted truncate">
-                {lineCount} lines · {charCount} chars
+                {lineCount} lines · UTF-8
               </span>
             </div>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => setPreviewMode((v) => !v)}
-              className="gap-1.5 h-7 text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] cursor-pointer rounded-[2px]"
-            >
-              {previewMode ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-              <span>{previewMode ? 'Code Mode' : 'Preview Mode'}</span>
-            </Button>
+
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleCopyLatex}
+                className="gap-1 h-7 text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink cursor-pointer rounded-[2px]"
+                title="Copy LaTeX source"
+              >
+                {copied ? <Check className="w-3.5 h-3.5 text-bamboo" /> : <Copy className="w-3.5 h-3.5" />}
+                <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy'}</span>
+              </Button>
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleDownloadTex}
+                className="gap-1 h-7 text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink cursor-pointer rounded-[2px]"
+                title="Download .tex file"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Download .tex</span>
+              </Button>
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setPreviewMode((v) => !v)}
+                className="gap-1.5 h-7 text-xs bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-[#D4A853] cursor-pointer rounded-[2px] shadow-2xs"
+              >
+                {previewMode ? <EyeOff className="w-3.5 h-3.5 text-ochre" /> : <Eye className="w-3.5 h-3.5 text-terracotta" />}
+                <span>{previewMode ? 'Raw Code Editor' : 'Themed Syntax Viewer'}</span>
+              </Button>
+            </div>
           </div>
 
           {previewMode ? (
-            <pre className="p-5 font-mono text-xs text-light-ink dark:text-dark-ink leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[60vh] bg-light-surface/30 dark:bg-dark-surface/30">
-              {latex}
-            </pre>
+            /* Syntax Highlighted Themed Viewer (Single Source of Truth match to ResumePage) */
+            <div className="w-full max-h-[70vh] overflow-auto p-4 sm:p-6 font-mono text-xs leading-relaxed bg-[#FDFCFA] dark:bg-[#18191D]">
+              <pre className="table w-full">
+                {latex.split('\n').map((line, idx) => {
+                  const tokens = tokenizeLatexLine(line);
+                  return (
+                    <div key={idx} className="table-row hover:bg-light-surface-muted/40 dark:hover:bg-dark-surface-muted/30">
+                      <span className="table-cell select-none pr-4 text-right opacity-30 text-[10px] w-10 align-top font-mono">
+                        {idx + 1}
+                      </span>
+                      <span className="table-cell whitespace-pre-wrap break-all">
+                        {tokens.map((token, tIdx) => (
+                          <span key={tIdx} className={getTokenClassName(token.type)}>
+                            {token.text}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
+                  );
+                })}
+              </pre>
+            </div>
           ) : (
-            <textarea
-              value={latex}
-              onChange={(e) => {
-                notifyDirty();
-                setLatex(e.target.value);
-              }}
-              className="w-full p-5 font-mono text-xs text-light-ink dark:text-dark-ink bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-terracotta/20 selection:text-terracotta"
-              style={{ minHeight: '60vh' }}
-              spellCheck={false}
-              placeholder="Write or paste your LaTeX resume code…"
-              aria-label="LaTeX Resume Code"
-            />
+            /* Live Raw Code Editor with Line Gutter */
+            <div className="flex bg-[#FDFCFA] dark:bg-[#18191D] max-h-[70vh] overflow-hidden">
+              <div className="select-none py-5 px-3 bg-light-surface/40 dark:bg-dark-surface/40 border-r border-light-border/40 dark:border-dark-border/40 text-right font-mono text-[10px] text-light-ink-muted/50 dark:text-dark-ink-muted/50 leading-relaxed min-w-[3rem] overflow-hidden">
+                {latex.split('\n').map((_, idx) => (
+                  <div key={idx}>{idx + 1}</div>
+                ))}
+              </div>
+              <textarea
+                value={latex}
+                onChange={(e) => {
+                  notifyDirty();
+                  setLatex(e.target.value);
+                }}
+                className="w-full p-5 font-mono text-xs text-light-ink dark:text-dark-ink bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-terracotta/20 selection:text-terracotta overflow-y-auto"
+                style={{ minHeight: '65vh' }}
+                spellCheck={false}
+                placeholder="Write or paste your LaTeX resume code…"
+                aria-label="LaTeX Resume Code"
+              />
+            </div>
           )}
         </div>
       )}

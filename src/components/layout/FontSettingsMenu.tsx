@@ -53,7 +53,7 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
           </div>
           <button
             onClick={() => setShowSpecimenModal(true)}
-            className="text-[11px] font-mono text-terracotta dark:text-ochre hover:underline flex items-center gap-1"
+            className="text-[11px] font-mono text-terracotta dark:text-ochre hover:underline flex items-center gap-1 cursor-pointer"
           >
             <Eye className="w-3 h-3" />
             Compare
@@ -67,16 +67,18 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
               <button
                 key={v.id}
                 onClick={() => setVariant(v.id)}
-                className={`w-full text-left px-3 py-2 rounded-[2px] transition-all flex items-center justify-between border ${
+                className={`w-full text-left px-3 py-2 rounded-[2px] transition-all flex items-center justify-between border cursor-pointer ${
                   isSelected
                     ? 'bg-terracotta/10 dark:bg-ochre/10 border-terracotta/40 dark:border-ochre/40 shadow-2xs text-terracotta dark:text-ochre font-semibold'
                     : 'border-transparent text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-[10px] font-mono font-bold opacity-80">{v.numericKey}</span>
+                  <span className="text-[10px] font-mono font-bold opacity-80">0{v.numericKey}</span>
                   <span className="text-xs truncate">{v.name}</span>
-                  <span className="text-[10px] font-serif opacity-70">({v.kanji})</span>
+                  <span className="text-[10px] font-serif opacity-70 px-1 py-0.2 rounded bg-light-canvas dark:bg-dark-canvas">
+                    {v.kanji}
+                  </span>
                 </div>
                 {isSelected && <Check className="w-3.5 h-3.5 shrink-0" />}
               </button>
@@ -103,25 +105,25 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
   // Desktop Navbar Segmented Popover View
   return (
     <div className="relative" ref={popoverRef}>
-      {/* Navbar Trigger Button: Sleek architectural styling matching Day/Night toggle */}
+      {/* Navbar Trigger Button: Unified with Day/Night toggle height and styling */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[2px] border text-[11px] sm:text-xs select-none shadow-2xs font-sans transition-all duration-200 cursor-pointer ${
+        className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[2px] border text-[11px] select-none shadow-2xs font-sans transition-all duration-200 cursor-pointer ${
           isOpen
             ? 'bg-light-surface-raised dark:bg-dark-surface-raised border-terracotta/60 dark:border-ochre/60 text-terracotta dark:text-ochre shadow-xs'
             : 'bg-light-surface-card dark:bg-dark-surface border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised'
         }`}
-        title={`Typography Voice: ${currentInfo.name}`}
+        title={`Typography: ${currentInfo.name}`}
         aria-label="Change Typography Voice"
         aria-expanded={isOpen}
       >
-        <Type className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
-        <span className="font-mono font-bold tracking-wider text-[11px]">
-          {currentInfo.numericKey}/7
+        <Type className="w-3 h-3 text-terracotta dark:text-ochre shrink-0" />
+        <span className="font-semibold tracking-wider uppercase text-[10px] sm:text-[11px]">
+          FONT
         </span>
-        <span className="hidden md:inline font-medium text-[11px] text-light-ink-muted dark:text-dark-ink-muted truncate max-w-[80px]">
-          {currentInfo.name.split(' ')[0]}
+        <span className="font-mono text-[10px] px-1 py-0.2 rounded bg-light-canvas dark:bg-dark-canvas text-light-ink-muted dark:text-dark-ink-muted">
+          0{currentInfo.numericKey}
         </span>
         <ChevronDown
           className={`w-3 h-3 text-light-ink-subtle dark:text-dark-ink-subtle transition-transform duration-200 ${
@@ -133,13 +135,13 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
       {/* Popover Dropdown Menu */}
       {isOpen && (
         <div
-          className="absolute right-0 top-full mt-2 w-80 p-3 bg-light-surface dark:bg-dark-panel border border-light-border dark:border-dark-border shadow-2xl rounded-sm backdrop-blur-md animate-in fade-in zoom-in-95 duration-150 z-50 double-hairline"
+          className="absolute right-0 top-[calc(100%+8px)] w-88 max-w-[calc(100vw-24px)] p-3.5 bg-light-surface dark:bg-dark-panel border border-light-border dark:border-dark-border shadow-2xl rounded-sm backdrop-blur-md animate-in fade-in zoom-in-95 duration-150 z-50 double-hairline"
           style={{
             boxShadow: '0 20px 48px -8px rgba(0,0,0,0.35), inset 0 0 0 1px var(--border-channel-fill)',
           }}
         >
           {/* Menu Header */}
-          <div className="flex items-center justify-between pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/60">
+          <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-light-border/50 dark:border-dark-border/60">
             <div className="flex items-center gap-1.5">
               <span className="text-terracotta dark:text-ochre text-xs font-mono font-bold tracking-wider uppercase">
                 [字 · 書体]
@@ -158,11 +160,11 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
           </div>
 
           <p className="text-[11px] text-light-ink-muted dark:text-dark-ink-muted mb-2.5 leading-relaxed">
-            Select a typographic personality. Persisted directly to your browser across sessions.
+            Choose an aesthetic voice for the portfolio. Saved in your browser.
           </p>
 
           {/* List of 7 Variants */}
-          <div className="space-y-1 max-h-[320px] overflow-y-auto pr-0.5">
+          <div className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1 [scrollbar-width:thin]">
             {variantsList.map((v) => {
               const isSelected = v.id === variant;
               return (
@@ -171,50 +173,55 @@ export const FontSettingsMenu: React.FC<FontSettingsMenuProps> = ({ isMobileDraw
                   onClick={() => {
                     setVariant(v.id);
                   }}
-                  className={`w-full text-left p-2 rounded-sm transition-all flex items-start justify-between group border cursor-pointer ${
+                  className={`w-full text-left p-2.5 rounded-sm transition-all flex items-center justify-between group border cursor-pointer ${
                     isSelected
                       ? 'bg-terracotta/10 dark:bg-ochre/10 border-terracotta/40 dark:border-ochre/40 shadow-2xs'
-                      : 'border-transparent hover:bg-light-canvas/60 dark:hover:bg-dark-canvas/50 hover:border-light-border/40 dark:hover:border-dark-border/40'
+                      : 'border-transparent hover:bg-light-canvas/70 dark:hover:bg-dark-canvas/60 hover:border-light-border/40 dark:hover:border-dark-border/40'
                   }`}
                 >
-                  <div className="flex-1 min-w-0 pr-2">
+                  <div className="flex-1 min-w-0 pr-2.5">
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">
-                        {v.numericKey}
+                        0{v.numericKey}
                       </span>
                       <span className="text-xs font-semibold text-light-ink dark:text-dark-ink truncate">
                         {v.name}
                       </span>
-                      <span className="text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle font-serif">
-                        {v.kanji}
-                      </span>
                     </div>
                     <div className="text-[10px] text-light-ink-muted dark:text-dark-ink-muted mt-0.5 truncate">
-                      <span className="font-semibold">{v.displayFont}</span> + {v.bodyFont} + {v.monoFont}
+                      <span className="font-medium text-light-ink dark:text-dark-ink">{v.displayFont}</span> · {v.bodyFont}
                     </div>
                   </div>
-                  {isSelected && (
-                    <Check className="w-3.5 h-3.5 text-terracotta dark:text-ochre flex-shrink-0 mt-0.5" />
-                  )}
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="w-5 h-5 rounded-[2px] bg-light-canvas dark:bg-dark-canvas border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-[10px] font-serif text-light-ink-subtle dark:text-dark-ink-subtle select-none">
+                      {v.kanji}
+                    </span>
+                    {isSelected ? (
+                      <Check className="w-4 h-4 text-terracotta dark:text-ochre" />
+                    ) : (
+                      <div className="w-4 h-4" />
+                    )}
+                  </div>
                 </button>
               );
             })}
           </div>
 
           {/* Popover Footer */}
-          <div className="mt-2.5 pt-2 border-t border-light-border/40 dark:border-dark-border/60 flex items-center justify-between">
+          <div className="mt-3 pt-2.5 border-t border-light-border/40 dark:border-dark-border/60 flex items-center justify-between">
             <button
               onClick={() => {
                 setShowSpecimenModal(true);
                 setIsOpen(false);
               }}
-              className="text-[11px] font-mono text-terracotta dark:text-ochre hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-[11px] font-mono text-terracotta dark:text-ochre hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap"
             >
-              <Eye className="w-3 h-3" />
-              Compare Specimen Sheet
+              <Eye className="w-3.5 h-3.5" />
+              <span>Compare Specimen Sheet</span>
             </button>
-            <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
-              Saved in local storage
+            <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle whitespace-nowrap">
+              Active: 0{currentInfo.numericKey}/07
             </span>
           </div>
         </div>
@@ -251,9 +258,9 @@ const SpecimenModal: React.FC<SpecimenModalProps> = ({
   onClose,
 }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/65 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-sm p-6 sm:p-8 double-hairline shadow-2xl relative"
+        className="w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-sm p-5 sm:p-8 double-hairline shadow-2xl relative"
         style={{
           boxShadow: '0 24px 64px -12px rgba(0,0,0,0.5), inset 0 0 0 1px var(--border-channel-fill)',
         }}
@@ -261,19 +268,19 @@ const SpecimenModal: React.FC<SpecimenModalProps> = ({
         {/* Modal Header */}
         <div className="flex items-start justify-between pb-4 border-b border-light-border/50 dark:border-dark-border/60 mb-6">
           <div>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-1.5">
               <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre uppercase tracking-wider">
                 [Typography Tasting Laboratory]
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-light-canvas dark:bg-dark-canvas text-light-ink-muted dark:text-dark-ink-muted">
-                7 Distinct Aesthetics
+                7 Aesthetic Voices
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-serif text-light-ink dark:text-dark-ink font-normal tracking-tight">
               Typographic Identity Comparison
             </h2>
-            <p className="text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-2xl">
-              Evaluate how each font system reshapes the tone, rhythm, and architectural hierarchy of Vincent Yuan's portfolio. Click any variant card below to activate it site-wide.
+            <p className="text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-2xl leading-relaxed">
+              Evaluate how each type system shapes the hierarchy, tone, and rhythm of Vincent Yuan's portfolio. Click any card to activate it site-wide.
             </p>
           </div>
           <button
@@ -286,99 +293,104 @@ const SpecimenModal: React.FC<SpecimenModalProps> = ({
         </div>
 
         {/* 7 Variants Specimen Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {variantsList.map((v) => {
             const isActive = v.id === activeVariant;
             return (
               <div
                 key={v.id}
                 onClick={() => onSelectVariant(v.id)}
-                className={`relative cursor-pointer p-5 rounded-sm border transition-all duration-300 ${
+                className={`relative cursor-pointer p-5 rounded-sm border transition-all duration-300 flex flex-col justify-between ${
                   isActive
-                    ? 'border-terracotta dark:border-ochre bg-light-canvas/40 dark:bg-dark-canvas/60 shadow-lg'
+                    ? 'border-terracotta dark:border-ochre bg-light-canvas/40 dark:bg-dark-canvas/60 shadow-lg ring-1 ring-terracotta/40 dark:ring-ochre/40'
                     : 'border-light-border/60 dark:border-dark-border/70 bg-light-surface dark:bg-dark-panel hover:border-light-border dark:hover:border-dark-border hover:shadow-md'
                 }`}
               >
-                {/* Active Ribbon */}
-                {isActive && (
-                  <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas text-[10px] font-mono font-bold rounded-xs tracking-wider uppercase">
-                    <Check className="w-3 h-3" />
-                    Active Variant
+                <div>
+                  {/* Card Top Metadata: cleanly separated left & right with zero collision */}
+                  <div className="flex items-center justify-between gap-2 pb-2 mb-3 border-b border-light-border/30 dark:border-dark-border/40">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre shrink-0">
+                        0{v.numericKey}
+                      </span>
+                      <span className="w-4 h-4 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-[10px] font-serif text-light-ink font-semibold shrink-0">
+                        {v.kanji}
+                      </span>
+                      <span className="text-[11px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle truncate">
+                        {v.tagline}
+                      </span>
+                    </div>
+
+                    {isActive && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas text-[10px] font-mono font-bold rounded-xs tracking-wider uppercase shrink-0">
+                        <Check className="w-3 h-3" />
+                        ACTIVE
+                      </span>
+                    )}
                   </div>
-                )}
 
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-mono font-bold text-terracotta dark:text-ochre">
-                    0{v.numericKey}
-                  </span>
-                  <span className="text-xs font-serif font-semibold text-light-ink dark:text-dark-ink">
-                    {v.kanji}
-                  </span>
-                  <span className="text-xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
-                    · {v.tagline}
-                  </span>
-                </div>
+                  <h3 className="text-lg font-bold text-light-ink dark:text-dark-ink mb-1.5">
+                    {v.name}
+                  </h3>
 
-                <h3 className="text-lg font-bold text-light-ink dark:text-dark-ink mb-1">
-                  {v.name}
-                </h3>
+                  {/* Specimen Box */}
+                  <div className="bg-light-surface-raised dark:bg-dark-canvas/80 p-3.5 rounded-xs border border-light-border/40 dark:border-dark-border/50 my-2.5 space-y-2.5">
+                    <div>
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle block mb-0.5">
+                        Headline ({v.displayFont})
+                      </span>
+                      <div
+                        className="text-xl sm:text-2xl text-light-ink dark:text-dark-ink leading-tight font-medium"
+                        style={{ fontFamily: v.displayFont }}
+                      >
+                        Algorithmic Clarity &amp; Wabi-Sabi
+                      </div>
+                    </div>
 
-                {/* Font Specimen Stack */}
-                <div className="bg-light-surface-raised dark:bg-dark-canvas/80 p-3 rounded-xs border border-light-border/40 dark:border-dark-border/50 my-3 space-y-2">
-                  <div>
-                    <span className="text-[10px] font-mono uppercase text-light-ink-subtle dark:text-dark-ink-subtle block">
-                      Display Headline ({v.displayFont})
-                    </span>
-                    <div
-                      className="text-xl sm:text-2xl text-light-ink dark:text-dark-ink leading-tight font-medium"
-                      style={{ fontFamily: v.displayFont }}
-                    >
-                      Algorithmic Harmony & Wabi-Sabi
+                    <div>
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle block mb-0.5">
+                        Body Prose ({v.bodyFont})
+                      </span>
+                      <div
+                        className="text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed"
+                        style={{ fontFamily: v.bodyFont }}
+                      >
+                        Architecting resilient distributed systems and autonomous agent workflows with human dignity and mathematical precision.
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1.5 border-t border-light-border/30 dark:border-dark-border/30">
+                      <span className="text-[10px] font-mono text-terracotta dark:text-ochre" style={{ fontFamily: v.monoFont }}>
+                        {`// [LAT: 43.65° N · SYS: v${v.numericKey}]`}
+                      </span>
+                      <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
+                        {v.monoFont}
+                      </span>
                     </div>
                   </div>
 
-                  <div>
-                    <span className="text-[10px] font-mono uppercase text-light-ink-subtle dark:text-dark-ink-subtle block">
-                      Body Prose ({v.bodyFont})
-                    </span>
-                    <div
-                      className="text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed"
-                      style={{ fontFamily: v.bodyFont }}
-                    >
-                      Architecting resilient distributed systems and autonomous agent workflows with human-centered dignity and mathematical precision.
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-1 border-t border-light-border/30 dark:border-dark-border/30">
-                    <span className="text-[10px] font-mono text-terracotta dark:text-ochre" style={{ fontFamily: v.monoFont }}>
-                      {`// [LAT: 43.6532° N · MODEL: GEMINI 2.5]`}
-                    </span>
-                    <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
-                      {v.monoFont}
-                    </span>
-                  </div>
+                  <p className="text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed mt-2">
+                    {v.description}
+                  </p>
                 </div>
 
-                <p className="text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed">
-                  {v.description}
-                </p>
-
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle italic truncate max-w-[200px]">
-                    Vibe: {v.vibe.split(',')[0]}
+                {/* Card Action Footer */}
+                <div className="mt-4 pt-3 border-t border-light-border/40 dark:border-dark-border/50 flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle truncate">
+                    {v.displayFont} + {v.bodyFont}
                   </span>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectVariant(v.id);
                     }}
-                    className={`text-xs font-mono px-3 py-1 rounded-xs transition-colors flex items-center gap-1 cursor-pointer ${
+                    className={`text-xs font-mono px-3 py-1.5 rounded-xs transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer ${
                       isActive
-                        ? 'bg-terracotta text-white dark:bg-ochre dark:text-dark-canvas font-semibold'
+                        ? 'bg-terracotta text-white dark:bg-ochre dark:text-dark-canvas font-semibold shadow-xs'
                         : 'border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:bg-light-canvas dark:hover:bg-dark-canvas'
                     }`}
                   >
-                    {isActive ? 'Current Style' : 'Apply Style'}
+                    {isActive ? 'Current Voice' : 'Apply Voice'}
                     <ChevronRight className="w-3 h-3" />
                   </button>
                 </div>
@@ -391,7 +403,7 @@ const SpecimenModal: React.FC<SpecimenModalProps> = ({
         <div className="mt-8 pt-4 border-t border-light-border/40 dark:border-dark-border/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-light-ink-muted dark:text-dark-ink-muted">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-bamboo" />
-            <span>Choice is automatically preserved in local storage and applied across all pages.</span>
+            <span>Choice is automatically preserved in local storage and applied across all sections.</span>
           </div>
           <button
             onClick={onClose}
