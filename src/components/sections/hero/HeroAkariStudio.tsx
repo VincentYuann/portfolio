@@ -7,7 +7,6 @@ import {
   Sparkles,
   Github,
   Linkedin,
-  Mail,
 } from 'lucide-react';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 import { HankoStamp } from '../../common/HankoStamp';
@@ -73,10 +72,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   const linkedinUrl = rawLinkedin
     ? (rawLinkedin.startsWith('http') ? rawLinkedin : `https://${rawLinkedin}`)
     : '';
-  const rawEmail = profile?.email || '';
-  const emailUrl = rawEmail
-    ? (rawEmail.startsWith('mailto:') ? rawEmail : `mailto:${rawEmail}`)
-    : '';
 
   return (
     <section
@@ -100,7 +95,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             <div className="space-y-6 max-w-4xl">
               {/* Bold Serif Editorial Display Headline in Dynamic Display Font */}
               {headline && (
-                <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-display-lg font-normal text-light-ink dark:text-dark-ink leading-[1.12] sm:leading-[1.08] tracking-tight text-balance">
+                <h1 className="font-display text-[1.65rem] sm:text-4xl md:text-5xl lg:text-display-lg font-normal text-light-ink dark:text-dark-ink leading-[1.18] sm:leading-[1.10] tracking-tight text-balance">
                   {headline}
                 </h1>
               )}
@@ -149,7 +144,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
               Synchronized seamlessly with the edit profile page
             */}
             {capabilityPillars.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-6 border-t border-light-border/60 dark:border-dark-border/60">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3.5 pt-5 sm:pt-6 border-t border-light-border/60 dark:border-dark-border/60">
                 {capabilityPillars.map((pillar, idx) => {
                   const tags = parsePillarTags(pillar);
                   const Icon = getPillarIcon(pillar.label, idx);
@@ -157,7 +152,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   return (
                     <div
                       key={pillar.label || idx}
-                      className="flex flex-col justify-between gap-3 p-4 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-300 shadow-2xs group"
+                      className="flex flex-col justify-between gap-2.5 sm:gap-3 p-3 sm:p-4 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-300 shadow-2xs group"
                     >
                       <div>
                         <div className="flex items-center gap-2 text-light-ink dark:text-dark-ink">
@@ -170,7 +165,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
                       {/* Dynamic official technology tags from DB */}
                       {tags.length > 0 && (
-                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5 sm:pt-1">
                           {tags.map((tag) => (
                             <TechTag
                               key={tag}
@@ -275,8 +270,8 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 </div>
               )}
 
-              {/* Direct Channels (Deduplicated clean contact actions) */}
-              {(githubUrl || linkedinUrl || emailUrl) && (
+              {/* Direct Channels (Option B: Minimal Ghost Social Links - GitHub & LinkedIn) */}
+              {(githubUrl || linkedinUrl) && (
                 <div className="w-full pt-3.5 border-t border-light-border/60 dark:border-dark-border/60 relative z-10">
                   <div className="flex items-center justify-center gap-2">
                     {githubUrl && (
@@ -284,7 +279,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                         href={githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                       >
                         <Github className="w-3.5 h-3.5" />
                         <span>GitHub</span>
@@ -295,19 +290,10 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                         href={linkedinUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                       >
                         <Linkedin className="w-3.5 h-3.5" />
                         <span>LinkedIn</span>
-                      </a>
-                    )}
-                    {emailUrl && (
-                      <a
-                        href={emailUrl}
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
-                      >
-                        <Mail className="w-3.5 h-3.5" />
-                        <span>Email</span>
                       </a>
                     )}
                   </div>
