@@ -76,7 +76,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   return (
     <section
       id="home"
-      className="relative w-full pt-16 sm:pt-24 lg:pt-36 pb-12 lg:pb-16 flex flex-col justify-start overflow-hidden"
+      className="relative w-full pt-24 sm:pt-28 lg:pt-36 pb-12 lg:pb-16 flex flex-col justify-start overflow-hidden"
     >
       {/* 
       {/* Background layer cleared per user request */}
@@ -95,14 +95,14 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             <div className="space-y-4 sm:space-y-6 max-w-4xl">
               {/* Bold Serif Editorial Display Headline in Dynamic Display Font */}
               {headline && (
-                <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-display-lg font-normal text-light-ink dark:text-dark-ink leading-[1.15] sm:leading-[1.10] tracking-tight text-balance">
+                <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-display-lg font-normal text-light-ink dark:text-dark-ink leading-[1.12] sm:leading-[1.08] tracking-tight text-balance">
                   {headline}
                 </h1>
               )}
 
               {/* Subtitle Paragraph in Dynamic Body Font */}
               {tagline && (
-                <p className="font-sans text-xs sm:text-base lg:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed font-light">
+                <p className="font-sans text-sm sm:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed font-light">
                   {tagline}
                 </p>
               )}
