@@ -385,19 +385,19 @@ export const PhilosophyEditor: React.FC = () => {
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Architectural Philosophy Pillars (三つの信条)
               </h3>
-              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block max-w-xl">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block max-w-prose">
                 Up to 3 core architectural tenets displayed as cards in the Japanese Bento on the homepage.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs uppercase tracking-wider text-light-ink-subtle px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+            <span className="font-mono text-xs uppercase tracking-wider text-light-ink dark:text-dark-ink font-semibold px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
               {pillars.length}/3 PILLARS
             </span>
             {!collapsed.pillars ? (
               <ChevronDown className="w-4 h-4 text-terracotta" />
             ) : (
-              <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
+              <ChevronRight className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
             )}
           </div>
         </button>
@@ -409,10 +409,8 @@ export const PhilosophyEditor: React.FC = () => {
               {pillars.map((pillar) => (
                 <div
                   key={pillar.position}
-                  className="relative rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card p-5 sm:p-6 shadow-xs classical-card-frame group hover:border-terracotta/40 transition-colors"
+                  className="relative rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface/40 dark:bg-dark-surface/40 p-4 sm:p-5 shadow-2xs group hover:border-terracotta/40 transition-colors"
                 >
-                  <CornerBrackets size="sm" />
-
                   <div className="space-y-4">
                     {/* Header Pill & Delete */}
                     <div className="flex items-center justify-between pb-2.5 border-b border-light-border/60 dark:border-dark-border/60">
@@ -420,7 +418,7 @@ export const PhilosophyEditor: React.FC = () => {
                         <Badge variant="terracotta" className="font-mono text-xs px-2.5 py-0.5 font-semibold">
                           PILLAR 0{pillar.position}
                         </Badge>
-                        <span className="font-mono text-xs text-light-ink-subtle uppercase tracking-wider">
+                        <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                           CORE TENET
                         </span>
                       </div>

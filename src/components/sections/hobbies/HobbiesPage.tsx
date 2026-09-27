@@ -68,6 +68,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
 
         {/* Header Title Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-8 sm:mb-10">
+          <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
               <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">

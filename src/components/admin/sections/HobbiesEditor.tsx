@@ -525,11 +525,11 @@ export const HobbiesEditor: React.FC = () => {
                               (e.target as HTMLElement).style.opacity = '0.3';
                             }}
                           />
-                          <div className="min-w-0 flex-1">
-                            <span className="font-mono text-xs text-terracotta font-semibold block">
+                          <div className="min-w-0 flex-1 overflow-hidden">
+                            <span className="font-mono text-xs text-terracotta font-semibold block truncate">
                               Photo 0{imgIdx + 1} {imgIdx === 0 && '· Main Display'}
                             </span>
-                            <p className="font-mono text-xs text-light-ink dark:text-dark-ink truncate max-w-xs">
+                            <p className="font-mono text-xs text-light-ink dark:text-dark-ink truncate w-full" title={imgUrl}>
                               {imgUrl}
                             </p>
                             {imgIdx !== 0 && (

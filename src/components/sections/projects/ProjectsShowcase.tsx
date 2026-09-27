@@ -8,6 +8,8 @@ import { SectionHeading } from '../../common/SectionHeading';
 import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
+import { EnsoOrbital } from '../../common/EnsoOrbital';
+import { SectionDivider } from '../../common/SectionDivider';
 
 const ProjectDetailModal = lazy(() =>
   import('./ProjectDetailModal').then((m) => ({ default: m.ProjectDetailModal }))
@@ -19,6 +21,7 @@ interface ProjectsShowcaseProps {
 
 export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | number | null>(null);
   const { projects } = useSiteData();
 
   const allProjects = projects && projects.length > 0 ? projects : [];
@@ -60,9 +63,9 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
   );
 
   return (
-    <section id="featured-works" className="relative w-full py-24 lg:py-32 scroll-mt-20 overflow-hidden">
+    <section id="featured-works" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden">
       {/* Architectural Background Chamber for Featured Works */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface-card/30 to-transparent dark:via-dark-surface/40 pointer-events-none z-0 border-y border-light-border/40 dark:border-dark-border/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface-card/30 to-transparent dark:via-dark-surface/40 pointer-events-none z-0" />
       {/* Subtle Japanese Joinery Axis Ambient Glow */}
       <div className="absolute right-0 sm:right-24 top-1/3 w-96 h-96 bg-radial-[at_center] from-ochre/[0.04] dark:from-ochre/[0.025] to-transparent pointer-events-none z-0" />
       
@@ -80,6 +83,11 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
       />
+
+      {/* Section Divider on Top of Section */}
+      <div className="relative z-10 w-full mb-10 sm:mb-14">
+        <SectionDivider label="SELECTED PORTFOLIO · 作品" shortLabel="PORTFOLIO · 作品" />
+      </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & View All Action */}
@@ -102,8 +110,17 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
               <article
                 key={project.id}
                 onClick={() => openProject(project)}
+                onMouseEnter={() => setHoveredProjectId(project.id)}
+                onMouseLeave={() => setHoveredProjectId(null)}
                 className="group relative w-full bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-8 transition-colors duration-200 shadow-2xs overflow-visible cursor-pointer"
               >
+                {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
+                <EnsoOrbital
+                  placement="top-left"
+                  size={120}
+                  active={hoveredProjectId === project.id}
+                />
+
                 {/* Corner Hairline Brackets (Subtle) */}
                 <CornerBrackets size="md" />
 
@@ -146,7 +163,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         {(project.startDate || project.endDate) && (
                           <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium tracking-wider uppercase flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5 opacity-70" />
-                            {project.startDate || '2024'} - {project.endDate || (isCurrent ? 'Present' : 'Completed')}
+                            {project.startDate ? `${project.startDate} - ` : ''}{project.endDate || (isCurrent ? 'Present' : 'Completed')}
                           </span>
                         )}
 

@@ -216,9 +216,9 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
         <div className="mb-8 sm:mb-10 pb-8 border-b border-light-border/70 dark:border-dark-border/80 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-terracotta text-sm">ARCHIVE //</span>
-              <span className="font-sans text-[11px] font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                CURRICULUM VITAE · 履歴書
+              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
+              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+                Curriculum Vitae · 履歴書
               </span>
             </div>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal">
@@ -227,7 +227,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                 履歴書
               </span>
             </h1>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 max-w-2xl font-light leading-relaxed">
+            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 max-w-prose font-normal leading-relaxed">
               Complete technical qualifications, research background, and systems engineering experience of Vincent Yuan.
             </p>
           </div>
@@ -316,11 +316,11 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Embedded PDF View */}
-            <div className="w-full h-[780px] bg-light-canvas/40 dark:bg-dark-canvas/60 relative flex flex-col items-center justify-center p-2 sm:p-6 overflow-hidden">
+            <div className="w-full h-[780px] bg-light-canvas/40 dark:bg-dark-canvas/60 relative flex flex-col items-center justify-center p-0 overflow-hidden">
               <object
                 data={`${supabasePdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
                 type="application/pdf"
-                className="w-full h-full rounded-[2px] border border-light-border/60 dark:border-dark-border"
+                className="w-full h-full"
               >
                 {/* Fallback if browser cannot embed PDF */}
                 <div className="flex flex-col items-center justify-center p-8 text-center space-y-4 max-w-md mx-auto">
@@ -359,7 +359,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                 <span className="w-2.5 h-2.5 rounded-full bg-bamboo/70 inline-block" />
                 <span className="font-mono">resume.tex (TeX / LaTeX 2e)</span>
               </div>
-              <div className="flex items-center gap-3 text-[11px] font-mono">
+              <div className="flex items-center gap-3 text-xs font-mono">
                 <span>{latexSource.split('\n').length} Lines</span>
                 <span>•</span>
                 <span>UTF-8</span>

@@ -909,7 +909,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
             windowPos && !isMobile
               ? 'top-0 left-0 right-auto bottom-auto'
               : 'bottom-0 left-0 right-0 sm:top-auto sm:bottom-6 sm:right-6 sm:left-auto'
-          } rounded-t-[3px] sm:rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xl dark:shadow-[0_8px_24px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in duration-200`}
+          } rounded-t-[3px] sm:rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-lg dark:shadow-md overflow-hidden animate-in fade-in duration-200`}
           role="dialog"
           aria-modal="true"
           aria-labelledby="ai-chat-title"
@@ -1337,7 +1337,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                           </Badge>
                         </div>
 
-                        <div className="relative pl-3.5 pr-3 py-3 border-l border-terracotta/40 bg-light-surface/40 dark:bg-dark-surface-raised/40 w-full select-text">
+                        <div className="relative pl-3 pr-2 py-1 w-full select-text">
                           {displayedStreamingText ? (
                             <>
                               <MarkdownRenderer content={displayedStreamingText} />
@@ -1419,7 +1419,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="relative flex items-end rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface-card p-1.5 focus-within:border-terracotta focus-within:ring-1 focus-within:ring-terracotta/30 transition-all"
+              className="relative flex items-end rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface/60 dark:bg-dark-surface/60 p-1.5 focus-within:border-terracotta focus-within:ring-1 focus-within:ring-terracotta/30 transition-all"
             >
               {isAdmin && (
                 <>

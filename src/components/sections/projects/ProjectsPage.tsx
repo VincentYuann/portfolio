@@ -6,6 +6,7 @@ import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
+import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { ViewMode } from '../../../App';
 
 const ProjectDetailModal = lazy(() =>
@@ -19,6 +20,7 @@ interface ProjectsPageProps {
 export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | number | null>(null);
   const { projects } = useSiteData();
 
   const allProjects = projects && projects.length > 0 ? projects : [];
@@ -159,8 +161,17 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
+                onMouseEnter={() => setHoveredProjectId(project.id)}
+                onMouseLeave={() => setHoveredProjectId(null)}
                 className="group relative bg-light-surface-card dark:bg-dark-surface-card craft-card classical-card-frame border border-light-border dark:border-dark-border rounded-[3px] overflow-visible p-5 shadow-sm transition-colors duration-200 flex flex-col justify-between"
               >
+                {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
+                <EnsoOrbital
+                  placement="top-left"
+                  size={100}
+                  active={hoveredProjectId === project.id}
+                />
+
                 {/* Corner Hairline Brackets (Subtle) */}
                 <CornerBrackets size="sm" />
 

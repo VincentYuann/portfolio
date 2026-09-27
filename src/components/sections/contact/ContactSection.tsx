@@ -4,6 +4,7 @@ import { sendContactMessage } from '../../../lib/supabase';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
+import { SectionDivider } from '../../common/SectionDivider';
 
 export const ContactSection: React.FC = () => {
   const [name, setName] = useState('');
@@ -96,9 +97,9 @@ export const ContactSection: React.FC = () => {
   };
 
   const { profile } = useSiteData();
-  const contactEmail = profile?.email || 'vincentyuan1020@gmail.com';
-  const contactGithub = profile?.github || 'https://github.com/VincentYuann';
-  const contactLinkedin = profile?.linkedin || 'https://linkedin.com';
+  const contactEmail = profile?.email || '';
+  const contactGithub = profile?.github || '';
+  const contactLinkedin = profile?.linkedin || '';
 
   const handleCopyEmail = () => {
     if (!contactEmail) return;
@@ -112,9 +113,9 @@ export const ContactSection: React.FC = () => {
   )}` : '#';
 
   return (
-    <section id="contact" className="relative w-full py-24 lg:py-32 mb-8 scroll-mt-20">
+    <section id="contact" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 mb-8 scroll-mt-12">
       {/* Architectural Background Chamber for Contact */}
-      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface-card/40 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0 border-t border-light-border/50 dark:border-dark-border/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface-card/40 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0" />
       <div className="absolute inset-0 bg-radial-[at_50%_40%] from-terracotta/[0.03] dark:from-terracotta/[0.02] to-transparent pointer-events-none z-0" />
 
       {/* 16:9 Cedar Wood Ground & Asymmetric Sumi-e Bamboo Art (Anchored Left for alternating rhythm) */}
@@ -131,6 +132,11 @@ export const ContactSection: React.FC = () => {
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
       />
+
+      {/* Section Divider on Top of Section */}
+      <div className="relative z-10 w-full mb-10 sm:mb-14">
+        <SectionDivider label="INITIATE A DIALOGUE · 対話" shortLabel="DIALOGUE · 対話" />
+      </div>
 
       <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
         <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-8 sm:p-12 overflow-visible shadow-sm classical-card-frame transition-colors duration-300">

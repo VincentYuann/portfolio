@@ -5,6 +5,7 @@ import { ViewMode } from '../../../App';
 import { HobbyCard } from './HobbyCard';
 import { SectionHeading } from '../../common/SectionHeading';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
+import { SectionDivider } from '../../common/SectionDivider';
 
 interface HobbiesSectionProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -38,9 +39,9 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
   ) : null;
 
   return (
-    <section id="hobbies" className="relative w-full py-24 lg:py-32 scroll-mt-20 overflow-hidden">
+    <section id="hobbies" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden">
       {/* Architectural Background Chamber for Hobbies */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface/25 to-transparent dark:via-dark-surface-card/40 pointer-events-none z-0 border-y border-light-border/40 dark:border-dark-border/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface/25 to-transparent dark:via-dark-surface-card/40 pointer-events-none z-0" />
       <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-[28rem] max-w-full h-[28rem] bg-radial-[at_center] from-bamboo/[0.035] dark:from-bamboo/[0.02] to-transparent pointer-events-none z-0" />
 
       {/* 16:9 Linen Texture Ground & Asymmetric Sumi-e Pine Tree on Right */}
@@ -57,6 +58,11 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
       />
+
+      {/* Section Divider on Top of Section */}
+      <div className="relative z-10 w-full mb-10 sm:mb-14">
+        <SectionDivider label="HOBBIES & INTERESTS · 趣味と日常" shortLabel="HOBBIES · 趣味" />
+      </div>
 
       {/* Main Hobbies Content Container */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">

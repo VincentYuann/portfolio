@@ -4,6 +4,7 @@ import { BambooArt } from '../../common/BambooArt';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
+import { SectionDivider } from '../../common/SectionDivider';
 
 const TRAJECTORY_THEMES = [
   {
@@ -107,9 +108,9 @@ export const PhilosophyBento: React.FC = () => {
   }
 
   return (
-    <section id="philosophy" className="relative w-full py-24 lg:py-32 scroll-mt-20 overflow-hidden">
+    <section id="philosophy" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden">
       {/* Architectural Background Chamber for Philosophy */}
-      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/35 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0 border-y border-light-border/40 dark:border-dark-border/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/35 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0" />
       {/* Zen Ambient Mist Radial Wash */}
       <div className="absolute inset-0 bg-radial-[at_50%_50%] from-ochre/[0.03] dark:from-ochre/[0.02] to-transparent pointer-events-none z-0" />
 
@@ -127,6 +128,11 @@ export const PhilosophyBento: React.FC = () => {
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
       />
+
+      {/* Section Divider on Top of Section */}
+      <div className="relative z-10 w-full mb-10 sm:mb-14">
+        <SectionDivider label="ORIGIN & PHILOSOPHY · 原点と哲学" shortLabel="PHILOSOPHY · 哲学" />
+      </div>
 
       {/* Main Philosophy Bento Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
@@ -165,16 +171,13 @@ export const PhilosophyBento: React.FC = () => {
             <CornerBrackets size="md" />
 
             {/* Card Top Sub-Header */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
-              <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
-                {originStory?.badge || 'ORIGIN & TRAJECTORY · 原点と軌跡'}
-              </span>
-              <div className="flex items-center gap-1.5 font-mono text-[11px] text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-wider">
-                <span>PHILADELPHIA, PA</span>
-                <span className="opacity-40">·</span>
-                <span className="text-light-ink-muted dark:text-dark-ink-muted font-medium">SWE · SYSTEMS · FULL-STACK</span>
+            {originStory?.badge && (
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
+                <span className="font-mono text-xs font-semibold text-light-ink-subtle dark:text-dark-ink-subtle uppercase tracking-widest">
+                  {originStory.badge}
+                </span>
               </div>
-            </div>
+            )}
 
             {/* Headline & Lead Narrative */}
             {(originStory?.headline || originStory?.leadParagraph) && (
@@ -203,16 +206,20 @@ export const PhilosophyBento: React.FC = () => {
                       className="group p-3 sm:p-4 flex flex-col justify-between transition-all duration-300 relative border-t-2 border-light-border-strong/40 dark:border-dark-border hover:border-light-ink-muted dark:hover:border-dark-border-strong pt-3.5"
                     >
                       <div>
-                        <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
-                          <span className={`font-mono text-[11px] font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
-                            {m.era || `PHASE 0${idx + 1}`}
-                          </span>
-                          {m.tag && (
-                            <span className={`font-mono text-[11px] px-1.5 py-0.5 rounded-[2px] border ${tTheme.tagBg} tracking-wider uppercase`}>
-                              {m.tag}
-                            </span>
-                          )}
-                        </div>
+                        {(m.era || m.tag) && (
+                          <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
+                            {m.era && (
+                              <span className={`font-mono text-[11px] font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
+                                {m.era}
+                              </span>
+                            )}
+                            {m.tag && (
+                              <span className={`font-mono text-[11px] px-1.5 py-0.5 rounded-[2px] border ${tTheme.tagBg} tracking-wider uppercase`}>
+                                {m.tag}
+                              </span>
+                            )}
+                          </div>
+                        )}
                         {m.title && (
                           <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors relative z-10">
                             {m.title}

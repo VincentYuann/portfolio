@@ -41,24 +41,28 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="font-mono text-[11px] font-medium text-light-ink-muted dark:text-dark-ink-muted tracking-wider uppercase">
-                {`0${index + 1}`} · {hobby.kanji || '工芸'}
+                {`0${index + 1}`}{hobby.kanji ? ` · ${hobby.kanji}` : ''}
               </span>
-              <span
-                className={`inline-flex items-center px-2 py-0.5 rounded-[2px] text-[11px] font-mono uppercase tracking-wider border font-medium ${categoryStyle}`}
-              >
-                {hobby.category || 'Passion'}
-              </span>
+              {hobby.category && (
+                <span
+                  className={`inline-flex items-center px-2 py-0.5 rounded-[2px] text-[11px] font-mono uppercase tracking-wider border font-medium ${categoryStyle}`}
+                >
+                  {hobby.category}
+                </span>
+              )}
             </div>
             <h3 className="font-serif text-xl sm:text-2xl font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta transition-colors leading-tight">
               {hobby.title}
             </h3>
           </div>
 
-          <div className="text-right shrink-0">
-            <span className="font-serif text-2xl sm:text-3xl text-light-ink-subtle/50 dark:text-dark-ink-subtle/40 font-medium leading-none block select-none">
-              {hobby.kanji || '道'}
-            </span>
-          </div>
+          {hobby.kanji && (
+            <div className="text-right shrink-0">
+              <span className="font-serif text-2xl sm:text-3xl text-light-ink-subtle/50 dark:text-dark-ink-subtle/40 font-medium leading-none block select-none">
+                {hobby.kanji}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Dynamic Multi-Photo Gallery Layout */}

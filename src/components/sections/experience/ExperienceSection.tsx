@@ -16,6 +16,7 @@ import { SectionHeading } from '../../common/SectionHeading';
 import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
+import { SectionDivider } from '../../common/SectionDivider';
 
 interface ExperienceSectionProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
@@ -75,6 +76,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
     return list.length > 0 ? (list[0].id || 0) : null;
   });
 
+  // Track hovered card so strictly ONE paint brush Ensō animation appears on hover and disappears on unhover
+  const [hoveredCardId, setHoveredCardId] = useState<string | number | null>(null);
+
   const cardRefs = useRef<Record<string | number, HTMLElement | null>>({});
 
   // Scroll spy: auto-light up milestone when user scrolls down
@@ -131,9 +135,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
   const allOpen = list.every((exp, idx) => expandedCards[exp.id || idx]);
 
   return (
-    <section id="experience" className="relative w-full py-24 lg:py-32 scroll-mt-20 overflow-hidden">
+    <section id="experience" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden">
       {/* Architectural Background Chamber for Experience */}
-      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/40 to-light-canvas dark:from-dark-canvas dark:via-dark-surface/40 dark:to-dark-canvas pointer-events-none z-0 border-y border-light-border/40 dark:border-dark-border/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/40 to-light-canvas dark:from-dark-canvas dark:via-dark-surface/40 dark:to-dark-canvas pointer-events-none z-0" />
       {/* Subtle Japanese Joinery Axis Ambient Glow */}
       <div className="absolute left-0 sm:left-24 top-1/4 w-96 h-96 bg-radial-[at_center] from-ochre/[0.04] dark:from-ochre/[0.025] to-transparent pointer-events-none z-0" />
       
@@ -151,6 +155,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
       />
+
+      {/* Section Divider on Top of Section */}
+      <div className="relative z-10 w-full mb-10 sm:mb-14">
+        <SectionDivider label="CAREER TRAJECTORY · 職歴" shortLabel="CAREER · 職歴" />
+      </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & Standardized Layout */}
@@ -224,7 +233,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                   key={cardKey}
                   ref={(el) => { cardRefs.current[cardKey] = el; }}
                   data-milestone-id={String(cardKey)}
-                  onMouseEnter={() => setActiveCardId(cardKey)}
+                  onMouseEnter={() => {
+                    setHoveredCardId(cardKey);
+                    setActiveCardId(cardKey);
+                  }}
+                  onMouseLeave={() => setHoveredCardId(null)}
                   onClick={() => setActiveCardId(cardKey)}
                   className={`milestone-card relative pl-8 sm:pl-14 group cursor-pointer transition-all duration-300 ${
                     isCardActive ? 'is-active opacity-100' : 'opacity-85 hover:opacity-100'
@@ -254,16 +267,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         : 'border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong'
                     }`}
                   >
-                    {/* Celestial Ensō Orbital Circle with Brushstroke & Bamboo Sprig (Image 1 reference) */}
+                    {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover; disappears when not hovered or hovered elsewhere) */}
                     <EnsoOrbital
                       placement="top-left"
                       size={112}
-                      hoverOnly={!isCardActive}
-                      className={
-                        isCardActive
-                          ? '!opacity-100 !scale-100 transition-all duration-500'
-                          : 'opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500'
-                      }
+                      active={hoveredCardId === cardKey}
                     />
 
                     {/* Corner Hairline Brackets (Subtle) */}
@@ -283,12 +291,16 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center p-1 select-none bg-light-surface/40 dark:bg-dark-surface-card/40">
-                            <span className={`font-serif font-black ${isCardActive ? theme.textClass : 'text-light-ink dark:text-dark-ink'} text-2xl sm:text-3xl leading-none tracking-normal`}>
-                              {exp.kanji || (idx === 0 ? '木' : idx === 1 ? '墨' : idx === 2 ? '明' : '原')}
-                            </span>
-                            <span className={`text-[11px] font-mono tracking-wider ${isCardActive ? theme.textClass : 'text-light-ink-subtle dark:text-dark-ink-subtle'} uppercase font-bold leading-none mt-1 opacity-90`}>
-                              {exp.kanjiSubtitle || (idx === 0 ? 'AI' : idx === 1 ? 'SUMI' : idx === 2 ? 'CRAFT' : 'SYS')}
-                            </span>
+                            {exp.kanji && (
+                              <span className={`font-serif font-black ${isCardActive ? theme.textClass : 'text-light-ink dark:text-dark-ink'} text-2xl sm:text-3xl leading-none tracking-normal`}>
+                                {exp.kanji}
+                              </span>
+                            )}
+                            {exp.kanjiSubtitle && (
+                              <span className={`text-[11px] font-mono tracking-wider ${isCardActive ? theme.textClass : 'text-light-ink-subtle dark:text-dark-ink-subtle'} uppercase font-bold leading-none mt-1 opacity-90`}>
+                                {exp.kanjiSubtitle}
+                              </span>
+                            )}
                           </div>
                         )}
                       </div>
@@ -303,10 +315,12 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           </Badge>
 
                           {/* Date Range with Domain Color */}
-                          <span className={`font-mono text-xs ${isCardActive ? theme.textClass : 'text-light-ink-muted dark:text-dark-ink-muted'} font-medium tracking-wider uppercase flex items-center gap-1.5`}>
-                            <Calendar className="w-3.5 h-3.5 opacity-70" />
-                            {exp.startDate} - {exp.endDate || 'Present'}
-                          </span>
+                          {(exp.startDate || exp.endDate) && (
+                            <span className={`font-mono text-xs ${isCardActive ? theme.textClass : 'text-light-ink-muted dark:text-dark-ink-muted'} font-medium tracking-wider uppercase flex items-center gap-1.5`}>
+                              <Calendar className="w-3.5 h-3.5 opacity-70" />
+                              {exp.startDate ? `${exp.startDate} - ` : ''}{exp.endDate || (isCurrent ? 'Present' : '')}
+                            </span>
+                          )}
 
                           {/* High-Contrast Themed Status Badge */}
                           <StatusBadge

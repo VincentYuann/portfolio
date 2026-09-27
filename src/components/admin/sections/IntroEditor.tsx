@@ -451,13 +451,13 @@ export const IntroEditor: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs uppercase tracking-wider text-light-ink-subtle px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+            <span className="font-mono text-xs uppercase tracking-wider text-light-ink dark:text-dark-ink font-semibold px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
               {data.capability_pillars.length}/3 DOMAINS
             </span>
             {!collapsed.domains ? (
               <ChevronDown className="w-4 h-4 text-terracotta" />
             ) : (
-              <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
+              <ChevronRight className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
             )}
           </div>
         </button>
@@ -482,17 +482,17 @@ export const IntroEditor: React.FC = () => {
               )}
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4 divide-y divide-light-border/50 dark:divide-dark-border/50">
               {data.capability_pillars.map((p, idx) => {
                 const currentTags = getPillarTags(p);
                 return (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-lg bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/70 dark:border-dark-border/70 space-y-3"
+                    className="pt-4 first:pt-0 space-y-3"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex-1 max-w-sm">
-                        <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                        <Label className="text-xs font-medium text-light-ink dark:text-dark-ink mb-1 block">
                           Domain Category
                         </Label>
                         <Input

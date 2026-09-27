@@ -82,58 +82,6 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
           </filter>
         </defs>
 
-        {/* 0. LAYER: Sumi-e Bamboo Sprig Accent (Direct Image 1 reference) */}
-        <g className="opacity-80 dark:opacity-85 pointer-events-none select-none">
-          {/* Main bamboo stem */}
-          <path
-            d="M 64,106 Q 66,66 84,36"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            className="text-light-ink-subtle dark:text-dark-ink-subtle opacity-70"
-          />
-          {/* Top Leaf 1 (Terracotta cinnabar accent leaf from Image 1) */}
-          <path
-            d="M 84,36 C 72,26 56,25 44,28 C 56,33 74,35 84,36 Z"
-            fill="#B5482E"
-            className="opacity-95"
-          />
-          {/* Top Leaf 2 (Soft Sumi Gray) */}
-          <path
-            d="M 84,36 C 78,20 66,12 52,10 C 64,18 76,28 84,36 Z"
-            fill="#8C857B"
-            className="opacity-80"
-          />
-          {/* Top Leaf 3 (Right Sumi Gray) */}
-          <path
-            d="M 84,36 C 96,20 110,14 124,14 C 112,22 98,30 84,36 Z"
-            fill="#8C857B"
-            className="opacity-80"
-          />
-          {/* Lower Twig Branch */}
-          <path
-            d="M 68,76 Q 54,70 42,72"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            strokeLinecap="round"
-            className="text-light-ink-subtle dark:text-dark-ink-subtle opacity-60"
-          />
-          {/* Lower Leaf 1 (Botanical Bamboo Green) */}
-          <path
-            d="M 42,72 C 50,64 62,60 74,60 C 62,66 52,70 42,72 Z"
-            fill="#526D57"
-            className="opacity-90"
-          />
-          {/* Lower Leaf 2 (Sumi Gray) */}
-          <path
-            d="M 42,72 C 32,78 24,88 20,100 C 26,90 34,80 42,72 Z"
-            fill="#8C857B"
-            className="opacity-75"
-          />
-        </g>
-
         {/* 1. LAYER: Organic Sumi-e Brushstroke Ensō Body with Breathing Animation */}
         <g className="animate-enso-breathe origin-center transition-opacity duration-300">
           {/* Primary thick calligraphic ink stroke (sweeps counter-clockwise / clockwise) */}
