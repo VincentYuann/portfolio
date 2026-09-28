@@ -118,7 +118,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
           </button>
         </div>
 
-        {/* Header Title Section - standardized with Projects/Hobbies/Resume pages */}
+        {/* Header Title Section: High contrast, optimal line length */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-5 sm:mb-8">
           <div>
             <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
@@ -133,7 +133,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 設計系統
               </span>
             </h1>
-            <p className="font-sans text-xs sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 font-normal leading-relaxed max-w-prose">
+            <p className="font-sans text-xs sm:text-base text-light-ink/90 dark:text-dark-ink/90 mt-2 sm:mt-3 font-normal leading-relaxed max-w-[55ch]">
               Real-time design tokens, theme lighting, and curated typography voices across the portfolio.
             </p>
           </div>
@@ -374,11 +374,12 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   </span>
                 </button>
 
+                {/* Flat Sliders Stack (Zero nested card boxes) */}
                 {showDesktopSliders && (
-                  <div className="mt-3 space-y-3 animate-view-enter">
+                  <div className="mt-3 divide-y divide-light-border/40 dark:divide-dark-border/40 pt-1 animate-view-enter">
                     
                     {/* Slider 1: Day Paper Roughness */}
-                    <div className="space-y-1.5 bg-light-surface-muted/40 dark:bg-dark-canvas/80 p-3 rounded-[2px] border border-light-border/50 dark:border-dark-border/50">
+                    <div className="py-2.5 first:pt-1 space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-mono">
                         <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
                           <Sun className="w-3.5 h-3.5 text-terracotta" />
@@ -405,7 +406,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     </div>
 
                     {/* Slider 2: Night Cedar Roughness */}
-                    <div className="space-y-1.5 bg-light-surface-muted/40 dark:bg-dark-canvas/80 p-3 rounded-[2px] border border-light-border/50 dark:border-dark-border/50">
+                    <div className="py-2.5 space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-mono">
                         <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
                           <Moon className="w-3.5 h-3.5 text-ochre" />
@@ -432,7 +433,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     </div>
 
                     {/* Slider 3: Fiber Grain Density */}
-                    <div className="space-y-1.5 bg-light-surface-muted/40 dark:bg-dark-canvas/80 p-3 rounded-[2px] border border-light-border/50 dark:border-dark-border/50">
+                    <div className="py-2.5 space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-mono">
                         <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
                           <Layers className="w-3.5 h-3.5 text-bamboo" />
@@ -460,7 +461,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
 
                     {/* Quick Reset */}
                     {preset === 'custom' && (
-                      <div className="pt-1 flex justify-end">
+                      <div className="pt-2 flex justify-end">
                         <button
                           type="button"
                           onClick={() => {
@@ -668,7 +669,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               </div>
             </div>
 
-            {/* Live Interactive Specimen Stage Card */}
+            {/* Live Interactive Specimen Stage Card: Flattened layout, zero nested cards, high contrast */}
             <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-6 lg:p-7 shadow-xs craft-card double-hairline relative">
               <CornerBrackets size="md" />
 
@@ -700,57 +701,55 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   Crafting thoughtful digital experiences with algorithmic clarity.
                 </h3>
                 <p
-                  className="text-xs sm:text-sm text-light-ink/80 dark:text-dark-ink/90 leading-relaxed max-w-xl"
+                  className="text-xs sm:text-sm text-light-ink/90 dark:text-dark-ink/90 leading-relaxed max-w-xl"
                   style={{ fontFamily: activeInfo.bodyFont }}
                 >
                   Focused on building robust, well-structured software with clean design and attention to detail. Systems engineered with balance, reliability, and usability in mind.
                 </p>
               </div>
 
-              {/* 2. Interactive UI Component Simulation */}
+              {/* 2. Interactive UI Component Simulation (Borderless, integrated directly on specimen surface) */}
               <div className="py-4 sm:py-5 border-b border-light-border/40 dark:border-dark-border/50 space-y-3">
-                <div className="p-4 sm:p-5 rounded-[2px] bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/70 dark:border-dark-border/70 relative">
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 text-xs font-mono rounded-[2px] bg-light-surface-muted dark:bg-dark-canvas text-light-ink dark:text-dark-ink border border-light-border/60 dark:border-dark-border/60 font-medium">
-                        #01
-                      </span>
-                      <StatusBadge isActive={true} activeLabel="ACTIVE / 現職" />
-                    </div>
-                    <span className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted" style={{ fontFamily: activeInfo.monoFont }}>
-                      2024 - Present
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 text-xs font-mono rounded-[2px] bg-light-surface-muted dark:bg-dark-canvas text-light-ink dark:text-dark-ink border border-light-border/60 dark:border-dark-border/60 font-medium">
+                      #01
                     </span>
+                    <StatusBadge isActive={true} activeLabel="ACTIVE / 現職" />
                   </div>
+                  <span className="text-xs font-mono text-light-ink/90 dark:text-dark-ink/90 font-medium" style={{ fontFamily: activeInfo.monoFont }}>
+                    2024 - Present
+                  </span>
+                </div>
 
-                  <div className="flex items-center justify-between gap-4 mb-2">
-                    <h4
-                      className="text-lg sm:text-xl text-light-ink dark:text-dark-ink font-medium tracking-tight"
-                      style={{ fontFamily: activeInfo.displayFont }}
-                    >
-                      Personal Portfolio &amp; Agentic Lab
-                    </h4>
-                    <span className="text-base font-serif text-light-ink-muted dark:text-dark-ink-muted shrink-0">
-                      作品
-                    </span>
-                  </div>
-
-                  <p
-                    className="text-xs sm:text-sm text-light-ink/80 dark:text-dark-ink/90 leading-relaxed max-w-xl"
-                    style={{ fontFamily: activeInfo.bodyFont }}
+                <div className="flex items-center justify-between gap-4">
+                  <h4
+                    className="text-lg sm:text-xl text-light-ink dark:text-dark-ink font-medium tracking-tight"
+                    style={{ fontFamily: activeInfo.displayFont }}
                   >
-                    High-performance portfolio engine typeset with dynamic typography variants, Supabase integration, and real-time AI assistant telemetry.
-                  </p>
+                    Personal Portfolio &amp; Agentic Lab
+                  </h4>
+                  <span className="text-base font-serif text-light-ink-muted dark:text-dark-ink-muted shrink-0">
+                    作品
+                  </span>
+                </div>
 
-                  <div className="flex flex-wrap gap-2 pt-3.5">
-                    <TechTag tag="React 19" size="md" />
-                    <TechTag tag="TypeScript" size="md" />
-                    <TechTag tag="Tailwind CSS" size="md" />
-                    <TechTag tag="Supabase" size="md" />
-                  </div>
+                <p
+                  className="text-xs sm:text-sm text-light-ink/80 dark:text-dark-ink/90 leading-relaxed max-w-xl"
+                  style={{ fontFamily: activeInfo.bodyFont }}
+                >
+                  High-performance portfolio engine typeset with dynamic typography variants, Supabase integration, and real-time AI assistant telemetry.
+                </p>
+
+                <div className="flex flex-wrap gap-2 pt-1 pb-2">
+                  <TechTag tag="React 19" size="md" />
+                  <TechTag tag="TypeScript" size="md" />
+                  <TechTag tag="Tailwind CSS" size="md" />
+                  <TechTag tag="Supabase" size="md" />
                 </div>
 
                 {/* Primary Action Buttons */}
-                <div className="pt-1 flex flex-wrap items-center gap-2.5">
+                <div className="flex flex-wrap items-center gap-2.5 pt-1">
                   <a
                     href="#featured-works"
                     onClick={(e) => {
@@ -774,13 +773,13 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 </div>
               </div>
 
-              {/* 3. Monospace Code & Materiality Telemetry */}
+              {/* 3. Monospace Code & Materiality Telemetry: High contrast, borderless callout */}
               <div className="py-4 sm:py-5 border-b border-light-border/40 dark:border-dark-border/50 space-y-2">
-                <div className="p-3 sm:p-3.5 rounded-[2px] bg-light-surface-muted/60 dark:bg-dark-canvas border border-light-border/60 dark:border-dark-border/60 text-xs font-mono space-y-1.5 overflow-x-auto" style={{ fontFamily: activeInfo.monoFont }}>
+                <div className="border-l-2 border-terracotta/70 dark:border-ochre/70 pl-3 py-1 text-xs font-mono space-y-1 overflow-x-auto" style={{ fontFamily: activeInfo.monoFont }}>
                   <div className="text-terracotta dark:text-ochre font-semibold">
                     {`// SYS_TOKENS: { display: "${activeInfo.displayFont}", body: "${activeInfo.bodyFont}", mono: "${activeInfo.monoFont}" }`}
                   </div>
-                  <div className="text-light-ink-muted dark:text-dark-ink-muted">
+                  <div className="text-light-ink dark:text-dark-ink font-medium">
                     {`// LIVE_STATE: { theme: "${theme.toUpperCase()}", washi: "${preset.toUpperCase()}", dayTooth: "${dayRoughness}%", nightTooth: "${nightRoughness}%", scale: "${grainFrequency.toFixed(2)}" }`}
                   </div>
                 </div>
@@ -789,7 +788,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               {/* 4. Tiny Day / Night Live Impact Simulation Blocks */}
               <div className="pt-4 sm:pt-5 space-y-2.5">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-light-ink-muted dark:text-dark-ink-muted font-medium">
+                  <span className="text-light-ink font-semibold dark:text-dark-ink">
                     Live Theme Materiality Simulation
                   </span>
                   <span className="text-[11px] text-terracotta dark:text-ochre font-semibold">
@@ -815,7 +814,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     >
                       Thoughtful digital craft
                     </p>
-                    <div className="text-[10px] font-mono text-[#686559] flex items-center justify-between pt-1 border-t border-[#D4C4AA]/50">
+                    <div className="text-[10px] font-mono text-[#686559] flex items-center justify-between pt-1 border-t border-[#D4C4AA]/50 font-medium">
                       <span>#FAF6EE Cream Paper</span>
                       <span>Multiply Blend</span>
                     </div>
@@ -838,7 +837,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     >
                       Thoughtful digital craft
                     </p>
-                    <div className="text-[10px] font-mono text-[#9E9A8E] flex items-center justify-between pt-1 border-t border-[#383B44]/70">
+                    <div className="text-[10px] font-mono text-[#9E9A8E] flex items-center justify-between pt-1 border-t border-[#383B44]/70 font-medium">
                       <span>#23262F Charred Cedar</span>
                       <span>Screen Blend</span>
                     </div>
