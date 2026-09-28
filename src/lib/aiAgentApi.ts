@@ -122,19 +122,17 @@ export async function sendToAiAgent({
       throw new Error(clean || 'The AI service encountered an issue. Please try again.');
     }
 
-    if (response.status === 403) {
-      throw new Error('File uploads are restricted to administrators.');
-    }
-    if (response.status === 413) {
-      throw new Error('The attached file exceeds the 50 MB size limit.');
-    }
-    if (response.status === 415) {
-      throw new Error('The attached file type is not supported.');
-    }
-    if (response.status === 429) {
-      throw new Error('Message limit reached. Please wait a moment and try again.');
-    }
-    throw new Error('The AI service is temporarily unavailable. Please try again shortly.');
+    const HTTP_STATUS_MESSAGES: Record<number, string> = {
+      403: 'File uploads are restricted to administrators.',
+      413: 'The attached file exceeds the 50 MB size limit.',
+      415: 'The attached file type is not supported.',
+      429: 'Message limit reached. Please wait a moment and try again.',
+    };
+
+    throw new Error(
+      HTTP_STATUS_MESSAGES[response.status] ||
+      'The AI service is temporarily unavailable. Please try again shortly.'
+    );
   }
 
   // Handle real-time Server-Sent Events (SSE) streaming

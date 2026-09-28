@@ -73,19 +73,15 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
     : -1;
 
   const handleNextProject = () => {
-    if (currentIndex >= 0 && currentIndex < filteredProjects.length - 1) {
-      openProject(filteredProjects[currentIndex + 1]);
-    } else if (currentIndex === filteredProjects.length - 1) {
-      openProject(filteredProjects[0]);
-    }
+    if (filteredProjects.length === 0) return;
+    const nextIdx = (currentIndex + 1) % filteredProjects.length;
+    openProject(filteredProjects[nextIdx]);
   };
 
   const handlePrevProject = () => {
-    if (currentIndex > 0) {
-      openProject(filteredProjects[currentIndex - 1]);
-    } else if (currentIndex === 0) {
-      openProject(filteredProjects[filteredProjects.length - 1]);
-    }
+    if (filteredProjects.length === 0) return;
+    const prevIdx = (currentIndex - 1 + filteredProjects.length) % filteredProjects.length;
+    openProject(filteredProjects[prevIdx]);
   };
 
   return (

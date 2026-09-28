@@ -15,6 +15,34 @@ export interface LatexToken {
   text: string;
 }
 
+const LATEX_KEYWORDS = new Set([
+  '\\begin',
+  '\\end',
+  '\\documentclass',
+  '\\usepackage',
+  '\\section',
+  '\\subsection',
+  '\\subsubsection',
+  '\\textbf',
+  '\\textit',
+  '\\href',
+  '\\item',
+  '\\resumeItem',
+  '\\resumeSubheading',
+  '\\resumeProjectHeading',
+]);
+
+const TOKEN_CLASS_MAP: Record<LatexTokenType, string> = {
+  comment: 'text-[#8E877C] dark:text-[#7A828E] italic',
+  keyword: 'text-[#B84E3A] dark:text-[#E07A5F] font-semibold',
+  environment: 'text-[#3B6E52] dark:text-[#52B788] font-medium',
+  macro: 'text-[#C4883A] dark:text-[#E9C46A]',
+  math: 'text-[#4A7C9B] dark:text-[#7EB0D5] font-mono',
+  bracket: 'text-[#6E6458] dark:text-[#A0AEC0]',
+  argument: 'text-[#2D2A26] dark:text-[#E2E8F0]',
+  plain: 'text-[#2D2A26] dark:text-[#D5D9E0]',
+};
+
 export function tokenizeLatexLine(line: string): LatexToken[] {
   const tokens: LatexToken[] = [];
   let i = 0;
@@ -58,26 +86,10 @@ export function tokenizeLatexLine(line: string): LatexToken[] {
         j++;
       }
       const command = line.slice(i, j);
-      if (
-        command === '\\begin' ||
-        command === '\\end' ||
-        command === '\\documentclass' ||
-        command === '\\usepackage' ||
-        command === '\\section' ||
-        command === '\\subsection' ||
-        command === '\\subsubsection' ||
-        command === '\\textbf' ||
-        command === '\\textit' ||
-        command === '\\href' ||
-        command === '\\item' ||
-        command === '\\resumeItem' ||
-        command === '\\resumeSubheading' ||
-        command === '\\resumeProjectHeading'
-      ) {
-        tokens.push({ type: 'keyword', text: command });
-      } else {
-        tokens.push({ type: 'macro', text: command });
-      }
+      tokens.push({
+        type: LATEX_KEYWORDS.has(command) ? 'keyword' : 'macro',
+        text: command,
+      });
       i = j;
       continue;
     }
@@ -102,23 +114,5 @@ export function tokenizeLatexLine(line: string): LatexToken[] {
 }
 
 export function getTokenClassName(type: LatexTokenType): string {
-  switch (type) {
-    case 'comment':
-      return 'text-[#8E877C] dark:text-[#7A828E] italic';
-    case 'keyword':
-      return 'text-[#B84E3A] dark:text-[#E07A5F] font-semibold';
-    case 'environment':
-      return 'text-[#3B6E52] dark:text-[#52B788] font-medium';
-    case 'macro':
-      return 'text-[#C4883A] dark:text-[#E9C46A]';
-    case 'math':
-      return 'text-[#4A7C9B] dark:text-[#7EB0D5] font-mono';
-    case 'bracket':
-      return 'text-[#6E6458] dark:text-[#A0AEC0]';
-    case 'argument':
-      return 'text-[#2D2A26] dark:text-[#E2E8F0]';
-    case 'plain':
-    default:
-      return 'text-[#2D2A26] dark:text-[#D5D9E0]';
-  }
+  return TOKEN_CLASS_MAP[type] || TOKEN_CLASS_MAP.plain;
 }

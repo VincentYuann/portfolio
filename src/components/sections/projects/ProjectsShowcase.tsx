@@ -47,19 +47,15 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
     : -1;
 
   const handleNextProject = () => {
-    if (currentIndex >= 0 && currentIndex < displayedProjects.length - 1) {
-      openProject(displayedProjects[currentIndex + 1]);
-    } else if (currentIndex === displayedProjects.length - 1) {
-      openProject(displayedProjects[0]);
-    }
+    if (displayedProjects.length === 0) return;
+    const nextIdx = (currentIndex + 1) % displayedProjects.length;
+    openProject(displayedProjects[nextIdx]);
   };
 
   const handlePrevProject = () => {
-    if (currentIndex > 0) {
-      openProject(displayedProjects[currentIndex - 1]);
-    } else if (currentIndex === 0) {
-      openProject(displayedProjects[displayedProjects.length - 1]);
-    }
+    if (displayedProjects.length === 0) return;
+    const prevIdx = (currentIndex - 1 + displayedProjects.length) % displayedProjects.length;
+    openProject(displayedProjects[prevIdx]);
   };
 
   if (displayedProjects.length === 0) {
