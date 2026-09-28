@@ -285,13 +285,13 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               </div>
             </div>
 
-            {/* Desktop Control Pack 3: Washi Paper Materiality */}
+            {/* Desktop Control Pack 3: Paper Texture */}
             <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 shadow-2xs craft-card double-hairline">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-light-border/50 dark:border-dark-border/60">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">03</span>
                   <h2 className="text-sm font-semibold text-light-ink dark:text-dark-ink">
-                    Washi Paper Materiality
+                    Paper Texture
                   </h2>
                 </div>
                 <span className="text-xs font-mono font-semibold text-terracotta dark:text-ochre">
@@ -299,7 +299,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 </span>
               </div>
 
-              {/* 3 Washi Presets: Clean Hairline-Divided Rows */}
+              {/* 3 Texture Presets: Clean Hairline-Divided Rows */}
               <div className="divide-y divide-light-border/40 dark:divide-dark-border/50 mb-3 border-t border-b border-light-border/40 dark:border-dark-border/50">
                 {presetsList.map((p) => {
                   const isSelected = preset === p.id;
@@ -308,7 +308,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       key={p.id}
                       onClick={() => {
                         setPreset(p.id as 'silk' | 'kozo' | 'raw');
-                        toast.success(`Activated ${p.name}`);
+                        toast.success(`Applied ${p.name}`);
                       }}
                       className={`py-3 px-2 rounded-[2px] transition-colors duration-150 cursor-pointer flex items-center justify-between group ${
                         isSelected
@@ -324,17 +324,15 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                           <span className="text-xs font-semibold text-light-ink dark:text-dark-ink truncate">
                             {p.name}
                           </span>
-                          <span className="w-4 h-4 rounded-[2px] bg-light-surface-muted dark:bg-dark-canvas border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-[11px] font-serif text-light-ink dark:text-dark-ink select-none shrink-0">
-                            {p.kanji}
-                          </span>
+                          {p.id === 'kozo' && (
+                            <span className="text-[10px] font-mono text-terracotta dark:text-ochre uppercase font-medium">
+                              (Default)
+                            </span>
+                          )}
                         </div>
-                        <div className="flex items-center gap-2 text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
-                          <span>Day: <strong className="text-light-ink dark:text-dark-ink">{p.dayRoughness}%</strong></span>
-                          <span>·</span>
-                          <span>Night: <strong className="text-light-ink dark:text-dark-ink">{p.nightRoughness}%</strong></span>
-                          <span>·</span>
-                          <span>Scale: <strong className="text-light-ink dark:text-dark-ink">{p.grainFrequency.toFixed(2)}</strong></span>
-                        </div>
+                        <p className="text-[11px] text-light-ink-muted dark:text-dark-ink-muted leading-tight truncate">
+                          {p.subtitle}
+                        </p>
                       </div>
 
                       <div className="shrink-0 flex items-center gap-2">
@@ -355,7 +353,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 })}
               </div>
 
-              {/* Collapsible Tactile Tooth Sliders Toggle */}
+              {/* Collapsible Fine-Tune Sliders Toggle */}
               <div className="pt-1">
                 <button
                   type="button"
@@ -364,11 +362,11 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 >
                   <span className="flex items-center gap-1.5 font-medium text-light-ink dark:text-dark-ink">
                     <SlidersHorizontal className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
-                    <span>Tactile Tooth Sliders</span>
+                    <span>Fine-Tune Sliders</span>
                   </span>
                   <span className="flex items-center gap-1 text-[11px]">
                     <span className="text-light-ink-muted dark:text-dark-ink-muted font-medium">
-                      {showDesktopSliders ? 'Hide' : `${dayRoughness}% · ${nightRoughness}% · ${grainFrequency.toFixed(2)}`}
+                      {showDesktopSliders ? 'Hide' : `${dayRoughness}% · ${nightRoughness}%`}
                     </span>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${showDesktopSliders ? 'rotate-180 text-terracotta dark:text-ochre' : ''}`} />
                   </span>
@@ -383,7 +381,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       <div className="flex items-center justify-between text-xs font-mono">
                         <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
                           <Sun className="w-3.5 h-3.5 text-terracotta" />
-                          <span>Day Paper Roughness:</span>
+                          <span>Day Paper Texture:</span>
                         </span>
                         <span className="font-bold text-terracotta">
                           {dayRoughness}%
@@ -399,9 +397,9 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                         className="w-full accent-terracotta cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-surface rounded-[2px]"
                       />
                       <div className="flex justify-between text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted pt-0.5">
-                        <span>4% (Minimal)</span>
-                        <span className="text-terracotta font-medium">16% (Default Kozo)</span>
-                        <span>35% (Raw Pulp)</span>
+                        <span>Fine (4%)</span>
+                        <span className="text-terracotta font-medium">Default (16%)</span>
+                        <span>Coarse (35%)</span>
                       </div>
                     </div>
 
@@ -410,7 +408,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       <div className="flex items-center justify-between text-xs font-mono">
                         <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
                           <Moon className="w-3.5 h-3.5 text-ochre" />
-                          <span>Night Cedar Roughness:</span>
+                          <span>Night Cedar Texture:</span>
                         </span>
                         <span className="font-bold text-ochre">
                           {nightRoughness}%
@@ -426,18 +424,18 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                         className="w-full accent-ochre cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-surface rounded-[2px]"
                       />
                       <div className="flex justify-between text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted pt-0.5">
-                        <span>2% (Quiet)</span>
-                        <span className="text-ochre font-medium">6.5% (Default)</span>
-                        <span>20% (Cosmic Timber)</span>
+                        <span>Fine (2%)</span>
+                        <span className="text-ochre font-medium">Default (6.5%)</span>
+                        <span>Coarse (20%)</span>
                       </div>
                     </div>
 
-                    {/* Slider 3: Fiber Grain Density */}
+                    {/* Slider 3: Grain Density */}
                     <div className="py-2.5 space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-mono">
                         <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
                           <Layers className="w-3.5 h-3.5 text-bamboo" />
-                          <span>Fiber Grain Density:</span>
+                          <span>Grain Density:</span>
                         </span>
                         <span className="font-bold text-light-ink dark:text-dark-ink">
                           {grainFrequency.toFixed(2)}
@@ -453,9 +451,9 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                         className="w-full accent-bamboo cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-surface rounded-[2px]"
                       />
                       <div className="flex justify-between text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted pt-0.5">
-                        <span>0.45 (Chunky Raw)</span>
-                        <span className="font-medium">0.90 (Mulberry)</span>
-                        <span>1.05 (Fine Micro)</span>
+                        <span>Coarse (0.45)</span>
+                        <span className="font-medium">Balanced (0.90)</span>
+                        <span>Fine (1.05)</span>
                       </div>
                     </div>
 
@@ -466,12 +464,12 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                           type="button"
                           onClick={() => {
                             resetWashiDefaults();
-                            toast.info('Reset Washi tooth to Default Kozo (16% Day / 6.5% Night / 0.90 Scale)');
+                            toast.info('Reset texture to Natural default (16% Day / 6.5% Night)');
                           }}
                           className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors inline-flex items-center gap-1 cursor-pointer"
                         >
                           <RotateCcw className="w-3 h-3" />
-                          <span>Reset to Kozo Default</span>
+                          <span>Reset to Default</span>
                         </button>
                       </div>
                     )}
@@ -500,16 +498,16 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   <button
                     type="button"
                     onClick={() => setShowMobileWashi(!showMobileWashi)}
-                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-[2px] text-xs font-mono transition-all cursor-pointer border min-h-[30px] ${
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-[2px] text-xs font-mono transition-all cursor-pointer border min-h-[30px] ${
                       showMobileWashi
                         ? 'border-terracotta dark:border-ochre bg-terracotta/15 dark:bg-ochre/15 text-terracotta dark:text-ochre font-bold shadow-2xs'
                         : 'border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink'
                     }`}
-                    title="Toggle washi paper texture options"
+                    title="Adjust paper texture"
                     aria-expanded={showMobileWashi}
                   >
-                    <Layers className="w-3 h-3 text-terracotta dark:text-ochre" />
-                    <span>Washi</span>
+                    <Layers className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                    <span>Texture</span>
                     <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${showMobileWashi ? 'rotate-180 text-terracotta dark:text-ochre' : ''}`} />
                   </button>
 
@@ -541,10 +539,10 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 </div>
               </div>
 
-              {/* Progressive Disclosure: Mobile Washi Drawer with Proportional Roughness Slider */}
+              {/* Progressive Disclosure: Mobile Texture Drawer with Clean Presets and Proportional Slider */}
               {showMobileWashi && (
-                <div className="pt-2 border-t border-light-border/50 dark:border-dark-border/60 space-y-2 animate-view-enter">
-                  {/* 3 Preset Segmented Buttons */}
+                <div className="pt-2 border-t border-light-border/50 dark:border-dark-border/60 space-y-2.5 animate-view-enter">
+                  {/* 3 Preset Segmented Buttons: Smooth, Natural, Coarse */}
                   <div className="grid grid-cols-3 gap-1.5">
                     {presetsList.map((p) => {
                       const isSelected = preset === p.id;
@@ -555,30 +553,29 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                             setPreset(p.id as 'silk' | 'kozo' | 'raw');
                             toast.success(`Applied ${p.name}`);
                           }}
-                          className={`py-1.5 px-1 rounded-[2px] text-center transition-all cursor-pointer border flex flex-col items-center justify-center min-h-[38px] ${
+                          className={`py-1.5 px-1 rounded-[2px] text-center transition-all cursor-pointer border flex flex-col items-center justify-center min-h-[36px] ${
                             isSelected
                               ? 'border-terracotta dark:border-ochre bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas font-bold shadow-2xs'
                               : 'border-light-border/70 dark:border-dark-border/70 bg-light-surface/60 dark:bg-dark-surface/60 text-light-ink dark:text-dark-ink hover:border-terracotta/50'
                           }`}
                         >
-                          <span className="text-xs font-mono font-bold leading-none">0{p.numericKey} · {p.kanji}</span>
-                          <span className="text-[10px] font-mono opacity-85 mt-0.5 leading-none">
-                            {p.dayRoughness}% / {p.nightRoughness}%
+                          <span className="text-xs font-mono font-bold leading-tight">
+                            {p.id === 'silk' ? 'Smooth · 絹' : p.id === 'kozo' ? 'Natural · 楮' : 'Coarse · 生'}
                           </span>
                         </button>
                       );
                     })}
                   </div>
 
-                  {/* Single Proportional Slider on Mobile */}
+                  {/* Single Proportional Texture Slider */}
                   <div className="space-y-1 text-xs font-mono">
                     <div className="flex items-center justify-between">
                       <span className="text-light-ink-muted dark:text-dark-ink-muted flex items-center gap-1 font-medium">
                         <Layers className="w-3 h-3 text-terracotta dark:text-ochre" />
-                        <span>Paper Tooth:</span>
+                        <span>Roughness:</span>
                       </span>
                       <span className="font-bold text-terracotta dark:text-ochre">
-                        Day {dayRoughness}% · Night {nightRoughness}%
+                        {dayRoughness}%
                       </span>
                     </div>
                     <input
@@ -591,9 +588,9 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       className="w-full cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-canvas rounded-[2px] accent-terracotta dark:accent-ochre"
                     />
                     <div className="flex justify-between text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
-                      <span>4% (Fine)</span>
-                      <span className="text-terracotta dark:text-ochre font-medium">16% / 6.5% (Default)</span>
-                      <span>35% (Coarse)</span>
+                      <span>Smooth</span>
+                      <span className="text-terracotta dark:text-ochre font-medium">Natural</span>
+                      <span>Coarse</span>
                     </div>
                   </div>
                 </div>
@@ -780,7 +777,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     {`// SYS_TOKENS: { display: "${activeInfo.displayFont}", body: "${activeInfo.bodyFont}", mono: "${activeInfo.monoFont}" }`}
                   </div>
                   <div className="text-light-ink dark:text-dark-ink font-medium">
-                    {`// LIVE_STATE: { theme: "${theme.toUpperCase()}", washi: "${preset.toUpperCase()}", dayTooth: "${dayRoughness}%", nightTooth: "${nightRoughness}%", scale: "${grainFrequency.toFixed(2)}" }`}
+                    {`// LIVE_STATE: { theme: "${theme.toUpperCase()}", texture: "${preset.toUpperCase()}", day: "${dayRoughness}%", night: "${nightRoughness}%", scale: "${grainFrequency.toFixed(2)}" }`}
                   </div>
                 </div>
               </div>
@@ -805,7 +802,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                         <span>Akari Day Paper</span>
                       </span>
                       <span className="text-[11px] font-mono px-1.5 py-0.5 rounded-[2px] bg-[#EAE0CE] border border-[#D4C4AA] font-bold text-[#282E3A]">
-                        {dayRoughness}% Tooth
+                        {dayRoughness}% Texture
                       </span>
                     </div>
                     <p
@@ -828,7 +825,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                         <span>Charred Cedar Wood</span>
                       </span>
                       <span className="text-[11px] font-mono px-1.5 py-0.5 rounded-[2px] bg-[#121316] border border-[#383B44] font-bold text-[#E8E6DF]">
-                        {nightRoughness}% Tooth
+                        {nightRoughness}% Texture
                       </span>
                     </div>
                     <p
