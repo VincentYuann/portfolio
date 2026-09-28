@@ -1,5 +1,4 @@
 ---
-version: 3.0.0
 name: Vincent Yuan - Akari Craft & Editorial Design System
 description: >-
   A restrained, museum-grade portfolio design system combining a warm Akari washi paper
@@ -7,327 +6,285 @@ description: >-
   tactile materiality, and editorial typography, embodying Ma (negative space), Shokunin
   (artisan precision), and Wabi-Sabi (organic harmony), free from cyberpunk or SaaS clichés.
 colors:
-  # Brand & Accent Roles
-  terracotta: "#B5482E"          # Sacred Red: Vermilion Hanko Seal [原], [問] & Live Status Beacon
-  ochre: "#D4A853"               # Warm Gold Accent: Akari Lantern Glow, Emblems & Dark Mode Buttons
-  bamboo: "#526D57"              # Verdant Accent for Active Roles, Success Badges & Bamboo Foliage
-  akari-glow: "rgba(212, 168, 83, 0.08)" # Diffused Candlelight through Shoji Washi
-
-  # Light theme: Washi & Akari Paper (Sunlight on Parchment)
-  light-canvas: "#EAE0CE"        # Calibrated warm natural cream canvas
-  light-canvas-soft: "#F4ECE1"   # Alternating section division ground (soft warm washi)
-  light-surface: "#FAF6EE"       # Clean warm washi paper surface
-  light-surface-card: "#FAF6EE"  # Solid non-transparent washi card surface
-  light-surface-raised: "#FFFFFF" # Pure crisp raised surface
-  light-surface-muted: "#E4D8C3" # Muted well / thumbnail track
-  light-ink: "#282E3A"           # Traditional deep sumi ink
-  light-ink-muted: "#686559"     # Earthy charcoal-stone
-  light-ink-subtle: "#8B8375"    # Subtle coordinate / timestamp ink
-  light-border: "#D4C4AA"        # Delicate warm washi hairline border (Refined, never harsh)
-  light-border-channel: "transparent"
-  light-border-inner: "transparent"
-  light-border-strong: "#BDAB8F" # Active / hover border state
-  light-button-dark: "#26262E"   # Primary High-Contrast Button (Dark Charcoal on Cream Canvas)
+  primary: "#B5482E"
+  secondary: "#D4A853"
+  tertiary: "#526D57"
+  light-canvas: "#EAE0CE"
+  light-canvas-soft: "#F4ECE1"
+  light-surface: "#FAF6EE"
+  light-surface-card: "#FAF6EE"
+  light-surface-raised: "#FFFFFF"
+  light-surface-muted: "#E4D8C3"
+  light-ink: "#282E3A"
+  light-ink-muted: "#686559"
+  light-ink-subtle: "#8B8375"
+  light-border: "#D4C4AA"
+  light-border-strong: "#BDAB8F"
+  light-button-dark: "#26262E"
   light-on-dark: "#FAF6EE"
-  light-focus: "#B5482E"
-
-  # Dark theme: Warm Charred Cedar / 焼杉 Yakisugi (Lantern Light on Dark Wood)
-  dark-canvas: "#121316"         # Deep warm charred cedar ground (Never cold OLED #000000)
-  dark-canvas-soft: "#1E1F24"    # Alternating section division ground (soft charred slate)
-  dark-panel: "#23262F"          # Solid charred slate surface (Lighter than canvas)
+  dark-canvas: "#121316"
+  dark-canvas-soft: "#1E1F24"
+  dark-panel: "#23262F"
   dark-surface: "#23262F"
-  dark-card: "#23262F"
-  dark-surface-card: "#23262F"   # Solid non-transparent card surface
-  dark-surface-raised: "#2C303B" # Raised dialog / interactive element
-  dark-surface-muted: "#0E0F12"  # Deep recessed track
-  dark-ink: "#E8E6DF"            # Warm off-white
-  dark-ink-muted: "#9E9A8E"      # Soft gray stone
-  dark-ink-subtle: "#736F64"     # Subtle coordinate / timestamp ink
-  dark-border: "#383B44"         # Outer hairline border
-  dark-border-channel: "#18191E" # Inlaid recessed channel fill
-  dark-border-inner: "#2E313A"   # Inner hairline border
-  dark-border-strong: "#4E5362"  # Active / hover border state
-  dark-button-light: "#D4A853"   # Warm brushed gold primary button
+  dark-surface-card: "#23262F"
+  dark-surface-raised: "#2C303B"
+  dark-surface-muted: "#0E0F12"
+  dark-ink: "#E8E6DF"
+  dark-ink-muted: "#9E9A8E"
+  dark-ink-subtle: "#736F64"
+  dark-border: "#383B44"
+  dark-border-channel: "#18191E"
+  dark-border-inner: "#2E313A"
+  dark-border-strong: "#4E5362"
+  dark-button-light: "#D4A853"
   dark-on-light: "#121316"
-  dark-focus: "#D4A853"          # Warm Gold Focus (Prevents Red Alert Glare on Dark Surfaces)
-
 typography:
-  display-xl:
+  display:
     fontFamily: "Zen Old Mincho, Noto Serif JP, Georgia, serif"
-    fontSize: "64px"
+    fontSize: "clamp(2.5rem, 5vw, 4rem)"
     fontWeight: 400
     lineHeight: 1.08
     letterSpacing: "-0.025em"
-  display-lg:
+  headline:
     fontFamily: "Zen Old Mincho, Noto Serif JP, Georgia, serif"
-    fontSize: "48px"
-    fontWeight: 400
-    lineHeight: 1.12
-    letterSpacing: "-0.02em"
-  headline-lg:
-    fontFamily: "Zen Old Mincho, Noto Serif JP, Georgia, serif"
-    fontSize: "36px"
+    fontSize: "clamp(1.75rem, 3vw, 2.25rem)"
     fontWeight: 400
     lineHeight: 1.18
     letterSpacing: "-0.015em"
-  headline-md:
-    fontFamily: "Zen Old Mincho, Noto Serif JP, Georgia, serif"
-    fontSize: "28px"
-    fontWeight: 400
-    lineHeight: 1.25
-    letterSpacing: "-0.01em"
-  headline-sm:
+  title:
     fontFamily: "Chakra Petch, Mulish, sans-serif"
-    fontSize: "18px"
+    fontSize: "1.125rem"
     fontWeight: 500
     lineHeight: 1.35
     letterSpacing: "0.02em"
-  body-lg:
+  body:
     fontFamily: "Mulish, Inter, system-ui, sans-serif"
-    fontSize: "17px"
-    fontWeight: 400
-    lineHeight: 1.7
-    letterSpacing: "0em"
-  body-md:
-    fontFamily: "Mulish, Inter, system-ui, sans-serif"
-    fontSize: "15px"
+    fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.65
     letterSpacing: "0em"
-  body-sm:
-    fontFamily: "Mulish, Inter, system-ui, sans-serif"
-    fontSize: "13px"
-    fontWeight: 400
-    lineHeight: 1.6
-    letterSpacing: "0.01em"
-  code-md:
+  label:
     fontFamily: "Azeret Mono, JetBrains Mono, monospace"
-    fontSize: "13px"
-    fontWeight: 400
-    lineHeight: 1.65
-    letterSpacing: "0em"
-  code-sm:
-    fontFamily: "Azeret Mono, JetBrains Mono, monospace"
-    fontSize: "11px"
-    fontWeight: 400
+    fontSize: "0.75rem"
+    fontWeight: 500
     lineHeight: 1.5
     letterSpacing: "0.02em"
-  label-xs:
-    fontFamily: "Azeret Mono, JetBrains Mono, monospace"
-    fontSize: "10px"
-    fontWeight: 500
-    lineHeight: 1.4
-    letterSpacing: "0.03em"
-  stamp-xs:
-    fontFamily: "Zen Old Mincho, Noto Serif JP, Georgia, serif"
-    fontSize: "9px"
-    fontWeight: 500
-    lineHeight: 1
-    letterSpacing: "0em"
-
 rounded:
   none: "0px"
   xs: "2px"
   sm: "2px"
   md: "3px"
   lg: "3px"
-  xl: "3px"
-  2xl: "3px"
-  3xl: "3px"
-  pill: "3px"
   full: "9999px"
-
 spacing:
-  page-gutter-mobile: "20px"
-  page-gutter-tablet: "32px"
-  page-gutter-desktop: "48px"
-  section-gap-mobile: "64px"
-  section-gap-desktop: "112px"
-  content-max: "1440px"
-  content-reading-max: "720px"
-
+  gutter: "24px"
+  xs: "6px"
+  sm: "12px"
+  md: "20px"
+  lg: "32px"
+  xl: "56px"
 components:
   button-primary:
     backgroundColor: "{colors.light-button-dark}"
     textColor: "{colors.light-on-dark}"
     rounded: "{rounded.xs}"
-    padding: "10px 20px"
-  button-secondary:
-    backgroundColor: "transparent"
-    textColor: "{colors.light-ink}"
+    padding: "8px 16px"
+  button-terracotta:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.light-surface-raised}"
     rounded: "{rounded.xs}"
-    padding: "10px 20px"
+    padding: "8px 16px"
+  button-dark-primary:
+    backgroundColor: "{colors.dark-button-light}"
+    textColor: "{colors.dark-on-light}"
+    rounded: "{rounded.xs}"
+    padding: "8px 16px"
   card-resting:
-    backgroundColor: "{colors.light-surface-card}"
+    backgroundColor: "{colors.light-surface}"
     rounded: "{rounded.md}"
     padding: "24px 32px"
-  card-featured:
-    backgroundColor: "{colors.light-surface-card}"
-    rounded: "{rounded.md}"
-    padding: "32px 48px"
   tag-pill:
     backgroundColor: "{colors.light-surface-raised}"
     textColor: "{colors.light-ink-muted}"
     rounded: "{rounded.xs}"
-    padding: "2px 8px"
+    padding: "4px 10px"
 ---
 
-# Vincent Yuan: Akari Craft & Editorial Design System (v3.0)
+# Design System: Vincent Yuan Portfolio
 
 ## Overview
 
 **Creative North Star: "Akari Sanctuary & Yakisugi Craft"**
 
-The Vincent Yuan portfolio visual system is an homage to traditional Japanese material craft and fine editorial book design. It intentionally rejects the ubiquitous dark-mode cyberpunk tropes (neon glows, HUD targeting brackets, cyan/orange terminal styling, sci-fi fonts) in favor of quiet confidence, intentional negative space (_Ma_ 間), and artisan joinery (_Shokunin_ 職人).
+The Vincent Yuan portfolio visual system is an homage to traditional Japanese material craft and fine editorial book design. It intentionally rejects the ubiquitous dark-mode cyberpunk tropes (neon glows, HUD targeting brackets, cyan/orange terminal styling, sci-fi fonts) in favor of quiet confidence, intentional negative space (*Ma* 間), and artisan joinery (*Shokunin* 職人).
 
-### The Dual-Theme Equilibrium
+Every screen is treated as an architectural dossier or gallery installation. Surfaces feel physical, tactile, and grounded in authentic materiality: sunlit unbleached washi paper during the day, and charred cedar (*Yakisugi* 焼杉) lit by warm paper lanterns at night.
 
-- **Akari Day Mode (Washi & Akari Paper)**:
-  - Base canvas: `#EAE0CE` (unbleached warm cream base mimicking raw washi fibers)
-  - Card & panel surfaces: `#FAF6EE` (solid, non-transparent washi sheet surface)
-  - Raised elements: `#FFFFFF` (crisp white raised controls & tooltips)
-  - Primary text: `#282E3A` (_sumi_ ink wash, soft yet commanding)
-  - Muted metadata: `#686559` (earthy charcoal-stone)
-  - Inlaid hairline borders: `#C4A272` outer / `#E6D3B1` channel fill
-  - Primary button: `#26262E` with `#FAF6EE` text
-  - Identity accent: `#B5482E` (_shu-iro_ vermilion seal stamp)
-
-- **Charred Cedar Night Mode (Sumi & Charred Cedar 焼杉)**:
-  - Base canvas: `#121316` (deep warm charred cedar ground, never cold OLED `#000000`)
-  - Card & panel surfaces: `#23262F` (solid charred slate surface, lighter than canvas)
-  - Raised elements: `#2C303B` (raised dialogs & interactive controls)
-  - Primary text: `#E8E6DF` (warm off-white)
-  - Muted metadata: `#9E9A8E` (soft gray stone)
-  - Inlaid hairline borders: `#383B44` outer / `#18191E` channel / `#2E313A` inner
-  - Primary button: `#D4A853` with `#121316` text (brushed warm gold)
-  - Identity accent: `#B5482E` (_shu-iro_ vermilion seal stamp)
+**Key Characteristics:**
+- **Material Dual-World Equilibrium**: Warm mulberry washi paper (`#EAE0CE` / `#FAF6EE`) by day, warm charred cedar (`#121316` / `#23262F`) by night.
+- **Architectural Joinery Borders**: Delicate 1px structural framing with inlaid channel depths instead of diffuse drop shadows.
+- **Restrained Cinnabar & Ochre Accents**: Sacred Vermilion Hanko seals (`[原]`, `[問]`) and brushed amber lantern warmth.
+- **Editorial Typography Pairing**: High-craft serif headings (*Zen Old Mincho*) anchored by crisp humanist body (*Mulish*) and technical monospace (*Azeret Mono*).
+- **Tactile Washi Grain**: Organic paper fiber tooth overlay preserving continuous paper tooth across all viewports.
 
 ---
 
 ## Colors
 
-### Canonical Color Matrix
+The palette balances natural Japanese organic pigments with deep atmospheric charcoal.
 
-| Token Role               | Light (Washi)              | Dark (Sumi & Cedar)        | Usage / Intent                                |
-| ------------------------ | -------------------------- | -------------------------- | --------------------------------------------- |
-| **Canvas Ground**        | `#EAE0CE`                  | `#121316`                  | Root viewport background                      |
-| **Section Ground (Soft)**| `#F4ECE1`                  | `#1E1F24`                  | Alternating section division ground (chamber) |
-| **Card / Panel Surface** | `#FAF6EE`                  | `#23262F`                  | Solid content cards, milestones, project tiles |
-| **Elevated Surface**     | `#FFFFFF`                  | `#2C303B`                  | Raised tooltips, input fields, popovers       |
-| **Muted Surface**        | `#E4D8C3`                  | `#0E0F12`                  | Thumbnail track, image preview wells          |
-| **Primary Ink**          | `#282E3A`                  | `#E8E6DF`                  | Display titles, main headings, primary text   |
-| **Muted Ink**            | `#686559`                  | `#9E9A8E`                  | Subtitles, body descriptions, narrative text  |
-| **Subtle Ink**           | `#8B8375`                  | `#736F64`                  | Coordinates, timestamps, category tags        |
-| **Hairline Border**      | `#C4A272`                  | `#383B44`                  | 1px delicate structural framing               |
-| **Border Channel Fill**  | `#E6D3B1`                  | `#18191E`                  | Inlaid double-border recessed channel         |
-| **Strong Border**        | `#B28F5E`                  | `#4E5362`                  | Hover states, active tabs, focused elements   |
-| **Interactive Primary**  | `#26262E`                  | `#D4A853`                  | Primary CTA buttons, active segmented switch  |
-| **Interactive Text**     | `#FAF6EE`                  | `#121316`                  | High-contrast label on primary button         |
-| **Identity Accent**      | `#B5482E`                  | `#B5482E`                  | Hanko seal stamps, active dots, selected tags |
-| **Atmospheric Glow**     | `rgba(212, 168, 83, 0.08)` | `rgba(212, 168, 83, 0.04)` | Akari paper lantern radial warmth             |
-| **Bamboo Accent**        | `#526D57`                  | `#526D57`                  | Verdant status pills & botanical foliage cues |
-| **Ochre / Gold Accent**  | `#D4A853`                  | `#D4A853`                  | Warm gold emblems, waves & Night CTAs         |
+### Primary
+- **Sacred Cinnabar Hanko Vermilion** (`#B5482E`): Reserved exclusively for authentic Hanko seals (`[原]`, `[問]`), live availability beacons, and high-impact identity anchors.
 
-### Accent Restraint & Materiality
+### Secondary
+- **Warm Amber Ochre** (`#D4A853`): Warm lantern glow through shoji paper; serves as Night Mode primary CTA button background, interactive focus rings, and subtle status accents.
 
-- **Terracotta Cinnabar (`#B5482E`)**: Reserved strictly for authentic Hanko seals (`[原]`, `[問]`) and the pulsing availability beacon. Never used as structural resting card outlines.
-- **Warm Gold / Amber Ochre (`#D4A853`)**: Serves as the primary night accent for buttons, focus rings, and decorative emblems, providing ambient lantern warmth without harsh neon glare.
-- **Continuous Washi Grain Materiality**: Global fixed `body::before` viewport overlay (`z-index: 9999; pointer-events: none; opacity: var(--washi-opacity); mix-blend-mode: var(--washi-blend-mode)`) driven by CSS custom properties as a single source of truth. Features 3 calibrated roughness archetypes with live dual-slider fine-tuning:
-  - **Variant 1: Silk Washi · 絹紙** (Day 8% / Night 4.5%, fine 0.92 grain) for ultra-minimalist, smooth reading.
-  - **Variant 2: Artisan Kozo · 楮紙** (Day 16% / Night 6.5%, calibrated 0.90 grain) - *Default*, bringing tangible tactile mulberry tooth to Day mode and warm micro-tooth to Night.
-  - **Variant 3: Raw Heritage · 生漉** (Day 25% / Night 12%, coarse 0.52 grain) for rustic unbleached paper presence.
-- **Progressive Disclosure Architecture**: Sliders and advanced micro-adjustments are hidden by default behind collapsible disclosures to minimize cognitive load (Hick's Law) and maintain spatial breathing room (*Ma* 間), while expanding into intuitive zero-overhead controls on mobile.
+### Tertiary
+- **Kyoto Bamboo Moss** (`#526D57`): Verdant botanical accent used for active milestone status badges, verified operational pills, and foliage cues.
+
+### Neutral
+- **Raw Unbleached Washi Cream** (`#EAE0CE`): Day mode root canvas ground, calibrated to feel warm, fibrous, and organic.
+- **Soft Washi Chamber Ground** (`#F4ECE1`): Alternating section ground for subtle spatial cadence.
+- **Crisp Washi Surface** (`#FAF6EE`): Day mode solid card surface, milestone container, and modal ground.
+- **Raised Studio White** (`#FFFFFF`): Day mode raised popovers, tooltips, and elevated surfaces.
+- **Muted Fiber Well** (`#E4D8C3`): Day mode recessed tracks, thumbnail wells, and subtle divider fills.
+- **Traditional Sumi Ink** (`#282E3A`): Day mode primary text and heading ink; deeply legible with warm undertones.
+- **Charcoal Stone Ink** (`#686559`): Day mode body copy, descriptions, and operational narrative.
+- **Subtle Timestamp Ink** (`#8B8375`): Day mode coordinates, timestamps, and secondary metadata.
+- **Washi Hairline Border** (`#D4C4AA`): Day mode 1px structural card border.
+- **Strong Hairline Border** (`#BDAB8F`): Day mode active, hovered, or focused border line.
+- **Charred Cedar Yakisugi Ground** (`#121316`): Night mode root canvas, deep and warm (never cold OLED pitch `#000000`).
+- **Soft Charred Slate Ground** (`#1E1F24`): Night mode alternating section chamber ground.
+- **Charred Slate Surface** (`#23262F`): Night mode solid card surface, milestone container, and modal ground.
+- **Raised Obsidian Surface** (`#2C303B`): Night mode elevated controls, dialogs, and popovers.
+- **Deep Recessed Track** (`#0E0F12`): Night mode recessed track and thumbnail well.
+- **Warm Off-White Ink** (`#E8E6DF`): Night mode primary text and heading ink.
+- **Soft Stone Gray Ink** (`#9E9A8E`): Night mode body copy, descriptions, and operational narrative.
+- **Subtle Cedar Gray Ink** (`#736F64`): Night mode timestamps, coordinates, and metadata.
+- **Charred Slate Border** (`#383B44`): Night mode 1px outer hairline card border.
+- **Recessed Channel Fill** (`#18191E`): Night mode inlaid double-border recessed channel.
+- **Inner Slate Hairline** (`#2E313A`): Night mode inlaid inner structural border.
+- **Active Slate Border** (`#4E5362`): Night mode active, hovered, or focused border line.
+
+### Named Rules
+**The Cinnabar Seal Rule.** Terracotta cinnabar (`#B5482E`) is strictly reserved for seals, beacons, and identity marks. It must never be applied as resting structural card borders or large background fills.
+
+**The Non-OLED Rule.** The night canvas ground is warm charred cedar (`#121316`), never pitch black (`#000000`). Pitch black destroys the illusion of wood and paper materiality.
 
 ---
 
 ## Typography
 
-### The 4-Font Architectural Hierarchy
+**Display Font:** Zen Old Mincho (with Noto Serif JP, Georgia, serif fallback)  
+**Body Font:** Mulish (with Inter, system-ui, sans-serif fallback)  
+**Label/Mono Font:** Azeret Mono (with JetBrains Mono, monospace fallback)  
+**Accent/Eyebrow Font:** Chakra Petch (with Mulish, sans-serif fallback)
 
-1. **Display & Major Headings** (`font-serif`):
-   - **Zen Old Mincho** (`font-family: "Zen Old Mincho", Noto Serif JP, Georgia, serif;`)
-   - Weights: 400 (Regular), 500 (Medium), 600 (Semi-bold).
-   - Roles: Hero display titles, section titles (`01 //`, `02 //`), company names in career timeline, and Kanji watermarks.
+**Character:** High-craft literary Mincho paired with humanist Mulish creates a quiet museum curatorial tone, punctuated by monospace coordinates and technical dossier accents.
 
-2. **Body & Operational Copy** (`font-sans`):
-   - **Mulish** (`font-family: Mulish, Inter, system-ui, sans-serif;`)
-   - Weights: 200 to 900.
-   - Roles: Project narratives, overview text, and UI copy.
+### Hierarchy
+- **Display** (Regular 400, `clamp(2.5rem, 5vw, 4rem)`, `1.08` line-height, `-0.025em` tracking): Hero display headline, section index numerals (`01 //`, `02 //`), and Kanji watermarks.
+- **Headline** (Regular 400, `clamp(1.75rem, 3vw, 2.25rem)`, `1.18` line-height, `-0.015em` tracking): Major section headers, modal project titles, career company names.
+- **Title** (Medium 500, `1.125rem` / `18px`, `1.35` line-height, `0.02em` tracking): Sub-headings, section eyebrows (`[ ATELIER DOSSIER · 工匠の記録 ]`), dossier markers.
+- **Body** (Regular 400, `1rem` / `16px` to `1.0625rem` / `17px`, `1.65`–`1.7` line-height): Long-form project case studies, philosophy narrative, reading width capped at 65–75ch (`max-w-3xl`).
+- **Label** (Medium 500, `0.6875rem` / `11px` to `0.75rem` / `12px`, `1.5` line-height, `0.02em` tracking, uppercase): Technical specification tags, metadata badges, timestamps, coordinates.
 
-3. **Technical Specs & Monospace** (`font-mono`):
-   - **Azeret Mono** (`font-family: "Azeret Mono", JetBrains Mono, monospace;`)
-   - Roles: Code blocks, timestamps, coordinates, and technical badges.
-
-4. **Category Eyebrows & Dossier Accents** (`font-chakra`):
-   - **Chakra Petch** (`font-family: "Chakra Petch", Mulish, sans-serif;`)
-   - Roles: Category eyebrow chips (`[ ATELIER DOSSIER · 工匠の記録 ]`), sub-section dividers.
+### Named Rules
+**The Curatorial Voice Rule.** Headings use Zen Old Mincho in regular weight (400) rather than heavy bold, letting character form and negative space create emphasis rather than brute force.
 
 ---
 
 ## Layout
 
-### Spatial Cadence: Negative Space (_Ma_ 間)
-
-- **Section Spacing**: Full `py-24 lg:py-32` (`8rem`–`12rem` / `96px`–`128px`) vertical rhythm between major sections.
+### Spatial Cadence: Negative Space (*Ma* 間)
+- **Vertical Section Rhythm**: Full `py-24 lg:py-32` (`6rem`–`8rem` / `96px`–`128px`) vertical padding between major chambers.
 - **Page Gutters**: `px-4 sm:px-6 lg:px-12` across viewports.
 - **Maximum Width**: Container max-width constrained to `max-w-7xl` (`1280px`–`1440px`), with narrative reading widths capped at `max-w-xl` (`576px`) or `max-w-3xl` (`768px`).
+
+### Named Rules
+**The Chamber Separation Rule.** Sections alternate subtle ground tones (`--canvas-bg` and `--canvas-soft-bg`) rather than relying on heavy divider lines, letting space define progression.
 
 ---
 
 ## Elevation & Depth
 
-### The Inlaid Craft Double Hairline Frame
+Surfaces are tactile and planar, avoiding heavy diffuse drop shadows in favor of architectural joinery framing.
 
-Rather than standard drop shadows or thick borders, cards and modal windows utilize a Japanese architectural joinery frame:
+### Shadow Vocabulary
+- **Akari Subtle Rest** (`0 1px 2px rgba(40, 46, 58, 0.04)`): Baseline ambient grounding for cards.
+- **Akari Elevated Popover** (`0 20px 48px rgba(0, 0, 0, 0.25)` in Day, `0 20px 48px rgba(0, 0, 0, 0.6)` in Night): Modal sheets and floating dialogues.
+- **Lantern Bloom Glow** (`0 8px 24px -4px rgba(212, 168, 83, 0.35)`): Ambient warm hover state for primary buttons.
+- **Hanko Seal Glow** (`0 0 12px rgba(181, 72, 46, 0.35)`): Subtle vermilion resonance around active stamp icons.
 
-- **Day Mode**: Outer 1px `#C4A272` + 1px `#E6D3B1` recessed channel fill + 1px `#C4A272` inner hairline.
-- **Night Mode**: Outer 1px `#383B44` + 1px `#18191E` recessed channel fill + 1px `#2E313A` inner hairline.
-- **Information Hierarchy Rule**: The inlaid double frame belongs to **outer cards and modal windows**. Inner bullet items, highlights, and metrics maintain clean visual hierarchy with subtle single hairlines and raised solid backgrounds, preventing nested box fatigue.
+### Named Rules
+**The Inlaid Joinery Rule.** Cards and modal windows use Japanese joinery framing: 1px outer hairline, 1px recessed channel, and 1px inner hairline, conveying tangible depth without generic drop shadows.
+
+**The Level-1 Depth Rule.** The inlaid double frame belongs exclusively to outer cards and modal containers. Inner list items and bullet highlights use single subtle hairlines on solid raised backgrounds to prevent nested box fatigue.
 
 ---
 
 ## Shapes
 
-### Deliberate 0px to 3px Corner Radii
+Form language is architectural, disciplined, and crisp.
 
-- **Cards & Bento Boxes**: `rounded-[3px]` (`md: 3px`, `lg: 3px`).
-- **Buttons, Inputs, Badges, Chips**: `rounded-[2px]` (`xs: 2px`, `sm: 2px`).
-- **Circular Radii (`rounded-full` / `9999px`)**: Exclusively permitted for Enso orbital rings, status dot indicators, and circular Hanko launcher marks.
-- **Strict Prohibition**: Bubbly `12px`/`16px`/`24px` rounded cards are banned.
+- **Interactive Elements (Buttons, Inputs, Badges, Chips)**: `rounded-[2px]` (`xs: 2px`).
+- **Cards, Panels & Bento Containers**: `rounded-[3px]` (`md: 3px`).
+- **Circular Radii (`rounded-full` / `9999px`)**: Exclusively reserved for Enso orbital rings, status beacon dots, and Hanko trigger stamps.
+- **Strict Prohibition**: Bubbly `12px`/`16px`/`24px` rounded cards are strictly banned.
+
+### Named Rules
+**The Shokunin Radius Rule.** Interactive controls remain sharply defined between `0px` and `3px`. Curvature is a subtle hand-planed bevel, not an inflatable SaaS pill.
 
 ---
 
 ## Components
 
-### Core Architectural Components
+### Buttons
+- **Shape:** Hand-planed architectural radius (`2px`).
+- **Day Primary:** High-contrast dark charcoal (`#26262E`) background with cream text (`#FAF6EE`), `px-4 py-2 text-xs font-semibold uppercase tracking-wider`.
+- **Night Primary:** Warm brushed gold ochre (`#D4A853`) background with charred charcoal text (`#121316`), `px-4 py-2 text-xs font-semibold uppercase tracking-wider`.
+- **Identity Accent (Terracotta):** Sacred vermilion (`#B5482E`) background with white text (`#FFFFFF`), `hover:bg-[#9E3D27]`.
+- **Outline / Ghost:** Transparent background, `border border-light-border dark:border-dark-border`, text ink with terracotta/ochre hover tint.
 
-1. **`HeroAkariStudio` (`src/components/sections/hero/HeroAkariStudio.tsx`)**:
-   - Studio Frame layout with Atelier Dossier (`[ ATELIER DOSSIER · 工匠の記録 ]`), Philly coordinates, Drexel CS degree, availability status dot, and 3-pillar technical substrate cards.
+### Hanko Seal Stamp
+- **Signature Component:** Traditional Japanese vermilion stamp with double hairline frame and seal-script Kanji (`原` or `問`).
+- **Style:** Square seal with `rx="22"` outer stroke (`13px`) and `rx="14"` inner stroke (`2.5px`, `opacity="0.65"`), centering authentic Kanji character.
+- **Role:** Floating AI assistant launcher, signature verification, atelier seal.
 
-2. **`ProjectDetailModal` (`src/components/sections/projects/ProjectDetailModal.tsx`)**:
-   - Solid, non-transparent modal container with double-hairline inlaid frame and Kumiko corner brackets.
-   - Clean single-hairline architectural highlights list on solid raised surfaces.
+### Status Badge
+- **Active State:** Bamboo moss green background (`bg-bamboo/10 dark:bg-bamboo/20`), bamboo border, and pulsing beacon dot.
+- **Completed State:** Muted surface background, subtle stone ink, static dot.
+- **Typography:** `font-mono text-[11px] font-bold uppercase tracking-wider`.
 
-3. **`AiChatWidget` (`src/components/common/AiChatWidget.tsx`)**:
-   - Hanko trigger with `問` mark.
-   - Distilled opening greeting: *"Welcome. I'm Vincent's AI assistant. I can walk you through his portfolio if you have any questions about him."*
-   - Streamlined topic pills, clean timestamps, no badge clutter.
-   - Viewport-safe draggable window constraints.
+### Tech Tag
+- **Style:** Architectural pill with `rounded-[2px]`, monospace typography (`Azeret Mono`), subtle border, and official brand SVG icon.
+- **Hover:** Gentle lift (`hover:-translate-y-0.5`), border shift to terracotta/ochre.
 
-4. **`EnsoOrbital` (`src/components/common/EnsoOrbital.tsx`)**:
-   - 5-layer calligraphic sumi-e Enso ring formulated on milestone/project card hover.
+### Cards & Modal Windows
+- **Background:** Solid, 100% opaque warm washi (`#FAF6EE`) or charred slate (`#23262F`).
+- **Border:** Inlaid double hairline joinery (`#D4C4AA` / `#383B44`).
+- **No Background Bleed:** Translucent card bodies are strictly forbidden.
+
+### Inputs & Text Areas
+- **Style:** Crisp `rounded-[2px]` field, `border border-light-border dark:border-dark-border`, background `#FAF6EE` (Day) or `#0E0F12` (Night).
+- **Focus:** `focus-visible:border-terracotta dark:focus-visible:border-ochre focus-visible:ring-1`.
 
 ---
 
 ## Do's and Don'ts
 
-| Category       | Do (Enforced)                                                                   | Don't (Strictly Banned)                                              |
-| -------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| **Corners**    | Use `rounded-[2px]` for buttons/chips and `rounded-[3px]` for cards.            | Never use bubbly `12px`/`16px`/`24px` rounded cards.                 |
-| **Palette**    | Use washi `#EAE0CE` / `#FAF6EE` (Day) and charred cedar `#121316` / `#23262F` (Night). | Never use cold OLED pitch black (`#000000`).                         |
-| **Transparency** | Keep cards and modals solid and non-transparent to prevent background bleed-through. | Never use translucent card bodies where background text shows.       |
-| **Texture**    | Preserve tactile washi paper fiber grain across the full viewport overlay.      | Never remove washi grain or rely on dotted grid noise patterns.       |
-| **Borders**    | Use thin inlaid double-hairline frames on outer cards and single hairlines inside. | Never apply heavy double frames to inner bullet points.              |
-| **Accent**     | Reserve terracotta cinnabar (`#B5482E`) for seals and active status dots.       | Never use orange/terracotta as structural resting card outlines.     |
-| **Typography** | Use Zen Old Mincho for headings, Mulish for body, Azeret Mono for code.         | Never use futuristic HUD or sci-fi fonts.                            |
-| **Imagery**    | Apply feathered `radial-gradient` masks so photos fade organically into paper.   | Never display harsh, hard-cropped rectangular photos.                |
+### Do:
+- **Do** maintain calibrated 0px to 3px border radii (`rounded-[2px]` for controls, `rounded-[3px]` for cards).
+- **Do** preserve solid, non-transparent washi (`#FAF6EE`) and charred cedar (`#23262F`) card backgrounds.
+- **Do** reserve terracotta cinnabar (`#B5482E`) for authentic Hanko seals, active status beacons, and identity marks.
+- **Do** use warm charred cedar (`#121316`) for night mode rather than cold pitch black (`#000000`).
+- **Do** maintain continuous tactile washi paper grain overlay (`opacity: 0.16` Day, `0.065` Night).
+- **Do** feather photography and portraits into paper using radial gradients.
+
+### Don't:
+- **Don't** use bubbly rounded corners (`12px`, `16px`, `24px`).
+- **Don't** use cold OLED pitch black (`#000000`).
+- **Don't** make card containers translucent with background text showing through.
+- **Don't** use neon glows, cyan/magenta cyber lines, or HUD sci-fi styling.
+- **Don't** apply heavy double hairline frames to inner nested bullet points.
+- **Don't** use generic drop shadows when an architectural hairline border suffices.
