@@ -31,8 +31,12 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
     preset,
     dayRoughness,
     nightRoughness,
+    grainFrequency,
     presetsList,
     setPreset,
+    setDayRoughness,
+    setNightRoughness,
+    setGrainFrequency,
     setProportionalRoughness,
     resetWashiDefaults,
   } = useWashi();
@@ -281,23 +285,19 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               </div>
             </div>
 
-            {/* Desktop Control Pack 3: Washi Paper Materiality (Hairline-divided rows, proportional Day/Night scale) */}
+            {/* Desktop Control Pack 3: Washi Paper Materiality */}
             <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 shadow-2xs craft-card double-hairline">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-light-border/50 dark:border-dark-border/60">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">03</span>
                   <h2 className="text-sm font-semibold text-light-ink dark:text-dark-ink">
-                    Washi Paper Materiality · 和紙の質感
+                    Washi Paper Materiality
                   </h2>
                 </div>
                 <span className="text-xs font-mono font-semibold text-terracotta dark:text-ochre">
                   {preset === 'custom' ? 'CUSTOM · 調整' : preset.toUpperCase()}
                 </span>
               </div>
-
-              <p className="text-xs text-light-ink-muted dark:text-dark-ink-muted mb-3 leading-relaxed">
-                Calibrated tactile Japanese paper grain. Day and Night scale proportionally—night surfaces are calibrated at ~41% of day tooth to prevent grain harshness on charred dark wood.
-              </p>
 
               {/* 3 Washi Presets: Clean Hairline-Divided Rows */}
               <div className="divide-y divide-light-border/40 dark:divide-dark-border/50 mb-3 border-t border-b border-light-border/40 dark:border-dark-border/50">
@@ -328,16 +328,12 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                             {p.kanji}
                           </span>
                         </div>
-                        <div className="text-xs text-light-ink-muted dark:text-dark-ink-muted font-sans truncate">
-                          {p.subtitle}
-                        </div>
-                        <div className="flex items-center gap-2 mt-1.5 text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
-                          <span className="px-1.5 py-0.5 rounded-[2px] bg-light-surface-muted/60 dark:bg-dark-canvas border border-light-border/40 dark:border-dark-border/40 font-medium">
-                            Day: <strong className="text-light-ink dark:text-dark-ink">{p.dayRoughness}%</strong>
-                          </span>
-                          <span className="px-1.5 py-0.5 rounded-[2px] bg-light-surface-muted/60 dark:bg-dark-canvas border border-light-border/40 dark:border-dark-border/40 font-medium">
-                            Night: <strong className="text-light-ink dark:text-dark-ink">{p.nightRoughness}%</strong>
-                          </span>
+                        <div className="flex items-center gap-2 text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted">
+                          <span>Day: <strong className="text-light-ink dark:text-dark-ink">{p.dayRoughness}%</strong></span>
+                          <span>·</span>
+                          <span>Night: <strong className="text-light-ink dark:text-dark-ink">{p.nightRoughness}%</strong></span>
+                          <span>·</span>
+                          <span>Scale: <strong className="text-light-ink dark:text-dark-ink">{p.grainFrequency.toFixed(2)}</strong></span>
                         </div>
                       </div>
 
@@ -359,8 +355,8 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 })}
               </div>
 
-              {/* Progressive Disclosure: Proportional Tactile Fine-Tuning Slider */}
-              <div className="pt-2">
+              {/* Collapsible Tactile Tooth Sliders Toggle */}
+              <div className="pt-1">
                 <button
                   type="button"
                   onClick={() => setShowDesktopSliders(!showDesktopSliders)}
@@ -368,65 +364,108 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 >
                   <span className="flex items-center gap-1.5 font-medium text-light-ink dark:text-dark-ink">
                     <SlidersHorizontal className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
-                    <span>Proportional Tactile Slider · 連動微調整</span>
+                    <span>Tactile Tooth Sliders</span>
                   </span>
                   <span className="flex items-center gap-1 text-[11px]">
                     <span className="text-light-ink-muted dark:text-dark-ink-muted font-medium">
-                      {showDesktopSliders ? 'Hide' : `Day: ${dayRoughness}% ⇄ Night: ${nightRoughness}%`}
+                      {showDesktopSliders ? 'Hide' : `${dayRoughness}% · ${nightRoughness}% · ${grainFrequency.toFixed(2)}`}
                     </span>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${showDesktopSliders ? 'rotate-180 text-terracotta dark:text-ochre' : ''}`} />
                   </span>
                 </button>
 
                 {showDesktopSliders && (
-                  <div className="mt-3 space-y-3 p-3.5 rounded-[2px] bg-light-surface-muted/40 dark:bg-dark-canvas border border-light-border/50 dark:border-dark-border/50 animate-view-enter">
-                    {/* Proportional Unified Master Slider */}
-                    <div className="space-y-1.5">
+                  <div className="mt-3 space-y-3 animate-view-enter">
+                    
+                    {/* Slider 1: Day Paper Roughness */}
+                    <div className="space-y-1.5 bg-light-surface-muted/40 dark:bg-dark-canvas/80 p-3 rounded-[2px] border border-light-border/50 dark:border-dark-border/50">
                       <div className="flex items-center justify-between text-xs font-mono">
                         <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
-                          {theme === 'night' ? <Moon className="w-3.5 h-3.5 text-ochre" /> : <Sun className="w-3.5 h-3.5 text-terracotta" />}
-                          <span>Proportional Tooth:</span>
+                          <Sun className="w-3.5 h-3.5 text-terracotta" />
+                          <span>Day Paper Roughness:</span>
                         </span>
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-terracotta">
-                            Day {dayRoughness}%
-                          </span>
-                          <span className="text-light-ink-muted dark:text-dark-ink-muted">·</span>
-                          <span className="font-bold text-ochre">
-                            Night {nightRoughness}%
-                          </span>
-                        </div>
+                        <span className="font-bold text-terracotta">
+                          {dayRoughness}%
+                        </span>
                       </div>
-
                       <input
                         type="range"
                         min={4}
                         max={35}
                         step={1}
                         value={dayRoughness}
-                        onChange={(e) => setProportionalRoughness(Number(e.target.value))}
-                        className="w-full accent-terracotta dark:accent-ochre cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-surface rounded-[2px]"
+                        onChange={(e) => setDayRoughness(Number(e.target.value))}
+                        className="w-full accent-terracotta cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-surface rounded-[2px]"
                       />
-
                       <div className="flex justify-between text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted pt-0.5">
-                        <span>4% (Delicate Silk)</span>
-                        <span className="text-terracotta dark:text-ochre font-semibold">16% / 6.5% (Kozo Default)</span>
+                        <span>4% (Minimal)</span>
+                        <span className="text-terracotta font-medium">16% (Default Kozo)</span>
                         <span>35% (Raw Pulp)</span>
                       </div>
-                      
-                      <p className="text-[11px] text-light-ink-muted dark:text-dark-ink-muted italic pt-1">
-                        Night scales in lockstep at ~41% of day roughness to protect dark ambient legibility.
-                      </p>
                     </div>
 
-                    {/* Quick Reset to Kozo Default */}
+                    {/* Slider 2: Night Cedar Roughness */}
+                    <div className="space-y-1.5 bg-light-surface-muted/40 dark:bg-dark-canvas/80 p-3 rounded-[2px] border border-light-border/50 dark:border-dark-border/50">
+                      <div className="flex items-center justify-between text-xs font-mono">
+                        <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
+                          <Moon className="w-3.5 h-3.5 text-ochre" />
+                          <span>Night Cedar Roughness:</span>
+                        </span>
+                        <span className="font-bold text-ochre">
+                          {nightRoughness}%
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min={2}
+                        max={20}
+                        step={0.5}
+                        value={nightRoughness}
+                        onChange={(e) => setNightRoughness(Number(e.target.value))}
+                        className="w-full accent-ochre cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-surface rounded-[2px]"
+                      />
+                      <div className="flex justify-between text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted pt-0.5">
+                        <span>2% (Quiet)</span>
+                        <span className="text-ochre font-medium">6.5% (Default)</span>
+                        <span>20% (Cosmic Timber)</span>
+                      </div>
+                    </div>
+
+                    {/* Slider 3: Fiber Grain Density */}
+                    <div className="space-y-1.5 bg-light-surface-muted/40 dark:bg-dark-canvas/80 p-3 rounded-[2px] border border-light-border/50 dark:border-dark-border/50">
+                      <div className="flex items-center justify-between text-xs font-mono">
+                        <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
+                          <Layers className="w-3.5 h-3.5 text-bamboo" />
+                          <span>Fiber Grain Density:</span>
+                        </span>
+                        <span className="font-bold text-light-ink dark:text-dark-ink">
+                          {grainFrequency.toFixed(2)}
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min={0.45}
+                        max={1.05}
+                        step={0.05}
+                        value={grainFrequency}
+                        onChange={(e) => setGrainFrequency(Number(e.target.value))}
+                        className="w-full accent-bamboo cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-surface rounded-[2px]"
+                      />
+                      <div className="flex justify-between text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted pt-0.5">
+                        <span>0.45 (Chunky Raw)</span>
+                        <span className="font-medium">0.90 (Mulberry)</span>
+                        <span>1.05 (Fine Micro)</span>
+                      </div>
+                    </div>
+
+                    {/* Quick Reset */}
                     {preset === 'custom' && (
-                      <div className="pt-1 flex justify-end border-t border-light-border/40 dark:border-dark-border/40">
+                      <div className="pt-1 flex justify-end">
                         <button
                           type="button"
                           onClick={() => {
                             resetWashiDefaults();
-                            toast.info('Reset Washi tooth to Default Kozo (16% Day / 6.5% Night)');
+                            toast.info('Reset Washi tooth to Default Kozo (16% Day / 6.5% Night / 0.90 Scale)');
                           }}
                           className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors inline-flex items-center gap-1 cursor-pointer"
                         >
@@ -501,12 +540,12 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 </div>
               </div>
 
-              {/* Progressive Disclosure: Compact Proportional Washi Texture Drawer (Mobile) */}
+              {/* Progressive Disclosure: Mobile Washi Drawer with Proportional Roughness Slider */}
               {showMobileWashi && (
                 <div className="pt-2 border-t border-light-border/50 dark:border-dark-border/60 space-y-2 animate-view-enter">
                   <div className="flex items-center justify-between text-xs font-mono">
                     <span className="text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider font-semibold">
-                      Washi Materiality (Proportional)
+                      Roughness (Static Proportion)
                     </span>
                     <span className="text-terracotta dark:text-ochre font-bold">
                       Day {dayRoughness}% ⇄ Night {nightRoughness}%
@@ -542,15 +581,15 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     })}
                   </div>
 
-                  {/* Single Proportional Interactive Slider: Scales Day & Night in lockstep */}
+                  {/* Single Proportional Slider on Mobile: Adjusts roughness while keeping Day/Night proportion static */}
                   <div className="space-y-1 pt-1 text-xs font-mono">
                     <div className="flex items-center justify-between">
                       <span className="text-light-ink-muted dark:text-dark-ink-muted flex items-center gap-1 font-medium">
-                        {theme === 'night' ? <Moon className="w-3 h-3 text-ochre" /> : <Sun className="w-3 h-3 text-terracotta" />}
-                        <span>Tooth (Proportional):</span>
+                        <Layers className="w-3 h-3 text-terracotta dark:text-ochre" />
+                        <span>Roughness (Proportional):</span>
                       </span>
                       <span className="font-bold text-terracotta dark:text-ochre">
-                        {theme === 'night' ? `${nightRoughness}% Night (Day: ${dayRoughness}%)` : `${dayRoughness}% Day (Night: ${nightRoughness}%)`}
+                        {theme === 'night' ? `${nightRoughness}% Night (Day ${dayRoughness}%)` : `${dayRoughness}% Day (Night ${nightRoughness}%)`}
                       </span>
                     </div>
                     <input
@@ -562,9 +601,11 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       onChange={(e) => setProportionalRoughness(Number(e.target.value))}
                       className="w-full cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-canvas rounded-[2px] accent-terracotta dark:accent-ochre"
                     />
-                    <p className="text-[11px] text-light-ink-muted dark:text-dark-ink-muted italic">
-                      Night scales automatically at ~41% of day roughness for balanced contrast.
-                    </p>
+                    <div className="flex justify-between text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted pt-0.5">
+                      <span>4% (Fine)</span>
+                      <span className="text-terracotta dark:text-ochre font-medium">16% / 6.5% (Kozo)</span>
+                      <span>35% (Coarse)</span>
+                    </div>
                   </div>
                 </div>
               )}
@@ -639,7 +680,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               </div>
             </div>
 
-            {/* Live Interactive Specimen Stage Card (Vertically compact, zero decorative stars, no nested-card clutter) */}
+            {/* Live Interactive Specimen Stage Card: Distilled to 1 of each unique display element */}
             <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-6 lg:p-7 shadow-xs craft-card double-hairline relative">
               <CornerBrackets size="md" />
 
@@ -647,23 +688,26 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 sm:mb-5 border-b border-light-border/50 dark:border-dark-border/60">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre uppercase tracking-wider">
-                    [01 // LIVE SPECIMEN STAGE]
+                    [LIVE SPECIMEN // 標本]
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-xs sm:text-sm font-mono">
+                <div className="flex items-center gap-3 text-xs font-mono">
                   <span className="text-light-ink-muted dark:text-dark-ink-muted">Voice:</span>
                   <span className="font-bold text-terracotta dark:text-ochre">
                     0{activeInfo.numericKey} · {activeInfo.name}
                   </span>
+                  <span className="text-light-ink-muted dark:text-dark-ink-muted hidden sm:inline">|</span>
+                  <span className="text-light-ink-muted dark:text-dark-ink-muted hidden sm:inline">
+                    Tooth: <strong className="text-light-ink dark:text-dark-ink">{theme === 'night' ? `${nightRoughness}%` : `${dayRoughness}%`}</strong>
+                  </span>
                 </div>
               </div>
 
-              {/* Exhibit 1: Display Headline & Subtitle */}
+              {/* 1. Display & Body Typography Sample */}
               <div className="space-y-2 pb-4 sm:pb-5 border-b border-light-border/40 dark:border-dark-border/50">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">
-                    Exhibit A · Hero Display Headline ({activeInfo.displayFont})
-                  </span>
+                <div className="flex items-center justify-between text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
+                  <span>Display ({activeInfo.displayFont}) · Body ({activeInfo.bodyFont})</span>
+                  <span className="text-[11px] italic">{activeInfo.vibe.split(',')[0]}</span>
                 </div>
                 <h3
                   className="text-xl sm:text-2xl lg:text-3xl text-light-ink dark:text-dark-ink font-normal leading-snug tracking-tight"
@@ -679,11 +723,12 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 </p>
               </div>
 
-              {/* Exhibit 2: Card Architecture Mockup (Clean preview frame without nested-box shadow fatigue) */}
+              {/* 2. Interactive UI Component Simulation (1 practical example) */}
               <div className="py-4 sm:py-5 border-b border-light-border/40 dark:border-dark-border/50 space-y-3">
-                <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium block">
-                  Exhibit B · Project Card Simulation ({activeInfo.displayFont} + {activeInfo.bodyFont})
-                </span>
+                <div className="flex items-center justify-between text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
+                  <span>UI Component Context</span>
+                  <span>{theme.toUpperCase()} MODE</span>
+                </div>
 
                 <div className="p-4 sm:p-5 rounded-[2px] bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border/70 dark:border-dark-border/70 relative">
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
@@ -724,15 +769,39 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     <TechTag tag="Supabase" size="md" />
                   </div>
                 </div>
+
+                {/* Primary Action Buttons */}
+                <div className="pt-1 flex flex-wrap items-center gap-2.5">
+                  <a
+                    href="#featured-works"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onNavigate('home', 'featured-works');
+                    }}
+                    className="px-3.5 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-opacity min-h-[40px] inline-flex items-center cursor-pointer"
+                  >
+                    Explore Selected Works
+                  </a>
+                  <a
+                    href="#resume"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onNavigate('resume');
+                    }}
+                    className="px-3.5 py-2 bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink font-sans text-xs font-medium rounded-[2px] shadow-2xs hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors min-h-[40px] inline-flex items-center cursor-pointer"
+                  >
+                    Technical CV
+                  </a>
+                </div>
               </div>
 
-              {/* Exhibit 3: Monospace Telemetry & Code Craft */}
-              <div className="py-4 sm:py-5 border-b border-light-border/40 dark:border-dark-border/50 space-y-3">
+              {/* 3. Monospace Code & Material Telemetry */}
+              <div className="pt-4 sm:pt-5 space-y-2">
                 <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium block">
-                  Exhibit C · Telemetry &amp; Monospace Coordinates ({activeInfo.monoFont})
+                  System Telemetry &amp; Materiality Coordinates ({activeInfo.monoFont})
                 </span>
 
-                <div className="p-3 sm:p-4 rounded-[2px] bg-light-surface-muted/60 dark:bg-dark-canvas border border-light-border/60 dark:border-dark-border/60 text-xs font-mono space-y-1.5 overflow-x-auto" style={{ fontFamily: activeInfo.monoFont }}>
+                <div className="p-3 sm:p-3.5 rounded-[2px] bg-light-surface-muted/60 dark:bg-dark-canvas border border-light-border/60 dark:border-dark-border/60 text-xs font-mono space-y-1.5 overflow-x-auto" style={{ fontFamily: activeInfo.monoFont }}>
                   <div className="text-terracotta dark:text-ochre font-semibold">
                     {`// [LAT: 43.6532° N · LON: 79.3832° W · ELEVATION: 76m]`}
                   </div>
@@ -740,82 +809,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     {`SYS_TOKENS: { display: "${activeInfo.displayFont}", body: "${activeInfo.bodyFont}", mono: "${activeInfo.monoFont}" }`}
                   </div>
                   <div className="text-light-ink-muted dark:text-dark-ink-muted text-xs">
-                    {`THEME: "${theme.toUpperCase()}" · WASHI: "${preset.toUpperCase()}" (DAY: ${dayRoughness}% · NIGHT: ${nightRoughness}%) · STATUS: READY`}
-                  </div>
-                </div>
-
-                <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <a
-                      href="#featured-works"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onNavigate('home', 'featured-works');
-                      }}
-                      className="px-3.5 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-opacity min-h-[40px] inline-flex items-center cursor-pointer"
-                    >
-                      Explore Selected Works
-                    </a>
-                    <a
-                      href="#resume"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onNavigate('resume');
-                      }}
-                      className="px-3.5 py-2 bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink font-sans text-xs font-medium rounded-[2px] shadow-2xs hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors min-h-[40px] inline-flex items-center cursor-pointer"
-                    >
-                      Technical CV
-                    </a>
-                  </div>
-
-                  <span className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted font-medium">
-                    Vibe: {activeInfo.vibe.split(',')[0]}
-                  </span>
-                </div>
-              </div>
-
-              {/* Exhibit 4: Washi Materiality & Fiber Tooth Comparison (Compact, non-nested specimen swatches) */}
-              <div className="pt-4 sm:pt-5 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium block">
-                    Exhibit D · Washi Paper Grain Specimen (Proportional Day/Night Tooth)
-                  </span>
-                  <span className="text-[11px] font-mono text-terracotta dark:text-ochre font-semibold">
-                    Ratio: ~41% (Optically Balanced)
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {/* Day Preview Swatch */}
-                  <div className="p-3.5 rounded-[2px] bg-[#FAF6EE] text-[#282E3A] border border-[#D4C4AA] relative overflow-hidden">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs font-mono font-bold text-terracotta flex items-center gap-1.5">
-                        <Sun className="w-3.5 h-3.5" />
-                        <span>Akari Day Paper</span>
-                      </span>
-                      <span className="text-[11px] font-mono px-1.5 py-0.5 rounded-[2px] bg-[#EAE0CE] border border-[#D4C4AA] font-semibold text-[#282E3A]">
-                        {dayRoughness}% Tooth
-                      </span>
-                    </div>
-                    <p className="text-xs font-serif leading-relaxed text-[#282E3A]/90">
-                      Natural cream washi with tactile tooth. Multiply blend embeds texture into light fiber.
-                    </p>
-                  </div>
-
-                  {/* Night Preview Swatch */}
-                  <div className="p-3.5 rounded-[2px] bg-[#23262F] text-[#E8E6DF] border border-[#383B44] relative overflow-hidden">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs font-mono font-bold text-ochre flex items-center gap-1.5">
-                        <Moon className="w-3.5 h-3.5" />
-                        <span>Charred Cedar</span>
-                      </span>
-                      <span className="text-[11px] font-mono px-1.5 py-0.5 rounded-[2px] bg-[#121316] border border-[#383B44] font-semibold text-[#E8E6DF]">
-                        {nightRoughness}% Tooth
-                      </span>
-                    </div>
-                    <p className="text-xs font-serif leading-relaxed text-[#E8E6DF]/90">
-                      Charred timber with warm amber highlights. Screen blend tuned lower to avoid grain harshness.
-                    </p>
+                    {`MATERIALITY: { theme: "${theme.toUpperCase()}", washi: "${preset.toUpperCase()}", dayTooth: "${dayRoughness}%", nightTooth: "${nightRoughness}%", grainScale: "${grainFrequency.toFixed(2)}" }`}
                   </div>
                 </div>
               </div>
