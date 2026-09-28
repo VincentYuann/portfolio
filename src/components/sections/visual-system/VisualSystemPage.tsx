@@ -78,10 +78,10 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Back navigation & Reset Defaults bar */}
-        <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="mt-1 sm:mt-0 mb-3 sm:mb-8 flex flex-row items-center justify-between gap-2">
           <button
             onClick={() => onNavigate('home')}
-            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors group cursor-pointer py-1"
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors group cursor-pointer min-h-[44px] py-2"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Return to Portfolio</span>
@@ -89,7 +89,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
 
           <button
             onClick={handleResetDefaults}
-            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-[2px] text-xs font-mono border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer shadow-2xs whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-[2px] text-xs font-mono border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer shadow-2xs whitespace-nowrap shrink-0"
             title="Reset to default settings"
           >
             <RotateCcw className="w-3 h-3" />
@@ -97,8 +97,8 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
           </button>
         </div>
 
-        {/* Header Title Section — streamlined and distilled on mobile */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-5 sm:mb-8">
+        {/* Header Title Section - standardized with Projects/Hobbies/Resume pages */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-5 sm:mb-10">
           <div>
             <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
               <span className="font-mono text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
@@ -107,13 +107,13 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
               </span>
             </div>
             <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-tight">
-              Design System &amp; Typographic Voices{' '}
+              Design System &amp; Voices{' '}
               <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-lg sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block">
                 設計系統
               </span>
             </h1>
             <p className="font-sans text-xs sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 font-normal leading-relaxed max-w-prose">
-              Real-time design tokens, theme lighting, and 7 curated Japanese-Scandinavian typographic voices across the portfolio.
+              Real-time design tokens, theme lighting, and curated typography voices across the portfolio.
             </p>
           </div>
         </div>
@@ -268,97 +268,87 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
           {/* ── RIGHT / PRIMARY COLUMN: LIVE SPECIMEN STAGE WITH MOBILE QUICK CONTROLS ── */}
           <div className="w-full lg:col-span-7 flex flex-col gap-5 lg:sticky lg:top-24">
             
-            {/* ── MOBILE QUICK SWITCHER BAR (Visible on mobile/tablet, sitting directly on top of the stage) ── */}
-            <div className="lg:hidden bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-4 shadow-sm craft-card double-hairline flex flex-col gap-3.5">
+            {/* ── MOBILE ULTRA-COMPACT QUICK SWITCHER BAR (Visible on mobile/tablet) ── */}
+            <div className="lg:hidden bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-2.5 sm:p-3 shadow-sm craft-card double-hairline flex flex-col gap-2">
               
-              {/* Row 1: Section label & Theme Lighting Pills */}
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-terracotta dark:text-ochre">
-                    Voice &amp; Theme
+              {/* Row 1: Header Label + Inline Lighting Pill + Active Voice Badge */}
+              <div className="flex items-center justify-between gap-2 min-w-0">
+                <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                  <Sparkles className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-terracotta dark:text-ochre truncate">
+                    0{activeInfo.numericKey} · {activeInfo.name}
                   </span>
                 </div>
 
                 {/* Compact Theme Pill Toggle */}
-                <div className="inline-flex p-0.5 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border">
+                <div className="inline-flex p-0.5 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border shrink-0">
                   <button
                     onClick={() => setTheme('day')}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-[2px] text-xs font-mono transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] text-[10px] sm:text-[11px] font-mono transition-all cursor-pointer ${
                       theme === 'day'
                         ? 'bg-light-surface-card dark:bg-dark-surface-raised text-terracotta font-bold shadow-2xs'
                         : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink'
                     }`}
                   >
-                    <Sun className="w-3 h-3 text-terracotta dark:text-ochre" />
+                    <Sun className="w-2.5 h-2.5 text-terracotta dark:text-ochre" />
                     <span>Day</span>
                   </button>
                   <button
                     onClick={() => setTheme('night')}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-[2px] text-xs font-mono transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] text-[10px] sm:text-[11px] font-mono transition-all cursor-pointer ${
                       theme === 'night'
                         ? 'bg-light-surface-card dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-bold shadow-2xs'
                         : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
                     }`}
                   >
-                    <Moon className="w-3 h-3 text-terracotta dark:text-ochre" />
+                    <Moon className="w-2.5 h-2.5 text-terracotta dark:text-ochre" />
                     <span>Night</span>
                   </button>
                 </div>
               </div>
 
-              {/* Row 2: Segmented 1 to 7 Archetype Numbers Bar */}
-              <div>
-                <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
-                  {variantsList.map((v) => {
-                    const isSelected = v.id === variant;
-                    return (
-                      <button
-                        key={v.id}
-                        onClick={() => handleApplyVariant(v.id)}
-                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-[2px] border text-center transition-all cursor-pointer min-h-[44px] ${
-                          isSelected
-                            ? 'border-terracotta dark:border-ochre bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas font-bold shadow-xs scale-[1.02]'
-                            : 'border-light-border/70 dark:border-dark-border/70 bg-light-surface/60 dark:bg-dark-surface/60 text-light-ink dark:text-dark-ink hover:border-terracotta/50 dark:hover:border-ochre/50'
-                        }`}
-                        title={v.name}
-                        aria-label={`Select voice 0${v.numericKey}: ${v.name}`}
-                      >
-                        <span className="text-xs font-mono font-bold">0{v.numericKey}</span>
-                        <span className={`text-[10px] font-serif leading-none mt-0.5 ${isSelected ? 'opacity-90' : 'opacity-60'}`}>
-                          {v.kanji}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Row 3: Current Selected Archetype Summary with quick Next/Prev steppers */}
-              <div className="flex items-center justify-between pt-1 border-t border-light-border/40 dark:border-dark-border/50">
+              {/* Row 2: Horizontal scrollable voice strip with smooth auto-scroll */}
+              <div className="flex items-center gap-1">
                 <button
                   onClick={() => {
                     const curIdx = variantsList.findIndex((v) => v.id === variant);
                     const prevIdx = (curIdx - 1 + variantsList.length) % variantsList.length;
                     handleApplyVariant(variantsList[prevIdx].id);
                   }}
-                  className="p-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre transition-colors cursor-pointer"
+                  className="p-1 min-w-[32px] sm:min-w-[36px] min-h-[36px] flex items-center justify-center rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre transition-colors cursor-pointer shrink-0"
                   aria-label="Previous voice"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
 
-                <div className="text-center px-2 flex-1 min-w-0">
-                  <div className="flex items-center justify-center gap-1.5 text-xs font-mono">
-                    <span className="font-bold text-terracotta dark:text-ochre truncate">
-                      0{activeInfo.numericKey} · {activeInfo.name}
-                    </span>
-                    <span className="text-[10px] font-serif text-light-ink-muted dark:text-dark-ink-muted">
-                      ({activeInfo.kanji})
-                    </span>
-                  </div>
-                  <div className="text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted truncate mt-0.5">
-                    {activeInfo.displayFont} + {activeInfo.bodyFont}
+                <div className="flex-1 overflow-x-auto scrollbar-none py-0.5 min-w-0">
+                  <div className="grid grid-flow-col auto-cols-[minmax(38px,1fr)] sm:auto-cols-fr gap-1 sm:gap-1.5 w-full">
+                    {variantsList.map((v) => {
+                      const isSelected = v.id === variant;
+                      return (
+                        <button
+                          key={v.id}
+                          id={`mobile-voice-tab-${v.id}`}
+                          onClick={() => {
+                            handleApplyVariant(v.id);
+                            const el = document.getElementById(`mobile-voice-tab-${v.id}`);
+                            el?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                          }}
+                          className={`flex flex-col items-center justify-center w-full min-h-[36px] px-1 py-0.5 rounded-[2px] border text-center transition-all cursor-pointer ${
+                            isSelected
+                              ? 'border-terracotta dark:border-ochre bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas font-bold shadow-xs'
+                              : 'border-light-border/70 dark:border-dark-border/70 bg-light-surface/60 dark:bg-dark-surface/60 text-light-ink dark:text-dark-ink hover:border-terracotta/50 dark:hover:border-ochre/50'
+                          }`}
+                          title={v.name}
+                          aria-label={`Select voice 0${v.numericKey}: ${v.name}`}
+                        >
+                          <span className="text-[10px] sm:text-[11px] font-mono font-bold leading-none">0{v.numericKey}</span>
+                          <span className={`text-[9px] sm:text-[10px] font-serif leading-none mt-0.5 ${isSelected ? 'opacity-95' : 'opacity-60'}`}>
+                            {v.kanji}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -368,11 +358,22 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     const nextIdx = (curIdx + 1) % variantsList.length;
                     handleApplyVariant(variantsList[nextIdx].id);
                   }}
-                  className="p-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre transition-colors cursor-pointer"
+                  className="p-1 min-w-[32px] sm:min-w-[36px] min-h-[36px] flex items-center justify-center rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre transition-colors cursor-pointer shrink-0"
                   aria-label="Next voice"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </button>
+              </div>
+
+              {/* Row 3: Active Font Specifier & Tagline (Cleanly Truncated with ellipsis) */}
+              <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-light-ink-muted dark:text-dark-ink-muted pt-1 px-0.5 border-t border-light-border/40 dark:border-dark-border/40 min-w-0 overflow-hidden">
+                <span className="truncate flex-1 min-w-0 pr-2">
+                  <span className="font-semibold text-terracotta dark:text-ochre">{activeInfo.displayFont}</span>
+                  <span className="opacity-60"> + {activeInfo.bodyFont}</span>
+                </span>
+                <span className="text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle italic shrink-0 max-w-[120px] truncate text-right">
+                  {activeInfo.vibe.split(',')[0]}
+                </span>
               </div>
             </div>
 
@@ -413,7 +414,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   className="text-sm sm:text-base text-light-ink/80 dark:text-dark-ink/90 leading-relaxed max-w-xl"
                   style={{ fontFamily: activeInfo.bodyFont }}
                 >
-                  Rooted in the Japanese aesthetics of <strong className="text-light-ink dark:text-dark-ink">Akari</strong> (illumination) and <strong className="text-light-ink dark:text-dark-ink">Wabi-Sabi</strong> (organic simplicity). Systems engineered with mathematical balance and human empathy.
+                  Focused on building robust, well-structured software with clean design and attention to detail. Systems engineered with balance, reliability, and usability in mind.
                 </p>
               </div>
 
@@ -432,7 +433,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       <StatusBadge isActive={true} activeLabel="ACTIVE / 現職" />
                     </div>
                     <span className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted" style={{ fontFamily: activeInfo.monoFont }}>
-                      2024 — Present
+                      2024 - Present
                     </span>
                   </div>
 

@@ -129,10 +129,9 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
             return (
               <article
                 key={project.id}
-                onClick={() => openProject(project)}
                 onMouseEnter={() => setHoveredProjectId(project.id)}
                 onMouseLeave={() => setHoveredProjectId(null)}
-                className="group relative w-full bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-8 transition-colors duration-200 shadow-2xs overflow-visible cursor-pointer"
+                className="group relative w-full bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-8 transition-colors duration-200 shadow-2xs overflow-visible"
               >
                 {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
                 <EnsoOrbital
@@ -218,7 +217,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                     <div className="pt-3 border-t border-light-border/60 dark:border-dark-border/80 flex items-center justify-between gap-4">
                       <button
                         type="button"
-                        onClick={() => setSelectedProject(project)}
+                        onClick={() => openProject(project)}
                         className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-medium hover:text-terracotta dark:hover:text-[#D4A853] transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded py-1 px-0.5 group/btn cursor-pointer"
                       >
                         <span>

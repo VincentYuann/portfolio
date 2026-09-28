@@ -120,7 +120,7 @@ const UNIVERSAL_PROMPT_PILLS = [
   {
     id: 'philosophy',
     label: 'Design Philosophy',
-    prompt: 'How do Ma (間) and Wabi-Sabi (侘寂) influence your software architecture?',
+    prompt: 'What core principles guide your software engineering and system design?',
   },
   {
     id: 'dialogue',

@@ -27,16 +27,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* WABI-SABI CRAFT & INSPIRATION PHILOSOPHY */}
+          {/* DESIGN & CRAFT PHILOSOPHY */}
           <div className="md:col-span-4 flex flex-col">
             <div className="flex items-center gap-1.5 mb-2.5">
               <Compass className="w-3.5 h-3.5 text-ochre" />
               <span className="font-sans text-[11px] font-semibold text-light-ink dark:text-dark-ink uppercase tracking-widest">
-                WABI-SABI CRAFT & LINEAGE
+                INSPIRATION &amp; CRAFT
               </span>
             </div>
             <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light">
-              Crafted with organic washi textures, ink-wash (*sumi-e*) motifs, and the intentional negative space (*Ma* 間) of Kyoto architectural traditions.
+              Inspired by captivating portfolios I came across and empowered by agentic coding, I set out to build my own unique space. The design draws from Japanese editorial aesthetics, incorporating warm washi textures, ink-wash motifs, clean typography, and intentional spacing for a calm, focused reading experience.
             </p>
           </div>
 
@@ -142,7 +142,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
 
           <div className="flex items-center gap-3 text-light-ink-subtle dark:text-dark-ink-subtle text-xs font-sans">
-            <span className="uppercase tracking-widest text-[11px] font-mono">Ma · Wabi-Sabi · Shokunin</span>
+            <span className="uppercase tracking-widest text-[11px] font-mono">Clarity · Balance · Craft</span>
             <span className="text-terracotta dark:text-ochre text-xs">✦</span>
             <span className="uppercase tracking-widest text-[11px]">Solid Washi</span>
           </div>

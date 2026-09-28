@@ -66,7 +66,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
           </button>
         </div>
 
-        {/* Header Title Section — distilled on mobile */}
+        {/* Header Title Section - distilled on mobile */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-5 sm:mb-10">
           <div>
             <div className="flex items-center gap-2 mb-1.5 sm:mb-2">

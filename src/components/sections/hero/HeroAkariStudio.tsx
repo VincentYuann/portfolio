@@ -5,16 +5,16 @@ import {
   Code2,
   Cpu,
   Sparkles,
-  Github,
-  Linkedin,
+  Mail,
 } from 'lucide-react';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 import { HankoStamp } from '../../common/HankoStamp';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
+import { ViewMode } from '../../../App';
 
 interface HeroAkariStudioProps {
-  onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
+  onNavigate?: (view: ViewMode, sectionId?: string) => void;
 }
 
 const getPillarIcon = (label: string, idx: number) => {
@@ -65,13 +65,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   const capabilityPillars = Array.isArray(profile?.capability_pillars)
     ? profile.capability_pillars
     : [];
-
-  // Formatted Profile Links from DB
-  const githubUrl = profile?.github || '';
-  const rawLinkedin = profile?.linkedin || '';
-  const linkedinUrl = rawLinkedin
-    ? (rawLinkedin.startsWith('http') ? rawLinkedin : `https://${rawLinkedin}`)
-    : '';
 
   return (
     <section
@@ -270,35 +263,32 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 </div>
               )}
 
-              {/* Direct Channels (Option B: Minimal Ghost Social Links - GitHub & LinkedIn) */}
-              {(githubUrl || linkedinUrl) && (
-                <div className="w-full pt-3.5 border-t border-light-border/60 dark:border-dark-border/60 relative z-10">
-                  <div className="flex items-center justify-center gap-2">
-                    {githubUrl && (
-                      <a
-                        href={githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
-                      >
-                        <Github className="w-3.5 h-3.5" />
-                        <span>GitHub</span>
-                      </a>
-                    )}
-                    {linkedinUrl && (
-                      <a
-                        href={linkedinUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
-                      >
-                        <Linkedin className="w-3.5 h-3.5" />
-                        <span>LinkedIn</span>
-                      </a>
-                    )}
-                  </div>
-                </div>
-              )}
+              {/* Direct Channel: Navigate to Contact Form */}
+              <div className="w-full pt-3.5 border-t border-light-border/60 dark:border-dark-border/60 relative z-10">
+                <a
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onNavigate) {
+                      onNavigate('home', 'contact');
+                    }
+                    const el = document.getElementById('contact');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                      setTimeout(() => {
+                        const nameInput = document.getElementById('contact-name') as HTMLInputElement | null;
+                        if (nameInput) {
+                          nameInput.focus({ preventScroll: true });
+                        }
+                      }, 400);
+                    }
+                  }}
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-[#D4A853] text-xs font-mono transition-colors shadow-2xs group/btn cursor-pointer"
+                >
+                  <Mail className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] transition-transform duration-200 group-hover/btn:scale-110" />
+                  <span>Contact</span>
+                </a>
+              </div>
             </div>
           </aside>
         </div>

@@ -6,6 +6,7 @@ import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
+import { SectionHeading } from '../../common/SectionHeading';
 
 const TRAJECTORY_THEMES = [
   {
@@ -137,32 +138,14 @@ export const PhilosophyBento: React.FC = () => {
 
       {/* Main Philosophy Bento Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        {/* Section Header */}
-        <div className="relative mb-12 sm:mb-16 pb-6 border-b border-light-border/70 dark:border-dark-border/80">
-          <div className="max-w-3xl relative z-10">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-terracotta dark:text-ochre text-sm">04 //</span>
-              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
-                ORIGIN &amp; PHILOSOPHY · 原点と哲学
-              </span>
-              <span
-                className="inline-flex items-center justify-center w-4 h-4 rounded-[2px] bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre text-[9px] font-serif border border-terracotta/30 dark:border-ochre/30 select-none ml-1"
-                title="Hanko Seal: 哲 (Philosophy)"
-              >
-                哲
-              </span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink font-normal tracking-tight">
-              Origin &amp; Philosophy{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl lg:text-3xl ml-2 whitespace-nowrap inline-block">
-                原点と哲学
-              </span>
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-3 font-normal leading-relaxed max-w-xl">
-              Rooted in the Japanese aesthetics of <span className="font-medium text-light-ink dark:text-dark-ink">Akari</span> (illumination) and <span className="font-medium text-light-ink dark:text-dark-ink">Wabi-Sabi</span> (organic simplicity and evolutionary resilience). Software is not merely mechanical logic; it is a spatial architecture shaped by deliberate negative space (<em>Ma</em> 間), system balance, and human empathy.
-            </p>
-          </div>
-        </div>
+        {/* Section Header with Standardized Component */}
+        <SectionHeading
+          numeral="04 //"
+          categoryTag="ORIGIN & PHILOSOPHY · 原点と哲学"
+          title="Origin & Philosophy"
+          kanjiSubtitle="原点と哲学"
+          description="Principles guiding how I design and build software: prioritizing clarity, thoughtful architecture, and resilient systems built with purpose and care."
+        />
 
         {/* 04.1 Origin Trajectory Bento Box */}
         {hasOriginStory && (

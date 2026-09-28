@@ -174,6 +174,8 @@ components:
 
 ## Overview
 
+**Creative North Star: "Akari Sanctuary & Yakisugi Craft"**
+
 The Vincent Yuan portfolio visual system is an homage to traditional Japanese material craft and fine editorial book design. It intentionally rejects the ubiquitous dark-mode cyberpunk tropes (neon glows, HUD targeting brackets, cyan/orange terminal styling, sci-fi fonts) in favor of quiet confidence, intentional negative space (_Ma_ 間), and artisan joinery (_Shokunin_ 職人).
 
 ### The Dual-Theme Equilibrium

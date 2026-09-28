@@ -1,8 +1,10 @@
 import React from 'react';
 import { HeroAkariStudio } from './HeroAkariStudio';
 
+import { ViewMode } from '../../../App';
+
 interface HeroProps {
-  onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
+  onNavigate?: (view: ViewMode, sectionId?: string) => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
