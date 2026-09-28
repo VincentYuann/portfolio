@@ -12,7 +12,6 @@ import { Footer } from './components/layout/Footer';
 import { supabase } from './lib/supabase';
 import { toast } from 'sonner';
 import { ThemedToaster } from './components/layout/ThemedToaster';
-import { AiChatWidget } from './components/common/AiChatWidget';
 import { TooltipProvider } from './components/ui/tooltip';
 import { VariantProvider } from './context/VariantContext';
 import { WashiProvider } from './context/WashiContext';
@@ -33,6 +32,7 @@ const HobbiesPage = lazy(() => import('./components/sections/hobbies/HobbiesPage
 const LoginPage = lazy(() => import('./components/sections/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
 const EditPage = lazy(() => import('./components/admin/AdminStudio').then((m) => ({ default: m.AdminStudio })));
 const VisualSystemPage = lazy(() => import('./components/sections/visual-system/VisualSystemPage').then((m) => ({ default: m.VisualSystemPage })));
+const AiChatWidget = lazy(() => import('./components/common/AiChatWidget').then((m) => ({ default: m.AiChatWidget })));
 
 export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies' | 'visual-system';
 
@@ -388,7 +388,9 @@ export const App: React.FC = () => {
 
             {currentView === 'home' && <Footer onNavigate={handleNavigate} />}
           </div>
-          <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
+          <Suspense fallback={null}>
+            <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
+          </Suspense>
           <ThemedToaster />
         </SiteDataProvider>
       </VariantProvider>

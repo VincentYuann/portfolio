@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { useVariant, TYPOGRAPHY_VARIANTS, TypographyVariantId } from '../../../context/VariantContext';
+import { loadVariantFonts } from '../../../lib/fontLoader';
 import { useTheme } from '../../../context/ThemeContext';
 import { useWashi } from '../../../context/WashiContext';
 import { ViewMode } from '../../../App';
@@ -60,6 +61,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
   };
 
   const handleHoverEnter = useCallback((id: TypographyVariantId) => {
+    loadVariantFonts(id);
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
       hoverTimeoutRef.current = null;

@@ -48,11 +48,19 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
         <img
           src="./background/white wood.jpg"
           alt=""
+          width={1920}
+          height={1080}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover dark:hidden mix-blend-multiply opacity-55"
         />
         <img
           src="./background/black wood.jpg"
           alt=""
+          width={1920}
+          height={1080}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover hidden dark:block mix-blend-screen opacity-40"
         />
       </div>

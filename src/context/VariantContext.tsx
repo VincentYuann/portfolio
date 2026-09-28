@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { loadVariantFonts } from '../lib/fontLoader';
 
 export type TypographyVariantId = 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7';
 
@@ -145,6 +146,9 @@ export const VariantProvider: React.FC<{ children: React.ReactNode }> = ({ child
   });
 
   useEffect(() => {
+    if (variant !== 'v4') {
+      loadVariantFonts(variant);
+    }
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-font-variant', variant);
       document.body.className = document.body.className

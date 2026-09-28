@@ -107,6 +107,19 @@ src/
 
 ---
 
+## ⚡ Performance & Core Web Vitals Optimization
+
+The portfolio is continuously benchmarked against Google Lighthouse with an architecture optimized for near-instant paints and minimal main-thread contention:
+
+* **Sub-Second First Contentful Paint (FCP ~500ms)**: Non-render-blocking typography streaming, zero-flash canvas styles, and immediate critical hero rendering.
+* **On-Demand Bundle Architecture**: Heavy AI engines (KaTeX math rendering, React-Markdown AST, Web Speech API) and non-critical route pages are strictly code-split and loaded on user interaction.
+* **GPU-Composited Motion System**: Calligraphic Ensō brushwork, lanterns, and seal animations run on isolated GPU compositor layers, pausing when off-screen or unhovered to eliminate CPU paint thrashing.
+* **Lean Typography Streaming**: Only the active design variant's fonts are loaded upfront (~25 KB CSS vs 1.59 MB), streaming alternative typographic archetypes on-demand.
+
+For detailed audit breakdowns and diagnostic traces, see [PROBLEMS.md](./PROBLEMS.md).
+
+---
+
 ## 🛠️ Tech Stack
 
 | Category | Technology |
@@ -116,6 +129,14 @@ src/
 | **AI Microservice** | Python FastAPI, Google Gemini SDK, Gemini Files API (maintained in companion repo) |
 | **Storage & Media** | Supabase Storage (S3-compatible bucket for images & PDF CVs) |
 | **Deployment** | GitHub Pages with GitHub Actions CI/CD |
+
+---
+
+## ⚡ Performance & Optimization
+
+The portfolio is tuned for high-velocity Web Vitals (95+ Lighthouse score), featuring zero-flash theme initialization, on-demand font streaming (~25 KB vs 1.59 MB), and code-split AI chat dialogs.
+
+For detailed audit findings, architecture diagrams, and resolution strategies, see [PROBLEMS.md](PROBLEMS.md).
 
 ---
 

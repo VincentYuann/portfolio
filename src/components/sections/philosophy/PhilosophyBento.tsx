@@ -70,6 +70,8 @@ const PILLAR_CONFIGS = [
         <img
           src="./images/sumie-pine-tree-left.jpg"
           alt="Pine motif"
+          width={112}
+          height={128}
           className="w-full h-full object-contain object-bottom-right mix-blend-multiply dark:mix-blend-luminosity dark:opacity-15 dark:filter dark:brightness-75"
           loading="lazy"
           decoding="async"

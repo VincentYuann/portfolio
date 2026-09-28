@@ -18,6 +18,7 @@ dist-ssr
 # MCP and agent tool configs
 .mcp.json
 .agents/
+.gemini/
 .impeccable/
 skills-lock.json
 

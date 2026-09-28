@@ -433,12 +433,12 @@ body.font-variant-v7 {
 
 @keyframes status-glow {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgb(var(--color-bamboo-rgb) / 0.45);
+    opacity: 0.85;
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 0 5px rgb(var(--color-bamboo-rgb) / 0);
-    transform: scale(1.15);
+    opacity: 1;
+    transform: scale(1.18);
   }
 }
 
@@ -509,6 +509,8 @@ body.font-variant-v7 {
 
 .animate-status-glow {
   animation: status-glow 2.8s var(--ease-zen) infinite;
+  box-shadow: 0 0 6px 1px rgb(var(--color-bamboo-rgb) / 0.4);
+  will-change: transform, opacity;
 }
 
 .animate-bamboo-sway {
@@ -576,8 +578,19 @@ body.font-variant-v7 {
 }
 
 .animate-ruby-pulse {
+  filter: drop-shadow(0 0 5px rgb(var(--color-terracotta-rgb) / 0.8));
   animation: ruby-pulse 2.2s ease-in-out infinite;
   transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+/* Pause background SVG animations when enclosing card is not hovered */
+.group:not(:hover) .animate-orbital-spin,
+.group:not(:hover) .animate-dash-flow,
+.group:not(:hover) .animate-enso-breathe,
+.group:not(:hover) .animate-enso-draw,
+.group:not(:hover) .animate-ruby-pulse {
+  animation-play-state: paused;
 }
 
 /* ==============================================================================

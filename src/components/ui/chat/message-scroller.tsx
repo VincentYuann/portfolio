@@ -70,7 +70,7 @@ export const MessageScrollerProvider: React.FC<MessageScrollerProviderProps> = (
     if (autoScroll && !userHasScrolledUpRef.current) {
       scrollToBottom('smooth');
     }
-  });
+  }, [children, autoScroll, scrollToBottom]);
 
   return (
     <MessageScrollerContext.Provider value={{ isAtBottom, scrollToBottom, viewportRef }}>

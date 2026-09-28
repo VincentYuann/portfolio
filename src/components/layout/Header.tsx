@@ -27,22 +27,38 @@ export const Header: React.FC<HeaderProps> = ({
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  // Lightweight, RAF-throttled scroll listener for header elevation only (zero layout reads)
+  // Zero-listener scroll elevation using an IntersectionObserver on a top sentinel
   useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const isScrolled = window.scrollY > 20;
-          setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
-          ticking = false;
-        });
-        ticking = true;
+    let sentinel = document.getElementById('scroll-sentinel');
+    let created = false;
+    if (!sentinel) {
+      sentinel = document.createElement('div');
+      sentinel.id = 'scroll-sentinel';
+      sentinel.style.position = 'absolute';
+      sentinel.style.top = '0';
+      sentinel.style.left = '0';
+      sentinel.style.width = '1px';
+      sentinel.style.height = '20px';
+      sentinel.style.pointerEvents = 'none';
+      sentinel.style.visibility = 'hidden';
+      document.body.prepend(sentinel);
+      created = true;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setScrolled(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
+    return () => {
+      observer.disconnect();
+      if (created && sentinel?.parentNode) {
+        sentinel.parentNode.removeChild(sentinel);
       }
     };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Layout-thrash-free active section tracking using IntersectionObserver
@@ -76,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         const best = intersecting[0]?.target.id;
         if (best) {
-          setActiveSection(best);
+          setActiveSection((prev) => (prev !== best ? best : prev));
         }
       },
       {

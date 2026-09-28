@@ -167,6 +167,8 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       <img
                         src={project.image}
                         alt={project.title}
+                        width={640}
+                        height={360}
                         className="w-full h-full object-cover object-center group-hover:opacity-95 transition-opacity duration-300"
                         style={{
                           maskImage: 'radial-gradient(ellipse 96% 94% at 50% 50%, black 72%, transparent 100%)',
