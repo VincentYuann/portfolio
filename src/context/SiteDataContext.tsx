@@ -145,28 +145,24 @@ export interface SiteData {
   refresh: () => Promise<void>;
 }
 
-/* ─── Initial Empty Profile ────────────────────────────────────────── */
+import {
+  INITIAL_PROFILE,
+  INITIAL_PILLARS,
+  INITIAL_PROJECTS,
+  INITIAL_EXPERIENCES,
+} from '../lib/initialData';
 
-export const INITIAL_PROFILE: SiteProfile = {
-  name: '',
-  headline: '',
-  tagline: '',
-  email: '',
-  github: '',
-  linkedin: '',
-  role: '',
-  capability_pillars: [],
-};
+export { INITIAL_PROFILE, INITIAL_PILLARS, INITIAL_PROJECTS, INITIAL_EXPERIENCES };
 
 /* ─── Context ─────────────────────────────────────────────────────── */
 
 const SiteDataContext = createContext<SiteData>({
   profile: INITIAL_PROFILE,
-  pillars: [],
-  projects: [],
-  experiences: [],
-  hobbies: [],
-  loading: true,
+  pillars: INITIAL_PILLARS,
+  projects: INITIAL_PROJECTS,
+  experiences: INITIAL_EXPERIENCES,
+  hobbies: INITIAL_PROFILE.hobbies || [],
+  loading: false,
   refresh: async () => {},
 });
 
@@ -250,7 +246,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Pillars cache parse error', e);
       }
     }
-    return [];
+    return INITIAL_PILLARS;
   });
 
   const [projects, setProjects] = useState<Project[]>(() => {
@@ -262,7 +258,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Projects cache parse error', e);
       }
     }
-    return [];
+    return INITIAL_PROJECTS;
   });
 
   const [experiences, setExperiences] = useState<ExperienceRecord[]>(() => {
@@ -274,10 +270,10 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Experience cache parse error', e);
       }
     }
-    return [];
+    return INITIAL_EXPERIENCES;
   });
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchAll = useCallback(async () => {
     const { supabase } = await import('../lib/supabase');
@@ -494,9 +490,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   useEffect(() => {
-    // If cached data is present, defer network sync to guarantee 0ms main thread blocking during FCP/LCP
-    const hasCachedData = typeof window !== 'undefined' && Boolean(localStorage.getItem('portfolio_profile_cache'));
-
+    // Defer network sync to idle time to guarantee 0ms main thread blocking during FCP/LCP
     let timer: ReturnType<typeof setTimeout> | undefined;
     let idleId: number | undefined;
     let channel: any = null;
@@ -514,14 +508,10 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         .subscribe();
     };
 
-    if (hasCachedData) {
-      if ('requestIdleCallback' in window) {
-        idleId = (window as any).requestIdleCallback(startSync, { timeout: 1500 });
-      } else {
-        timer = setTimeout(startSync, 250);
-      }
+    if ('requestIdleCallback' in window) {
+      idleId = (window as any).requestIdleCallback(startSync, { timeout: 2000 });
     } else {
-      startSync();
+      timer = setTimeout(startSync, 1000);
     }
 
     return () => {

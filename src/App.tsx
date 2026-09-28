@@ -102,18 +102,28 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
       <div className="division-showcase-container relative z-20 w-full bg-light-canvas dark:bg-dark-canvas shadow-[0_-24px_50px_rgba(43,46,58,0.08)] dark:shadow-[0_-28px_60px_rgba(0,0,0,0.65)] transition-colors duration-300">
         <Suspense fallback={<div className="min-h-[40vh]" />}>
           {hasExperiences && (
-            <ExperienceSection onNavigate={onNavigate} />
+            <div className="[content-visibility:auto] [contain-intrinsic-size:1px_700px]">
+              <ExperienceSection onNavigate={onNavigate} />
+            </div>
           )}
           {hasProjects && (
-            <ProjectsShowcase onNavigate={onNavigate} />
+            <div className="[content-visibility:auto] [contain-intrinsic-size:1px_850px]">
+              <ProjectsShowcase onNavigate={onNavigate} />
+            </div>
           )}
           {hasPhilosophy && (
-            <PhilosophyBento />
+            <div className="[content-visibility:auto] [contain-intrinsic-size:1px_650px]">
+              <PhilosophyBento />
+            </div>
           )}
           {hasHobbies && (
-            <HobbiesSection onNavigate={onNavigate} />
+            <div className="[content-visibility:auto] [contain-intrinsic-size:1px_550px]">
+              <HobbiesSection onNavigate={onNavigate} />
+            </div>
           )}
-          <ContactSection />
+          <div className="[content-visibility:auto] [contain-intrinsic-size:1px_450px]">
+            <ContactSection />
+          </div>
         </Suspense>
       </div>
     </>
@@ -148,31 +158,37 @@ export const App: React.FC = () => {
   /* -- Supabase auth listener: single subscription, strict admin verification -- */
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
+    const initialView = getInitialView();
+    const needsImmediateAuth =
+      initialView === 'edit' ||
+      initialView === 'login' ||
+      (typeof window !== 'undefined' && (window.location.hash.toLowerCase() === '#login' || window.location.hash.toLowerCase() === '#edit'));
 
-    import('./lib/supabase').then(async ({ supabase }) => {
-      if (!supabase) {
-        authReadyRef.current = true;
-        setAuthReady(true);
-        if (getInitialView() === 'edit') {
-          setCurrentView('home');
-          window.history.replaceState(null, '', '#home');
+    const startAuth = () => {
+      import('./lib/supabase').then(async ({ supabase }) => {
+        if (!supabase) {
+          authReadyRef.current = true;
+          setAuthReady(true);
+          if (getInitialView() === 'edit') {
+            setCurrentView('home');
+            window.history.replaceState(null, '', '#home');
+          }
+          return;
         }
-        return;
-      }
 
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-        const isOwner = isOwnerSession(session);
-        const isVisitorUser = Boolean(session?.user && !isOwner);
-        isAdminRef.current = isOwner;
-        isVisitorRef.current = isVisitorUser;
-        setIsAdmin(isOwner);
-        setIsVisitor(isVisitorUser);
-        authReadyRef.current = true;
-        setAuthReady(true);
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+          const isOwner = isOwnerSession(session);
+          const isVisitorUser = Boolean(session?.user && !isOwner);
+          isAdminRef.current = isOwner;
+          isVisitorRef.current = isVisitorUser;
+          setIsAdmin(isOwner);
+          setIsVisitor(isVisitorUser);
+          authReadyRef.current = true;
+          setAuthReady(true);
 
-        if (event === 'INITIAL_SESSION') {
-          const hash = window.location.hash.toLowerCase();
-          if (hash === '#edit') {
+          if (event === 'INITIAL_SESSION') {
+            const hash = window.location.hash.toLowerCase();
+            if (hash === '#edit') {
             if (isOwner) {
               setViewRef.current('edit');
             } else {
@@ -229,9 +245,27 @@ export const App: React.FC = () => {
       });
 
       unsubscribe = () => subscription.unsubscribe();
-    });
+      });
+    };
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let idleId: number | undefined;
+
+    if (needsImmediateAuth) {
+      startAuth();
+    } else if ('requestIdleCallback' in window) {
+      idleId = (window as any).requestIdleCallback(startAuth, { timeout: 2500 });
+    } else {
+      timer = setTimeout(startAuth, 1500);
+    }
 
     return () => {
+      if (idleId !== undefined && 'cancelIdleCallback' in window) {
+        (window as any).cancelIdleCallback(idleId);
+      }
+      if (timer !== undefined) {
+        clearTimeout(timer);
+      }
       if (unsubscribe) unsubscribe();
     };
   }, []);

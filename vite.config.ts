@@ -40,7 +40,15 @@ export default defineConfig(({ mode }) => ({
     modulePreload: {
       resolveDependencies(_filename, deps, { hostType }) {
         if (hostType === 'html') {
-          return deps.filter((dep) => !dep.includes('vendor-supabase'));
+          return deps.filter(
+            (dep) =>
+              !dep.includes('vendor-supabase') &&
+              !dep.includes('vendor-radix-modals') &&
+              !dep.includes('vendor-simple-icons') &&
+              !dep.includes('vendor-lightbox') &&
+              !dep.includes('vendor-markdown') &&
+              !dep.includes('vendor-toast')
+          );
         }
         return deps;
       },
@@ -60,8 +68,13 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('@icons-pack/react-simple-icons')) {
             return 'vendor-simple-icons';
           }
-          if (id.includes('@radix-ui') || id.includes('class-variance-authority') || id.includes('tailwind-merge') || id.includes('clsx')) {
-            return 'vendor-ui';
+          // Lightweight UI styling utilities needed for button and core styling
+          if (
+            id.includes('class-variance-authority') ||
+            id.includes('tailwind-merge') ||
+            id.includes('clsx')
+          ) {
+            return 'vendor-ui-core';
           }
           if (id.includes('@supabase')) {
             return 'vendor-supabase';
@@ -69,7 +82,12 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('sonner')) {
             return 'vendor-toast';
           }
-          if (id.includes('katex') || id.includes('rehype-katex') || id.includes('remark-math') || id.includes('react-markdown')) {
+          if (
+            id.includes('katex') ||
+            id.includes('rehype-katex') ||
+            id.includes('remark-math') ||
+            id.includes('react-markdown')
+          ) {
             return 'vendor-markdown';
           }
 

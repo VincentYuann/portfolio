@@ -13,7 +13,7 @@ export const BambooArt: React.FC<BambooArtProps> = ({
 }) => {
   return (
     <div
-      className={`relative inline-block pointer-events-none select-none ${
+      className={`relative inline-block pointer-events-none select-none transform-gpu [transform:translateZ(0)] will-change-[transform] ${
         sway ? 'animate-bamboo-sway' : ''
       } ${className}`}
       style={{ opacity }}
@@ -24,13 +24,6 @@ export const BambooArt: React.FC<BambooArtProps> = ({
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full text-light-ink dark:text-dark-ink transition-colors duration-300"
       >
-        <defs>
-          <filter id="bamboo-filter" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-
         {/* Bamboo Stalk Segment 1 (Base) */}
         <path
           d="M 95,260 C 96,230 97,200 99,170"
@@ -38,7 +31,6 @@ export const BambooArt: React.FC<BambooArtProps> = ({
           strokeWidth="5"
           strokeLinecap="round"
           opacity="0.85"
-          filter="url(#bamboo-filter)"
         />
         {/* Node Joint 1 with Cinnabar / Vermilion Accent */}
         <path
@@ -55,7 +47,6 @@ export const BambooArt: React.FC<BambooArtProps> = ({
           strokeWidth="4.5"
           strokeLinecap="round"
           opacity="0.85"
-          filter="url(#bamboo-filter)"
         />
         {/* Node Joint 2 with Gold / Amber Accent */}
         <path
