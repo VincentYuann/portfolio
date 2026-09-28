@@ -69,6 +69,8 @@ interface WashiContextType {
   setDayRoughness: (value: number) => void;
   setNightRoughness: (value: number) => void;
   setGrainFrequency: (value: number) => void;
+  setProportionalRoughness: (dayValue: number) => void;
+  setNightProportionalRoughness: (nightValue: number) => void;
   resetWashiDefaults: () => void;
 }
 
@@ -156,6 +158,24 @@ export const WashiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setPresetState('custom');
   }, []);
 
+  // Night is calibrated at ~40.6% of Day roughness (6.5% vs 16%) because dark pixels
+  // with screen blending accentuate grain far more intensely than cream paper with multiply blending.
+  const setProportionalRoughness = useCallback((dayVal: number) => {
+    const clampedDay = Math.min(35, Math.max(4, Math.round(dayVal)));
+    const calculatedNight = Math.min(20, Math.max(2, Math.round(clampedDay * 0.40625 * 2) / 2));
+    setDayRoughnessState(clampedDay);
+    setNightRoughnessState(calculatedNight);
+    setPresetState('custom');
+  }, []);
+
+  const setNightProportionalRoughness = useCallback((nightVal: number) => {
+    const clampedNight = Math.min(20, Math.max(2, nightVal));
+    const calculatedDay = Math.min(35, Math.max(4, Math.round(clampedNight / 0.40625)));
+    setNightRoughnessState(clampedNight);
+    setDayRoughnessState(calculatedDay);
+    setPresetState('custom');
+  }, []);
+
   const resetWashiDefaults = useCallback(() => {
     setPreset('kozo');
   }, [setPreset]);
@@ -176,6 +196,8 @@ export const WashiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setDayRoughness,
         setNightRoughness,
         setGrainFrequency,
+        setProportionalRoughness,
+        setNightProportionalRoughness,
         resetWashiDefaults,
       }}
     >
