@@ -14,10 +14,12 @@ import {
   RotateCcw,
   SlidersHorizontal,
   Layers,
+  ArrowRight,
 } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { StatusBadge } from '../../common/StatusBadge';
 import { CornerBrackets } from '../../common/CornerBrackets';
+import { HankoStamp } from '../../common/HankoStamp';
 import { toast } from 'sonner';
 
 interface VisualSystemPageProps {
@@ -684,7 +686,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   </span>
                   <span className="text-light-ink-muted dark:text-dark-ink-muted hidden sm:inline">|</span>
                   <span className="text-light-ink-muted dark:text-dark-ink-muted hidden sm:inline">
-                    Tooth: <strong className="text-light-ink dark:text-dark-ink">{theme === 'night' ? `${nightRoughness}%` : `${dayRoughness}%`}</strong>
+                    Texture: <strong className="text-light-ink dark:text-dark-ink">{theme === 'night' ? `${nightRoughness}%` : `${dayRoughness}%`}</strong>
                   </span>
                 </div>
               </div>
@@ -713,6 +715,9 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       #01
                     </span>
                     <StatusBadge isActive={true} activeLabel="ACTIVE / 現職" />
+                    <span className="px-2 py-0.5 text-xs font-mono rounded-[2px] bg-terracotta/10 dark:bg-ochre/15 text-terracotta dark:text-ochre border border-terracotta/25 dark:border-ochre/30 font-semibold">
+                      99.8% Reliability
+                    </span>
                   </div>
                   <span className="text-xs font-mono text-light-ink/90 dark:text-dark-ink/90 font-medium" style={{ fontFamily: activeInfo.monoFont }}>
                     2024 - Present
@@ -720,12 +725,15 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 </div>
 
                 <div className="flex items-center justify-between gap-4">
-                  <h4
-                    className="text-lg sm:text-xl text-light-ink dark:text-dark-ink font-medium tracking-tight"
-                    style={{ fontFamily: activeInfo.displayFont }}
-                  >
-                    Personal Portfolio &amp; Agentic Lab
-                  </h4>
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <HankoStamp char="原" className="w-6 h-6 shrink-0" />
+                    <h4
+                      className="text-lg sm:text-xl text-light-ink dark:text-dark-ink font-medium tracking-tight truncate"
+                      style={{ fontFamily: activeInfo.displayFont }}
+                    >
+                      Personal Portfolio &amp; Agentic Lab
+                    </h4>
+                  </div>
                   <span className="text-base font-serif text-light-ink-muted dark:text-dark-ink-muted shrink-0">
                     作品
                   </span>
@@ -753,9 +761,10 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       e.preventDefault();
                       onNavigate('home', 'featured-works');
                     }}
-                    className="px-3.5 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-opacity min-h-[40px] inline-flex items-center cursor-pointer"
+                    className="group px-3.5 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-opacity min-h-[40px] inline-flex items-center gap-1.5 cursor-pointer"
                   >
-                    Explore Selected Works
+                    <span>Explore Selected Works</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                   </a>
                   <a
                     href="#resume"
