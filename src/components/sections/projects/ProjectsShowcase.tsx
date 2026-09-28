@@ -83,7 +83,10 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
   );
 
   return (
-    <section id="featured-works" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden">
+    <section
+      id="featured-works"
+      className="section-chamber-alt relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden bg-[#FAF5EB] dark:bg-[#1E1F24]"
+    >
       {/* Architectural Background Chamber for Featured Works */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface-card/30 to-transparent dark:via-dark-surface/40 pointer-events-none z-0" />
       {/* Subtle Japanese Joinery Axis Ambient Glow */}

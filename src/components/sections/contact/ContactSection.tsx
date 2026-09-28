@@ -114,7 +114,7 @@ export const ContactSection: React.FC = () => {
   )}` : '#';
 
   return (
-    <section id="contact" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 mb-8 scroll-mt-12">
+    <section id="contact" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 mb-8 scroll-mt-12 bg-light-canvas dark:bg-dark-canvas">
       {/* Architectural Background Chamber for Contact */}
       <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface-card/40 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0" />
       <div className="absolute inset-0 bg-radial-[at_50%_40%] from-terracotta/[0.03] dark:from-terracotta/[0.02] to-transparent pointer-events-none z-0" />

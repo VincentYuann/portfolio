@@ -39,9 +39,12 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
   ) : null;
 
   return (
-    <section id="hobbies" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden">
+    <section
+      id="hobbies"
+      className="section-chamber-alt relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden bg-[#FAF5EB] dark:bg-[#1E1F24]"
+    >
       {/* Architectural Background Chamber for Hobbies */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface/25 to-transparent dark:via-dark-surface-card/40 pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface/20 to-transparent dark:via-dark-surface-card/40 pointer-events-none z-0" />
       <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-[28rem] max-w-full h-[28rem] bg-radial-[at_center] from-bamboo/[0.035] dark:from-bamboo/[0.02] to-transparent pointer-events-none z-0" />
 
       {/* 16:9 Linen Texture Ground & Asymmetric Sumi-e Pine Tree on Right */}

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { useVariant, TYPOGRAPHY_VARIANTS, TypographyVariantId } from '../../../context/VariantContext';
 import { useTheme } from '../../../context/ThemeContext';
+import { useWashi } from '../../../context/WashiContext';
 import { ViewMode } from '../../../App';
 import {
   ArrowLeft,
@@ -10,7 +11,10 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   RotateCcw,
+  SlidersHorizontal,
+  Layers,
 } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { StatusBadge } from '../../common/StatusBadge';
@@ -24,7 +28,21 @@ interface VisualSystemPageProps {
 export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }) => {
   const { variant, setVariant, variantsList } = useVariant();
   const { theme, setTheme } = useTheme();
+  const {
+    preset,
+    dayRoughness,
+    nightRoughness,
+    grainFrequency,
+    presetsList,
+    setPreset,
+    setDayRoughness,
+    setNightRoughness,
+    setGrainFrequency,
+    resetWashiDefaults,
+  } = useWashi();
   const [hoveredVariant, setHoveredVariant] = useState<TypographyVariantId | null>(null);
+  const [showDesktopSliders, setShowDesktopSliders] = useState<boolean>(false);
+  const [showMobileWashi, setShowMobileWashi] = useState<boolean>(false);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // The active or temporarily previewed variant
@@ -57,7 +75,10 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
   const handleResetDefaults = () => {
     setVariant('v4');
     setTheme('day');
-    toast.info('Reset to Default Design System (Neo-Grotesque & Day Mode)');
+    resetWashiDefaults();
+    setShowDesktopSliders(false);
+    setShowMobileWashi(false);
+    toast.info('Reset to Default Design System (Neo-Grotesque, Day Mode & Artisan Kozo Washi)');
   };
 
   return (
@@ -263,6 +284,210 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                 })}
               </div>
             </div>
+
+            {/* Desktop Control Pack 3: Washi Paper Roughness & Materiality */}
+            <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 shadow-2xs craft-card double-hairline">
+              <div className="flex items-center justify-between pb-3 mb-4 border-b border-light-border/50 dark:border-dark-border/60">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">03</span>
+                  <h2 className="text-sm font-semibold text-light-ink dark:text-dark-ink">
+                    Washi Paper Materiality · 和紙の質感
+                  </h2>
+                </div>
+                <span className="text-xs font-mono font-semibold text-terracotta dark:text-ochre">
+                  {preset === 'custom' ? 'CUSTOM · 調整' : preset.toUpperCase()}
+                </span>
+              </div>
+
+              <p className="text-xs text-light-ink-muted dark:text-dark-ink-muted mb-4 leading-relaxed">
+                Calibrated tactile Japanese paper grain. Select an authentic roughness archetype or sculpt the fiber tooth live across Day and Night.
+              </p>
+
+              {/* 3 Washi Roughness Archetype Cards */}
+              <div className="space-y-2.5 mb-5">
+                {presetsList.map((p) => {
+                  const isSelected = preset === p.id;
+                  return (
+                    <div
+                      key={p.id}
+                      onClick={() => {
+                        setPreset(p.id as 'silk' | 'kozo' | 'raw');
+                        toast.success(`Activated ${p.name}`);
+                      }}
+                      className={`p-3.5 rounded-[2px] transition-all duration-200 cursor-pointer flex items-center justify-between group border ${
+                        isSelected
+                          ? 'border-terracotta dark:border-ochre bg-terracotta/10 dark:bg-ochre/10 shadow-2xs ring-1 ring-terracotta/30 dark:ring-ochre/30'
+                          : 'border-light-border/50 dark:border-dark-border/50 bg-light-surface/40 dark:bg-dark-surface/40 hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised'
+                      }`}
+                    >
+                      <div className="flex-1 min-w-0 pr-3">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">
+                            0{p.numericKey}
+                          </span>
+                          <span className="text-xs font-semibold text-light-ink dark:text-dark-ink truncate">
+                            {p.name}
+                          </span>
+                          <span className="w-4 h-4 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-[10px] font-serif text-light-ink dark:text-dark-ink select-none shrink-0">
+                            {p.kanji}
+                          </span>
+                        </div>
+                        <div className="text-xs text-light-ink-muted dark:text-dark-ink-muted font-sans truncate">
+                          {p.subtitle}
+                        </div>
+                        <div className="flex items-center gap-2 mt-2 text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
+                          <span className="px-1.5 py-0.5 rounded-[2px] bg-light-canvas/70 dark:bg-dark-canvas border border-light-border/40 dark:border-dark-border/40 font-medium">
+                            Day: <strong className="text-light-ink dark:text-dark-ink">{p.dayRoughness}%</strong>
+                          </span>
+                          <span className="px-1.5 py-0.5 rounded-[2px] bg-light-canvas/70 dark:bg-dark-canvas border border-light-border/40 dark:border-dark-border/40 font-medium">
+                            Night: <strong className="text-light-ink dark:text-dark-ink">{p.nightRoughness}%</strong>
+                          </span>
+                          <span className="px-1.5 py-0.5 rounded-[2px] bg-light-canvas/70 dark:bg-dark-canvas border border-light-border/40 dark:border-dark-border/40 font-medium hidden sm:inline-block">
+                            Scale: {p.grainFrequency.toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="shrink-0 flex items-center gap-2">
+                        {isSelected ? (
+                          <div className="flex items-center gap-1 px-2.5 py-1 bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas text-xs font-mono font-bold rounded-xs">
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Active</span>
+                          </div>
+                        ) : (
+                          <span className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted group-hover:text-terracotta dark:group-hover:text-ochre flex items-center gap-0.5 font-medium">
+                            <span>Apply</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Progressive Disclosure: Collapsible Fine-Tuning Sliders */}
+              <div className="pt-3 border-t border-light-border/50 dark:border-dark-border/60">
+                <button
+                  type="button"
+                  onClick={() => setShowDesktopSliders(!showDesktopSliders)}
+                  className="w-full py-2 px-3 rounded-[2px] border border-light-border/60 dark:border-dark-border/60 bg-light-surface/40 dark:bg-dark-surface/40 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-colors flex items-center justify-between text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted cursor-pointer"
+                >
+                  <span className="flex items-center gap-1.5 font-medium text-light-ink dark:text-dark-ink">
+                    <SlidersHorizontal className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                    <span>Fine-Tune Tactile Sliders · 微調整</span>
+                  </span>
+                  <span className="flex items-center gap-1 text-[11px]">
+                    <span className="text-light-ink-subtle dark:text-dark-ink-subtle">
+                      {showDesktopSliders ? 'Hide' : `${dayRoughness}% · ${nightRoughness}%`}
+                    </span>
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${showDesktopSliders ? 'rotate-180 text-terracotta dark:text-ochre' : ''}`} />
+                  </span>
+                </button>
+
+                {showDesktopSliders && (
+                  <div className="mt-3 space-y-3.5 animate-view-enter">
+                    {/* Slider 1: Day Tooth */}
+                    <div className="space-y-1.5 bg-light-surface/50 dark:bg-dark-surface/50 p-3 rounded-[2px] border border-light-border/40 dark:border-dark-border/40">
+                      <div className="flex items-center justify-between text-xs font-mono">
+                        <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
+                          <Sun className="w-3 h-3 text-terracotta" />
+                          <span>Day Paper Roughness:</span>
+                        </span>
+                        <span className="font-bold text-terracotta">
+                          {dayRoughness}%
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min={4}
+                        max={35}
+                        step={1}
+                        value={dayRoughness}
+                        onChange={(e) => setDayRoughness(Number(e.target.value))}
+                        className="w-full accent-terracotta cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-canvas rounded-[2px]"
+                      />
+                      <div className="flex justify-between text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle pt-0.5">
+                        <span>4% (Minimal)</span>
+                        <span className="text-terracotta font-medium">16% (Default)</span>
+                        <span>35% (Raw Pulp)</span>
+                      </div>
+                    </div>
+
+                    {/* Slider 2: Night Tooth */}
+                    <div className="space-y-1.5 bg-light-surface/50 dark:bg-dark-surface/50 p-3 rounded-[2px] border border-light-border/40 dark:border-dark-border/40">
+                      <div className="flex items-center justify-between text-xs font-mono">
+                        <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
+                          <Moon className="w-3 h-3 text-ochre" />
+                          <span>Night Cedar Roughness:</span>
+                        </span>
+                        <span className="font-bold text-ochre">
+                          {nightRoughness}%
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min={2}
+                        max={20}
+                        step={0.5}
+                        value={nightRoughness}
+                        onChange={(e) => setNightRoughness(Number(e.target.value))}
+                        className="w-full accent-ochre cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-canvas rounded-[2px]"
+                      />
+                      <div className="flex justify-between text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle pt-0.5">
+                        <span>2% (Quiet)</span>
+                        <span className="text-ochre font-medium">6.5% (Default)</span>
+                        <span>20% (Cosmic Timber)</span>
+                      </div>
+                    </div>
+
+                    {/* Slider 3: Grain Density */}
+                    <div className="space-y-1.5 bg-light-surface/50 dark:bg-dark-surface/50 p-3 rounded-[2px] border border-light-border/40 dark:border-dark-border/40">
+                      <div className="flex items-center justify-between text-xs font-mono">
+                        <span className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink font-medium">
+                          <Layers className="w-3 h-3 text-bamboo" />
+                          <span>Fiber Grain Density:</span>
+                        </span>
+                        <span className="font-bold text-light-ink dark:text-dark-ink">
+                          {grainFrequency.toFixed(2)}
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min={0.45}
+                        max={1.05}
+                        step={0.05}
+                        value={grainFrequency}
+                        onChange={(e) => setGrainFrequency(Number(e.target.value))}
+                        className="w-full accent-bamboo cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-canvas rounded-[2px]"
+                      />
+                      <div className="flex justify-between text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle pt-0.5">
+                        <span>0.45 (Chunky Raw)</span>
+                        <span className="font-medium">0.90 (Default)</span>
+                        <span>1.05 (Fine Micro)</span>
+                      </div>
+                    </div>
+
+                    {/* Quick Reset to Kozo Default */}
+                    {preset === 'custom' && (
+                      <div className="pt-1 flex justify-end">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            resetWashiDefaults();
+                            toast.info('Reset Washi tooth to Default Kozo (16% Day / 6.5% Night / 0.90 Scale)');
+                          }}
+                          className="text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors inline-flex items-center gap-1 cursor-pointer"
+                        >
+                          <RotateCcw className="w-2.5 h-2.5" />
+                          <span>Reset to Kozo Default</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* ── RIGHT / PRIMARY COLUMN: LIVE SPECIMEN STAGE WITH MOBILE QUICK CONTROLS ── */}
@@ -280,30 +505,48 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   </span>
                 </div>
 
-                {/* Compact Theme Pill Toggle */}
-                <div className="inline-flex p-0.5 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border shrink-0">
+                {/* Right controls: Texture Toggle + Theme Pill */}
+                <div className="flex items-center gap-1.5 shrink-0">
                   <button
-                    onClick={() => setTheme('day')}
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] text-[10px] sm:text-[11px] font-mono transition-all cursor-pointer ${
-                      theme === 'day'
-                        ? 'bg-light-surface-card dark:bg-dark-surface-raised text-terracotta font-bold shadow-2xs'
-                        : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink'
+                    type="button"
+                    onClick={() => setShowMobileWashi(!showMobileWashi)}
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] text-[10px] sm:text-[11px] font-mono transition-all cursor-pointer border ${
+                      showMobileWashi
+                        ? 'border-terracotta dark:border-ochre bg-terracotta/15 dark:bg-ochre/15 text-terracotta dark:text-ochre font-bold shadow-2xs'
+                        : 'border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink'
                     }`}
+                    title="Toggle washi paper texture options"
+                    aria-expanded={showMobileWashi}
                   >
-                    <Sun className="w-2.5 h-2.5 text-terracotta dark:text-ochre" />
-                    <span>Day</span>
+                    <Layers className="w-2.5 h-2.5 text-terracotta dark:text-ochre" />
+                    <span>Texture</span>
+                    <ChevronDown className={`w-2.5 h-2.5 transition-transform duration-200 ${showMobileWashi ? 'rotate-180 text-terracotta dark:text-ochre' : ''}`} />
                   </button>
-                  <button
-                    onClick={() => setTheme('night')}
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] text-[10px] sm:text-[11px] font-mono transition-all cursor-pointer ${
-                      theme === 'night'
-                        ? 'bg-light-surface-card dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-bold shadow-2xs'
-                        : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
-                    }`}
-                  >
-                    <Moon className="w-2.5 h-2.5 text-terracotta dark:text-ochre" />
-                    <span>Night</span>
-                  </button>
+
+                  <div className="inline-flex p-0.5 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border">
+                    <button
+                      onClick={() => setTheme('day')}
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] text-[10px] sm:text-[11px] font-mono transition-all cursor-pointer ${
+                        theme === 'day'
+                          ? 'bg-light-surface-card dark:bg-dark-surface-raised text-terracotta font-bold shadow-2xs'
+                          : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink'
+                      }`}
+                    >
+                      <Sun className="w-2.5 h-2.5 text-terracotta dark:text-ochre" />
+                      <span>Day</span>
+                    </button>
+                    <button
+                      onClick={() => setTheme('night')}
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] text-[10px] sm:text-[11px] font-mono transition-all cursor-pointer ${
+                        theme === 'night'
+                          ? 'bg-light-surface-card dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-bold shadow-2xs'
+                          : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
+                      }`}
+                    >
+                      <Moon className="w-2.5 h-2.5 text-terracotta dark:text-ochre" />
+                      <span>Night</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -375,6 +618,78 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   {activeInfo.vibe.split(',')[0]}
                 </span>
               </div>
+
+              {/* Progressive Disclosure: Compact Washi Texture Drawer (Mobile) */}
+              {showMobileWashi && (
+                <div className="pt-2 border-t border-light-border/50 dark:border-dark-border/60 space-y-2 animate-view-enter">
+                  <div className="flex items-center justify-between text-[10px] font-mono">
+                    <span className="text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider font-semibold">
+                      Washi Materiality (3 Levels)
+                    </span>
+                    <span className="text-terracotta dark:text-ochre font-bold">
+                      {theme === 'night' ? `${nightRoughness}% Night` : `${dayRoughness}% Day`}
+                    </span>
+                  </div>
+
+                  {/* 3 Preset Segmented Buttons: Minimal Horizontal Overhead */}
+                  <div className="grid grid-cols-3 gap-1">
+                    {presetsList.map((p) => {
+                      const isSelected = preset === p.id;
+                      return (
+                        <button
+                          key={p.id}
+                          onClick={() => {
+                            setPreset(p.id as 'silk' | 'kozo' | 'raw');
+                            toast.success(`Applied ${p.name}`);
+                          }}
+                          className={`py-1.5 px-1 rounded-[2px] text-center transition-all cursor-pointer border flex flex-col items-center justify-center ${
+                            isSelected
+                              ? 'border-terracotta dark:border-ochre bg-terracotta dark:bg-ochre text-white dark:text-dark-canvas font-bold shadow-2xs'
+                              : 'border-light-border/70 dark:border-dark-border/70 bg-light-surface/60 dark:bg-dark-surface/60 text-light-ink dark:text-dark-ink hover:border-terracotta/50'
+                          }`}
+                        >
+                          <div className="flex items-center gap-1 text-[11px] font-mono leading-none">
+                            <span>0{p.numericKey}</span>
+                            <span className="font-serif">{p.kanji}</span>
+                          </div>
+                          <span className="text-[9px] font-mono opacity-85 mt-1 leading-none">
+                            {theme === 'night' ? `${p.nightRoughness}%` : `${p.dayRoughness}%`}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Single Interactive Slider for Currently Visible Theme */}
+                  <div className="flex items-center gap-2 pt-0.5 text-[10px] font-mono">
+                    <span className="text-light-ink-muted dark:text-dark-ink-muted shrink-0 flex items-center gap-1">
+                      {theme === 'night' ? <Moon className="w-2.5 h-2.5 text-ochre" /> : <Sun className="w-2.5 h-2.5 text-terracotta" />}
+                      <span>Tooth:</span>
+                    </span>
+                    <input
+                      type="range"
+                      min={theme === 'night' ? 2 : 4}
+                      max={theme === 'night' ? 20 : 35}
+                      step={theme === 'night' ? 0.5 : 1}
+                      value={theme === 'night' ? nightRoughness : dayRoughness}
+                      onChange={(e) => {
+                        const val = Number(e.target.value);
+                        if (theme === 'night') {
+                          setNightRoughness(val);
+                        } else {
+                          setDayRoughness(val);
+                        }
+                      }}
+                      className={`flex-1 cursor-pointer h-1.5 bg-light-surface-muted dark:bg-dark-canvas rounded-[2px] ${
+                        theme === 'night' ? 'accent-ochre' : 'accent-terracotta'
+                      }`}
+                    />
+                    <span className={`font-bold shrink-0 min-w-[28px] text-right ${theme === 'night' ? 'text-ochre' : 'text-terracotta'}`}>
+                      {theme === 'night' ? `${nightRoughness}%` : `${dayRoughness}%`}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Live Interactive Specimen Stage Card */}
@@ -479,7 +794,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                     {`SYS_TOKENS: { display: "${activeInfo.displayFont}", body: "${activeInfo.bodyFont}", mono: "${activeInfo.monoFont}" }`}
                   </div>
                   <div className="text-light-ink-muted dark:text-dark-ink-muted text-xs">
-                    {`THEME_STATUS: "${theme.toUpperCase()}" · SPECIMEN_INTEGRITY: 100% · CACHE: LOCAL_STORAGE`}
+                    {`THEME: "${theme.toUpperCase()}" · WASHI_PRESET: "${preset.toUpperCase()}" · DAY_TOOTH: "${dayRoughness}%" · NIGHT_TOOTH: "${nightRoughness}%" · CACHE: LOCAL_STORAGE`}
                   </div>
                 </div>
 
@@ -510,6 +825,55 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                   <span className="text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted font-medium">
                     Vibe: {activeInfo.vibe.split(',')[0]}
                   </span>
+                </div>
+              </div>
+
+              {/* Exhibit 4: Washi Materiality & Paper Grain Specimen */}
+              <div className="pt-6 border-t border-light-border/40 dark:border-dark-border/50 space-y-4">
+                <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium block">
+                  Exhibit D · Washi Paper Grain Specimen &amp; Fiber Tooth Comparison
+                </span>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  {/* Day Preview Swatch */}
+                  <div className="p-4 rounded-[2px] bg-[#FAF6EE] text-[#282E3A] border border-[#D4C4AA] relative overflow-hidden shadow-2xs">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-mono font-bold text-terracotta flex items-center gap-1.5">
+                        <Sun className="w-3.5 h-3.5" />
+                        <span>Akari Day Paper</span>
+                      </span>
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-[#EAE0CE] border border-[#D4C4AA] font-semibold text-[#282E3A]">
+                        {dayRoughness}% Tooth
+                      </span>
+                    </div>
+                    <p className="text-xs font-serif leading-relaxed text-[#282E3A]/90">
+                      Natural cream washi with tactile tooth. The surface breathes organic warmth without digital harshness.
+                    </p>
+                    <div className="mt-2.5 text-[10px] font-mono text-[#686559] flex items-center justify-between border-t border-[#D4C4AA]/60 pt-2">
+                      <span>Freq: {grainFrequency.toFixed(2)}</span>
+                      <span>Blend: Multiply</span>
+                    </div>
+                  </div>
+
+                  {/* Night Preview Swatch */}
+                  <div className="p-4 rounded-[2px] bg-[#23262F] text-[#E8E6DF] border border-[#383B44] relative overflow-hidden shadow-2xs">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-mono font-bold text-ochre flex items-center gap-1.5">
+                        <Moon className="w-3.5 h-3.5" />
+                        <span>Charred Cedar</span>
+                      </span>
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-[#121316] border border-[#383B44] font-semibold text-[#E8E6DF]">
+                        {nightRoughness}% Tooth
+                      </span>
+                    </div>
+                    <p className="text-xs font-serif leading-relaxed text-[#E8E6DF]/90">
+                      Charred timber with warm amber reflections. The micro-grain evokes night lantern glow over dark wood.
+                    </p>
+                    <div className="mt-2.5 text-[10px] font-mono text-[#9E9A8E] flex items-center justify-between border-t border-[#383B44]/80 pt-2">
+                      <span>Freq: {grainFrequency.toFixed(2)}</span>
+                      <span>Blend: Screen</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

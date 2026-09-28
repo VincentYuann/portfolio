@@ -8,6 +8,7 @@ export default {
         // Akari Day tokens (Canonical Washi & Akari Paper palette)
         light: {
           canvas: '#EAE0CE',
+          'canvas-soft': '#F4ECE1',
           surface: '#FAF6EE',
           'surface-raised': '#FFFFFF',
           'surface-muted': '#E4D8C3',
@@ -26,6 +27,7 @@ export default {
         // Dark Palette (Sumi & Charred Cedar: Canvas #121316, Card Surface #23262F, Text #E8E6DF, Border #383B44, Accent Gold #D4A853)
         dark: {
           canvas: '#121316',
+          'canvas-soft': '#1E1F24',
           panel: '#23262F',
           surface: '#23262F',
           card: '#23262F',

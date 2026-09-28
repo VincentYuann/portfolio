@@ -2,20 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==============================================================================
+   THEME DESIGN TOKENS: SINGLE SOURCE OF TRUTH (DAY & NIGHT ARCHITECTURE)
+   ============================================================================== */
+
+/* ── DAY THEME: AKARI WASHI (Light Canvas) ── */
 :root {
+  /* Surfaces & Canvases */
   --canvas-bg: #EAE0CE;
+  --canvas-soft-bg: #FAF5EB;
   --pattern-dot: transparent;
+  --panel-bg: #FAF6EE;
+  --card-bg: #FAF6EE;
   --surface-bg: #FAF6EE;
   --surface-card-bg: #FAF6EE;
   --surface-raised-bg: #FFFFFF;
   --surface-muted-bg: #E4D8C3;
+  --section-chamber-alt-bg: #FAF5EB;
+
+  /* Typography Inks */
   --ink-color: #282E3A;
   --ink-muted: #686559;
   --ink-subtle: #8B8375;
+
+  /* Borders & Joinery Channels */
   --border-color: #D4C4AA;
   --border-channel-fill: #FAF6EE;
   --border-inner: #D4C4AA;
   --border-strong: #BDAB8F;
+
+  /* Interactive Elements & Buttons */
   --button-primary-bg: #26262E;
   --button-primary-text: #FAF6EE;
   --color-terracotta-rgb: 181 72 46;
@@ -23,6 +39,43 @@
   --color-bamboo-rgb: 82 109 87;
   --accent-color: #B5482E;
   --ease-zen: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Card Joinery Shadows & Hover States */
+  --card-shadow: 0 1px 2px rgba(40, 46, 58, 0.04);
+  --card-hover-border: rgba(181, 72, 46, 0.45);
+  --card-hover-shadow: inset 0 0 0 1.5px var(--surface-bg), inset 0 0 0 2.5px rgba(181, 72, 46, 0.25), 0 2px 8px rgba(181, 72, 46, 0.08);
+  --modal-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
+  --double-hairline-shadow: 0 0 0 1px var(--border-color), inset 0 0 0 1px var(--border-color), inset 0 0 0 4px var(--surface-bg), inset 0 0 0 5px rgb(var(--color-ochre-rgb) / 0.25);
+  --btn-bloom-hover-glow: 0 8px 24px -4px rgb(var(--color-terracotta-rgb) / 0.45);
+
+  /* Scrollbars */
+  --scrollbar-thumb: rgb(var(--color-ochre-rgb) / 0.25);
+  --scrollbar-thumb-hover: rgb(var(--color-terracotta-rgb) / 0.6);
+
+  /* Inverse-Contrast Sonner Toaster (Night-styled popover over Day canvas) */
+  --toast-normal-bg: #16171D;
+  --toast-normal-border: #3A3D44;
+  --toast-normal-text: #EDEAE4;
+  --toast-success-bg: #16171D;
+  --toast-success-border: #4D515B;
+  --toast-success-text: #EDEAE4;
+  --toast-error-bg: #261413;
+  --toast-error-border: #732C1F;
+  --toast-error-text: #FFB5A7;
+  --toast-info-bg: #16171D;
+  --toast-info-border: #52432B;
+  --toast-info-text: #EDEAE4;
+  --toast-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.2);
+  --toast-btn-bg: #E8E6DF;
+  --toast-btn-text: #1E1F24;
+  --toast-icon-color: #D9654C;
+
+  /* Tactile Washi Paper Texture Materiality (Day: Calibrated 16% Mulberry Fiber Tooth) */
+  --washi-opacity-default: 0.16;
+  --washi-custom-day-opacity: 0.16;
+  --washi-opacity: var(--washi-custom-day-opacity, var(--washi-opacity-default));
+  --washi-blend-mode: multiply;
+  --washi-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.90' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)'/%3E%3C/svg%3E");
 
   /* Default Typography Tokens: Variant 4 (Kyoto Neo-Grotesque & Algorithmic Minimal) */
   --font-display: 'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif;
@@ -33,6 +86,82 @@
   --font-heading-tracking: -0.03em;
   --font-body-tracking: -0.005em;
 }
+
+/* ── NIGHT THEME: CHARRED CEDAR (Dark Canvas) ── */
+.dark {
+  /* Surfaces & Canvases */
+  --canvas-bg: #121316;
+  --canvas-soft-bg: #1E1F24;
+  --panel-bg: #23262F;
+  --card-bg: #23262F;
+  --surface-bg: #23262F;
+  --surface-card-bg: #23262F;
+  --surface-raised-bg: #2C303B;
+  --surface-muted-bg: #0E0F12;
+  --pattern-dot: transparent;
+  --section-chamber-alt-bg: #1E1F24;
+
+  /* Typography Inks */
+  --ink-color: #E8E6DF;
+  --ink-muted: #9E9A8E;
+  --ink-subtle: #736F64;
+
+  /* Borders & Joinery Channels */
+  --border-color: #383B44;
+  --border-channel-fill: #23262F;
+  --border-inner: #383B44;
+  --border-strong: #4E5362;
+
+  /* Interactive Elements & Buttons */
+  --button-primary-bg: #D4A853;
+  --button-primary-text: #121316;
+  --color-terracotta-rgb: 181 72 46;
+  --color-ochre-rgb: 212 168 83;
+  --color-bamboo-rgb: 101 139 123;
+  --accent-color: #D4A853;
+  --color-night-accent: #D4A853;
+  --color-night-accent-rgb: 212 168 83;
+
+  /* Card Joinery Shadows & Hover States */
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --card-hover-border: rgba(212, 168, 83, 0.45);
+  --card-hover-shadow: inset 0 0 0 1.5px #1B1D23, inset 0 0 0 2.5px rgba(212, 168, 83, 0.25), 0 2px 8px rgba(0, 0, 0, 0.5);
+  --modal-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+  --double-hairline-shadow: 0 0 0 1px var(--border-color), inset 0 0 0 1px var(--border-color), inset 0 0 0 4px var(--surface-bg), inset 0 0 0 5px rgb(var(--color-ochre-rgb) / 0.25);
+  --btn-bloom-hover-glow: 0 8px 24px -4px rgba(212, 168, 83, 0.35);
+
+  /* Scrollbars */
+  --scrollbar-thumb: rgba(212, 168, 83, 0.3);
+  --scrollbar-thumb-hover: #D4A853;
+
+  /* Inverse-Contrast Sonner Toaster (Day-styled popover over Night canvas) */
+  --toast-normal-bg: #FFFDF9;
+  --toast-normal-border: #BDAA89;
+  --toast-normal-text: #1E1F24;
+  --toast-success-bg: #FFFDF9;
+  --toast-success-border: #BDAA89;
+  --toast-success-text: #1E1F24;
+  --toast-error-bg: #FFF4F1;
+  --toast-error-border: #E8A89B;
+  --toast-error-text: #9E2612;
+  --toast-info-bg: #FFFDF9;
+  --toast-info-border: #D49B6A;
+  --toast-info-text: #1E1F24;
+  --toast-shadow: 0 24px 56px -4px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  --toast-btn-bg: #26262E;
+  --toast-btn-text: #F7F0E3;
+  --toast-icon-color: #B5482E;
+
+  /* Tactile Washi Paper Texture Materiality (Night: Amber Lantern Micro-Tooth) */
+  --washi-opacity-default: 0.065;
+  --washi-custom-night-opacity: 0.065;
+  --washi-opacity: var(--washi-custom-night-opacity, var(--washi-opacity-default));
+  --washi-blend-mode: screen;
+}
+
+/* ==============================================================================
+   TYPOGRAPHY ARCHETYPES (VARIANTS 1 - 7)
+   ============================================================================== */
 
 /* Variant 1: Kyoto Wabi-Sabi Monograph (Poetic Literary Mincho & Warm Humanist Sans) */
 :root[data-font-variant="v1"],
@@ -132,32 +261,16 @@ body.font-variant-v7 {
   --font-body-tracking: 0em;
 }
 
-.dark {
-  --canvas-bg: #121316;
-  --panel-bg: #23262F;
-  --surface-bg: #23262F;
-  --surface-card-bg: #23262F;
-  --card-bg: #23262F;
-  --surface-raised-bg: #2C303B;
-  --surface-muted-bg: #0E0F12;
-  --pattern-dot: transparent;
-  --ink-color: #E8E6DF;
-  --ink-muted: #9E9A8E;
-  --ink-subtle: #736F64;
-  --border-color: #383B44;
-  --border-channel-fill: #23262F;
-  --border-inner: #383B44;
-  --border-strong: #4E5362;
-  --button-primary-bg: #D4A853;
-  --button-primary-text: #121316;
-  --color-terracotta-rgb: 181 72 46;
-  --color-ochre-rgb: 212 168 83;
-  --color-bamboo-rgb: 101 139 123;
-  --accent-color: #D4A853;
-  --color-night-accent: #D4A853;
-  --color-night-accent-rgb: 212 168 83;
+/* ==============================================================================
+   SECTION CHAMBER ALTERNATION (Single Source of Truth)
+   ============================================================================== */
+.section-chamber-alt {
+  background-color: var(--section-chamber-alt-bg);
 }
 
+/* ==============================================================================
+   BASE LAYER & VIEWPORT OVERLAYS
+   ============================================================================== */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -194,15 +307,16 @@ body.font-variant-v7 {
     height: 100%;
     pointer-events: none;
     z-index: 9999; /* Overlay entire page, cards, and modals seamlessly */
-    opacity: 0.055; /* Tactile washi paper tooth on cream canvas */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)'/%3E%3C/svg%3E");
-  }
-
-  .dark body::before {
-    opacity: 0.045; /* Tactile micro-tooth on dark charred cedar canvas */
+    opacity: var(--washi-opacity);
+    background-image: var(--washi-texture);
+    mix-blend-mode: var(--washi-blend-mode);
+    transition: opacity 0.25s ease;
   }
 }
 
+/* ==============================================================================
+   UTILITIES LAYER: CARDS, JOINERY & SPECIALIZED PATTERNS
+   ============================================================================== */
 @layer utilities {
   .font-zen {
     font-family: var(--font-display);
@@ -240,30 +354,17 @@ body.font-variant-v7 {
   .classical-card-frame {
     background-color: var(--surface-bg);
     border: 1px solid var(--border-color);
-    box-shadow: 0 1px 2px rgba(40, 46, 58, 0.04);
+    box-shadow: var(--card-shadow);
     border-radius: 3px;
     position: relative;
     transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .dark .card-akari-translucent,
-  .dark .craft-card,
-  .dark .craft-panel,
-  .dark .washi-card,
-  .dark .interactive-card,
-  .dark .classical-card-frame {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-  }
-
   .craft-modal {
     background-color: var(--surface-bg);
     border: 1px solid var(--border-color);
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--modal-shadow);
     border-radius: 3px;
-  }
-
-  .dark .craft-modal {
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
   }
 
   /* Japanese Tategaki (Vertical Writing Mode) */
@@ -273,6 +374,9 @@ body.font-variant-v7 {
   }
 }
 
+/* ==============================================================================
+   KEYFRAME ANIMATIONS
+   ============================================================================== */
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
@@ -476,19 +580,13 @@ body.font-variant-v7 {
   transform-origin: center center;
 }
 
-/* Classical Japanese Double Hairline Frame from Night Design */
-.double-hairline-frame {
-  box-shadow: 0 0 0 1px var(--border-color), inset 0 0 0 1px var(--border-color), inset 0 0 0 4px var(--surface-bg), inset 0 0 0 5px rgb(var(--color-ochre-rgb) / 0.25);
-}
-
-.dark .double-hairline-frame {
-  box-shadow: 0 0 0 1px var(--border-color), inset 0 0 0 1px var(--border-color), inset 0 0 0 4px var(--surface-bg), inset 0 0 0 5px rgb(var(--color-ochre-rgb) / 0.25);
-}
-
 /* ==============================================================================
-   Blueprint Double Hairline Frame (Stationery Joinery Architecture)
-   Matches the blueprint: Outer 1px border, 4px-5px gap, inner 1px border
+   JOINERY ARCHITECTURE & FRAMES (Single Source of Truth)
    ============================================================================== */
+.double-hairline-frame {
+  box-shadow: var(--double-hairline-shadow);
+}
+
 .double-frame {
   position: relative;
   padding: 10px;
@@ -513,7 +611,7 @@ body.font-variant-v7 {
   padding: 24px;
 }
 
-/* Compact / Integrated double hairline frame across all cards */
+/* Compact double hairline frame across all cards */
 .double-frame-simple,
 .craft-card,
 .classical-card-frame,
@@ -532,25 +630,11 @@ body.font-variant-v7 {
 .classical-card-frame:hover,
 .double-frame-simple:hover,
 .interactive-card:hover {
-  border-color: rgba(181, 72, 46, 0.45);
-  box-shadow: 
-    inset 0 0 0 1.5px var(--surface-bg),
-    inset 0 0 0 2.5px rgba(181, 72, 46, 0.25),
-    0 2px 8px rgba(181, 72, 46, 0.08);
+  border-color: var(--card-hover-border);
+  box-shadow: var(--card-hover-shadow);
 }
 
-.dark .craft-card:hover,
-.dark .classical-card-frame:hover,
-.dark .double-frame-simple:hover,
-.dark .interactive-card:hover {
-  border-color: rgba(212, 168, 83, 0.45);
-  box-shadow: 
-    inset 0 0 0 1.5px #1B1D23,
-    inset 0 0 0 2.5px rgba(212, 168, 83, 0.25),
-    0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-/* Corner Hairline Brackets: Restrained Japanese Craft joinery (Whisper-quiet opacity, no HUD translation) */
+/* Corner Hairline Brackets: Restrained Japanese Craft joinery */
 .corner-bracket {
   transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   will-change: border-color, opacity;
@@ -572,25 +656,23 @@ body.font-variant-v7 {
   transform: scale(1.03);
 }
 
-/* Button Bloom */
+/* Button Bloom Glow (Single Source of Truth) */
 .btn-bloom {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background-color 0.25s ease;
 }
 
 .btn-bloom:hover {
   transform: translateY(-1.5px);
-  box-shadow: 0 8px 24px -4px rgb(var(--color-terracotta-rgb) / 0.45);
-}
-
-.dark .btn-bloom:hover {
-  box-shadow: 0 8px 24px -4px rgba(212, 168, 83, 0.35);
+  box-shadow: var(--btn-bloom-hover-glow);
 }
 
 .btn-bloom:active {
   transform: translateY(0);
 }
 
-/* Custom Minimalist Scrollbar */
+/* ==============================================================================
+   CUSTOM SCROLLBAR (Single Source of Truth)
+   ============================================================================== */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -601,20 +683,12 @@ body.font-variant-v7 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--color-ochre-rgb) / 0.25);
+  background: var(--scrollbar-thumb);
   border-radius: 9999px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(212, 168, 83, 0.3);
-}
-
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--color-terracotta-rgb) / 0.6);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #D4A853;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Material Symbols Adjustments */
@@ -623,37 +697,22 @@ body.font-variant-v7 {
   vertical-align: middle;
 }
 
-/* ── Akari Wabi-Sabi Inverse Contrast Sonner Toast ── */
-/* In Day mode (light canvas), toasts are Night-Themed (Obsidian charcoal with warm-white text) */
+/* ==============================================================================
+   SONNER TOASTER INVERSE CONTRAST NOTIFICATIONS (Single Source of Truth)
+   ============================================================================== */
 [data-sonner-toaster] {
-  --normal-bg: #16171D !important;
-  --normal-border: #3A3D44 !important;
-  --normal-text: #EDEAE4 !important;
-  --success-bg: #16171D !important;
-  --success-border: #4D515B !important;
-  --success-text: #EDEAE4 !important;
-  --error-bg: #261413 !important;
-  --error-border: #732C1F !important;
-  --error-text: #FFB5A7 !important;
-  --info-bg: #16171D !important;
-  --info-border: #52432B !important;
-  --info-text: #EDEAE4 !important;
-}
-
-/* In Night mode (.dark canvas), toasts are Day-Themed (Warm washi parchment with deep charcoal ink) */
-.dark [data-sonner-toaster] {
-  --normal-bg: #FFFDF9 !important;
-  --normal-border: #BDAA89 !important;
-  --normal-text: #1E1F24 !important;
-  --success-bg: #FFFDF9 !important;
-  --success-border: #BDAA89 !important;
-  --success-text: #1E1F24 !important;
-  --error-bg: #FFF4F1 !important;
-  --error-border: #E8A89B !important;
-  --error-text: #9E2612 !important;
-  --info-bg: #FFFDF9 !important;
-  --info-border: #D49B6A !important;
-  --info-text: #1E1F24 !important;
+  --normal-bg: var(--toast-normal-bg) !important;
+  --normal-border: var(--toast-normal-border) !important;
+  --normal-text: var(--toast-normal-text) !important;
+  --success-bg: var(--toast-success-bg) !important;
+  --success-border: var(--toast-success-border) !important;
+  --success-text: var(--toast-success-text) !important;
+  --error-bg: var(--toast-error-bg) !important;
+  --error-border: var(--toast-error-border) !important;
+  --error-text: var(--toast-error-text) !important;
+  --info-bg: var(--toast-info-bg) !important;
+  --info-border: var(--toast-info-border) !important;
+  --info-text: var(--toast-info-text) !important;
 }
 
 [data-sonner-toast] {
@@ -661,41 +720,23 @@ body.font-variant-v7 {
   border-radius: 3px !important;
   border-width: 1px !important;
   backdrop-filter: blur(16px) !important;
-  box-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.2) !important; /* impeccable-disable-line design-system-color */
+  box-shadow: var(--toast-shadow) !important; /* Single source of truth */
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   background-color: var(--normal-bg) !important;
   color: var(--normal-text) !important;
   border-color: var(--normal-border) !important;
 }
 
-.dark [data-sonner-toast] {
-  box-shadow: 0 24px 56px -4px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12) !important; /* impeccable-disable-line design-system-color */
-}
-
-/* Icons: In Day mode (dark toast), icons are luminous terracotta/ochre */
 [data-sonner-toast] [data-icon] {
-  color: var(--color-terracotta-soft) !important;
+  color: var(--toast-icon-color) !important;
 }
 
 [data-sonner-toast][data-type="success"] [data-icon] {
-  color: var(--color-bamboo) !important;
+  color: rgb(var(--color-bamboo-rgb)) !important;
 }
 
 [data-sonner-toast][data-type="info"] [data-icon] {
-  color: var(--color-ochre) !important;
-}
-
-/* Icons: In Night mode (light toast), icons are cinnabar terracotta/ochre */
-.dark [data-sonner-toast] [data-icon] {
-  color: var(--color-terracotta) !important;
-}
-
-.dark [data-sonner-toast][data-type="success"] [data-icon] {
-  color: var(--color-bamboo) !important;
-}
-
-.dark [data-sonner-toast][data-type="info"] [data-icon] {
-  color: var(--color-ochre-dark) !important;
+  color: rgb(var(--color-ochre-rgb)) !important;
 }
 
 [data-sonner-toast] [data-title] {
@@ -713,7 +754,6 @@ body.font-variant-v7 {
   color: inherit !important;
 }
 
-/* Button in Day mode (dark toast) */
 [data-sonner-toast] [data-button] {
   font-family: inherit !important;
   border-radius: 2px !important;
@@ -721,24 +761,18 @@ body.font-variant-v7 {
   font-size: 11px !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  background-color: #E8E6DF !important;
-  color: #1E1F24 !important;
-}
-
-/* Button in Night mode (light toast) */
-.dark [data-sonner-toast] [data-button] {
-  background-color: #26262E !important;
-  color: #F7F0E3 !important;
+  background-color: var(--toast-btn-bg) !important;
+  color: var(--toast-btn-text) !important;
 }
 
 /* ==============================================================================
-   Yet Another React Lightbox Theme (Japanese Wabi-Sabi Styling)
+   YET ANOTHER REACT LIGHTBOX THEME (Japanese Wabi-Sabi Styling)
    ============================================================================== */
 .yarl__root {
   --yarl__color_backdrop: rgba(10, 11, 14, 0.94);
   --yarl__color_button: rgba(237, 234, 228, 0.85);
-  --yarl__color_button_active: var(--color-terracotta);
-  --yarl__thumbnails_thumbnail_border_active: var(--color-terracotta);
+  --yarl__color_button_active: var(--accent-color);
+  --yarl__thumbnails_thumbnail_border_active: var(--accent-color);
   --yarl__thumbnails_thumbnail_background: rgba(24, 25, 32, 0.85);
   --yarl__thumbnails_thumbnail_border: rgba(255, 255, 255, 0.15);
   --yarl__thumbnails_container_background: rgba(10, 11, 14, 0.8);
@@ -760,8 +794,8 @@ body.font-variant-v7 {
 }
 
 .yarl__button:hover {
-  color: var(--color-terracotta) !important;
-  background-color: rgba(255, 255, 255, 0.08) !important; /* impeccable-disable-line design-system-color */
+  color: var(--accent-color) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 .yarl__thumbnails_thumbnail {
@@ -773,12 +807,12 @@ body.font-variant-v7 {
 }
 
 .yarl__thumbnails_thumbnail_active {
-  border-color: var(--color-terracotta) !important;
-  box-shadow: 0 0 0 2px rgba(181, 72, 46, 0.4) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 2px rgb(var(--color-terracotta-rgb) / 0.4) !important;
 }
 
 /* ==============================================================================
-   Zen View Transition (Smooth & Lightweight Continuity)
+   ZEN VIEW TRANSITION (Smooth & Lightweight Continuity)
    ============================================================================== */
 @keyframes view-enter {
   from {
@@ -796,7 +830,7 @@ body.font-variant-v7 {
 }
 
 /* ==============================================================================
-   Accessibility: Reduced Motion Guard (Ambient Background Loops)
+   ACCESSIBILITY: REDUCED MOTION GUARD
    ============================================================================== */
 @media (prefers-reduced-motion: reduce) {
   .animate-gentle-drift,
@@ -808,5 +842,3 @@ body.font-variant-v7 {
     animation: none !important;
   }
 }
-
-

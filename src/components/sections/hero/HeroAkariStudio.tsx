@@ -190,15 +190,15 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
               {/* Box Header: Header Label & Archive Coordinate from DB */}
               {(hanko?.headerLabel || hanko?.locationArchive) && (
-                <div className="w-full flex items-center justify-between pb-2.5 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
+                <div className="w-full flex items-start justify-between gap-3 sm:gap-4 pb-2.5 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
                   {hanko?.headerLabel ? (
-                    <div className="flex items-center gap-1.5 font-mono uppercase text-xs tracking-widest text-light-ink dark:text-dark-ink font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-[#D4A853] inline-block" />
-                      <span>{hanko.headerLabel}</span>
+                    <div className="flex items-start gap-1.5 font-mono uppercase text-[11px] sm:text-xs tracking-wider text-light-ink dark:text-dark-ink font-semibold min-w-0 flex-1">
+                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-[#D4A853] inline-block mt-1 shrink-0" />
+                      <span className="leading-snug break-words">{hanko.headerLabel}</span>
                     </div>
                   ) : <div />}
                   {hanko?.locationArchive && (
-                    <span className="font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider text-xs font-medium">
+                    <span className="font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider text-[10px] sm:text-[11px] font-medium shrink-0 text-right whitespace-nowrap pt-0.5">
                       {hanko.locationArchive}
                     </span>
                   )}

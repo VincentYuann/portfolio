@@ -15,6 +15,7 @@ import { ThemedToaster } from './components/layout/ThemedToaster';
 import { AiChatWidget } from './components/common/AiChatWidget';
 import { TooltipProvider } from './components/ui/tooltip';
 import { VariantProvider } from './context/VariantContext';
+import { WashiProvider } from './context/WashiContext';
 
 import {
   ProjectsPageSkeleton,
@@ -82,7 +83,7 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
         This lower product showcase container is a heavy, independent craft surface
         (bg-light-canvas dark:bg-[#1E1F24]) that mask-slides straight over the hero on scroll.
       */}
-      <div className="division-showcase-container relative z-20 w-full bg-light-canvas dark:bg-[#1E1F24] shadow-[0_-24px_50px_rgba(43,46,58,0.08)] dark:shadow-[0_-28px_60px_rgba(0,0,0,0.65)] transition-colors duration-300">
+      <div className="division-showcase-container relative z-20 w-full bg-light-canvas dark:bg-dark-canvas shadow-[0_-24px_50px_rgba(43,46,58,0.08)] dark:shadow-[0_-28px_60px_rgba(0,0,0,0.65)] transition-colors duration-300">
         {hasExperiences && (
           <ExperienceSection onNavigate={onNavigate} />
         )}
@@ -329,9 +330,10 @@ export const App: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <TooltipProvider delayDuration={200}>
-        <VariantProvider>
-          <SiteDataProvider>
+      <WashiProvider>
+        <TooltipProvider delayDuration={200}>
+          <VariantProvider>
+            <SiteDataProvider>
           <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-[#D4A853]/25 dark:selection:text-[#D4A853] overflow-x-clip">
             <Header
               currentView={currentView}
@@ -391,6 +393,7 @@ export const App: React.FC = () => {
         </SiteDataProvider>
       </VariantProvider>
     </TooltipProvider>
+    </WashiProvider>
   </ThemeProvider>
 );
 };

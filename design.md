@@ -15,6 +15,7 @@ colors:
 
   # Light theme: Washi & Akari Paper (Sunlight on Parchment)
   light-canvas: "#EAE0CE"        # Calibrated warm natural cream canvas
+  light-canvas-soft: "#F4ECE1"   # Alternating section division ground (soft warm washi)
   light-surface: "#FAF6EE"       # Clean warm washi paper surface
   light-surface-card: "#FAF6EE"  # Solid non-transparent washi card surface
   light-surface-raised: "#FFFFFF" # Pure crisp raised surface
@@ -32,6 +33,7 @@ colors:
 
   # Dark theme: Warm Charred Cedar / 焼杉 Yakisugi (Lantern Light on Dark Wood)
   dark-canvas: "#121316"         # Deep warm charred cedar ground (Never cold OLED #000000)
+  dark-canvas-soft: "#1E1F24"    # Alternating section division ground (soft charred slate)
   dark-panel: "#23262F"          # Solid charred slate surface (Lighter than canvas)
   dark-surface: "#23262F"
   dark-card: "#23262F"
@@ -209,6 +211,7 @@ The Vincent Yuan portfolio visual system is an homage to traditional Japanese ma
 | Token Role               | Light (Washi)              | Dark (Sumi & Cedar)        | Usage / Intent                                |
 | ------------------------ | -------------------------- | -------------------------- | --------------------------------------------- |
 | **Canvas Ground**        | `#EAE0CE`                  | `#121316`                  | Root viewport background                      |
+| **Section Ground (Soft)**| `#F4ECE1`                  | `#1E1F24`                  | Alternating section division ground (chamber) |
 | **Card / Panel Surface** | `#FAF6EE`                  | `#23262F`                  | Solid content cards, milestones, project tiles |
 | **Elevated Surface**     | `#FFFFFF`                  | `#2C303B`                  | Raised tooltips, input fields, popovers       |
 | **Muted Surface**        | `#E4D8C3`                  | `#0E0F12`                  | Thumbnail track, image preview wells          |
@@ -229,7 +232,11 @@ The Vincent Yuan portfolio visual system is an homage to traditional Japanese ma
 
 - **Terracotta Cinnabar (`#B5482E`)**: Reserved strictly for authentic Hanko seals (`[原]`, `[問]`) and the pulsing availability beacon. Never used as structural resting card outlines.
 - **Warm Gold / Amber Ochre (`#D4A853`)**: Serves as the primary night accent for buttons, focus rings, and decorative emblems, providing ambient lantern warmth without harsh neon glare.
-- **Continuous Washi Grain**: Global fixed `body::before` viewport overlay (`z-index: 9999; pointer-events: none; opacity: 0.055` / `0.045`) uniformly casts tactile Japanese paper tooth over all solid surfaces without text bleed-through.
+- **Continuous Washi Grain Materiality**: Global fixed `body::before` viewport overlay (`z-index: 9999; pointer-events: none; opacity: var(--washi-opacity); mix-blend-mode: var(--washi-blend-mode)`) driven by CSS custom properties as a single source of truth. Features 3 calibrated roughness archetypes with live dual-slider fine-tuning:
+  - **Variant 1: Silk Washi · 絹紙** (Day 8% / Night 4.5%, fine 0.92 grain) for ultra-minimalist, smooth reading.
+  - **Variant 2: Artisan Kozo · 楮紙** (Day 16% / Night 6.5%, calibrated 0.90 grain) - *Default*, bringing tangible tactile mulberry tooth to Day mode and warm micro-tooth to Night.
+  - **Variant 3: Raw Heritage · 生漉** (Day 25% / Night 12%, coarse 0.52 grain) for rustic unbleached paper presence.
+- **Progressive Disclosure Architecture**: Sliders and advanced micro-adjustments are hidden by default behind collapsible disclosures to minimize cognitive load (Hick's Law) and maintain spatial breathing room (*Ma* 間), while expanding into intuitive zero-overhead controls on mobile.
 
 ---
 
