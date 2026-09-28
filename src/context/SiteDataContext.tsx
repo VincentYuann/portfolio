@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
 
 /* ─── Types ───────────────────────────────────────────────────────── */
 
@@ -281,6 +280,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [loading, setLoading] = useState(true);
 
   const fetchAll = useCallback(async () => {
+    const { supabase } = await import('../lib/supabase');
     if (!supabase) { setLoading(false); return; }
 
     try {
@@ -501,9 +501,10 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     let idleId: number | undefined;
     let channel: any = null;
 
-    const startSync = () => {
+    const startSync = async () => {
       fetchAll();
 
+      const { supabase } = await import('../lib/supabase');
       if (!supabase) return;
       channel = supabase
         .channel('schema-realtime-sync')
@@ -531,7 +532,9 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         clearTimeout(timer);
       }
       if (channel) {
-        supabase?.removeChannel(channel);
+        import('../lib/supabase').then(({ supabase }) => {
+          supabase?.removeChannel(channel);
+        });
       }
     };
   }, [fetchAll]);

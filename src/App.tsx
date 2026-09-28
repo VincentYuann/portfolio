@@ -3,12 +3,10 @@ import { ThemeProvider } from './context/ThemeContext';
 import { SiteDataProvider, useSiteData } from './context/SiteDataContext';
 import { Header } from './components/layout/Header';
 import { Hero } from './components/sections/hero/Hero';
-import { supabase } from './lib/supabase';
-import { toast } from 'sonner';
-import { ThemedToaster } from './components/layout/ThemedToaster';
-import { TooltipProvider } from './components/ui/tooltip';
 import { VariantProvider } from './context/VariantContext';
 import { WashiProvider } from './context/WashiContext';
+
+const ThemedToaster = lazy(() => import('./components/layout/ThemedToaster').then((m) => ({ default: m.ThemedToaster })));
 
 import {
   ProjectsPageSkeleton,
@@ -132,83 +130,93 @@ export const App: React.FC = () => {
 
   /* -- Supabase auth listener: single subscription, strict admin verification -- */
   useEffect(() => {
-    if (!supabase) {
-      authReadyRef.current = true;
-      setAuthReady(true);
-      if (getInitialView() === 'edit') {
-        setCurrentView('home');
-        window.history.replaceState(null, '', '#home');
+    let unsubscribe: (() => void) | undefined;
+
+    import('./lib/supabase').then(async ({ supabase }) => {
+      if (!supabase) {
+        authReadyRef.current = true;
+        setAuthReady(true);
+        if (getInitialView() === 'edit') {
+          setCurrentView('home');
+          window.history.replaceState(null, '', '#home');
+        }
+        return;
       }
-      return;
-    }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      const isOwner = isOwnerSession(session);
-      const isVisitorUser = Boolean(session?.user && !isOwner);
-      isAdminRef.current = isOwner;
-      isVisitorRef.current = isVisitorUser;
-      setIsAdmin(isOwner);
-      setIsVisitor(isVisitorUser);
-      authReadyRef.current = true;
-      setAuthReady(true);
-
-      if (event === 'INITIAL_SESSION') {
-        const hash = window.location.hash.toLowerCase();
-        if (hash === '#edit') {
-          if (isOwner) {
-            setViewRef.current('edit');
-          } else {
-            if (isVisitorUser) {
-              toast.info('Visitor Access Only', {
-                description: "You're logged in as a visitor, not an admin. You can only view projects.",
-                duration: 5000,
-              });
-            }
-            setViewRef.current('projects');
-            window.history.replaceState(null, '', '#all-projects');
-          }
-        }
-      } else if (event === 'SIGNED_IN') {
-        if (isOwner) {
-          toast.success('Welcome back, Vincent! Admin mode unlocked.');
-          // If the user signed in directly from the login page, take them to home
-          if (window.location.hash.toLowerCase() === '#login') {
-            setViewRef.current('home');
-            window.history.replaceState(null, '', '#home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        } else {
-          // Logged in as a visitor (non-admin)
-          toast.info('Logged in as Visitor', {
-            description: "You're logged in as a visitor, not an admin. You can only view projects.",
-            duration: 6000,
-          });
-          // Redirect from login or edit view to projects
-          setViewRef.current('projects');
-          window.history.replaceState(null, '', '#all-projects');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      } else if (event === 'TOKEN_REFRESHED') {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        const isOwner = isOwnerSession(session);
+        const isVisitorUser = Boolean(session?.user && !isOwner);
         isAdminRef.current = isOwner;
         isVisitorRef.current = isVisitorUser;
         setIsAdmin(isOwner);
         setIsVisitor(isVisitorUser);
-      } else if (event === 'SIGNED_OUT') {
-        isAdminRef.current = false;
-        isVisitorRef.current = false;
-        setIsAdmin(false);
-        setIsVisitor(false);
-        setViewRef.current((prev) => {
-          if (prev === 'edit') {
-            window.history.replaceState(null, '', '#home');
-            return 'home';
+        authReadyRef.current = true;
+        setAuthReady(true);
+
+        if (event === 'INITIAL_SESSION') {
+          const hash = window.location.hash.toLowerCase();
+          if (hash === '#edit') {
+            if (isOwner) {
+              setViewRef.current('edit');
+            } else {
+              if (isVisitorUser) {
+                const { toast } = await import('sonner');
+                toast.info('Visitor Access Only', {
+                  description: "You're logged in as a visitor, not an admin. You can only view projects.",
+                  duration: 5000,
+                });
+              }
+              setViewRef.current('projects');
+              window.history.replaceState(null, '', '#all-projects');
+            }
           }
-          return prev;
-        });
-      }
+        } else if (event === 'SIGNED_IN') {
+          const { toast } = await import('sonner');
+          if (isOwner) {
+            toast.success('Welcome back, Vincent! Admin mode unlocked.');
+            // If the user signed in directly from the login page, take them to home
+            if (window.location.hash.toLowerCase() === '#login') {
+              setViewRef.current('home');
+              window.history.replaceState(null, '', '#home');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          } else {
+            // Logged in as a visitor (non-admin)
+            toast.info('Logged in as Visitor', {
+              description: "You're logged in as a visitor, not an admin. You can only view projects.",
+              duration: 6000,
+            });
+            // Redirect from login or edit view to projects
+            setViewRef.current('projects');
+            window.history.replaceState(null, '', '#all-projects');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        } else if (event === 'TOKEN_REFRESHED') {
+          isAdminRef.current = isOwner;
+          isVisitorRef.current = isVisitorUser;
+          setIsAdmin(isOwner);
+          setIsVisitor(isVisitorUser);
+        } else if (event === 'SIGNED_OUT') {
+          isAdminRef.current = false;
+          isVisitorRef.current = false;
+          setIsAdmin(false);
+          setIsVisitor(false);
+          setViewRef.current((prev) => {
+            if (prev === 'edit') {
+              window.history.replaceState(null, '', '#home');
+              return 'home';
+            }
+            return prev;
+          });
+        }
+      });
+
+      unsubscribe = () => subscription.unsubscribe();
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   /* -- URL hash routing -- */
@@ -247,9 +255,11 @@ export const App: React.FC = () => {
           setViewRef.current('edit');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (authReadyRef.current) {
-          toast.warning('Visitor Access Only', {
-            description: "You're logged in as a visitor, not an admin. You can only view projects.",
-            duration: 5000,
+          import('sonner').then(({ toast }) => {
+            toast.warning('Visitor Access Only', {
+              description: "You're logged in as a visitor, not an admin. You can only view projects.",
+              duration: 5000,
+            });
           });
           setViewRef.current('projects');
           window.history.replaceState(null, '', '#all-projects');
@@ -271,9 +281,11 @@ export const App: React.FC = () => {
   const handleNavigate = (view: ViewMode, sectionId?: string) => {
     // Guard: edit is only accessible when admin
     if (view === 'edit' && authReadyRef.current && !isAdminRef.current) {
-      toast.warning('Visitor Access Only', {
-        description: "You're logged in as a visitor, not an admin. You can only view projects.",
-        duration: 5000,
+      import('sonner').then(({ toast }) => {
+        toast.warning('Visitor Access Only', {
+          description: "You're logged in as a visitor, not an admin. You can only view projects.",
+          duration: 5000,
+        });
       });
       handleNavigate('projects');
       return;
@@ -322,6 +334,8 @@ export const App: React.FC = () => {
     }
     setIsAdmin(false);
     isAdminRef.current = false;
+    const { supabase } = await import('./lib/supabase');
+    const { toast } = await import('sonner');
     if (!supabase) return;
     try {
       await supabase.auth.signOut();
@@ -334,9 +348,8 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider>
       <WashiProvider>
-        <TooltipProvider delayDuration={200}>
-          <VariantProvider>
-            <SiteDataProvider>
+        <VariantProvider>
+          <SiteDataProvider>
           <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-[#D4A853]/25 dark:selection:text-[#D4A853] overflow-x-clip">
             <Header
               currentView={currentView}
@@ -398,10 +411,11 @@ export const App: React.FC = () => {
           <Suspense fallback={null}>
             <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
           </Suspense>
-          <ThemedToaster />
+          <Suspense fallback={null}>
+            <ThemedToaster />
+          </Suspense>
         </SiteDataProvider>
       </VariantProvider>
-    </TooltipProvider>
     </WashiProvider>
   </ThemeProvider>
 );

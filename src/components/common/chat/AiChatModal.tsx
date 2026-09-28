@@ -28,7 +28,7 @@ import { sendToAiAgent, ChatResponse } from '../../../lib/aiAgentApi';
 import { useSpeechToText } from '../../../hooks/useSpeechToText';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
-import { Tooltip, TooltipTrigger, TooltipContent } from '../../ui/tooltip';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '../../ui/tooltip';
 import {
   MessageScrollerProvider,
   MessageScroller,
@@ -848,8 +848,9 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
   };
 
   return (
-    <div
-      ref={chatWindowRef}
+    <TooltipProvider delayDuration={200}>
+      <div
+        ref={chatWindowRef}
           onPaste={handlePaste}
           onDragEnter={handleDragEnter}
           onDragOver={handleDragOver}
@@ -1516,5 +1517,6 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
             </form>
           </div>
         </div>
+      </TooltipProvider>
     );
 };
