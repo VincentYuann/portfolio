@@ -108,12 +108,12 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
       onDrop={canDrag ? onDrop : undefined}
       className={`relative rounded-xl border bg-light-surface-card dark:bg-dark-surface-card transition-all duration-200 classical-card-frame shadow-xs ${
         isExpanded
-          ? 'border-terracotta/40 dark:border-[#D4A853]/40 ring-1 ring-terracotta/10 dark:ring-[#D4A853]/10 shadow-sm cursor-default'
+          ? 'border-terracotta/40 dark:border-ochre/40 ring-1 ring-terracotta/10 dark:ring-ochre/10 shadow-sm cursor-default'
           : canDrag
-          ? 'border-light-border dark:border-dark-border hover:border-terracotta/50 dark:hover:border-[#D4A853]/50 cursor-grab active:cursor-grabbing'
-          : 'border-light-border dark:border-dark-border hover:border-[#D4A853]/40 cursor-pointer'
-      } ${isDragging ? 'opacity-40 scale-[0.98] border-dashed border-terracotta dark:border-[#D4A853]' : ''} ${
-        isOver ? 'ring-2 ring-terracotta/60 dark:ring-[#D4A853]/60 border-terracotta dark:border-[#D4A853] scale-[1.01]' : ''
+          ? 'border-light-border dark:border-dark-border hover:border-terracotta/50 dark:hover:border-ochre/50 cursor-grab active:cursor-grabbing'
+          : 'border-light-border dark:border-dark-border hover:border-ochre/40 cursor-pointer'
+      } ${isDragging ? 'opacity-40 scale-[0.98] border-dashed border-terracotta dark:border-ochre' : ''} ${
+        isOver ? 'ring-2 ring-terracotta/60 dark:ring-ochre/60 border-terracotta dark:border-ochre scale-[1.01]' : ''
       } ${className}`}
     >
       <CornerBrackets size="sm" />
@@ -128,11 +128,11 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
         <CollapsibleTrigger asChild>
           <button
             type="button"
-            className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-terracotta/50 dark:focus-visible:ring-[#D4A853]/50 rounded-md"
+            className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-terracotta/50 dark:focus-visible:ring-ochre/50 rounded-md"
           >
             <div
               title={canDrag ? 'Click and drag to reorder' : isExpanded ? 'Collapse card to reorder' : undefined}
-              className={`text-light-ink-subtle/50 dark:text-dark-ink-subtle/50 group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors hidden sm:block shrink-0 ${
+              className={`text-light-ink-subtle/50 dark:text-dark-ink-subtle/50 group-hover:text-terracotta dark:group-hover:text-ochre transition-colors hidden sm:block shrink-0 ${
                 canDrag ? 'cursor-grab active:cursor-grabbing' : 'cursor-default opacity-40'
               }`}
             >
@@ -147,7 +147,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-serif text-base sm:text-lg font-medium text-light-ink dark:text-dark-ink truncate group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors">
+                <h3 className="font-serif text-base sm:text-lg font-medium text-light-ink dark:text-dark-ink truncate group-hover:text-terracotta dark:group-hover:text-ochre transition-colors">
                   {title || <span className="italic text-light-ink-subtle font-sans text-sm">Untitled Entry</span>}
                 </h3>
                 {badge}
@@ -174,7 +174,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               onClick={onMoveUp}
               title="Move item up in display order"
               aria-label="Move item up"
-              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer"
+              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer"
             >
               <ArrowUp className="w-4 h-4" />
             </button>
@@ -188,7 +188,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
               onClick={onMoveDown}
               title="Move item down in display order"
               aria-label="Move item down"
-              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer"
+              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre disabled:opacity-20 disabled:pointer-events-none rounded-md hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer"
             >
               <ArrowDown className="w-4 h-4" />
             </button>
@@ -230,7 +230,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
             <button
               type="button"
               aria-label={isExpanded ? 'Collapse section' : 'Expand section'}
-              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] rounded-md hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer ml-0.5"
+              className="min-w-[38px] min-h-[38px] flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre rounded-md hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer ml-0.5"
             >
               {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>

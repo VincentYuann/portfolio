@@ -3,6 +3,7 @@ import { ArrowRight, Layers, Github, ExternalLink, Calendar } from 'lucide-react
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { Badge } from '../../ui/badge';
+import { Card } from '../../ui/card';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { SectionHeading } from '../../common/SectionHeading';
 import { StatusBadge } from '../../common/StatusBadge';
@@ -130,11 +131,11 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
             const isCurrent = typeof project.isActive === 'boolean' ? project.isActive : index === 0;
 
             return (
-              <article
+              <Card
                 key={project.id}
                 onMouseEnter={() => setHoveredProjectId(project.id)}
                 onMouseLeave={() => setHoveredProjectId(null)}
-                className="group relative w-full bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-8 transition-colors duration-200 shadow-2xs overflow-visible"
+                className="group relative w-full p-4 sm:p-8"
               >
                 {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
                 <EnsoOrbital
@@ -193,7 +194,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       </div>
 
                       <div className="flex items-center justify-between gap-4 mb-1">
-                        <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-medium tracking-tight group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors duration-200">
+                        <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-medium tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors duration-200">
                           {project.title}
                         </h3>
                         <span className="font-serif text-lg text-light-ink-muted dark:text-dark-ink-muted shrink-0">
@@ -221,12 +222,12 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       <button
                         type="button"
                         onClick={() => openProject(project)}
-                        className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-medium hover:text-terracotta dark:hover:text-[#D4A853] transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded py-1 px-0.5 group/btn cursor-pointer"
+                        className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-medium hover:text-terracotta dark:hover:text-ochre transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded py-1 px-0.5 group/btn cursor-pointer"
                       >
                         <span>
                           {project.links.caseStudyText || 'View Architecture'}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/btn:text-terracotta dark:group-hover/btn:text-[#D4A853]" />
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/btn:text-terracotta dark:group-hover/btn:text-ochre" />
                       </button>
 
                       {/* Direct External Links */}
@@ -236,7 +237,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             href={project.links.github}
                             target="_blank"
                             rel="noreferrer"
-                            className="p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none cursor-pointer"
+                            className="p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer"
                             title="GitHub Repository"
                             aria-label={`${project.title} GitHub Repository`}
                           >
@@ -248,7 +249,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             href={project.links.live}
                             target="_blank"
                             rel="noreferrer"
-                            className="p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none cursor-pointer"
+                            className="p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer"
                             title="Live Deployment"
                             aria-label={`${project.title} Live Deployment`}
                           >
@@ -259,7 +260,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                     </div>
                   </div>
                 </div>
-              </article>
+              </Card>
             );
           })}
         </div>

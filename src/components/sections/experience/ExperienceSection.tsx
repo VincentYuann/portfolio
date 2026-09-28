@@ -12,6 +12,7 @@ import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { TechTag } from '../../common/TechTag';
 import { Badge } from '../../ui/badge';
+import { Card } from '../../ui/card';
 import { SectionHeading } from '../../common/SectionHeading';
 import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
@@ -205,7 +206,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
         {/* Timeline Container */}
         <div className="relative timeline-container">
           {/* Vertical Joinery Axis Line: Crisp architectural spine rail */}
-          <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B] to-[#CDB38B]/40 dark:from-[#404450] dark:via-[#D4A853]/60 dark:to-[#404450]/40 -translate-x-1/2 pointer-events-none z-0 rounded-full shadow-2xs" />
+          <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B] to-[#CDB38B]/40 dark:from-[#404450] dark:via-ochre/60 dark:to-[#404450]/40 -translate-x-1/2 pointer-events-none z-0 rounded-full shadow-2xs" />
 
           {/* Milestone Cards Stack */}
           <div className="flex flex-col gap-8 sm:gap-12">
@@ -254,8 +255,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     }}
                     className={`timeline-node absolute left-3.5 sm:left-5 top-7 sm:top-8 w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300 cursor-pointer shadow-xs ${
                       isCardActive
-                        ? 'bg-terracotta border-2 border-[#F7F0E3] dark:border-[#23252C] ring-2 ring-terracotta dark:bg-[#D4A853] dark:ring-[#D4A853] scale-110'
-                        : 'border-2 border-[#CDB38B] dark:border-[#6B7280] bg-[#F7F0E3] dark:bg-[#23252C] hover:border-terracotta dark:hover:border-[#D4A853] hover:scale-105'
+                        ? 'bg-terracotta border-2 border-[#F7F0E3] dark:border-[#23252C] ring-2 ring-terracotta dark:bg-ochre dark:ring-ochre scale-110'
+                        : 'border-2 border-[#CDB38B] dark:border-[#6B7280] bg-[#F7F0E3] dark:bg-[#23252C] hover:border-terracotta dark:hover:border-ochre hover:scale-105'
                     }`}
                   >
                     {!isCardActive && (
@@ -264,11 +265,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                   </button>
 
                   {/* Milestone Card Frame */}
-                  <div
-                    className={`relative rounded-[3px] border p-5 sm:p-8 overflow-visible transition-all duration-200 classical-card-frame bg-light-surface-card dark:bg-dark-surface-card craft-card ${
+                  <Card
+                    className={`relative p-5 sm:p-8 overflow-visible transition-all duration-200 ${
                       isCardActive
                         ? 'border-light-border-strong dark:border-dark-border-strong shadow-xs'
-                        : 'border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong'
+                        : ''
                     }`}
                   >
                     {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover; disappears when not hovered or hovered elsewhere) */}
@@ -339,7 +340,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         </div>
 
                         {/* Title & Company */}
-                        <h3 className="font-serif text-xl sm:text-2xl font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors leading-snug">
+                        <h3 className="font-serif text-xl sm:text-2xl font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors leading-snug">
                           {exp.title}
                         </h3>
 
@@ -430,7 +431,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         )}
                       </div>
                     </div>
-                  </div>
+                  </Card>
                 </article>
               );
             })}

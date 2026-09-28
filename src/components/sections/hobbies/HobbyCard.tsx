@@ -3,6 +3,7 @@ import { Image as ImageIcon, Maximize2 } from 'lucide-react';
 import { HobbyItem } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
+import { Card } from '../../ui/card';
 import { getCategoryStyle } from '../../../lib/hobbyTheme';
 
 // Lazy-load Lightbox module so yet-another-react-lightbox isn't in initial bundle
@@ -31,8 +32,9 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
   const categoryStyle = getCategoryStyle(hobby.category, index);
 
   return (
-    <article
-      className="bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-7 shadow-sm relative overflow-visible classical-card-frame group hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface dark:hover:bg-dark-surface transition-all duration-300 flex flex-col justify-between"
+    <Card
+      variant="interactive"
+      className="p-5 sm:p-7 shadow-sm relative overflow-visible group transition-all duration-300 flex flex-col justify-between"
     >
       {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
       <EnsoOrbital
@@ -108,7 +110,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
 
                 {/* Image Counter Pill */}
                 <div className="absolute top-2 left-2 px-2 py-0.5 rounded-[2px] bg-black/60 backdrop-blur-xs text-[11px] font-mono text-white/90 flex items-center gap-1">
-                  <ImageIcon className="w-3 h-3 text-terracotta dark:text-[#D4A853]" />
+                  <ImageIcon className="w-3 h-3 text-terracotta dark:text-ochre" />
                   <span>
                     {activeImageIndex + 1} / {images.length}
                   </span>
@@ -123,7 +125,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                       key={idx}
                       type="button"
                       onClick={() => setActiveImageIndex(idx)}
-                      className="relative flex-1 rounded-[2px] overflow-hidden border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-[#D4A853] transition-colors group/thumb cursor-pointer bg-light-surface-muted dark:bg-dark-surface-muted"
+                      className="relative flex-1 rounded-[2px] overflow-hidden border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre transition-colors group/thumb cursor-pointer bg-light-surface-muted dark:bg-dark-surface-muted"
                       title={`Switch to image ${idx + 1}`}
                       aria-label={`Switch to photo ${idx + 1}`}
                     >
@@ -186,6 +188,6 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
           />
         </Suspense>
       )}
-    </article>
+    </Card>
   );
 };

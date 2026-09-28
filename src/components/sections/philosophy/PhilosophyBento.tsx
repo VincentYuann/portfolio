@@ -3,6 +3,7 @@ import { Compass, Feather, ShieldCheck } from 'lucide-react';
 import { BambooArt } from '../../common/BambooArt';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
+import { Card } from '../../ui/card';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
@@ -149,8 +150,8 @@ export const PhilosophyBento: React.FC = () => {
 
         {/* 04.1 Origin Trajectory Bento Box */}
         {hasOriginStory && (
-          <div
-            className="group mb-10 sm:mb-12 bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-8 shadow-sm relative overflow-visible classical-card-frame hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors duration-300"
+          <Card
+            className="group mb-10 sm:mb-12 p-5 sm:p-8 shadow-sm relative overflow-visible transition-colors duration-300"
           >
             {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
             <EnsoOrbital
@@ -232,7 +233,7 @@ export const PhilosophyBento: React.FC = () => {
                 })}
               </div>
             )}
-          </div>
+          </Card>
         )}
 
         {/* 04.2 Core Architectural Pillars Subsection Divider */}
@@ -267,9 +268,10 @@ export const PhilosophyBento: React.FC = () => {
             const num = `PILLAR ${String(pillar.position || idx + 1).padStart(2, '0')}`;
 
             return (
-              <div
+              <Card
                 key={pillar.position || idx}
-                className="interactive-card bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group hover:bg-light-surface dark:hover:bg-dark-surface hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-300 classical-card-frame min-h-[280px]"
+                variant="interactive"
+                className="p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group transition-all duration-300 min-h-[280px]"
               >
                 {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
                 <EnsoOrbital
@@ -326,7 +328,7 @@ export const PhilosophyBento: React.FC = () => {
                 <div className="absolute inset-0 pointer-events-none rounded-[3px]">
                   {config.watermark}
                 </div>
-              </div>
+              </Card>
             );
           })}
         </div>
