@@ -6,6 +6,7 @@ import { HobbyCard } from './HobbyCard';
 import { SectionHeading } from '../../common/SectionHeading';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
+import { AkariLanternDecorator } from '../../common/AkariLanternDecorator';
 
 interface HobbiesSectionProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -60,6 +61,14 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
         textureOpacityNight={0.45}
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
+      />
+
+      {/* Ambient Elliptical Akari Lantern on Left (Asymmetry Balance against right Pine Tree) */}
+      <AkariLanternDecorator
+        variant="hanging-elliptical"
+        className="top-2 sm:top-6 left-2 sm:left-6 lg:left-10 xl:left-14"
+        sizeClassName="w-32 sm:w-40 lg:w-48 xl:w-52"
+        glowSizeClassName="w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}

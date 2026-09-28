@@ -6,6 +6,7 @@ import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
+import { AkariLanternDecorator } from '../../common/AkariLanternDecorator';
 
 export const ContactSection: React.FC = () => {
   const [name, setName] = useState('');
@@ -132,6 +133,14 @@ export const ContactSection: React.FC = () => {
         textureOpacityNight={0.45}
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
+      />
+
+      {/* Ambient Japanese Akari Hanging Paper Lantern on Right (Welcoming Teahouse Luminescence) */}
+      <AkariLanternDecorator
+        variant="hanging-vertical"
+        className="top-2 sm:top-6 right-2 sm:right-6 lg:right-10 xl:right-16"
+        sizeClassName="w-28 sm:w-36 lg:w-44 xl:w-48"
+        glowSizeClassName="w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}

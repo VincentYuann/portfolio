@@ -830,15 +830,35 @@ body.font-variant-v7 {
 }
 
 /* ==============================================================================
+   AKARI LANTERN AMBIENT FAINTING LIGHT (Warm Breathing Candlelight Glow)
+   ============================================================================== */
+@keyframes lantern-faint-breathe {
+  0%, 100% {
+    opacity: 0.52;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 0.80;
+    transform: scale(1.04);
+  }
+}
+
+.animate-lantern-faint {
+  animation: lantern-faint-breathe 6.5s ease-in-out infinite;
+}
+
+/* ==============================================================================
    ACCESSIBILITY: REDUCED MOTION GUARD
    ============================================================================== */
 @media (prefers-reduced-motion: reduce) {
   .animate-gentle-drift,
   .animate-ocean-wave,
   .animate-bamboo-sway,
+  .animate-lantern-faint,
   .mote-1,
   .mote-2,
   .mote-3 {
     animation: none !important;
   }
 }
+

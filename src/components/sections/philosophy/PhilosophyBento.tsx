@@ -8,6 +8,7 @@ import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
 import { SectionHeading } from '../../common/SectionHeading';
+import { AkariLanternDecorator } from '../../common/AkariLanternDecorator';
 
 const TRAJECTORY_THEMES = [
   {
@@ -130,6 +131,14 @@ export const PhilosophyBento: React.FC = () => {
         textureOpacityNight={0.45}
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
+      />
+
+      {/* Ambient Standing Akari Tripod Paper Lamp on Right (Asymmetry Balance against Left Mountain) */}
+      <AkariLanternDecorator
+        variant="standing-tripod"
+        className="top-6 sm:top-10 right-2 sm:right-6 lg:right-10 xl:right-16"
+        sizeClassName="w-28 sm:w-36 lg:w-44 xl:w-48"
+        glowSizeClassName="w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}

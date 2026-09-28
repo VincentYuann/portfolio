@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" fill="none">
+  <!-- Outer stamp border -->
+  <rect
+    x="20"
+    y="20"
+    width="160"
+    height="160"
+    rx="22"
+    ry="22"
+    fill="none"
+    stroke="#C83C23"
+    stroke-width="13"
+    stroke-linecap="round"
+  />
+  <!-- Inner fine hairline border -->
+  <rect
+    x="34"
+    y="34"
+    width="132"
+    height="132"
+    rx="14"
+    ry="14"
+    fill="none"
+    stroke="#C83C23"
+    stroke-width="2.5"
+    opacity="0.65"
+  />
+  <!-- Traditional Kanji Character '原' rendered in bold seal-script aesthetic -->
+  <text
+    x="100"
+    y="134"
+    font-family="'Noto Serif JP', 'Songti TC', 'Hiragino Mincho ProN', 'Yu Mincho', 'MS PMincho', serif"
+    font-weight="900"
+    font-size="98"
+    fill="#C83C23"
+    text-anchor="middle"
+  >原</text>
+  <!-- Seal authentication dot -->
+  <circle cx="152" cy="48" r="4.5" fill="#C83C23" />
+</svg>

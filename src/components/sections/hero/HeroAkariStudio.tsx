@@ -11,6 +11,7 @@ import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 import { HankoStamp } from '../../common/HankoStamp';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
+import { AkariLanternDecorator } from '../../common/AkariLanternDecorator';
 import { ViewMode } from '../../../App';
 
 interface HeroAkariStudioProps {
@@ -71,9 +72,14 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
       id="home"
       className="relative w-full pt-28 sm:pt-36 lg:pt-44 pb-16 lg:pb-24 flex flex-col justify-start overflow-hidden"
     >
-      {/* 
-      {/* Background layer cleared per user request */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none" />
+      {/* Ambient Japanese Akari Hanging Paper Lantern with Warmer Fainting Candlelight Glow */}
+      <AkariLanternDecorator
+        variant="hanging-vertical"
+        className="top-0 right-4 sm:right-10 lg:right-20 xl:right-28"
+        sizeClassName="w-36 sm:w-44 lg:w-52 xl:w-60"
+        glowSizeClassName="w-72 sm:w-88 lg:w-[26rem] h-72 sm:h-88 lg:h-[26rem]"
+        priority={true}
+      />
 
       {/* Main Studio Frame Layout: Left Workspace + Right Hanko Card */}
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4 lg:py-6 flex flex-col gap-6 sm:gap-8 relative z-10">

@@ -159,6 +159,7 @@ const ACCEPTED_FILE_TYPES_ATTR = [
 export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin = false }) => {
   const { refresh: refreshSiteData } = useSiteData();
   const [isOpen, setIsOpen] = useState(false);
+  const [isStamping, setIsStamping] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [displayedStreamingText, setDisplayedStreamingText] = useState('');
@@ -852,16 +853,32 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
         <button
           ref={launcherRef}
           type="button"
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2.5 p-1.5 sm:pl-2 sm:pr-3.5 sm:py-1.5 rounded-full bg-light-surface-card dark:bg-dark-surface-card border border-terracotta/40 hover:border-terracotta dark:border-ochre/40 dark:hover:border-ochre text-light-ink dark:text-dark-ink shadow-md hover:shadow-hanko-glow transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:ring-offset-2 active:scale-95 cursor-pointer min-h-[48px] min-w-[48px]"
+          onClick={() => {
+            setIsStamping(true);
+            setTimeout(() => {
+              setIsOpen(true);
+              setIsStamping(false);
+            }, 240);
+          }}
+          className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2.5 p-1.5 sm:pl-2 sm:pr-3.5 sm:py-1.5 rounded-full bg-light-surface-card dark:bg-dark-surface-card border border-terracotta/40 hover:border-terracotta dark:border-ochre/40 dark:hover:border-ochre text-light-ink dark:text-dark-ink shadow-md hover:shadow-hanko-glow transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:ring-offset-2 active:scale-95 cursor-pointer min-h-[48px] min-w-[48px] ${
+            isStamping ? 'scale-90 ring-4 ring-terracotta/30 dark:ring-ochre/30 shadow-hanko-glow' : ''
+          }`}
           aria-label="Open Vincent's AI Companion (Press Cmd+K or Ctrl+K)"
           aria-haspopup="dialog"
           aria-expanded={false}
           title="Ask Vincent's AI (⌘K)"
         >
+          {/* Vermilion Stamp Impression Ripple (Inshu Seal Wave) */}
+          {isStamping && (
+            <span className="absolute inset-0 rounded-full border-2 border-terracotta dark:border-ochre animate-ping pointer-events-none opacity-80" />
+          )}
+
           {/* Authentic Hanko Stamp Mark */}
-          <div className="w-9 h-9 rounded-full bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light flex items-center justify-center font-serif font-bold text-sm shadow-xs group-hover:scale-105 transition-transform shrink-0">
+          <div className="w-9 h-9 rounded-full bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light flex items-center justify-center font-serif font-bold text-sm shadow-xs group-hover:scale-105 transition-transform shrink-0 relative overflow-hidden">
             問
+            {isStamping && (
+              <span className="absolute inset-0 bg-white/25 animate-pulse pointer-events-none" />
+            )}
           </div>
           {/* Launcher Label & Shortcut Affordance (Responsive Desktop Expansion) */}
           <div className="hidden sm:flex items-center gap-2 pr-0.5">
