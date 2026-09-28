@@ -75,9 +75,9 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
       {/* Ambient Japanese Akari Hanging Paper Lantern with Warmer Fainting Candlelight Glow */}
       <AkariLanternDecorator
         variant="hanging-vertical"
-        className="top-0 right-4 sm:right-10 lg:right-20 xl:right-28"
-        sizeClassName="w-36 sm:w-44 lg:w-52 xl:w-60"
-        glowSizeClassName="w-72 sm:w-88 lg:w-[26rem] h-72 sm:h-88 lg:h-[26rem]"
+        className="top-0 right-12 lg:right-20 xl:right-28"
+        sizeClassName="md:w-44 lg:w-52 xl:w-60"
+        glowSizeClassName="md:w-88 lg:w-[26rem] md:h-88 lg:h-[26rem]"
         priority={true}
       />
 

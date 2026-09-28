@@ -112,9 +112,9 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
       {/* Ambient Spherical Akari Lantern on Left (Asymmetry Balance against bottom-right Ocean Wave) */}
       <AkariLanternDecorator
         variant="hanging-round"
-        className="top-2 sm:top-6 left-2 sm:left-6 lg:left-10 xl:left-14"
-        sizeClassName="w-28 sm:w-36 lg:w-44 xl:w-48"
-        glowSizeClassName="w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96"
+        className="top-6 left-6 lg:left-10 xl:left-14"
+        sizeClassName="md:w-36 lg:w-44 xl:w-48"
+        glowSizeClassName="md:w-80 lg:w-96 md:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}

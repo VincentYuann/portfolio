@@ -66,9 +66,9 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
       {/* Ambient Elliptical Akari Lantern on Left (Asymmetry Balance against right Pine Tree) */}
       <AkariLanternDecorator
         variant="hanging-elliptical"
-        className="top-2 sm:top-6 left-2 sm:left-6 lg:left-10 xl:left-14"
-        sizeClassName="w-32 sm:w-40 lg:w-48 xl:w-52"
-        glowSizeClassName="w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96"
+        className="top-6 left-6 lg:left-10 xl:left-14"
+        sizeClassName="md:w-40 lg:w-48 xl:w-52"
+        glowSizeClassName="md:w-80 lg:w-96 md:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}

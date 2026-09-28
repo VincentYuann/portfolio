@@ -31,8 +31,8 @@ const GLOW_CENTER_BY_VARIANT: Record<LanternVariant, string> = {
 export const AkariLanternDecorator: React.FC<AkariLanternDecoratorProps> = ({
   variant = 'hanging-vertical',
   className = '',
-  sizeClassName = 'w-32 sm:w-40 lg:w-48 xl:w-56',
-  glowSizeClassName = 'w-64 sm:w-80 lg:w-[24rem] h-64 sm:h-80 lg:h-[24rem]',
+  sizeClassName = 'md:w-36 lg:w-44 xl:w-52',
+  glowSizeClassName = 'md:w-72 lg:w-84 md:h-72 lg:h-84',
   priority = false,
 }) => {
   const src = LANTERN_SOURCES[variant];
@@ -45,18 +45,18 @@ export const AkariLanternDecorator: React.FC<AkariLanternDecoratorProps> = ({
     >
       {/* Outer Expansive Warm Candlelight Halo (Blends organically into Day/Night Canvas) */}
       <div
-        className={`absolute ${glowCenter} left-1/2 -translate-x-1/2 -translate-y-1/2 ${glowSizeClassName} rounded-full bg-[radial-gradient(circle_at_center,_rgba(245,158,11,0.26)_0%,_rgba(234,88,12,0.11)_36%,_rgba(217,119,6,0.03)_60%,_transparent_74%)] dark:bg-[radial-gradient(circle_at_center,_rgba(251,191,36,0.22)_0%,_rgba(245,158,11,0.10)_38%,_rgba(217,119,6,0.03)_62%,_transparent_78%)] blur-2xl sm:blur-3xl animate-lantern-faint pointer-events-none`}
+        className={`absolute ${glowCenter} left-1/2 -translate-x-1/2 -translate-y-1/2 ${glowSizeClassName} rounded-full bg-[radial-gradient(circle_at_center,_rgba(245,158,11,0.24)_0%,_rgba(234,88,12,0.10)_36%,_rgba(217,119,6,0.03)_60%,_transparent_74%)] dark:bg-[radial-gradient(circle_at_center,_rgba(251,191,36,0.20)_0%,_rgba(245,158,11,0.09)_38%,_rgba(217,119,6,0.02)_62%,_transparent_78%)] blur-3xl animate-lantern-faint pointer-events-none`}
       />
 
       {/* Inner Concentrated Warm Amber Core for Gentle Luminous Warmth */}
       <div
-        className={`absolute ${glowCenter} left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 sm:w-36 lg:w-44 h-28 sm:h-36 lg:h-44 rounded-full bg-amber-500/18 dark:bg-amber-400/15 blur-xl animate-lantern-faint pointer-events-none`}
+        className={`absolute ${glowCenter} left-1/2 -translate-x-1/2 -translate-y-1/2 md:w-36 lg:w-40 md:h-36 lg:h-40 rounded-full bg-amber-500/18 dark:bg-amber-400/15 blur-xl animate-lantern-faint pointer-events-none`}
       />
 
       <img
         src={src}
         alt=""
-        className={`relative z-10 ${sizeClassName} h-auto object-contain opacity-50 dark:opacity-60 drop-shadow-[0_6px_28px_rgba(245,158,11,0.22)] dark:drop-shadow-[0_0_28px_rgba(251,191,36,0.25)] transition-all duration-700 ease-out`}
+        className={`relative z-10 ${sizeClassName} h-auto object-contain md:opacity-50 dark:md:opacity-60 drop-shadow-[0_6px_28px_rgba(245,158,11,0.22)] dark:drop-shadow-[0_0_28px_rgba(251,191,36,0.25)] transition-all duration-700 ease-out`}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
       />

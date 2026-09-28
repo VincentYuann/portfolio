@@ -115,7 +115,7 @@ export const ContactSection: React.FC = () => {
   )}` : '#';
 
   return (
-    <section id="contact" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 mb-8 scroll-mt-12 bg-light-canvas dark:bg-dark-canvas">
+    <section id="contact" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 mb-8 scroll-mt-12 overflow-hidden bg-light-canvas dark:bg-dark-canvas">
       {/* Architectural Background Chamber for Contact */}
       <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface-card/40 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0" />
       <div className="absolute inset-0 bg-radial-[at_50%_40%] from-terracotta/[0.03] dark:from-terracotta/[0.02] to-transparent pointer-events-none z-0" />
@@ -138,9 +138,9 @@ export const ContactSection: React.FC = () => {
       {/* Ambient Japanese Akari Hanging Paper Lantern on Right (Welcoming Teahouse Luminescence) */}
       <AkariLanternDecorator
         variant="hanging-vertical"
-        className="top-2 sm:top-6 right-2 sm:right-6 lg:right-10 xl:right-16"
-        sizeClassName="w-28 sm:w-36 lg:w-44 xl:w-48"
-        glowSizeClassName="w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96"
+        className="top-6 right-6 lg:right-10 xl:right-16"
+        sizeClassName="md:w-36 lg:w-44 xl:w-48"
+        glowSizeClassName="md:w-80 lg:w-96 md:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}
