@@ -35,35 +35,52 @@ const AiChatWidget = lazy(() => import('./components/common/AiChatWidget').then(
 
 export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies' | 'visual-system';
 
+const SKELETON_COMPONENTS: Record<string, React.FC> = {
+  projects: ProjectsPageSkeleton,
+  hobbies: HobbiesPageSkeleton,
+  resume: ResumePageSkeleton,
+  edit: AdminStudioSkeleton,
+  login: LoginPageSkeleton,
+  'visual-system': DefaultPageSkeleton,
+};
+
 const RouteLoadingFallback: React.FC<{ currentView?: ViewMode }> = ({ currentView }) => {
-  switch (currentView) {
-    case 'projects':
-      return <ProjectsPageSkeleton />;
-    case 'hobbies':
-      return <HobbiesPageSkeleton />;
-    case 'resume':
-      return <ResumePageSkeleton />;
-    case 'edit':
-      return <AdminStudioSkeleton />;
-    case 'login':
-      return <LoginPageSkeleton />;
-    case 'visual-system':
-      return <DefaultPageSkeleton />;
-    default:
-      return <DefaultPageSkeleton />;
-  }
+  const Component = (currentView && SKELETON_COMPONENTS[currentView]) || DefaultPageSkeleton;
+  return <Component />;
+};
+
+const HASH_TO_VIEW_MAP: Record<string, ViewMode> = {
+  '#resume': 'resume',
+  '#cv': 'resume',
+  '#projects': 'projects',
+  '#all-projects': 'projects',
+  '#archive': 'projects',
+  '#hobbies': 'hobbies',
+  '#all-hobbies': 'hobbies',
+  '#hobbies-archive': 'hobbies',
+  '#visual-system': 'visual-system',
+  '#design-system': 'visual-system',
+  '#typography': 'visual-system',
+  '#styles': 'visual-system',
+  '#login': 'login',
+  '#edit': 'edit',
+};
+
+const VIEW_TO_HASH_MAP: Record<ViewMode, string> = {
+  home: '#home',
+  projects: '#all-projects',
+  resume: '#resume',
+  hobbies: '#all-hobbies',
+  'visual-system': '#visual-system',
+  login: '#login',
+  edit: '#edit',
 };
 
 const getInitialView = (): ViewMode => {
   if (typeof window === 'undefined') return 'home';
   const hash = window.location.hash.toLowerCase();
-  if (hash === '#resume' || hash === '#cv') return 'resume';
-  if (hash === '#all-projects' || hash === '#projects' || hash === '#archive' || hash.startsWith('#project-')) return 'projects';
-  if (hash === '#all-hobbies' || hash === '#hobbies-archive') return 'hobbies';
-  if (hash === '#visual-system' || hash === '#design-system' || hash === '#typography' || hash === '#styles') return 'visual-system';
-  if (hash === '#login') return 'login';
-  if (hash === '#edit') return 'edit';
-  return 'home';
+  if (hash.startsWith('#project-')) return 'projects';
+  return HASH_TO_VIEW_MAP[hash] || 'home';
 };
 
 const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => void }> = ({ onNavigate }) => {
@@ -229,28 +246,18 @@ export const App: React.FC = () => {
         return;
       }
 
-      if (hash === '#resume' || hash === '#cv') {
-        setViewRef.current('resume');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === '#all-projects' || hash === '#projects' || hash === '#archive') {
-        setViewRef.current('projects');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash.startsWith('#project-')) {
+      if (hash.startsWith('#project-')) {
         setViewRef.current((prev) => {
           if (prev === 'projects' || prev === 'home') return prev;
           window.scrollTo({ top: 0, behavior: 'smooth' });
           return 'projects';
         });
-      } else if (hash === '#all-hobbies' || hash === '#hobbies-archive') {
-        setViewRef.current('hobbies');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === '#visual-system' || hash === '#design-system' || hash === '#typography' || hash === '#styles') {
-        setViewRef.current('visual-system');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === '#login') {
-        setViewRef.current('login');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === '#edit') {
+        return;
+      }
+
+      const targetView = HASH_TO_VIEW_MAP[hash];
+
+      if (targetView === 'edit') {
         if (isAdminRef.current) {
           setViewRef.current('edit');
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -264,13 +271,14 @@ export const App: React.FC = () => {
           setViewRef.current('projects');
           window.history.replaceState(null, '', '#all-projects');
         } else {
-          // Auth is still hydrating: keep 'edit' view and let auth listener decide
           setViewRef.current('edit');
         }
-      } else if (hash === '' || hash === '#home' || hash === '#') {
+      } else if (targetView) {
+        setViewRef.current(targetView);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (!hash || hash === '#home' || hash === '#') {
         setViewRef.current('home');
       }
-      // Any unrecognised hash (e.g. section anchors like #contact): do nothing
     };
 
     handleHashChange(); // Run once on mount
@@ -293,38 +301,20 @@ export const App: React.FC = () => {
 
     setCurrentView(view);
 
-    if (view === 'resume') {
-      window.location.hash = '#resume';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (view === 'projects') {
-      window.location.hash = '#all-projects';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (view === 'hobbies') {
-      window.location.hash = '#all-hobbies';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (view === 'visual-system') {
-      window.location.hash = '#visual-system';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (view === 'login') {
-      window.location.hash = '#login';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (view === 'edit') {
-      window.location.hash = '#edit';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    const targetHash = sectionId ? `#${sectionId}` : VIEW_TO_HASH_MAP[view] || '#home';
+    window.location.hash = targetHash;
+
+    if (sectionId) {
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 50);
     } else {
-      window.location.hash = sectionId ? `#${sectionId}` : '#home';
-      if (sectionId) {
-        setTimeout(() => {
-          const el = document.getElementById(sectionId);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
-          } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        }, 50);
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 

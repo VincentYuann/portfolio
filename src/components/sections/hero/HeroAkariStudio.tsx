@@ -18,36 +18,18 @@ interface HeroAkariStudioProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
 }
 
+const PILLAR_ICON_MATCHERS: Array<{ keywords: string[]; icon: typeof Sparkles }> = [
+  { keywords: ['ai', 'intelligence', 'rag', 'agent'], icon: Sparkles },
+  { keywords: ['front', 'ui', 'craft', 'web', 'lang', 'code'], icon: Code2 },
+  { keywords: ['system', 'cloud', 'tool', 'back'], icon: Cpu },
+];
+
+const DEFAULT_PILLAR_ICONS = [Cpu, Sparkles, Code2];
+
 const getPillarIcon = (label: string, idx: number) => {
   const norm = (label || '').toLowerCase();
-  if (
-    norm.includes('ai') ||
-    norm.includes('intelligence') ||
-    norm.includes('rag') ||
-    norm.includes('agent')
-  ) {
-    return Sparkles;
-  }
-  if (
-    norm.includes('front') ||
-    norm.includes('ui') ||
-    norm.includes('craft') ||
-    norm.includes('web')
-  ) {
-    return Code2;
-  }
-  if (norm.includes('lang') || norm.includes('code')) {
-    return Code2;
-  }
-  if (
-    norm.includes('system') ||
-    norm.includes('cloud') ||
-    norm.includes('tool') ||
-    norm.includes('back')
-  ) {
-    return Cpu;
-  }
-  return idx === 0 ? Cpu : idx === 1 ? Sparkles : Code2;
+  const matched = PILLAR_ICON_MATCHERS.find(({ keywords }) => keywords.some((k) => norm.includes(k)));
+  return matched ? matched.icon : (DEFAULT_PILLAR_ICONS[idx] || Code2);
 };
 
 export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) => {
