@@ -125,7 +125,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
         />
 
         {/* Alternating Editorial Project Cards Stack (Top 3 on Home) */}
-        <div className="flex flex-col gap-6 sm:gap-8">
+        <div className="flex flex-col gap-8 sm:gap-12 lg:gap-14">
           {displayedProjects.map((project, index) => {
             const isAlternate = index % 2 === 1;
             const isCurrent = typeof project.isActive === 'boolean' ? project.isActive : index === 0;
@@ -135,7 +135,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                 key={project.id}
                 onMouseEnter={() => setHoveredProjectId(project.id)}
                 onMouseLeave={() => setHoveredProjectId(null)}
-                className="group relative w-full p-4 sm:p-8"
+                className="group relative w-full p-5 sm:p-8 lg:p-10"
               >
                 {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
                 <EnsoOrbital
@@ -193,20 +193,20 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         <StatusBadge isActive={isCurrent} />
                       </div>
 
-                      <div className="flex items-center justify-between gap-4 mb-1">
-                        <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-medium tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors duration-200">
+                      <div className="flex items-center justify-between gap-4 mb-1.5">
+                        <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-light-ink dark:text-dark-ink font-normal leading-[1.15] tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors duration-200">
                           {project.title}
                         </h3>
-                        <span className="font-serif text-lg text-light-ink-muted dark:text-dark-ink-muted shrink-0">
+                        <span className="font-serif text-xl sm:text-2xl lg:text-3xl text-light-ink-muted/70 dark:text-dark-ink-muted/70 shrink-0 select-none">
                           {project.kanji}
                         </span>
                       </div>
-                      <p className="font-sans text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+                      <p className="font-chakra text-xs sm:text-[13px] font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-widest">
                         {project.subtitle}
                       </p>
                     </div>
 
-                    <p className="font-sans text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal max-w-prose">
+                    <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal max-w-prose">
                       {project.description}
                     </p>
 

@@ -29,19 +29,19 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
           onNavigate('hobbies');
         }
       }}
-      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-terracotta/50 dark:hover:border-[#D4A853]/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
+      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-terracotta/50 dark:hover:border-ochre/50 text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-xs transition-all duration-200 cursor-pointer"
     >
-      <Layers className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853]" />
+      <Layers className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
       <span className="sm:hidden">All Hobbies ({hobbies.length})</span>
       <span className="hidden sm:inline">View All Hobbies ({hobbies.length})</span>
-      <ArrowRight className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] transition-transform duration-200 group-hover:translate-x-1" />
+      <ArrowRight className="w-3.5 h-3.5 text-terracotta dark:text-ochre transition-transform duration-200 group-hover:translate-x-1" />
     </a>
   ) : null;
 
   return (
     <section
       id="hobbies"
-      className="section-chamber-alt relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden bg-[#FAF5EB] dark:bg-[#1E1F24]"
+      className="section-chamber-alt relative w-full pt-12 sm:pt-16 pb-28 lg:pb-36 scroll-mt-12 overflow-hidden bg-[#FAF5EB] dark:bg-[#1E1F24]"
     >
       {/* Architectural Background Chamber for Hobbies */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface/20 to-transparent dark:via-dark-surface-card/40 pointer-events-none z-0" />

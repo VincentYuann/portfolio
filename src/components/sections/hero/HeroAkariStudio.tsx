@@ -69,7 +69,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   return (
     <section
       id="home"
-      className="relative w-full pt-24 sm:pt-28 lg:pt-36 pb-12 lg:pb-16 flex flex-col justify-start overflow-hidden"
+      className="relative w-full pt-28 sm:pt-36 lg:pt-44 pb-16 lg:pb-24 flex flex-col justify-start overflow-hidden"
     >
       {/* 
       {/* Background layer cleared per user request */}
@@ -88,20 +88,20 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             <div className="space-y-4 sm:space-y-6 max-w-4xl">
               {/* Bold Serif Editorial Display Headline in Dynamic Display Font */}
               {headline && (
-                <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-display-lg font-normal text-light-ink dark:text-dark-ink leading-[1.12] sm:leading-[1.08] tracking-tight text-balance">
+                <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-[4.75rem] xl:text-[5.25rem] font-normal text-light-ink dark:text-dark-ink leading-[1.06] tracking-tight text-balance">
                   {headline}
                 </h1>
               )}
 
               {/* Subtitle Paragraph in Dynamic Body Font */}
               {tagline && (
-                <p className="font-sans text-sm sm:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed font-light">
+                <p className="font-sans text-base sm:text-xl text-light-ink-muted dark:text-dark-ink-muted max-w-2xl leading-relaxed font-normal">
                   {tagline}
                 </p>
               )}
 
               {/* Action Buttons with 2px corners */}
-              <div className="pt-1 sm:pt-2 flex flex-row flex-wrap items-center gap-2.5 sm:gap-4">
+              <div className="pt-2 sm:pt-4 flex flex-row flex-wrap items-center gap-3 sm:gap-4">
                 <a
                   href="#featured-works"
                   onClick={(e) => {
@@ -110,7 +110,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       onNavigate('home', 'featured-works');
                     }
                   }}
-                  className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3.5 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-all cursor-pointer"
+                  className="group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-4 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-all cursor-pointer"
                 >
                   <span>Explore Selected Works</span>
                   <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -124,7 +124,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       onNavigate('resume');
                     }
                   }}
-                  className="group inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:px-6 sm:py-3.5 bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-[2px] shadow-2xs transition-all cursor-pointer"
+                  className="group inline-flex items-center justify-center gap-1.5 px-5 py-3 sm:px-7 sm:py-4 bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-[2px] shadow-2xs transition-all cursor-pointer"
                 >
                   <span>Technical CV</span>
                   <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light-ink-muted dark:text-dark-ink-muted transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -193,7 +193,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 <div className="w-full flex items-start justify-between gap-3 sm:gap-4 pb-2.5 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
                   {hanko?.headerLabel ? (
                     <div className="flex items-start gap-1.5 font-mono uppercase text-[11px] sm:text-xs tracking-wider text-light-ink dark:text-dark-ink font-semibold min-w-0 flex-1">
-                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-[#D4A853] inline-block mt-1 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-ochre inline-block mt-1 shrink-0" />
                       <span className="leading-snug break-words">{hanko.headerLabel}</span>
                     </div>
                   ) : <div />}
@@ -214,8 +214,8 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   />
                 </div>
                 {hanko?.statusBadge && (
-                  <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-2xs font-mono font-medium text-terracotta dark:text-[#D4A853] tracking-wider uppercase shadow-2xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-[#D4A853] animate-pulse" />
+                  <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-2xs font-mono font-medium text-terracotta dark:text-ochre tracking-wider uppercase shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre animate-pulse" />
                     <span>{hanko.statusBadge}</span>
                   </div>
                 )}

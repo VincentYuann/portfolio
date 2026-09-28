@@ -111,7 +111,7 @@ export const PhilosophyBento: React.FC = () => {
   }
 
   return (
-    <section id="philosophy" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden bg-light-canvas dark:bg-dark-canvas">
+    <section id="philosophy" className="relative w-full pt-12 sm:pt-16 pb-28 lg:pb-36 scroll-mt-12 overflow-hidden bg-light-canvas dark:bg-dark-canvas">
       {/* Architectural Background Chamber for Philosophy */}
       <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/35 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0" />
       {/* Zen Ambient Mist Radial Wash */}
@@ -201,12 +201,12 @@ export const PhilosophyBento: React.FC = () => {
                         {(m.era || m.tag) && (
                           <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-light-border/40 dark:border-dark-border/40 relative z-10">
                             {m.era && (
-                              <span className={`font-mono text-[11px] font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
+                              <span className={`font-mono text-xs font-bold ${tTheme.eraColor} tracking-wider uppercase`}>
                                 {m.era}
                               </span>
                             )}
                             {m.tag && (
-                              <span className={`font-mono text-[11px] px-1.5 py-0.5 rounded-[2px] border ${tTheme.tagBg} tracking-wider uppercase`}>
+                              <span className={`font-mono text-xs px-1.5 py-0.5 rounded-[2px] border ${tTheme.tagBg} tracking-wider uppercase`}>
                                 {m.tag}
                               </span>
                             )}
@@ -271,7 +271,7 @@ export const PhilosophyBento: React.FC = () => {
               <Card
                 key={pillar.position || idx}
                 variant="interactive"
-                className="p-5 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group transition-all duration-300 min-h-[280px]"
+                className="p-6 sm:p-8 flex flex-col justify-between shadow-sm relative overflow-visible group transition-all duration-300 min-h-[300px]"
               >
                 {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
                 <EnsoOrbital
@@ -283,32 +283,44 @@ export const PhilosophyBento: React.FC = () => {
                 {/* Corner Hairline Brackets (Subtle) */}
                 <CornerBrackets size="md" />
 
-                {/* Top Accent Kanji & Icon */}
-                <div className="flex flex-col gap-3 sm:gap-4 relative z-10">
-                  <div className="flex items-center justify-between border-b border-light-border/60 dark:border-dark-border/60 pb-3 sm:pb-4">
-                    <span className="pillar-kanji font-serif text-4xl sm:text-6xl text-light-ink dark:text-dark-ink font-light leading-none inline-block pl-1 sm:pl-2 select-none transition-colors">
-                      {pillar.kanji}
-                    </span>
+                {/* Thematic Decorative Watermark Motif */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[3px]">
+                  {config.watermark}
+                </div>
+
+                {/* Main Card Content */}
+                <div className="relative z-10 flex flex-col">
+                  {/* Card Header: Pillar Numeral & Subtle Icon */}
+                  <div className="flex items-center justify-between pb-3 sm:pb-3.5 border-b border-light-border/60 dark:border-dark-border/60">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-terracotta/75 dark:bg-ochre/75" />
+                      <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-widest">
                         {num}
                       </span>
-                      <div className="w-7 h-7 rounded-full bg-light-surface dark:bg-dark-surface-raised border border-light-border dark:border-dark-border flex items-center justify-center">
-                        <Icon className={`w-3.5 h-3.5 ${config.iconColor}`} />
-                      </div>
+                    </div>
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-light-surface dark:bg-dark-surface-raised border border-light-border dark:border-dark-border flex items-center justify-center shadow-2xs group-hover:border-terracotta/40 dark:group-hover:border-ochre/40 transition-colors">
+                      <Icon className={`w-3.5 h-3.5 ${config.iconColor} group-hover:text-terracotta dark:group-hover:text-ochre transition-colors`} />
                     </div>
                   </div>
 
-                  <div>
-                    <h3 className="font-serif text-lg sm:text-2xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors break-words">
-                      {pillar.romaji}
+                  {/* Headline & Principle: Prominent Romaji + Kanji pairing */}
+                  <div className="mt-4 sm:mt-5">
+                    <div className="flex items-baseline gap-2 sm:gap-2.5 flex-wrap">
+                      <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-normal tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors">
+                        {pillar.romaji}
+                      </h3>
+                      <span className="font-serif text-xl sm:text-2xl text-terracotta dark:text-ochre font-normal select-none">
+                        {pillar.kanji}
+                      </span>
                       {pillar.title && (
-                        <span className="font-sans text-xs sm:text-sm font-light text-light-ink-muted dark:text-dark-ink-muted ml-2 block sm:inline">
+                        <span className="font-sans text-sm sm:text-base font-normal text-light-ink-muted dark:text-dark-ink-muted">
                           · {pillar.title}
                         </span>
                       )}
-                    </h3>
-                    <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 leading-relaxed font-normal break-words">
+                    </div>
+
+                    {/* The Focal Hero: Clear, readable, beautifully spaced description */}
+                    <p className="font-sans text-sm sm:text-base text-light-ink/85 dark:text-dark-ink/85 mt-3 sm:mt-4 leading-relaxed sm:leading-[1.7] font-normal break-words">
                       {pillar.description}
                     </p>
                   </div>
@@ -316,18 +328,13 @@ export const PhilosophyBento: React.FC = () => {
 
                 {/* Bottom Tag */}
                 {pillar.tag && (
-                  <div className="relative z-10 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-light-border/40 dark:border-dark-border/40 flex items-center gap-2 text-light-ink-muted dark:text-dark-ink-muted">
+                  <div className="relative z-10 pt-4 sm:pt-5 mt-6 border-t border-light-border/40 dark:border-dark-border/40 flex items-center gap-2 text-light-ink-muted dark:text-dark-ink-muted">
                     <span className={`w-1.5 h-1.5 rounded-full ${config.dotColor}`} />
                     <span className="font-mono text-xs uppercase tracking-wider font-medium truncate">
                       {pillar.tag}
                     </span>
                   </div>
                 )}
-
-                {/* Thematic Watermark Motif behind card content */}
-                <div className="absolute inset-0 pointer-events-none rounded-[3px]">
-                  {config.watermark}
-                </div>
               </Card>
             );
           })}

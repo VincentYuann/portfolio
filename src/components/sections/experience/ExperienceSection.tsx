@@ -136,7 +136,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
   const allOpen = list.every((exp, idx) => expandedCards[exp.id || idx]);
 
   return (
-    <section id="experience" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden bg-light-canvas dark:bg-dark-canvas">
+    <section id="experience" className="relative w-full pt-12 sm:pt-16 pb-28 lg:pb-36 scroll-mt-12 overflow-hidden bg-light-canvas dark:bg-dark-canvas">
       {/* Architectural Background Chamber for Experience */}
       <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/40 to-light-canvas dark:from-dark-canvas dark:via-dark-surface/40 dark:to-dark-canvas pointer-events-none z-0" />
       {/* Subtle Japanese Joinery Axis Ambient Glow */}
@@ -209,7 +209,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
           <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B] to-[#CDB38B]/40 dark:from-[#404450] dark:via-ochre/60 dark:to-[#404450]/40 -translate-x-1/2 pointer-events-none z-0 rounded-full shadow-2xs" />
 
           {/* Milestone Cards Stack */}
-          <div className="flex flex-col gap-8 sm:gap-12">
+          <div className="flex flex-col gap-10 sm:gap-14 lg:gap-16">
             {list.map((exp, idx) => {
               const cardKey = exp.id || idx;
               const isCardActive = String(activeCardId) === String(cardKey);
@@ -340,12 +340,12 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         </div>
 
                         {/* Title & Company */}
-                        <h3 className="font-serif text-xl sm:text-2xl font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors leading-snug">
+                        <h3 className="font-serif text-2xl sm:text-3xl lg:text-[2rem] font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors leading-snug tracking-tight">
                           {exp.title}
                         </h3>
 
-                        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium mt-1">
-                          <span className={`font-serif ${isCardActive ? theme.textClass : 'text-light-ink-muted dark:text-dark-ink-muted'}`}>{exp.company}</span>
+                        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium mt-1.5">
+                          <span className={`font-serif text-sm sm:text-base ${isCardActive ? theme.textClass : 'text-light-ink-muted dark:text-dark-ink-muted'} font-normal`}>{exp.company}</span>
                           {exp.location && (
                             <>
                               <span className="text-light-ink-subtle">·</span>
@@ -359,7 +359,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                         {/* High-Level Narrative Overview (Always visible) */}
                         {overviewText && (
-                          <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-3 max-w-xl">
+                          <p className="font-sans text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-3.5 max-w-2xl">
                             {overviewText}
                           </p>
                         )}
