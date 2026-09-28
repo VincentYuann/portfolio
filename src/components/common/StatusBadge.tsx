@@ -20,7 +20,7 @@ export interface StatusBadgeProps {
 export const StatusBadge: React.FC<StatusBadgeProps> = ({
   isActive = false,
   activeLabel = 'ACTIVE / 稼働中',
-  completedLabel = 'COMPLETED',
+  completedLabel = 'COMPLETED / 完了',
   size = 'md',
   customClass = '',
   badgeBg,
