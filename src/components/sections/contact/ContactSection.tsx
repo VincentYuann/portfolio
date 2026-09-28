@@ -122,9 +122,9 @@ export const ContactSection: React.FC = () => {
 
       {/* 16:9 Cedar Wood Ground & Asymmetric Sumi-e Bamboo Art (Anchored Left for alternating rhythm) */}
       <SectionSideBackdrop
-        textureDay="./background/white wood.jpg"
-        textureNight="./background/black wood.jpg"
-        painting="./decorators/bamboo.jpg"
+        textureDay="./background/white wood.webp"
+        textureNight="./background/black wood.webp"
+        painting="./decorators/bamboo.webp"
         paintingAlt="Sumi-e bamboo ink wash painting"
         placement="left"
         artworkWidth="w-full lg:w-[48%]"

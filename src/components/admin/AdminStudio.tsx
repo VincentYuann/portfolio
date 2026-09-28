@@ -172,12 +172,12 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
       {/* Simple Tactile Cedar Wood Background for Editorial Workshop */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         <img
-          src="./background/white wood.jpg"
+          src="./background/white wood.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover dark:hidden mix-blend-multiply opacity-55"
         />
         <img
-          src="./background/black wood.jpg"
+          src="./background/black wood.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover hidden dark:block mix-blend-screen opacity-40"
         />

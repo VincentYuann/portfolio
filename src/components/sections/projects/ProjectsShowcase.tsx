@@ -96,9 +96,9 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
       
       {/* 16:9 Cedar Wood Ground & Dynamic Cresting Wave across Lower/Right Canvas */}
       <SectionSideBackdrop
-        textureDay="./background/white wood.jpg"
-        textureNight="./background/black wood.jpg"
-        painting="./decorators/ocean.jpg"
+        textureDay="./background/white wood.webp"
+        textureNight="./background/black wood.webp"
+        painting="./decorators/ocean.webp"
         paintingAlt="Sumi-e ocean wave ink wash painting"
         placement="bottom-right"
         artworkWidth="w-full lg:w-[75%]"

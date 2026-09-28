@@ -42,9 +42,9 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
     <div className="relative w-full min-h-screen overflow-x-clip">
       {/* 16:9 Linen Texture Ground & Sumi-e Pine Tree (Retains exact Hobbies Section identity) */}
       <SectionSideBackdrop
-        textureDay="./background/white linen.jpg"
-        textureNight="./background/black linen.jpg"
-        painting="./decorators/tree.jpg"
+        textureDay="./background/white linen.webp"
+        textureNight="./background/black linen.webp"
+        painting="./decorators/tree.webp"
         paintingAlt="Sumi-e pine tree ink wash painting"
         placement="right"
         artworkWidth="w-full lg:w-[50%]"

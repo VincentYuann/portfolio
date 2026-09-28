@@ -144,9 +144,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
       
       {/* 16:9 Linen Texture Ground & Asymmetric Sumi-e Bamboo Art (Anchored Left for alternating rhythm) */}
       <SectionSideBackdrop
-        textureDay="./background/white linen.jpg"
-        textureNight="./background/black linen.jpg"
-        painting="./decorators/bamboo.jpg"
+        textureDay="./background/white linen.webp"
+        textureNight="./background/black linen.webp"
+        painting="./decorators/bamboo.webp"
         paintingAlt="Sumi-e bamboo ink wash painting"
         placement="left"
         artworkWidth="w-full lg:w-[48%]"

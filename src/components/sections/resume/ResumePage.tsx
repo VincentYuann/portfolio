@@ -189,9 +189,9 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
     <div className="relative w-full min-h-screen overflow-x-clip">
       {/* 16:9 Washi Paper Ground & Sumi-e Bamboo Art (Editorial CV Foundation) */}
       <SectionSideBackdrop
-        textureDay="./background/white paper texture.jpg"
-        textureNight="./background/black paper.jpg"
-        painting="./decorators/bamboo.jpg"
+        textureDay="./background/white paper texture.webp"
+        textureNight="./background/black paper.webp"
+        painting="./decorators/bamboo.webp"
         paintingAlt="Sumi-e bamboo ink wash painting"
         placement="right"
         artworkWidth="w-full lg:w-[48%]"

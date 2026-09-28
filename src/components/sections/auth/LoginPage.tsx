@@ -46,7 +46,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
       {/* Simple Tactile Cedar Wood Background for Auth Chamber */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         <img
-          src="./background/white wood.jpg"
+          src="./background/white wood.webp"
           alt=""
           width={1920}
           height={1080}
@@ -55,7 +55,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
           className="absolute inset-0 w-full h-full object-cover dark:hidden mix-blend-multiply opacity-55"
         />
         <img
-          src="./background/black wood.jpg"
+          src="./background/black wood.webp"
           alt=""
           width={1920}
           height={1080}

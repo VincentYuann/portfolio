@@ -68,7 +68,7 @@ const PILLAR_CONFIGS = [
     watermark: (
       <div className="absolute right-1 bottom-1 w-28 h-32 opacity-20 dark:opacity-10 pointer-events-none">
         <img
-          src="./images/sumie-pine-tree-left.jpg"
+          src="./images/sumie-pine-tree-left.webp"
           alt="Pine motif"
           width={112}
           height={128}
@@ -122,9 +122,9 @@ export const PhilosophyBento: React.FC = () => {
 
       {/* 16:9 Washi Paper Ground & Asymmetric Sumi-e Mountain Horizon (Anchored Left for alternating rhythm) */}
       <SectionSideBackdrop
-        textureDay="./background/white paper texture.jpg"
-        textureNight="./background/black paper.jpg"
-        painting="./decorators/mountain.jpg"
+        textureDay="./background/white paper texture.webp"
+        textureNight="./background/black paper.webp"
+        painting="./decorators/mountain.webp"
         paintingAlt="Sumi-e misty mountain ink wash painting"
         placement="left"
         artworkWidth="w-full lg:w-[48%]"

@@ -50,9 +50,9 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
 
       {/* 16:9 Linen Texture Ground & Asymmetric Sumi-e Pine Tree on Right */}
       <SectionSideBackdrop
-        textureDay="./background/white linen.jpg"
-        textureNight="./background/black linen.jpg"
-        painting="./decorators/tree.jpg"
+        textureDay="./background/white linen.webp"
+        textureNight="./background/black linen.webp"
+        painting="./decorators/tree.webp"
         paintingAlt="Sumi-e pine tree ink wash painting"
         placement="right"
         artworkWidth="w-full lg:w-[50%]"

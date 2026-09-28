@@ -5,7 +5,7 @@ import React from 'react';
  */
 export const DEFAULT_FALLBACK_IMAGES = {
   projectWorkspace: './images/sumi-os-workspace.webp',
-  komorebiSpatial: './images/komorebi-spatial.jpg',
+  komorebiSpatial: './images/komorebi-spatial.webp',
   akariCommerce: './images/akari-commerce.webp',
   bambooArtDay: './images/bamboo-art-day.png',
   bambooArtNight: './images/bamboo-art-night.png',

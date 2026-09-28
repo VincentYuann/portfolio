@@ -149,7 +149,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                   loading="lazy"
                   decoding="async"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = './images/sumi-os-workspace.jpg';
+                    (e.target as HTMLImageElement).src = './images/sumi-os-workspace.webp';
                   }}
                 />
                 {project.kanji && (

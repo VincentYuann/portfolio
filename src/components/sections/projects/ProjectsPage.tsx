@@ -92,9 +92,9 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
     <div className="relative w-full min-h-screen overflow-x-clip">
       {/* 16:9 Cedar Wood Ground & Dynamic Cresting Wave (Retains exact Projects Showcase identity) */}
       <SectionSideBackdrop
-        textureDay="./background/white wood.jpg"
-        textureNight="./background/black wood.jpg"
-        painting="./decorators/ocean.jpg"
+        textureDay="./background/white wood.webp"
+        textureNight="./background/black wood.webp"
+        painting="./decorators/ocean.webp"
         paintingAlt="Sumi-e ocean wave ink wash painting"
         placement="bottom-right"
         artworkWidth="w-full lg:w-[65%]"

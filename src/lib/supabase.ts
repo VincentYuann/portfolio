@@ -207,7 +207,7 @@ export async function uploadAssetImage(file: File, folder: string = 'projects'):
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as string);
-      reader.onerror = () => resolve('./images/sumi-os-workspace.jpg');
+      reader.onerror = () => resolve('./images/sumi-os-workspace.webp');
       reader.readAsDataURL(file);
     });
   }

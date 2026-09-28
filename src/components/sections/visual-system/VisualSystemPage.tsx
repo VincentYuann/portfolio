@@ -90,12 +90,12 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
       {/* Subtle Japanese Paper Texture Background */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
         <img
-          src="./background/white wood.jpg"
+          src="./background/white wood.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover dark:hidden mix-blend-multiply opacity-40"
         />
         <img
-          src="./background/black wood.jpg"
+          src="./background/black wood.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover hidden dark:block mix-blend-screen opacity-30"
         />
