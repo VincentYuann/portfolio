@@ -53,12 +53,12 @@ export const AkariLanternDecorator: React.FC<AkariLanternDecoratorProps> = ({
     >
       {/* Outer Expansive Warm Candlelight Halo (Blends organically into Day/Night Canvas) */}
       <div
-        className={`absolute ${glowCenter} left-1/2 -translate-x-1/2 -translate-y-1/2 ${glowSizeClassName} rounded-full bg-[radial-gradient(circle_at_center,_rgba(245,158,11,0.24)_0%,_rgba(234,88,12,0.10)_36%,_rgba(217,119,6,0.03)_60%,_transparent_74%)] dark:bg-[radial-gradient(circle_at_center,_rgba(251,191,36,0.20)_0%,_rgba(245,158,11,0.09)_38%,_rgba(217,119,6,0.02)_62%,_transparent_78%)] blur-3xl animate-lantern-faint transform-gpu [transform:translateZ(0)] will-change-[transform,opacity] pointer-events-none`}
+        className={`absolute ${glowCenter} left-1/2 -translate-x-1/2 -translate-y-1/2 ${glowSizeClassName} rounded-full bg-[radial-gradient(circle_at_center,_rgba(245,158,11,0.24)_0%,_rgba(234,88,12,0.10)_36%,_rgba(217,119,6,0.03)_60%,_transparent_74%)] dark:bg-[radial-gradient(circle_at_center,_rgba(251,191,36,0.20)_0%,_rgba(245,158,11,0.09)_38%,_rgba(217,119,6,0.02)_62%,_transparent_78%)] blur-3xl animate-lantern-faint transform-gpu [transform:translateZ(0)] will-change-[opacity] pointer-events-none`}
       />
 
       {/* Inner Concentrated Warm Amber Core for Gentle Luminous Warmth */}
       <div
-        className={`absolute ${glowCenter} left-1/2 -translate-x-1/2 -translate-y-1/2 md:w-36 lg:w-40 md:h-36 lg:h-40 rounded-full bg-amber-500/18 dark:bg-amber-400/15 blur-xl animate-lantern-faint transform-gpu [transform:translateZ(0)] will-change-[transform,opacity] pointer-events-none`}
+        className={`absolute ${glowCenter} left-1/2 -translate-x-1/2 -translate-y-1/2 md:w-36 lg:w-40 md:h-36 lg:h-40 rounded-full bg-amber-500/18 dark:bg-amber-400/15 blur-xl animate-lantern-faint transform-gpu [transform:translateZ(0)] will-change-[opacity] pointer-events-none`}
       />
 
       <img

@@ -493,21 +493,46 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, []);
 
-  useEffect(() => { 
-    fetchAll(); 
+  useEffect(() => {
+    // If cached data is present, defer network sync to guarantee 0ms main thread blocking during FCP/LCP
+    const hasCachedData = typeof window !== 'undefined' && Boolean(localStorage.getItem('portfolio_profile_cache'));
 
-    // Subscribe to real-time database changes across public tables
-    if (!supabase) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let idleId: number | undefined;
+    let channel: any = null;
 
-    const channel = supabase
-      .channel('schema-realtime-sync')
-      .on('postgres_changes', { event: '*', schema: 'public' }, () => {
-        fetchAll();
-      })
-      .subscribe();
+    const startSync = () => {
+      fetchAll();
+
+      if (!supabase) return;
+      channel = supabase
+        .channel('schema-realtime-sync')
+        .on('postgres_changes', { event: '*', schema: 'public' }, () => {
+          fetchAll();
+        })
+        .subscribe();
+    };
+
+    if (hasCachedData) {
+      if ('requestIdleCallback' in window) {
+        idleId = (window as any).requestIdleCallback(startSync, { timeout: 1500 });
+      } else {
+        timer = setTimeout(startSync, 250);
+      }
+    } else {
+      startSync();
+    }
 
     return () => {
-      supabase?.removeChannel(channel);
+      if (idleId !== undefined && 'cancelIdleCallback' in window) {
+        (window as any).cancelIdleCallback(idleId);
+      }
+      if (timer !== undefined) {
+        clearTimeout(timer);
+      }
+      if (channel) {
+        supabase?.removeChannel(channel);
+      }
     };
   }, [fetchAll]);
 

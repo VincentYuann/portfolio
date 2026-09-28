@@ -1,89 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import {
-  // AI & Machine Learning
+  // Core AI & ML
   SiPytorch,
   SiTensorflow,
-  SiHuggingface,
   SiGooglegemini,
-  SiAnthropic,
-  SiClaude,
-  SiScikitlearn,
-  SiKeras,
-  SiJupyter,
-  SiPandas,
-  SiNumpy,
-  SiOpencv,
-  SiLangchain,
-  SiOllama,
-  SiQdrant,
 
-  // Languages & Core Runtimes
+  // Core Languages & Runtimes
   SiRust,
   SiPython,
-  SiCplusplus,
-  SiC,
   SiGo,
   SiTypescript,
   SiJavascript,
   SiNodedotjs,
-  SiBun,
-  SiDeno,
-  SiGnubash,
-  SiHtml5,
-  SiCss,
-  SiWebassembly,
 
-  // Frontend & UI
+  // Core Frontend & Web
   SiReact,
   SiNextdotjs,
   SiTailwindcss,
-  SiVuedotjs,
-  SiSvelte,
-  SiAstro,
   SiVite,
-  SiRedux,
+  SiThreedotjs,
 
-  // Backend & APIs
+  // Core Backend & DB
   SiFastapi,
-  SiFlask,
-  SiDjango,
-  SiExpress,
-  SiNestjs,
-  SiGraphql,
-  SiApachekafka,
-  SiRabbitmq,
-
-  // Databases & Storage
   SiPostgresql,
   SiSupabase,
-  SiRedis,
-  SiMongodb,
-  SiSqlite,
-  SiPrisma,
-  SiClickhouse,
-  SiGooglebigquery,
 
-  // Cloud & Big Tech
-  SiGoogle,
-  SiGooglecloud,
+  // Core Cloud & DevOps
   SiDocker,
   SiKubernetes,
   SiLinux,
-  SiCloudflare,
-  SiGithub,
   SiGit,
-  SiNginx,
-  SiTerraform,
-  SiMeta,
-  SiApple,
-  SiN8n,
-
-  // Creative Tech & Graphics
-  SiThreedotjs,
-  SiWebgl,
-  SiOpengl,
-  SiBlender,
-  SiFigma,
+  SiGithub,
+  SiGooglecloud,
 } from '@icons-pack/react-simple-icons';
 
 import { Bot, Cloud, Cpu } from 'lucide-react';
@@ -110,93 +58,38 @@ export interface TechIconHookResult {
 }
 
 /**
- * Curated Pre-bundled Local Registry for instantaneous (0ms) offline rendering
+ * Curated Core Local Registry for instantaneous (0ms) offline rendering.
+ * All other technologies are dynamically resolved on demand via jsDelivr Simple Icons CDN
+ * and cached permanently in localStorage.
  */
 export const LOCAL_TECH_REGISTRY: Record<string, { icon: TechIconComponent; name: string }> = {
-  google: { icon: SiGoogle, name: 'Google' },
-  gcp: { icon: SiGooglecloud, name: 'Google Cloud' },
-  googlecloud: { icon: SiGooglecloud, name: 'Google Cloud' },
-  meta: { icon: SiMeta, name: 'Meta' },
-  llama: { icon: SiMeta, name: 'LLaMA' },
-  llamaindex: { icon: SiLangchain, name: 'LlamaIndex' },
-  apple: { icon: SiApple, name: 'Apple' },
-  n8n: { icon: SiN8n, name: 'n8n' },
-
-  pytorch: { icon: SiPytorch, name: 'PyTorch' },
-  tensorflow: { icon: SiTensorflow, name: 'TensorFlow' },
-  huggingface: { icon: SiHuggingface, name: 'Hugging Face' },
-  gemini: { icon: SiGooglegemini, name: 'Gemini' },
-  anthropic: { icon: SiAnthropic, name: 'Anthropic' },
-  claude: { icon: SiClaude, name: 'Claude' },
-  scikitlearn: { icon: SiScikitlearn, name: 'scikit-learn' },
-  keras: { icon: SiKeras, name: 'Keras' },
-  jupyter: { icon: SiJupyter, name: 'Jupyter' },
-  pandas: { icon: SiPandas, name: 'Pandas' },
-  numpy: { icon: SiNumpy, name: 'NumPy' },
-  opencv: { icon: SiOpencv, name: 'OpenCV' },
-  langchain: { icon: SiLangchain, name: 'LangChain' },
-  ollama: { icon: SiOllama, name: 'Ollama' },
-  qdrant: { icon: SiQdrant, name: 'Qdrant' },
-  openai: { icon: Bot as unknown as TechIconComponent, name: 'OpenAI' },
-  cuda: { icon: Cpu as unknown as TechIconComponent, name: 'CUDA' },
-
-  rust: { icon: SiRust, name: 'Rust' },
-  python: { icon: SiPython, name: 'Python' },
-  cplusplus: { icon: SiCplusplus, name: 'C++' },
-  c: { icon: SiC, name: 'C' },
-  go: { icon: SiGo, name: 'Go' },
   typescript: { icon: SiTypescript, name: 'TypeScript' },
   javascript: { icon: SiJavascript, name: 'JavaScript' },
-  nodejs: { icon: SiNodedotjs, name: 'Node.js' },
-  bun: { icon: SiBun, name: 'Bun' },
-  deno: { icon: SiDeno, name: 'Deno' },
-  bash: { icon: SiGnubash, name: 'Bash' },
-  html5: { icon: SiHtml5, name: 'HTML5' },
-  css: { icon: SiCss, name: 'CSS3' },
-  wasm: { icon: SiWebassembly, name: 'WebAssembly' },
-
+  python: { icon: SiPython, name: 'Python' },
   react: { icon: SiReact, name: 'React' },
   nextjs: { icon: SiNextdotjs, name: 'Next.js' },
+  nodejs: { icon: SiNodedotjs, name: 'Node.js' },
   tailwindcss: { icon: SiTailwindcss, name: 'Tailwind CSS' },
-  vue: { icon: SiVuedotjs, name: 'Vue.js' },
-  svelte: { icon: SiSvelte, name: 'Svelte' },
-  astro: { icon: SiAstro, name: 'Astro' },
   vite: { icon: SiVite, name: 'Vite' },
-  redux: { icon: SiRedux, name: 'Redux' },
-
   fastapi: { icon: SiFastapi, name: 'FastAPI' },
-  flask: { icon: SiFlask, name: 'Flask' },
-  django: { icon: SiDjango, name: 'Django' },
-  express: { icon: SiExpress, name: 'Express' },
-  nestjs: { icon: SiNestjs, name: 'NestJS' },
-  graphql: { icon: SiGraphql, name: 'GraphQL' },
-  kafka: { icon: SiApachekafka, name: 'Apache Kafka' },
-  rabbitmq: { icon: SiRabbitmq, name: 'RabbitMQ' },
-
   postgresql: { icon: SiPostgresql, name: 'PostgreSQL' },
   supabase: { icon: SiSupabase, name: 'Supabase' },
-  redis: { icon: SiRedis, name: 'Redis' },
-  mongodb: { icon: SiMongodb, name: 'MongoDB' },
-  sqlite: { icon: SiSqlite, name: 'SQLite' },
-  prisma: { icon: SiPrisma, name: 'Prisma' },
-  clickhouse: { icon: SiClickhouse, name: 'ClickHouse' },
-  bigquery: { icon: SiGooglebigquery, name: 'BigQuery' },
-
   docker: { icon: SiDocker, name: 'Docker' },
   kubernetes: { icon: SiKubernetes, name: 'Kubernetes' },
   linux: { icon: SiLinux, name: 'Linux' },
-  aws: { icon: Cloud as unknown as TechIconComponent, name: 'AWS' },
-  cloudflare: { icon: SiCloudflare, name: 'Cloudflare' },
-  github: { icon: SiGithub, name: 'GitHub' },
   git: { icon: SiGit, name: 'Git' },
-  nginx: { icon: SiNginx, name: 'NGINX' },
-  terraform: { icon: SiTerraform, name: 'Terraform' },
-
+  github: { icon: SiGithub, name: 'GitHub' },
+  pytorch: { icon: SiPytorch, name: 'PyTorch' },
+  tensorflow: { icon: SiTensorflow, name: 'TensorFlow' },
+  gemini: { icon: SiGooglegemini, name: 'Gemini' },
+  rust: { icon: SiRust, name: 'Rust' },
+  go: { icon: SiGo, name: 'Go' },
+  gcp: { icon: SiGooglecloud, name: 'Google Cloud' },
+  googlecloud: { icon: SiGooglecloud, name: 'Google Cloud' },
   threejs: { icon: SiThreedotjs, name: 'Three.js' },
-  webgl: { icon: SiWebgl, name: 'WebGL' },
-  opengl: { icon: SiOpengl, name: 'OpenGL' },
-  blender: { icon: SiBlender, name: 'Blender' },
-  figma: { icon: SiFigma, name: 'Figma' },
+  openai: { icon: Bot as unknown as TechIconComponent, name: 'OpenAI' },
+  cuda: { icon: Cpu as unknown as TechIconComponent, name: 'CUDA' },
+  aws: { icon: Cloud as unknown as TechIconComponent, name: 'AWS' },
 };
 
 /**
