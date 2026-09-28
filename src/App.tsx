@@ -3,12 +3,6 @@ import { ThemeProvider } from './context/ThemeContext';
 import { SiteDataProvider, useSiteData } from './context/SiteDataContext';
 import { Header } from './components/layout/Header';
 import { Hero } from './components/sections/hero/Hero';
-import { ExperienceSection } from './components/sections/experience/ExperienceSection';
-import { ProjectsShowcase } from './components/sections/projects/ProjectsShowcase';
-import { PhilosophyBento } from './components/sections/philosophy/PhilosophyBento';
-import { HobbiesSection } from './components/sections/hobbies/HobbiesSection';
-import { ContactSection } from './components/sections/contact/ContactSection';
-import { Footer } from './components/layout/Footer';
 import { supabase } from './lib/supabase';
 import { toast } from 'sonner';
 import { ThemedToaster } from './components/layout/ThemedToaster';
@@ -25,7 +19,14 @@ import {
   DefaultPageSkeleton,
 } from './components/common/Skeletons';
 
-// Route-level code-splitting for non-critical views (drastically reduces initial bundle size)
+// Route-level and below-the-fold code-splitting (drastically reduces initial bundle size and TBT)
+const ExperienceSection = lazy(() => import('./components/sections/experience/ExperienceSection').then((m) => ({ default: m.ExperienceSection })));
+const ProjectsShowcase = lazy(() => import('./components/sections/projects/ProjectsShowcase').then((m) => ({ default: m.ProjectsShowcase })));
+const PhilosophyBento = lazy(() => import('./components/sections/philosophy/PhilosophyBento').then((m) => ({ default: m.PhilosophyBento })));
+const HobbiesSection = lazy(() => import('./components/sections/hobbies/HobbiesSection').then((m) => ({ default: m.HobbiesSection })));
+const ContactSection = lazy(() => import('./components/sections/contact/ContactSection').then((m) => ({ default: m.ContactSection })));
+const Footer = lazy(() => import('./components/layout/Footer').then((m) => ({ default: m.Footer })));
+
 const ProjectsPage = lazy(() => import('./components/sections/projects/ProjectsPage').then((m) => ({ default: m.ProjectsPage })));
 const ResumePage = lazy(() => import('./components/sections/resume/ResumePage').then((m) => ({ default: m.ResumePage })));
 const HobbiesPage = lazy(() => import('./components/sections/hobbies/HobbiesPage').then((m) => ({ default: m.HobbiesPage })));
@@ -84,19 +85,21 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
         (bg-light-canvas dark:bg-[#1E1F24]) that mask-slides straight over the hero on scroll.
       */}
       <div className="division-showcase-container relative z-20 w-full bg-light-canvas dark:bg-dark-canvas shadow-[0_-24px_50px_rgba(43,46,58,0.08)] dark:shadow-[0_-28px_60px_rgba(0,0,0,0.65)] transition-colors duration-300">
-        {hasExperiences && (
-          <ExperienceSection onNavigate={onNavigate} />
-        )}
-        {hasProjects && (
-          <ProjectsShowcase onNavigate={onNavigate} />
-        )}
-        {hasPhilosophy && (
-          <PhilosophyBento />
-        )}
-        {hasHobbies && (
-          <HobbiesSection onNavigate={onNavigate} />
-        )}
-        <ContactSection />
+        <Suspense fallback={<div className="min-h-[40vh]" />}>
+          {hasExperiences && (
+            <ExperienceSection onNavigate={onNavigate} />
+          )}
+          {hasProjects && (
+            <ProjectsShowcase onNavigate={onNavigate} />
+          )}
+          {hasPhilosophy && (
+            <PhilosophyBento />
+          )}
+          {hasHobbies && (
+            <HobbiesSection onNavigate={onNavigate} />
+          )}
+          <ContactSection />
+        </Suspense>
       </div>
     </>
   );
@@ -386,7 +389,11 @@ export const App: React.FC = () => {
               </Suspense>
             </main>
 
-            {currentView === 'home' && <Footer onNavigate={handleNavigate} />}
+            {currentView === 'home' && (
+              <Suspense fallback={null}>
+                <Footer onNavigate={handleNavigate} />
+              </Suspense>
+            )}
           </div>
           <Suspense fallback={null}>
             <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />

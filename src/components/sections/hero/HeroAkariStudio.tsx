@@ -78,7 +78,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
         className="top-0 right-12 lg:right-20 xl:right-28"
         sizeClassName="md:w-44 lg:w-52 xl:w-60"
         glowSizeClassName="md:w-88 lg:w-[26rem] md:h-88 lg:h-[26rem]"
-        priority={false}
+        priority={true}
       />
 
       {/* Main Studio Frame Layout: Left Workspace + Right Hanko Card */}

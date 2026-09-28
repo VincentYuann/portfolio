@@ -142,7 +142,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
             strokeWidth="1.8"
             strokeDasharray="4 6"
             strokeLinecap="round"
-            className="text-terracotta dark:text-ochre opacity-80 dark:opacity-90 animate-dash-flow transition-colors"
+            className="text-terracotta dark:text-ochre opacity-80 dark:opacity-90 group-hover:animate-dash-flow transition-colors"
           />
 
           {/* Outer Fine Golden Tracking Ring */}

@@ -15,10 +15,10 @@ interface AkariLanternDecoratorProps {
 }
 
 const LANTERN_SOURCES: Record<LanternVariant, string> = {
-  'hanging-vertical': './decorators/akari-lantern.png',
-  'standing-tripod': './decorators/akari-lamp-standing.png',
-  'hanging-round': './decorators/akari-lantern-round.png',
-  'hanging-elliptical': './decorators/akari-lantern-elliptical.png',
+  'hanging-vertical': './decorators/akari-lantern.webp',
+  'standing-tripod': './decorators/akari-lamp-standing.webp',
+  'hanging-round': './decorators/akari-lantern-round.webp',
+  'hanging-elliptical': './decorators/akari-lantern-elliptical.webp',
 };
 
 const LANTERN_DIMENSIONS: Record<LanternVariant, { width: number; height: number }> = {
@@ -68,6 +68,8 @@ export const AkariLanternDecorator: React.FC<AkariLanternDecoratorProps> = ({
         height={dims.height}
         className={`relative z-10 ${sizeClassName} h-auto object-contain md:opacity-50 dark:md:opacity-60 drop-shadow-[0_6px_28px_rgba(245,158,11,0.22)] dark:drop-shadow-[0_0_28px_rgba(251,191,36,0.25)] transition-all duration-700 ease-out`}
         loading={priority ? 'eager' : 'lazy'}
+        // @ts-expect-error fetchpriority standard attribute in modern browsers
+        fetchpriority={priority ? 'high' : 'auto'}
         decoding="async"
       />
     </div>

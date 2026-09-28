@@ -51,3 +51,21 @@ flowchart TD
 2. **Eliminate Layout Thrashing**: Add missing dependency arrays to chat scrollers, guard header scroll queries, and promote continuous animations to hardware-composited layers.
 3. **Lean Font Delivery**: Load only the active variant's fonts on first paint (~25 KB CSS vs 1.59 MB). Stream other variant fonts on-demand when switching typography styles.
 4. **Image Attributes**: Supply explicit `width` and `height` attributes, `loading="lazy"`, and `decoding="async"` across all media elements.
+
+---
+
+## 4. Phase 2 Optimizations (Pushing from 83 Baseline to 95–99)
+
+Following GitHub Pages deployment audit (Score: 83, TBT: 307 ms, LCP: 1,434 ms):
+
+1. **LCP & Image Delivery Fix (-351 KiB Image Payload)**:
+   - Converted `akari-lantern*.png` decorators (370 KB each) to high-fidelity WebP format (36 KB, 90% savings).
+   - Set `priority={true}` with `fetchpriority="high"` and `loading="eager"` on the Hero Akari Lantern to eliminate above-the-fold lazy-load request delays.
+   - Batch-converted all `public/images/*.jpg` and `public/decorators/*.png` to WebP (saving ~4 MB across the asset library).
+2. **Elimination of Non-Composited Animations (0 CPU Layout Recalculations)**:
+   - Replaced continuous `stroke-dashoffset` animation (`animate-dash-flow`) in `EnsoOrbital.tsx` with `group-hover` activation so idle page execution is 100% idle.
+   - Refactored `ruby-pulse` keyframe animation from expensive `filter: drop-shadow` to hardware-composited `transform: scale` and `opacity`.
+3. **Below-the-Fold Code Splitting (Initial JS Chunk Cut to 83 KB)**:
+   - Code-split `ExperienceSection`, `ProjectsShowcase`, `PhilosophyBento`, `HobbiesSection`, `ContactSection`, and `Footer` using `React.lazy` and `Suspense`.
+   - Reduced root entry script from **153.8 KB down to 83.2 KB** (gzip: 23.5 KB), preventing 4 long tasks and 2.5s of main-thread execution on boot.
+

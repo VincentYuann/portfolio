@@ -4,12 +4,12 @@ import React from 'react';
  * Global fallback and asset paths
  */
 export const DEFAULT_FALLBACK_IMAGES = {
-  projectWorkspace: './images/sumi-os-workspace.jpg',
+  projectWorkspace: './images/sumi-os-workspace.webp',
   komorebiSpatial: './images/komorebi-spatial.jpg',
-  akariCommerce: './images/akari-commerce.jpg',
+  akariCommerce: './images/akari-commerce.webp',
   bambooArtDay: './images/bamboo-art-day.png',
   bambooArtNight: './images/bamboo-art-night.png',
-  verticalBamboo: './images/sumie-tall-vertical-bamboo.jpg',
+  verticalBamboo: './images/sumie-tall-vertical-bamboo.webp',
 } as const;
 
 /**
