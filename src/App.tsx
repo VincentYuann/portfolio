@@ -55,7 +55,6 @@ const HASH_TO_VIEW_MAP: Record<string, ViewMode> = {
   '#projects': 'projects',
   '#all-projects': 'projects',
   '#archive': 'projects',
-  '#hobbies': 'hobbies',
   '#all-hobbies': 'hobbies',
   '#hobbies-archive': 'hobbies',
   '#visual-system': 'visual-system',
@@ -289,6 +288,21 @@ export const App: React.FC = () => {
         return;
       }
 
+      const HOME_SECTION_HASHES = ['#home', '#experience', '#featured-works', '#philosophy', '#hobbies', '#contact'];
+
+      if (HOME_SECTION_HASHES.includes(hash) || !hash || hash === '#') {
+        setViewRef.current('home');
+        if (hash && hash !== '#home' && hash !== '#') {
+          setTimeout(() => {
+            const sectionEl = document.getElementById(hash.slice(1));
+            if (sectionEl) {
+              sectionEl.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 80);
+        }
+        return;
+      }
+
       const targetView = HASH_TO_VIEW_MAP[hash];
 
       if (targetView === 'edit') {
@@ -310,7 +324,7 @@ export const App: React.FC = () => {
       } else if (targetView) {
         setViewRef.current(targetView);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (!hash || hash === '#home' || hash === '#') {
+      } else {
         setViewRef.current('home');
       }
     };
