@@ -252,48 +252,50 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right side cluster: always neatly aligned with zero overlap */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {/* Day / Night / Art Settings 3-segment unified toggle (DAY | NIGHT | ART on PC, ☀️ | 🌙 | 🎨 on Mobile) */}
-          <div className="flex items-center p-0.5 rounded-[2px] bg-light-surface-card/60 dark:bg-dark-surface/60 backdrop-blur-xs border border-light-border/60 dark:border-dark-border/60 text-[11px] sm:text-xs select-none shrink-0 shadow-2xs min-h-[44px]">
+          {/* Theme Switcher: Flat 2-segment track without nested card elevations */}
+          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-[11px] sm:text-xs select-none shrink-0 min-h-[44px]">
             <button
               onClick={() => setTheme('day')}
               className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
                 theme === 'day'
-                  ? 'bg-light-surface-raised text-light-ink shadow-sm'
+                  ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
               }`}
               title="Day Mode"
               aria-label="Switch to Day Mode"
             >
-              <Sun className={`w-3.5 h-3.5 sm:w-3 sm:h-3 transition-transform duration-300 ${theme === 'day' ? 'rotate-0 scale-105 text-terracotta dark:text-ochre' : '-rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
+              <Sun className={`w-3.5 h-3.5 sm:w-3 sm:h-3 transition-transform duration-300 ${theme === 'day' ? 'rotate-0 text-terracotta dark:text-ochre' : '-rotate-45 group-hover/theme:rotate-0'}`} />
               <span className="hidden sm:inline">DAY</span>
             </button>
             <button
               onClick={() => setTheme('night')}
               className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
                 theme === 'night'
-                  ? 'bg-dark-surface-raised text-dark-ink shadow-sm'
+                  ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
               }`}
               title="Night Mode"
               aria-label="Switch to Night Mode"
             >
-              <Moon className={`w-3.5 h-3.5 sm:w-3 sm:h-3 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 scale-105 text-terracotta dark:text-ochre' : 'rotate-45 scale-95 group-hover/theme:rotate-0'}`} />
+              <Moon className={`w-3.5 h-3.5 sm:w-3 sm:h-3 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 text-terracotta dark:text-ochre' : 'rotate-45 group-hover/theme:rotate-0'}`} />
               <span className="hidden sm:inline">NIGHT</span>
             </button>
-            <button
-              onClick={() => onNavigate?.('visual-system')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
-                currentView === 'visual-system'
-                  ? 'bg-terracotta/20 dark:bg-ochre/20 text-terracotta dark:text-ochre shadow-sm'
-                  : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
-              }`}
-              title="Design System & Visual Settings"
-              aria-label="Open Art & Visual Settings"
-            >
-              <Palette className={`w-3.5 h-3.5 sm:w-3 sm:h-3 text-terracotta dark:text-ochre transition-transform duration-300 ${currentView === 'visual-system' ? 'scale-110' : 'group-hover/theme:scale-110'}`} />
-              <span className="hidden sm:inline">ART</span>
-            </button>
           </div>
+
+          {/* Visual System / Art Button: Distinct sibling action, eliminating multi-card confusion */}
+          <button
+            onClick={() => onNavigate?.('visual-system')}
+            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[3px] font-sans font-semibold text-[11px] sm:text-xs tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[44px] group/art ${
+              currentView === 'visual-system'
+                ? 'bg-terracotta/10 dark:bg-ochre/15 text-terracotta dark:text-ochre border border-terracotta/40 dark:border-ochre/40'
+                : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 hover:bg-light-surface-card/40 dark:hover:bg-dark-surface/40'
+            }`}
+            title="Design System & Visual Settings"
+            aria-label="Open Art & Visual Settings"
+          >
+            <Palette className={`w-3.5 h-3.5 sm:w-3 sm:h-3 text-terracotta dark:text-ochre transition-transform duration-300 ${currentView === 'visual-system' ? 'scale-110' : 'group-hover/art:scale-110'}`} />
+            <span className="hidden sm:inline">ART</span>
+          </button>
 
           {/* Desktop Action Cluster: Admin controls, Visitor badge, or Sign In button (>= xl) */}
           {isAdmin ? (
