@@ -10,7 +10,6 @@ import {
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 import { useTheme } from '../../../context/ThemeContext';
 import { HankoStamp } from '../../common/HankoStamp';
-import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
 import { ViewMode } from '../../../App';
 
@@ -153,7 +152,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       <div>
                         <div className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink">
                           <Icon className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0" />
-                          <span className="font-mono text-[9.5px] sm:text-[10.5px] uppercase tracking-wider font-semibold text-light-ink dark:text-dark-ink truncate">
+                          <span className="font-mono text-xs sm:text-[13px] uppercase tracking-wider font-semibold text-light-ink dark:text-dark-ink truncate">
                             {pillar.label}
                           </span>
                         </div>
@@ -167,7 +166,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                               key={tag}
                               tag={tag}
                               size="sm"
-                              className="bg-light-surface/30 dark:bg-dark-surface/30 border-light-border/40 dark:border-dark-border/40 text-[9px] sm:text-[10px] py-0.5 px-1.5 backdrop-blur-xs"
+                              className="bg-light-surface/30 dark:bg-dark-surface/30 border-light-border/40 dark:border-dark-border/40 text-xs sm:text-[13px] py-1 px-2.5 font-semibold backdrop-blur-xs"
                             />
                           ))}
                         </div>
@@ -185,21 +184,18 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           */}
           <aside className="lg:col-span-5 xl:col-span-4 flex flex-col items-center lg:items-end justify-center order-2 lg:order-2 relative w-full mt-3 lg:mt-0">
             <div className="double-frame-simple bg-light-surface-card/15 dark:bg-dark-surface-card/20 backdrop-blur-md hover:bg-light-surface-card dark:hover:bg-dark-surface-card hover:backdrop-blur-none transition-all duration-300 border border-light-border/60 dark:border-dark-border/60 hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-3 sm:p-4.5 flex flex-col justify-between gap-2 sm:gap-3 shadow-2xs hover:shadow-md w-full max-w-[320px] sm:max-w-[350px] relative group z-10">
-              
-              {/* Celestial Ensō Orbital Circle: interactive hover & aura */}
-              <EnsoOrbital placement="top-left" size={104} interactive={true} />
 
               {/* Box Header: Header Label & Archive Coordinate from DB */}
               {(hanko?.headerLabel || hanko?.locationArchive) && (
                 <div className="w-full flex items-start justify-between gap-2 pb-1.5 border-b border-light-border/50 dark:border-dark-border/50 relative z-10">
                   {hanko?.headerLabel ? (
-                    <div className="flex items-start gap-1 font-mono uppercase text-[9.5px] sm:text-[10.5px] tracking-wider text-light-ink dark:text-dark-ink font-semibold min-w-0 flex-1">
+                    <div className="flex items-start gap-1 font-mono uppercase text-xs sm:text-[13px] tracking-wider text-light-ink dark:text-dark-ink font-semibold min-w-0 flex-1">
                       <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-ochre inline-block mt-0.5 shrink-0" />
                       <span className="leading-snug break-words">{hanko.headerLabel}</span>
                     </div>
                   ) : <div />}
                   {hanko?.locationArchive && (
-                    <span className="font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider text-[9px] sm:text-[9.5px] font-medium shrink-0 text-right whitespace-nowrap pt-0.5">
+                    <span className="font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider text-[11px] sm:text-xs font-semibold shrink-0 text-right whitespace-nowrap pt-0.5">
                       {hanko.locationArchive}
                     </span>
                   )}
@@ -215,7 +211,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   />
                 </div>
                 {hanko?.statusBadge && (
-                  <div className="mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[2px] bg-light-surface/40 dark:bg-dark-surface/40 backdrop-blur-xs border border-light-border/50 dark:border-dark-border/50 text-[9.5px] font-mono font-medium text-terracotta dark:text-ochre tracking-wider uppercase shadow-2xs">
+                  <div className="mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[2px] bg-light-surface/40 dark:bg-dark-surface/40 backdrop-blur-xs border border-light-border/50 dark:border-dark-border/50 text-[11px] sm:text-xs font-mono font-semibold text-terracotta dark:text-ochre tracking-wider uppercase shadow-2xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre animate-pulse" />
                     <span>{hanko.statusBadge}</span>
                   </div>
@@ -231,7 +227,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                     </div>
                   )}
                   {displayRole && (
-                    <p className="font-sans text-[10.5px] sm:text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-semibold mt-0.5">
+                    <p className="font-sans text-xs sm:text-[13px] uppercase tracking-widest text-light-ink dark:text-dark-ink font-semibold mt-0.5">
                       {displayRole}
                     </p>
                   )}
@@ -246,9 +242,9 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       <div
                         key={lIdx}
                         title={line.tooltip || line.label}
-                        className={`writing-vertical-rl font-vertical text-[11px] sm:text-xs tracking-[0.2em] min-h-[64px] sm:min-h-[76px] leading-relaxed transition-all cursor-default whitespace-nowrap select-none ${
+                        className={`writing-vertical-rl font-vertical text-xs sm:text-[13px] tracking-[0.22em] min-h-[64px] sm:min-h-[76px] leading-relaxed transition-all cursor-default whitespace-nowrap select-none font-semibold ${
                           lIdx === 1
-                            ? 'text-terracotta dark:text-[#D4A853] font-medium hover:scale-105'
+                            ? 'text-[#8A2E16] dark:text-[#E2B75A] hover:scale-105'
                             : 'text-light-ink dark:text-dark-ink hover:opacity-100'
                         }`}
                       >
@@ -256,7 +252,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       </div>
                     ))}
                   </div>
-                  <div className="mt-1 pt-0.5 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[9px] sm:text-[9.5px] font-mono tracking-wider text-light-ink-muted dark:text-dark-ink-muted uppercase px-1 font-medium">
+                  <div className="mt-1 pt-0.5 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[11px] sm:text-xs font-mono tracking-wider text-light-ink-muted dark:text-dark-ink-muted uppercase px-1 font-semibold">
                     {hankoLines.map((line, lIdx) => (
                       <span key={lIdx}>{line.label}</span>
                     ))}
