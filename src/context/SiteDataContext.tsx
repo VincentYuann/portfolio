@@ -145,23 +145,26 @@ export interface SiteData {
   refresh: () => Promise<void>;
 }
 
-import {
-  INITIAL_PROFILE,
-  INITIAL_PILLARS,
-  INITIAL_PROJECTS,
-  INITIAL_EXPERIENCES,
-} from '../lib/initialData';
-
-export { INITIAL_PROFILE, INITIAL_PILLARS, INITIAL_PROJECTS, INITIAL_EXPERIENCES };
+export const EMPTY_PROFILE: SiteProfile = {
+  name: '',
+  headline: '',
+  tagline: '',
+  email: '',
+  github: '',
+  linkedin: '',
+  role: '',
+  capability_pillars: [],
+  hobbies: [],
+};
 
 /* ─── Context ─────────────────────────────────────────────────────── */
 
 const SiteDataContext = createContext<SiteData>({
-  profile: INITIAL_PROFILE,
-  pillars: INITIAL_PILLARS,
-  projects: INITIAL_PROJECTS,
-  experiences: INITIAL_EXPERIENCES,
-  hobbies: INITIAL_PROFILE.hobbies || [],
+  profile: EMPTY_PROFILE,
+  pillars: [],
+  projects: [],
+  experiences: [],
+  hobbies: [],
   loading: false,
   refresh: async () => {},
 });
@@ -234,7 +237,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Profile cache parse error', e);
       }
     }
-    return INITIAL_PROFILE;
+    return EMPTY_PROFILE;
   });
 
   const [pillars, setPillars] = useState<PhilosophyPillar[]>(() => {
@@ -246,7 +249,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Pillars cache parse error', e);
       }
     }
-    return INITIAL_PILLARS;
+    return [];
   });
 
   const [projects, setProjects] = useState<Project[]>(() => {
@@ -258,7 +261,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Projects cache parse error', e);
       }
     }
-    return INITIAL_PROJECTS;
+    return [];
   });
 
   const [experiences, setExperiences] = useState<ExperienceRecord[]>(() => {
@@ -270,7 +273,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.warn('Experience cache parse error', e);
       }
     }
-    return INITIAL_EXPERIENCES;
+    return [];
   });
 
   const [loading, setLoading] = useState(false);
@@ -365,7 +368,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           localStorage.setItem('portfolio_profile_cache', JSON.stringify(mappedProfile));
         } catch {}
       } else {
-        setProfile(INITIAL_PROFILE);
+        setProfile(EMPTY_PROFILE);
       }
 
       if (pillarsRes.data) {
