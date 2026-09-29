@@ -236,8 +236,8 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
               {/* Vertical Tategaki Japanese Prose (Synced dynamically from DB hanko_card.lines) */}
               {hankoLines.length > 0 && (
-                <div className="w-full pt-2 border-t border-light-border/50 dark:border-dark-border/50 flex flex-col items-center justify-center relative z-10">
-                  <div className="flex items-center justify-center gap-4 sm:gap-5 w-full">
+                <div className="w-full pt-2.5 sm:pt-3 border-t border-light-border/50 dark:border-dark-border/50 flex flex-col items-center justify-center relative z-10">
+                  <div className="flex items-center justify-center gap-4 sm:gap-5 w-full pb-2 sm:pb-2.5">
                     {hankoLines.map((line, lIdx) => (
                       <div
                         key={lIdx}
@@ -252,7 +252,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       </div>
                     ))}
                   </div>
-                  <div className="mt-1 pt-0.5 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[11px] sm:text-xs font-mono tracking-wider text-light-ink-muted dark:text-dark-ink-muted uppercase px-1 font-semibold">
+                  <div className="pt-2 pb-0.5 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-[11px] sm:text-xs font-mono tracking-wider text-light-ink-muted dark:text-dark-ink-muted uppercase px-1 font-semibold">
                     {hankoLines.map((line, lIdx) => (
                       <span key={lIdx}>{line.label}</span>
                     ))}
