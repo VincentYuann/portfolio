@@ -76,10 +76,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
         {/* Delicate non-intrusive legibility backplate for typography */}
         <div className="absolute inset-y-0 left-0 w-full sm:w-2/5 bg-gradient-to-r from-light-canvas/20 via-light-canvas/5 to-transparent dark:from-dark-canvas/25 dark:via-dark-canvas/5 to-transparent pointer-events-none z-0" />
 
-        {/* Ambient Ink Dust Motes floating gently */}
-        <div className="absolute right-1/4 bottom-16 w-1.5 h-1.5 rounded-full bg-terracotta/40 mote-1 blur-[0.5px] z-10" />
-        <div className="absolute right-1/3 bottom-28 w-2 h-2 rounded-full bg-ochre/30 mote-2 blur-[0.5px] z-10" />
-        <div className="absolute right-1/2 bottom-12 w-1 h-1 rounded-full bg-light-ink-muted/30 dark:bg-[#edeae4]/35 mote-3 blur-[0.5px] z-10" />
       </div>
 
       {/* Main Studio Frame Layout: Left Workspace + Right Hanko Card */}
