@@ -180,22 +180,22 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
           {/* 
             RIGHT COLUMN: CLASSICAL HANKO SHOWCASE CARD (Sleek Compact Stationery Plaque)
-            Sculpted dimensions (max-w-[320px] on mobile, max-w-[350px] on desktop)
+            Sculpted dimensions (compact max-w-[335px] on mobile, max-w-[360px] on desktop)
           */}
           <aside className="lg:col-span-5 xl:col-span-4 flex flex-col items-center lg:items-end justify-center order-2 lg:order-2 relative w-full mt-3 lg:mt-0">
-            <div className="double-frame-simple bg-light-surface-card/15 dark:bg-dark-surface-card/20 backdrop-blur-md hover:bg-light-surface-card dark:hover:bg-dark-surface-card hover:backdrop-blur-none transition-all duration-300 border border-light-border/60 dark:border-dark-border/60 hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-3 sm:p-4.5 flex flex-col justify-between gap-2 sm:gap-3 shadow-2xs hover:shadow-md w-full max-w-[320px] sm:max-w-[350px] relative group z-10">
+            <div className="double-frame-simple bg-light-surface-card/15 dark:bg-dark-surface-card/20 backdrop-blur-md hover:bg-light-surface-card dark:hover:bg-dark-surface-card hover:backdrop-blur-none transition-all duration-300 border border-light-border/60 dark:border-dark-border/60 hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-3 sm:p-3.5 flex flex-col justify-between gap-2 sm:gap-3 shadow-2xs hover:shadow-md w-full max-w-[335px] sm:max-w-[360px] relative group z-10">
 
-              {/* Box Header: Header Label & Archive Coordinate from DB */}
+              {/* Box Header: Header Label & Archive Coordinate from DB (Crisp single-line layout) */}
               {(hanko?.headerLabel || hanko?.locationArchive) && (
-                <div className="w-full flex items-start justify-between gap-2 pb-1.5 border-b border-light-border/50 dark:border-dark-border/50 relative z-10">
+                <div className="w-full flex items-center justify-between gap-2 pb-1.5 border-b border-light-border/50 dark:border-dark-border/50 relative z-10">
                   {hanko?.headerLabel ? (
-                    <div className="flex items-start gap-1 font-mono uppercase text-xs sm:text-[13px] tracking-wider text-light-ink dark:text-dark-ink font-semibold min-w-0 flex-1">
-                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-ochre inline-block mt-0.5 shrink-0" />
-                      <span className="leading-snug break-words">{hanko.headerLabel}</span>
+                    <div className="flex items-center gap-1.5 font-mono uppercase text-[11px] sm:text-xs tracking-tight text-light-ink dark:text-dark-ink font-semibold whitespace-nowrap min-w-0">
+                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-ochre inline-block shrink-0" />
+                      <span className="whitespace-nowrap">{hanko.headerLabel}</span>
                     </div>
                   ) : <div />}
                   {hanko?.locationArchive && (
-                    <span className="font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider text-[11px] sm:text-xs font-semibold shrink-0 text-right whitespace-nowrap pt-0.5">
+                    <span className="font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-tight text-[10px] sm:text-[11px] font-semibold shrink-0 text-right whitespace-nowrap pl-1">
                       {hanko.locationArchive}
                     </span>
                   )}
