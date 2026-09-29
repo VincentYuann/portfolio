@@ -173,7 +173,7 @@ export const ContactSection: React.FC = () => {
 
                 <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-light-ink dark:text-dark-ink leading-tight font-normal tracking-tight">
                   Initiate Dialogue{' '}
-                  <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-xl sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block">
+                  <span aria-hidden="true" className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-xl sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block select-none">
                     対話
                   </span>
                 </h2>
@@ -256,9 +256,9 @@ export const ContactSection: React.FC = () => {
               {status === 'success' ? (
                 <div role="status" aria-live="polite" className="p-5 rounded-[2px] bg-bamboo/10 border border-bamboo/30 text-center space-y-2">
                   <CheckCircle2 className="w-8 h-8 text-bamboo mx-auto" />
-                  <h4 className="font-serif text-base text-light-ink dark:text-dark-ink">
+                  <h3 className="font-serif text-base text-light-ink dark:text-dark-ink">
                     Message Delivered Directly
-                  </h4>
+                  </h3>
                   <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
                     Your transmission was delivered directly to Vincent's inbox. He will review it and respond promptly.
                   </p>

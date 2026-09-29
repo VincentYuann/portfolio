@@ -224,9 +224,9 @@ export const PhilosophyBento: React.FC = () => {
                           </div>
                         )}
                         {m.title && (
-                          <h4 className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors relative z-10">
+                          <div className="font-serif text-sm sm:text-base font-medium text-light-ink dark:text-dark-ink transition-colors relative z-10">
                             {m.title}
-                          </h4>
+                          </div>
                         )}
                         {m.subtitle && (
                           <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1 font-normal relative z-10">

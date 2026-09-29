@@ -22,8 +22,8 @@
 
   /* Typography Inks */
   --ink-color: #282E3A;
-  --ink-muted: #686559;
-  --ink-subtle: #8B8375;
+  --ink-muted: #5C584C;
+  --ink-subtle: #686356;
 
   /* Borders & Joinery Channels */
   --border-color: #D4C4AA;
@@ -36,7 +36,7 @@
   --button-primary-text: #FAF6EE;
   --color-terracotta-rgb: 181 72 46;
   --color-ochre-rgb: 212 168 83;
-  --color-bamboo-rgb: 82 109 87;
+  --color-bamboo-rgb: 66 90 71;
   --accent-color: #B5482E;
   --ease-zen: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -104,7 +104,7 @@
   /* Typography Inks */
   --ink-color: #E8E6DF;
   --ink-muted: #9E9A8E;
-  --ink-subtle: #736F64;
+  --ink-subtle: #989384;
 
   /* Borders & Joinery Channels */
   --border-color: #383B44;

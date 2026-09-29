@@ -204,7 +204,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-light-ink dark:text-dark-ink font-normal leading-[1.15] tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors duration-200">
                           {project.title}
                         </h3>
-                        <span className="font-serif text-xl sm:text-2xl lg:text-3xl text-light-ink-muted/70 dark:text-dark-ink-muted/70 shrink-0 select-none">
+                        <span aria-hidden="true" className="font-serif text-xl sm:text-2xl lg:text-3xl text-light-ink-muted dark:text-dark-ink-muted shrink-0 select-none">
                           {project.kanji}
                         </span>
                       </div>

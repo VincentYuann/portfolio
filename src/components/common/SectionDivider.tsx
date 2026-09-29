@@ -165,6 +165,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
 
   return (
     <div
+      aria-hidden="true"
       className={`relative w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center select-none ${className || 'my-8 sm:my-14'}`}
     >
       {/* Top Seigaiha Wave Arch Motif */}

@@ -67,8 +67,8 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
           </div>
 
           {hobby.kanji && (
-            <div className="text-right shrink-0">
-              <span className="font-serif text-2xl sm:text-3xl text-light-ink-subtle/50 dark:text-dark-ink-subtle/40 font-medium leading-none block select-none">
+            <div className="text-right shrink-0" aria-hidden="true">
+              <span className="font-serif text-2xl sm:text-3xl text-light-ink-subtle dark:text-dark-ink-subtle font-medium leading-none block select-none">
                 {hobby.kanji}
               </span>
             </div>

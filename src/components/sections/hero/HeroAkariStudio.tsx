@@ -8,6 +8,7 @@ import {
   Mail,
 } from 'lucide-react';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
+import { useTheme } from '../../../context/ThemeContext';
 import { HankoStamp } from '../../common/HankoStamp';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { TechTag } from '../../common/TechTag';
@@ -33,6 +34,7 @@ const getPillarIcon = (label: string, idx: number) => {
 
 export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) => {
   const { profile } = useSiteData();
+  const { theme } = useTheme();
 
   const headline = profile?.headline || '';
   const tagline = profile?.tagline || '';
@@ -60,7 +62,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           src="./images/day-hero.webp"
           alt="Panoramic sumi-e day lake with blossoms painting backdrop"
           className="absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center dark:hidden opacity-95 transition-opacity duration-700 pointer-events-none select-none"
-          loading="eager"
+          loading={theme === 'day' ? 'eager' : 'lazy'}
           decoding="async"
         />
 
@@ -69,7 +71,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           src="./images/night-hero.webp"
           alt="Panoramic sumi-e midnight lake with lantern boat painting backdrop"
           className="absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center hidden dark:block opacity-90 transition-opacity duration-700 pointer-events-none select-none"
-          loading="eager"
+          loading={theme === 'night' ? 'eager' : 'lazy'}
           decoding="async"
         />
 
@@ -87,14 +89,12 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             Display headline in Zen Old Mincho, body copy in Mulish, Action buttons,
             and Dynamic Tech Domains Ribbon mapped directly from the DB profile.
           */}
-          <main className="lg:col-span-7 xl:col-span-8 flex flex-col gap-3.5 sm:gap-5 order-1 lg:order-1">
+          <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-3.5 sm:gap-5 order-1 lg:order-1">
             <div className="space-y-2.5 sm:space-y-3.5 max-w-3xl">
               {/* Bold Serif Editorial Display Headline - Scaled slightly bigger for prominent presence */}
-              {headline && (
-                <h1 className="font-display text-[1.75rem] xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[3.95rem] font-normal text-light-ink dark:text-dark-ink leading-[1.08] tracking-tight text-balance">
-                  {headline}
-                </h1>
-              )}
+              <h1 className="font-display text-[1.75rem] xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[3.95rem] font-normal text-light-ink dark:text-dark-ink leading-[1.08] tracking-tight text-balance">
+                {headline || 'Software & AI Systems Engineer'}
+              </h1>
 
               {/* Subtitle Paragraph in Dynamic Body Font */}
               {tagline && (
@@ -177,7 +177,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 })}
               </div>
             )}
-          </main>
+          </div>
 
           {/* 
             RIGHT COLUMN: CLASSICAL HANKO SHOWCASE CARD (Sleek Compact Stationery Plaque)
@@ -226,9 +226,9 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
               {(displayName || displayRole) && (
                 <div className="text-center relative z-10">
                   {displayName && (
-                    <h2 className="font-display text-base sm:text-lg lg:text-xl font-medium tracking-tight text-light-ink dark:text-dark-ink">
+                    <div className="font-display text-base sm:text-lg lg:text-xl font-medium tracking-tight text-light-ink dark:text-dark-ink">
                       {displayName}
-                    </h2>
+                    </div>
                   )}
                   {displayRole && (
                     <p className="font-sans text-[10.5px] sm:text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-semibold mt-0.5">

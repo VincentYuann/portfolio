@@ -53,7 +53,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-[1.08]">
           {title}{' '}
           {kanjiSubtitle && (
-            <span className="font-serif font-light text-light-ink-muted/80 dark:text-dark-ink-muted/80 text-2xl sm:text-3xl lg:text-4xl ml-3 whitespace-nowrap inline-block select-none">
+            <span aria-hidden="true" className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl sm:text-3xl lg:text-4xl ml-3 whitespace-nowrap inline-block select-none">
               {kanjiSubtitle}
             </span>
           )}
