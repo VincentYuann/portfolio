@@ -61,48 +61,91 @@ export const Header: React.FC<HeaderProps> = ({
     };
   }, []);
 
-  // Layout-thrash-free active section tracking using IntersectionObserver
+  // Buttery-smooth active section tracking & scroll elevation
   useEffect(() => {
     if (currentView !== 'home') return;
 
     const sectionIds = ['home', 'experience', 'featured-works', 'philosophy', 'hobbies', 'contact'];
-    const elements = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
+    let ticking = false;
 
-    if (elements.length === 0) return;
+    const updateActiveSection = () => {
+      // Update scrolled elevation state synchronously
+      setScrolled((prev) => {
+        const next = window.scrollY > 20;
+        return prev !== next ? next : prev;
+      });
 
-    const visibleSections = new Map<string, IntersectionObserverEntry>();
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          visibleSections.set(entry.target.id, entry);
-        });
-
-        const intersecting = Array.from(visibleSections.values()).filter((e) => e.isIntersecting);
-        if (intersecting.length === 0) return;
-
-        // Sort by distance to the 100px reading line below the header
-        intersecting.sort((a, b) => {
-          const distA = Math.abs(a.boundingClientRect.top - 100);
-          const distB = Math.abs(b.boundingClientRect.top - 100);
-          return distA - distB;
-        });
-
-        const best = intersecting[0]?.target.id;
-        if (best) {
-          setActiveSection((prev) => (prev !== best ? best : prev));
-        }
-      },
-      {
-        rootMargin: '-80px 0px -25% 0px',
-        threshold: [0, 0.15, 0.5],
+      // 1. Top of page: always Home
+      if (window.scrollY < 120) {
+        setActiveSection((prev) => (prev !== 'home' ? 'home' : prev));
+        return;
       }
-    );
 
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+      // 2. Near page bottom: always Contact
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = window.innerHeight;
+      if (window.scrollY + clientHeight >= scrollHeight - 70) {
+        setActiveSection((prev) => (prev !== 'contact' ? 'contact' : prev));
+        return;
+      }
+
+      // 3. Focal line at 160px from viewport top (accounting for 80px header)
+      const focalY = 160;
+      let matchedSection: string | null = null;
+      let closestSection: string | null = null;
+      let closestDistance = Infinity;
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+
+        const rect = el.getBoundingClientRect();
+        // Section encompasses the focal line
+        if (rect.top <= focalY && rect.bottom > focalY) {
+          matchedSection = id;
+          break;
+        }
+
+        // Keep track of the closest section boundary to the focal line
+        const distance = Math.min(Math.abs(rect.top - focalY), Math.abs(rect.bottom - focalY));
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestSection = id;
+        }
+      }
+
+      const active = matchedSection || closestSection;
+      if (active) {
+        setActiveSection((prev) => (prev !== active ? active : prev));
+      }
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Initial evaluation & delayed retries to catch lazily loaded sections
+    updateActiveSection();
+    const t1 = setTimeout(updateActiveSection, 150);
+    const t2 = setTimeout(updateActiveSection, 500);
+    const t3 = setTimeout(updateActiveSection, 1200);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, [currentView]);
 
   // Close mobile drawer on resize to desktop
