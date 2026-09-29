@@ -93,9 +93,9 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           */}
           <main className="lg:col-span-7 xl:col-span-8 flex flex-col gap-3.5 sm:gap-5 order-1 lg:order-1">
             <div className="space-y-2.5 sm:space-y-3.5 max-w-3xl">
-              {/* Bold Serif Editorial Display Headline - Scaled for cross-resolution harmony */}
+              {/* Bold Serif Editorial Display Headline - Scaled slightly bigger for prominent presence */}
               {headline && (
-                <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.15rem] xl:text-[3.5rem] font-normal text-light-ink dark:text-dark-ink leading-[1.12] tracking-tight text-balance">
+                <h1 className="font-display text-[1.75rem] xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[3.95rem] font-normal text-light-ink dark:text-dark-ink leading-[1.08] tracking-tight text-balance">
                   {headline}
                 </h1>
               )}
