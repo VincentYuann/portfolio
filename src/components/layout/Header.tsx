@@ -140,12 +140,14 @@ export const Header: React.FC<HeaderProps> = ({
     }
   };
 
+  const isHeroTransparent = !scrolled && currentView === 'home';
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-light-canvas dark:bg-dark-canvas border-b border-light-border/70 dark:border-dark-border/80 shadow-sm'
-          : 'bg-light-canvas dark:bg-dark-canvas border-b border-transparent'
+        isHeroTransparent
+          ? 'bg-light-canvas/15 dark:bg-dark-canvas/20 backdrop-blur-sm border-b border-light-border/15 dark:border-dark-border/15'
+          : 'bg-light-canvas/95 dark:bg-dark-canvas/95 backdrop-blur-md border-b border-light-border/70 dark:border-dark-border/80 shadow-xs'
       }`}
     >
       <div className="h-20 w-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3 sm:gap-4">
@@ -208,7 +210,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Right side cluster: always neatly aligned with zero overlap */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {/* Day / Night / Art Settings 3-segment unified toggle (DAY | NIGHT | ART on PC, ☀️ | 🌙 | 🎨 on Mobile) */}
-          <div className="flex items-center p-0.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-[11px] sm:text-xs select-none shrink-0 shadow-2xs min-h-[44px]">
+          <div className="flex items-center p-0.5 rounded-[2px] bg-light-surface-card/60 dark:bg-dark-surface/60 backdrop-blur-xs border border-light-border/60 dark:border-dark-border/60 text-[11px] sm:text-xs select-none shrink-0 shadow-2xs min-h-[44px]">
             <button
               onClick={() => setTheme('day')}
               className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${

@@ -266,7 +266,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                   {/* Milestone Card Frame */}
                   <Card
-                    className={`relative p-5 sm:p-8 overflow-visible transition-all duration-200 ${
+                    className={`group relative p-5 sm:p-8 overflow-visible transition-all duration-200 ${
                       isCardActive
                         ? 'border-light-border-strong dark:border-dark-border-strong shadow-xs'
                         : ''

@@ -118,7 +118,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
 
         {/* 2. LAYER: Rotating Celestial Elements Group (Golden Arc + Apex Ruby + Dashed Trail) */}
         <g
-          className={`${hoverOnly && !active ? 'group-hover:animate-orbital-spin' : 'animate-orbital-spin'} transform-gpu [transform:translateZ(0)] will-change-[transform]`}
+          className="animate-orbital-spin transform-gpu [transform:translateZ(0)] will-change-[transform]"
           style={{ transformOrigin: '100px 100px' }}
         >
           {/* Golden Orbit Arc (sweeps top to right with real-time drawing) */}
@@ -142,7 +142,7 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
             strokeWidth="1.8"
             strokeDasharray="4 6"
             strokeLinecap="round"
-            className="text-terracotta dark:text-ochre opacity-80 dark:opacity-90 group-hover:animate-dash-flow transition-colors"
+            className="text-terracotta dark:text-ochre opacity-80 dark:opacity-90 animate-dash-flow transition-colors"
           />
 
           {/* Outer Fine Golden Tracking Ring */}
