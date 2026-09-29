@@ -238,7 +238,7 @@ export const INITIAL_PROJECTS: Project[] = [
     "badge": "React",
     "subtitle": "Full stack",
     "description": "My digital home on the web, crafted with Japanese minimalism and powered by an AI copilot.",
-    "image": "./images/sumi-os-workspace.jpg",
+    "image": "./images/sumi-os-workspace.webp",
     "tags": [
       "React",
       "TypeScript",

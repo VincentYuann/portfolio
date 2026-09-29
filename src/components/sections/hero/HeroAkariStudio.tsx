@@ -57,7 +57,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none flex items-center justify-center">
         {/* Day Theme Backdrop (Panoramic Sumi-e Dawn Lake - 2752x1536 Full View) */}
         <img
-          src="/images/day-hero.webp"
+          src="./images/day-hero.webp"
           alt="Panoramic sumi-e day lake with blossoms painting backdrop"
           className="absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center dark:hidden opacity-95 transition-opacity duration-700 pointer-events-none select-none"
           loading="eager"
@@ -66,7 +66,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
         {/* Night Theme Backdrop (Midnight Sumi-e Lake with Lantern Boat - 2752x1536 Full View) */}
         <img
-          src="/images/night-hero.webp"
+          src="./images/night-hero.webp"
           alt="Panoramic sumi-e midnight lake with lantern boat painting backdrop"
           className="absolute inset-0 w-full h-full object-cover object-[62%_center] sm:object-center hidden dark:block opacity-90 transition-opacity duration-700 pointer-events-none select-none"
           loading="eager"
