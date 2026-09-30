@@ -52,7 +52,7 @@ const ChatBubbleAvatar = React.forwardRef<HTMLDivElement, ChatBubbleAvatarProps>
 ChatBubbleAvatar.displayName = 'ChatBubbleAvatar';
 
 const chatBubbleMessageVariants = cva(
-  'relative rounded-[2px] p-3 sm:p-3.5 text-xs sm:text-[13px] leading-relaxed transition-colors',
+  'relative rounded-[2px] p-3 sm:p-3.5 text-xs sm:text-sm leading-relaxed transition-colors',
   {
     variants: {
       variant: {
@@ -93,7 +93,7 @@ const ChatBubbleTimestamp = React.forwardRef<
   <span
     ref={ref}
     className={cn(
-      'font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle tracking-wider uppercase select-none',
+      'font-mono text-2xs text-light-ink-subtle dark:text-dark-ink-subtle tracking-wider uppercase select-none',
       className
     )}
     {...props}

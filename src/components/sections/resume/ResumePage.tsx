@@ -217,8 +217,8 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
         <div className="mb-5 sm:mb-10 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
           <div>
             <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
-              <span className="font-mono text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
-              <span className="font-mono text-[11px] sm:text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
+              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                 Curriculum Vitae · 履歴書
               </span>
             </div>
@@ -310,7 +310,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                     href={supabasePdfUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors"
+                    className="inline-flex items-center gap-1 text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors"
                   >
                     <ExternalLink className="w-3 h-3" />
                     <span>Open in New Window</span>
@@ -380,7 +380,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                     const tokens = tokenizeLatexLine(line);
                     return (
                       <div key={idx} className="table-row hover:bg-light-surface-muted/40 dark:hover:bg-dark-surface-muted/30">
-                        <span className="table-cell select-none pr-4 text-right opacity-30 text-[10px] w-10 align-top">
+                        <span className="table-cell select-none pr-4 text-right opacity-30 text-2xs w-10 align-top">
                           {idx + 1}
                         </span>
                         <span className="table-cell whitespace-pre-wrap break-all">

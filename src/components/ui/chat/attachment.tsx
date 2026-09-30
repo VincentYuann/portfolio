@@ -108,7 +108,7 @@ export const AttachmentDescription = React.forwardRef<
   return (
     <span
       ref={ref}
-      className={cn('text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle truncate', className)}
+      className={cn('text-2xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle truncate', className)}
       {...props}
     >
       {children}

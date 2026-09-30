@@ -11,7 +11,7 @@ import { handleImageError } from '../../../lib/constants';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { SectionDivider } from '../../common/SectionDivider';
-import { AkariLanternDecorator } from '../../common/AkariLanternDecorator';
+
 
 const ProjectDetailModal = lazy(() =>
   import('./ProjectDetailModal').then((m) => ({ default: m.ProjectDetailModal }))
@@ -83,7 +83,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
   return (
     <section
       id="featured-works"
-      className="section-chamber-alt relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden bg-[#FAF5EB] dark:bg-[#1E1F24]"
+      className="section-chamber-alt relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 scroll-mt-12 overflow-hidden bg-light-canvas-soft dark:bg-dark-canvas-soft"
     >
       {/* Architectural Background Chamber for Featured Works */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface-card/30 to-transparent dark:via-dark-surface/40 pointer-events-none z-0" />
@@ -103,14 +103,6 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
         textureOpacityNight={0.45}
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
-      />
-
-      {/* Ambient Spherical Akari Lantern on Left (Asymmetry Balance against bottom-right Ocean Wave) */}
-      <AkariLanternDecorator
-        variant="hanging-round"
-        className="top-6 left-6 lg:left-10 xl:left-14"
-        sizeClassName="md:w-36 lg:w-44 xl:w-48"
-        glowSizeClassName="md:w-80 lg:w-96 md:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}
@@ -165,11 +157,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         alt={project.title}
                         width={640}
                         height={360}
-                        className="w-full h-full object-cover object-center group-hover:opacity-95 transition-opacity duration-300"
-                        style={{
-                          maskImage: 'radial-gradient(ellipse 96% 94% at 50% 50%, black 72%, transparent 100%)',
-                          WebkitMaskImage: 'radial-gradient(ellipse 96% 94% at 50% 50%, black 72%, transparent 100%)',
-                        }}
+                        className="w-full h-full object-cover object-center group-hover:opacity-95 transition-opacity duration-300 vignette-mask-subtle"
                         loading="lazy"
                         decoding="async"
                         onError={handleImageError()}
@@ -186,7 +174,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                     {/* Unified Metadata Strip: Order + Date + Active Status Pill */}
                     <div>
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                        <Badge variant="outline" className="font-mono text-[11px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-[2px] bg-light-surface-muted/60 dark:bg-dark-canvas border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted">
+                        <Badge variant="outline" className="font-mono text-xs px-1.5 sm:px-2 py-0.5 rounded-[2px] bg-light-surface-muted/60 dark:bg-dark-canvas border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted">
                           #{String(index + 1).padStart(2, '0')}
                         </Badge>
 
@@ -208,7 +196,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                           {project.kanji}
                         </span>
                       </div>
-                      <p className="font-chakra text-xs sm:text-[13px] font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-widest">
+                      <p className="font-chakra text-xs sm:text-sm font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                         {project.subtitle}
                       </p>
                     </div>
@@ -229,7 +217,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       <button
                         type="button"
                         onClick={() => openProject(project)}
-                        className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-medium hover:text-terracotta dark:hover:text-ochre transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded py-1 px-0.5 group/btn cursor-pointer"
+                        className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-medium hover:text-terracotta dark:hover:text-ochre transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] min-h-[44px] sm:min-h-0 py-2 sm:py-1 px-1.5 sm:px-0.5 group/btn cursor-pointer"
                       >
                         <span>
                           {project.links.caseStudyText || 'View Architecture'}
@@ -238,13 +226,13 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                       </button>
 
                       {/* Direct External Links */}
-                      <div className="flex items-center gap-1.5 text-light-ink-muted dark:text-dark-ink-muted" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center gap-1 sm:gap-1.5 text-light-ink-muted dark:text-dark-ink-muted" onClick={(e) => e.stopPropagation()}>
                         {project.links.github && (
                           <a
                             href={project.links.github}
                             target="_blank"
                             rel="noreferrer"
-                            className="p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer"
+                            className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2.5 sm:p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-light-border/50 dark:border-dark-border/50 sm:border-transparent transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer flex items-center justify-center"
                             title="GitHub Repository"
                             aria-label={`${project.title} GitHub Repository`}
                           >
@@ -256,7 +244,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             href={project.links.live}
                             target="_blank"
                             rel="noreferrer"
-                            className="p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-transparent hover:border-light-border dark:border-dark-border transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer"
+                            className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2.5 sm:p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-light-border/50 dark:border-dark-border/50 sm:border-transparent transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer flex items-center justify-center"
                             title="Live Deployment"
                             aria-label={`${project.title} Live Deployment`}
                           >

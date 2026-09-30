@@ -267,21 +267,21 @@ export const IntroEditor: React.FC = () => {
           aria-expanded={!collapsed.identity}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
               <User className="w-4 h-4" />
             </div>
             <div>
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Identity &amp; Hero Statement
               </h3>
-              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
                 Display name, professional role headline, and primary hero biography statement.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {!collapsed.identity ? (
-              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-ochre" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
@@ -357,21 +357,21 @@ export const IntroEditor: React.FC = () => {
           aria-expanded={!collapsed.social}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
               <Globe className="w-4 h-4" />
             </div>
             <div>
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Contact &amp; Public Channels
               </h3>
-              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
                 Direct email address, GitHub repository, and professional LinkedIn profile.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {!collapsed.social ? (
-              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-ochre" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
@@ -547,21 +547,21 @@ export const IntroEditor: React.FC = () => {
           aria-expanded={!collapsed.hanko}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
               <HankoStamp char="原" className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Hanko Seal Showcase Card (認印)
               </h3>
-              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
                 Personal seal coordinates, availability status, and vertical Japanese prose.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {!collapsed.hanko ? (
-              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-ochre" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}

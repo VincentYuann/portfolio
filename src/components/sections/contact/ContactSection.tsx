@@ -6,7 +6,7 @@ import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
-import { AkariLanternDecorator } from '../../common/AkariLanternDecorator';
+
 
 export const ContactSection: React.FC = () => {
   const [name, setName] = useState('');
@@ -112,7 +112,7 @@ export const ContactSection: React.FC = () => {
 
   const mailtoHref = contactEmail ? `mailto:${contactEmail}?subject=${encodeURIComponent(
     `[Portfolio Dialogue] ${name.trim() || 'Direct Inquiry'}`
-  )}` : '#';
+  )}` : undefined;
 
   return (
     <section id="contact" className="relative w-full pt-8 sm:pt-12 pb-24 lg:pb-32 mb-8 scroll-mt-12 overflow-hidden bg-light-canvas dark:bg-dark-canvas">
@@ -133,14 +133,6 @@ export const ContactSection: React.FC = () => {
         textureOpacityNight={0.45}
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
-      />
-
-      {/* Ambient Japanese Akari Hanging Paper Lantern on Right (Welcoming Teahouse Luminescence) */}
-      <AkariLanternDecorator
-        variant="hanging-vertical"
-        className="top-6 right-6 lg:right-10 xl:right-16"
-        sizeClassName="md:w-36 lg:w-44 xl:w-48"
-        glowSizeClassName="md:w-80 lg:w-96 md:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}
@@ -165,8 +157,8 @@ export const ContactSection: React.FC = () => {
             <div className="lg:col-span-6 flex flex-col gap-4 sm:gap-6">
               <div>
                 <div className="flex items-center gap-2 mb-1.5 sm:mb-2 flex-wrap">
-                  <span className="font-mono text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium whitespace-nowrap">06 //</span>
-                  <span className="font-mono text-[11px] sm:text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+                  <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium whitespace-nowrap">06 //</span>
+                  <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                     Dialogue · 対話と通信
                   </span>
                 </div>
@@ -187,24 +179,33 @@ export const ContactSection: React.FC = () => {
               {(contactEmail || contactGithub || contactLinkedin) && (
                 <div className="pt-1 flex flex-wrap items-center gap-2">
                   {contactEmail && (
-                    <div className="inline-flex items-center rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border shadow-2xs text-xs font-mono group/email hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 transition-colors">
+                    <div className="inline-flex items-center rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border shadow-2xs text-xs font-mono group/email hover:border-terracotta/60 dark:hover:border-ochre/60 transition-colors">
                       <a
                         href={mailtoHref}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-[#D4A853] transition-colors"
-                        title="Send direct email"
+                        onClick={(e) => {
+                          if (!contactEmail || !mailtoHref) {
+                            e.preventDefault();
+                          }
+                        }}
+                        aria-disabled={!contactEmail}
+                        tabIndex={contactEmail ? 0 : -1}
+                        className={`inline-flex items-center gap-1.5 px-3 py-2.5 sm:py-2 min-h-[44px] sm:min-h-0 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre transition-colors ${
+                          !contactEmail ? 'pointer-events-none opacity-50 cursor-not-allowed' : ''
+                        }`}
+                        title={contactEmail ? 'Send direct email' : undefined}
                       >
-                        <Mail className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853]" />
+                        <Mail className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
                         <span className="truncate max-w-[190px] sm:max-w-none">{contactEmail}</span>
                       </a>
                       <button
                         type="button"
                         onClick={handleCopyEmail}
-                        className="px-2.5 py-2 border-l border-light-border dark:border-dark-border hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink transition-colors cursor-pointer"
+                        className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 px-3 sm:px-2.5 py-2.5 sm:py-2 flex items-center justify-center border-l border-light-border dark:border-dark-border hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink transition-colors cursor-pointer"
                         title="Copy email to clipboard"
                         aria-label="Copy email address"
                       >
                         {copiedEmail ? (
-                          <span className="inline-flex items-center gap-1 text-bamboo text-[11px] font-medium">
+                          <span className="inline-flex items-center gap-1 text-bamboo text-xs font-medium">
                             <Check className="w-3 h-3" />
                             <span>Copied</span>
                           </span>
@@ -220,7 +221,7 @@ export const ContactSection: React.FC = () => {
                       href={contactGithub}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-[#D4A853] font-mono text-xs rounded-[2px] shadow-2xs transition-colors"
+                      className="min-h-[44px] sm:min-h-0 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 sm:py-2 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre font-mono text-xs rounded-[2px] shadow-2xs transition-colors"
                     >
                       <Github className="w-3.5 h-3.5" />
                       <span>GitHub</span>
@@ -232,7 +233,7 @@ export const ContactSection: React.FC = () => {
                       href={contactLinkedin}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-[#D4A853] font-mono text-xs rounded-[2px] shadow-2xs transition-colors"
+                      className="min-h-[44px] sm:min-h-0 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 sm:py-2 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre font-mono text-xs rounded-[2px] shadow-2xs transition-colors"
                     >
                       <Linkedin className="w-3.5 h-3.5" />
                       <span>LinkedIn</span>
@@ -248,7 +249,7 @@ export const ContactSection: React.FC = () => {
                 <h3 className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-medium">
                   Send a Message
                 </h3>
-                <span className="font-mono text-[10px] sm:text-[11px] text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+                <span className="font-mono text-2xs sm:text-xs text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                   Direct Inquiries
                 </span>
               </div>
@@ -280,7 +281,7 @@ export const ContactSection: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="contact-name" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                        Your Name <span className="text-terracotta dark:text-[#D4A853]">*</span>
+                        Your Name <span className="text-terracotta dark:text-ochre">*</span>
                       </label>
                       <input
                         id="contact-name"
@@ -296,11 +297,11 @@ export const ContactSection: React.FC = () => {
                         className={`w-full px-3 py-2 rounded-[2px] text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors ${
                           touched.name && errors.name
                             ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
-                            : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-[#D4A853] focus-visible:ring-terracotta/40 dark:focus-visible:ring-[#D4A853]/40'
+                            : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-ochre focus-visible:ring-terracotta/40 dark:focus-visible:ring-ochre/40'
                         }`}
                       />
                       {touched.name && errors.name && (
-                        <p id="contact-name-error" className="mt-1 text-[11px] text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
+                        <p id="contact-name-error" className="mt-1 text-xs text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
                           <AlertCircle className="w-3 h-3 shrink-0" />
                           <span>{errors.name}</span>
                         </p>
@@ -308,7 +309,7 @@ export const ContactSection: React.FC = () => {
                     </div>
                     <div>
                       <label htmlFor="contact-email" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                        Email Address <span className="text-terracotta dark:text-[#D4A853]">*</span>
+                        Email Address <span className="text-terracotta dark:text-ochre">*</span>
                       </label>
                       <input
                         id="contact-email"
@@ -324,11 +325,11 @@ export const ContactSection: React.FC = () => {
                         className={`w-full px-3 py-2 rounded-[2px] text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors ${
                           touched.email && errors.email
                             ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
-                            : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-[#D4A853] focus-visible:ring-terracotta/40 dark:focus-visible:ring-[#D4A853]/40'
+                            : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-ochre focus-visible:ring-terracotta/40 dark:focus-visible:ring-ochre/40'
                         }`}
                       />
                       {touched.email && errors.email && (
-                        <p id="contact-email-error" className="mt-1 text-[11px] text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
+                        <p id="contact-email-error" className="mt-1 text-xs text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
                           <AlertCircle className="w-3 h-3 shrink-0" />
                           <span>{errors.email}</span>
                         </p>
@@ -338,7 +339,7 @@ export const ContactSection: React.FC = () => {
 
                   <div>
                     <label htmlFor="contact-message" className="block font-sans text-xs font-medium text-light-ink dark:text-dark-ink mb-1">
-                      Your Message <span className="text-terracotta dark:text-[#D4A853]">*</span>
+                      Your Message <span className="text-terracotta dark:text-ochre">*</span>
                     </label>
                     <textarea
                       id="contact-message"
@@ -354,11 +355,11 @@ export const ContactSection: React.FC = () => {
                       className={`w-full px-3 py-2.5 rounded-[2px] text-sm bg-light-surface dark:bg-dark-surface border text-light-ink dark:text-dark-ink focus:outline-none focus-visible:ring-2 transition-colors resize-none ${
                         touched.message && errors.message
                           ? 'border-red-500/80 dark:border-red-400/80 focus:border-red-500 focus-visible:ring-red-500/30'
-                          : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-[#D4A853] focus-visible:ring-terracotta/40 dark:focus-visible:ring-[#D4A853]/40'
+                          : 'border-light-border dark:border-dark-border focus:border-terracotta dark:focus:border-ochre focus-visible:ring-terracotta/40 dark:focus-visible:ring-ochre/40'
                       }`}
                     />
                     {touched.message && errors.message && (
-                      <p id="contact-message-error" className="mt-1 text-[11px] text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
+                      <p id="contact-message-error" className="mt-1 text-xs text-red-600 dark:text-red-400 font-sans flex items-center gap-1">
                         <AlertCircle className="w-3 h-3 shrink-0" />
                         <span>{errors.message}</span>
                       </p>
@@ -375,7 +376,7 @@ export const ContactSection: React.FC = () => {
                   <button
                     type="submit"
                     disabled={status === 'sending'}
-                    className="w-full py-2.5 px-4 rounded-[2px] font-sans text-sm font-medium bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none"
+                    className="w-full py-2.5 px-4 rounded-[2px] font-sans text-sm font-medium bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>{status === 'sending' ? 'Transmitting...' : 'Send Message'}</span>

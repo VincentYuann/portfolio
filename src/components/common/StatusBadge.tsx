@@ -53,7 +53,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   return (
     <span
       className={`inline-flex items-center font-mono font-bold uppercase tracking-wider transition-colors select-none ${
-        isSm ? 'gap-1 px-2 py-0.5 text-[11px] rounded-[2px]' : 'gap-1.5 px-2.5 py-0.5 text-[11px] rounded-[2px]'
+        isSm ? 'gap-1 px-2 py-0.5 text-2xs rounded-[2px]' : 'gap-1.5 px-2.5 py-0.5 text-xs rounded-[2px]'
       } ${isActive ? activeClass : completedClass} ${customClass}`}
     >
       <span

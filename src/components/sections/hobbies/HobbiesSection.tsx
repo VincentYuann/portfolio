@@ -6,7 +6,7 @@ import { HobbyCard } from './HobbyCard';
 import { SectionHeading } from '../../common/SectionHeading';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
-import { AkariLanternDecorator } from '../../common/AkariLanternDecorator';
+
 
 interface HobbiesSectionProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -42,7 +42,7 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
   return (
     <section
       id="hobbies"
-      className="section-chamber-alt relative w-full pt-12 sm:pt-16 pb-28 lg:pb-36 scroll-mt-12 overflow-hidden bg-[#FAF5EB] dark:bg-[#1E1F24]"
+      className="section-chamber-alt relative w-full pt-12 sm:pt-16 pb-28 lg:pb-36 scroll-mt-12 overflow-hidden bg-light-canvas-soft dark:bg-dark-canvas-soft"
     >
       {/* Architectural Background Chamber for Hobbies */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-light-surface/20 to-transparent dark:via-dark-surface-card/40 pointer-events-none z-0" />
@@ -61,14 +61,6 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
         textureOpacityNight={0.45}
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
-      />
-
-      {/* Ambient Elliptical Akari Lantern on Left (Asymmetry Balance against right Pine Tree) */}
-      <AkariLanternDecorator
-        variant="hanging-elliptical"
-        className="top-6 left-6 lg:left-10 xl:left-14"
-        sizeClassName="md:w-40 lg:w-48 xl:w-52"
-        glowSizeClassName="md:w-80 lg:w-96 md:h-80 lg:h-96"
       />
 
       {/* Section Divider on Top of Section */}

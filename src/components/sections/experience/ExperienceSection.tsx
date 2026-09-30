@@ -302,7 +302,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                               </span>
                             )}
                             {exp.kanjiSubtitle && (
-                              <span className={`text-[11px] font-mono tracking-wider ${isCardActive ? theme.textClass : 'text-light-ink-subtle dark:text-dark-ink-subtle'} uppercase font-bold leading-none mt-1 opacity-90`}>
+                              <span className={`text-xs font-mono tracking-wider ${isCardActive ? theme.textClass : 'text-light-ink-subtle dark:text-dark-ink-subtle'} uppercase font-bold leading-none mt-1 opacity-90`}>
                                 {exp.kanjiSubtitle}
                               </span>
                             )}
@@ -315,7 +315,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         {/* Metadata Strip: Dates + High-Contrast Active/Completed Pill */}
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
                           {/* Order index */}
-                          <Badge variant="outline" className="font-mono text-[11px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-[2px] border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted">
+                          <Badge variant="outline" className="font-mono text-xs px-1.5 sm:px-2 py-0.5 rounded-[2px] border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted">
                             #{String(idx + 1).padStart(2, '0')}
                           </Badge>
 
@@ -340,7 +340,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         </div>
 
                         {/* Title & Company */}
-                        <h3 className="font-serif text-2xl sm:text-3xl lg:text-[2rem] font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors leading-snug tracking-tight">
+                        <h3 className="font-serif text-2xl sm:text-3xl font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors leading-snug tracking-tight">
                           {exp.title}
                         </h3>
 
@@ -349,7 +349,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           {exp.location && (
                             <>
                               <span className="text-light-ink-subtle">·</span>
-                              <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted font-sans">
+                              <span className="inline-flex items-center gap-1 text-xs text-light-ink-muted dark:text-dark-ink-muted font-sans">
                                 <MapPin className="w-3 h-3 text-light-ink-subtle" />
                                 {exp.location}
                               </span>
@@ -392,7 +392,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             {/* Engineering Impact Bullets */}
                             {bullets.length > 0 && (
                               <div>
-                                <div className="text-xs sm:text-[13px] font-mono tracking-wide text-light-ink dark:text-dark-ink font-semibold mb-2.5 flex items-center gap-1.5">
+                                <div className="text-xs sm:text-sm font-mono tracking-wide text-light-ink dark:text-dark-ink font-semibold mb-2.5 flex items-center gap-1.5">
                                   <ListChecks className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted" />
                                   Engineering Contributions &amp; Quantified Impact
                                 </div>
@@ -402,7 +402,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                                       key={pIdx}
                                       className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border bg-light-surface-raised/60 dark:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3 group"
                                     >
-                                      <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
+                                      <span className="font-mono text-2xs sm:text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
                                         #{String(pIdx + 1).padStart(2, '0')}
                                       </span>
                                       <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">

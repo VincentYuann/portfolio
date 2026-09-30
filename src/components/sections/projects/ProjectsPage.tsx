@@ -119,7 +119,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         <div className="mb-4 sm:mb-8">
           <button
             onClick={() => onNavigate?.('home', 'featured-works')}
-            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors group cursor-pointer py-1"
+            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors group cursor-pointer py-1"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Return to Portfolio</span>
@@ -130,8 +130,8 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-5 sm:mb-10">
           <div>
             <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
-              <span className="font-mono text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">ARCHIVE //</span>
-              <span className="font-mono text-[11px] sm:text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">ARCHIVE //</span>
+              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
                 SELECTED PORTFOLIO · 作品全集
               </span>
             </div>
@@ -154,7 +154,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
               placeholder="Search projects, technologies..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60 dark:focus:border-[#D4A853]/60 font-sans"
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60 dark:focus:border-ochre/60 font-sans"
             />
           </div>
         </div>
@@ -207,15 +207,15 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                       onError={handleImageError()}
                     />
                     {/* Subtle watermark stamp */}
-                    <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-xs text-[11px] font-serif text-white/90">
+                    <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-[2px] bg-black/40 backdrop-blur-xs text-xs font-serif text-white/90">
                       {project.kanji}
                     </div>
                   </div>
 
                   {/* Timeline Strip: Dates + Active Status Badge */}
                   <div className="flex flex-wrap items-center justify-between gap-1.5 mb-2">
-                    <span className="font-mono text-[11px] text-terracotta dark:text-[#D4A853] font-semibold tracking-wider uppercase flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-terracotta dark:text-[#D4A853]" />
+                    <span className="font-mono text-xs text-terracotta dark:text-ochre font-semibold tracking-wider uppercase flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-terracotta dark:text-ochre" />
                       {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
                     </span>
 
@@ -227,7 +227,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                     />
                   </div>
 
-                  <h3 className="font-serif text-lg font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors line-clamp-1">
+                  <h3 className="font-serif text-lg font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors line-clamp-1">
                     {project.title}
                   </h3>
 
@@ -243,7 +243,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                       <TechTag key={tag} tag={tag} size="sm" />
                     ))}
                     {project.tags.length > 3 && (
-                      <span className="px-1.5 py-0.5 text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
+                      <span className="px-1.5 py-0.5 text-2xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle">
                         +{project.tags.length - 3}
                       </span>
                     )}
@@ -254,19 +254,19 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                     <button
                       type="button"
                       onClick={() => openProject(project)}
-                      className="font-sans text-[11px] font-medium text-terracotta dark:text-[#D4A853] hover:underline flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded py-0.5 cursor-pointer"
+                      className="font-sans text-xs font-medium text-terracotta dark:text-ochre hover:underline flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] min-h-[44px] sm:min-h-0 py-2 sm:py-0.5 cursor-pointer"
                     >
                       <span>Inspect System</span>
                       <span>→</span>
                     </button>
 
-                    <div className="flex items-center gap-2 text-light-ink-muted dark:text-dark-ink-muted" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center gap-1 sm:gap-2 text-light-ink-muted dark:text-dark-ink-muted" onClick={(e) => e.stopPropagation()}>
                       {project.links.github && (
                         <a
                           href={project.links.github}
                           target="_blank"
                           rel="noreferrer"
-                          className="p-1 hover:text-light-ink dark:hover:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded"
+                          className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2.5 sm:p-1 hover:text-light-ink dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 sm:border-transparent transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] flex items-center justify-center"
                           title="GitHub Repository"
                           aria-label={`${project.title} GitHub Repository`}
                         >
@@ -278,7 +278,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                           href={project.links.live}
                           target="_blank"
                           rel="noreferrer"
-                          className="p-1 hover:text-light-ink dark:hover:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded"
+                          className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2.5 sm:p-1 hover:text-light-ink dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 sm:border-transparent transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] flex items-center justify-center"
                           title="Live Deployment"
                           aria-label={`${project.title} Live Deployment`}
                         >

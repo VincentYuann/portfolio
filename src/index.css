@@ -757,14 +757,14 @@ body.font-variant-v7 {
 [data-sonner-toast] [data-title] {
   font-family: inherit !important;
   font-weight: 600 !important;
-  font-size: 13px !important;
+  font-size: 0.75rem !important;
   letter-spacing: 0.01em !important;
   color: inherit !important;
 }
 
 [data-sonner-toast] [data-description] {
   font-family: inherit !important;
-  font-size: 11px !important;
+  font-size: 0.75rem !important;
   opacity: 0.88 !important;
   color: inherit !important;
 }
@@ -773,7 +773,7 @@ body.font-variant-v7 {
   font-family: inherit !important;
   border-radius: 2px !important;
   font-weight: 600 !important;
-  font-size: 11px !important;
+  font-size: 0.75rem !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
   background-color: var(--toast-btn-bg) !important;
@@ -858,6 +858,15 @@ body.font-variant-v7 {
 
 .animate-lantern-faint {
   animation: lantern-faint-breathe 6.5s ease-in-out infinite;
+}
+
+/* ==============================================================================
+   RADIAL VIGNETTE MASK (GPU Compositing Isolation)
+   ============================================================================== */
+.vignette-mask-subtle {
+  -webkit-mask-image: radial-gradient(ellipse 96% 94% at 50% 50%, black 72%, transparent 100%);
+  mask-image: radial-gradient(ellipse 96% 94% at 50% 50%, black 72%, transparent 100%);
+  transform: translateZ(0);
 }
 
 /* ==============================================================================

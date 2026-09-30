@@ -50,12 +50,12 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
         <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-dark-border/60">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="font-mono text-[11px] font-medium text-light-ink-muted dark:text-dark-ink-muted tracking-wider uppercase">
+              <span className="font-mono text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted tracking-wider uppercase">
                 {`0${index + 1}`}{hobby.kanji ? ` · ${hobby.kanji}` : ''}
               </span>
               {hobby.category && (
                 <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-[2px] text-[11px] font-mono uppercase tracking-wider border font-medium ${categoryStyle}`}
+                  className={`inline-flex items-center px-2 py-0.5 rounded-[2px] text-xs font-mono uppercase tracking-wider border font-medium ${categoryStyle}`}
                 >
                   {hobby.category}
                 </span>
@@ -109,7 +109,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
                 </button>
 
                 {/* Image Counter Pill */}
-                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-[2px] bg-black/60 backdrop-blur-xs text-[11px] font-mono text-white/90 flex items-center gap-1">
+                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-[2px] bg-black/60 backdrop-blur-xs text-xs font-mono text-white/90 flex items-center gap-1">
                   <ImageIcon className="w-3 h-3 text-terracotta dark:text-ochre" />
                   <span>
                     {activeImageIndex + 1} / {images.length}

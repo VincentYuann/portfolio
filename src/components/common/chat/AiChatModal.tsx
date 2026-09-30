@@ -1449,7 +1449,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                 onEnterSubmit={() => handleSendMessage()}
                 placeholder="Ask about systems, code, or craft... (Enter to send, Shift+Enter for newline)"
                 disabled={isStreaming}
-                className="py-1.5 px-2 text-xs sm:text-[13px]"
+                className="py-1.5 px-2 text-xs sm:text-sm"
               />
 
               <div className="flex items-center gap-1.5 shrink-0 mb-0.5 pr-0.5">

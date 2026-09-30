@@ -113,7 +113,7 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
         <>
           {/* Minimalist vertical line with Hanko seal box at bottom */}
           <div className="w-[1.5px] h-28 sm:h-36 bg-gradient-to-b from-transparent via-[#CDB38B] to-terracotta/70 dark:to-ochre/70" />
-          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-ochre shadow-2xs">
+          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-2xs text-terracotta dark:text-ochre shadow-2xs">
             {stampChar}
           </div>
         </>
@@ -123,7 +123,7 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
           <div className={`w-px h-16 ${topHairlineGradient}`} />
           {/* Vertical Text */}
           {motto && (
-            <div className="writing-vertical-rl font-mono text-[10px] tracking-[0.28em] uppercase opacity-90">
+            <div className="writing-vertical-rl font-mono text-2xs tracking-[0.28em] uppercase opacity-90">
               {motto} {submotto && `// ${submotto}`}
             </div>
           )}
@@ -132,7 +132,7 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
           {/* Bottom Hairline */}
           <div className={`w-px h-16 ${bottomHairlineGradient}`} />
           {/* Stamp Box */}
-          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-ochre shadow-2xs">
+          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-2xs text-terracotta dark:text-ochre shadow-2xs">
             {stampChar}
           </div>
         </>
@@ -141,18 +141,18 @@ export const VerticalMarginWidget: React.FC<VerticalMarginWidgetProps> = ({
           {/* Full Japanese Architectural Margin Accent */}
           <div className={`w-[1.5px] h-20 ${topHairlineGradient}`} />
           {motto && (
-            <div className="writing-vertical-rl font-mono text-[10px] tracking-[0.3em] uppercase opacity-90">
+            <div className="writing-vertical-rl font-mono text-2xs tracking-[0.3em] uppercase opacity-90">
               {motto} {submotto && `// ${submotto}`}
             </div>
           )}
           <div className={`w-2 h-2 rounded-full ${pulseDotClass}`} />
           {coordinate && (
-            <div className="writing-vertical-rl font-mono text-[10px] tracking-widest opacity-75">
+            <div className="writing-vertical-rl font-mono text-2xs tracking-widest opacity-75">
               {coordinate}
             </div>
           )}
           <div className={`w-[1.5px] h-16 ${bottomHairlineGradient}`} />
-          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-[10px] text-terracotta dark:text-ochre shadow-2xs">
+          <div className="w-5 h-5 border border-terracotta dark:border-ochre bg-light-surface dark:bg-dark-surface rounded-xs flex items-center justify-center font-serif text-2xs text-terracotta dark:text-ochre shadow-2xs">
             {stampChar}
           </div>
         </>

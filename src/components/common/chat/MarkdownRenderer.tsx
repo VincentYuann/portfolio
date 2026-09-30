@@ -13,14 +13,14 @@ interface MarkdownRendererProps {
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content }) => {
   return (
-    <div className="markdown-content select-text selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-[#D4A853]/25 dark:selection:text-[#D4A853]">
+    <div className="markdown-content select-text selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-ochre/25 dark:selection:text-ochre">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
           p({ children }) {
             return (
-              <p className="leading-relaxed font-sans text-xs sm:text-[13px] text-light-ink dark:text-dark-ink mb-2.5 last:mb-0">
+              <p className="leading-relaxed font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink mb-2.5 last:mb-0">
                 {children}
               </p>
             );
@@ -37,14 +37,14 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           ul({ children }) {
             return (
-              <ul className="my-2 space-y-1.5 list-disc pl-4 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink">
+              <ul className="my-2 space-y-1.5 list-disc pl-4 text-xs sm:text-sm text-light-ink dark:text-dark-ink">
                 {children}
               </ul>
             );
           },
           ol({ children }) {
             return (
-              <ol className="my-2 space-y-1.5 list-decimal pl-4 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink">
+              <ol className="my-2 space-y-1.5 list-decimal pl-4 text-xs sm:text-sm text-light-ink dark:text-dark-ink">
                 {children}
               </ol>
             );
@@ -54,7 +54,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           blockquote({ children }) {
             return (
-              <blockquote className="my-2.5 border-l border-terracotta/40 dark:border-[#D4A853]/40 bg-terracotta/5 dark:bg-[#D4A853]/10 px-3.5 py-1.5 text-xs sm:text-[13px] text-light-ink dark:text-dark-ink italic rounded-r-md">
+              <blockquote className="my-2.5 border-l border-terracotta/40 dark:border-ochre/40 bg-terracotta/5 dark:bg-ochre/10 px-3.5 py-1.5 text-xs sm:text-sm text-light-ink dark:text-dark-ink italic rounded-r-md">
                 {children}
               </blockquote>
             );
@@ -64,14 +64,14 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           h1({ children }) {
             return (
-              <h1 className="font-serif font-bold text-sm sm:text-base text-terracotta dark:text-[#D4A853] my-2 pb-1 border-b border-light-border dark:border-dark-border">
+              <h1 className="font-serif font-bold text-sm sm:text-base text-terracotta dark:text-ochre my-2 pb-1 border-b border-light-border dark:border-dark-border">
                 {children}
               </h1>
             );
           },
           h2({ children }) {
             return (
-              <h2 className="font-serif font-bold text-xs sm:text-sm text-terracotta dark:text-[#D4A853] my-2">
+              <h2 className="font-serif font-bold text-xs sm:text-sm text-terracotta dark:text-ochre my-2">
                 {children}
               </h2>
             );
@@ -98,7 +98,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           code({ inline, className, children }: any) {
             if (inline) {
               return (
-                <code className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-terracotta/10 dark:bg-[#D4A853]/10 text-terracotta dark:text-[#D4A853] border border-terracotta/20 dark:border-[#D4A853]/20 select-text">
+                <code className="font-mono text-2xs px-1.5 py-0.5 rounded bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre border border-terracotta/20 dark:border-ochre/20 select-text">
                   {children}
                 </code>
               );
@@ -107,7 +107,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
             const language = className?.replace('language-', '') || 'code';
             return (
               <div className="relative my-2.5 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised overflow-hidden group/code select-text shadow-2xs">
-                <div className="flex items-center justify-between px-3 py-1 bg-black/5 dark:bg-white/5 border-b border-light-border/40 dark:border-dark-border/40 text-[10px] font-mono text-light-ink-subtle dark:text-dark-ink-subtle select-none">
+                <div className="flex items-center justify-between px-3 py-1 bg-black/5 dark:bg-white/5 border-b border-light-border/40 dark:border-dark-border/40 text-2xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle select-none">
                   <span>{language}</span>
                   <button
                     type="button"
@@ -115,7 +115,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
                       navigator.clipboard.writeText(codeString);
                       toast.success('Code copied to clipboard');
                     }}
-                    className="hover:text-terracotta dark:hover:text-[#D4A853] transition-colors flex items-center gap-1 cursor-pointer py-0.5 px-1"
+                    className="hover:text-terracotta dark:hover:text-ochre transition-colors flex items-center gap-1 cursor-pointer py-0.5 px-1"
                     title="Copy code"
                     aria-label="Copy code block"
                   >
@@ -123,7 +123,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
                     <span>Copy</span>
                   </button>
                 </div>
-                <pre className="p-3 overflow-x-auto text-[11px] font-mono leading-relaxed text-light-ink dark:text-dark-ink select-text">
+                <pre className="p-3 overflow-x-auto text-xs font-mono leading-relaxed text-light-ink dark:text-dark-ink select-text">
                   <code>{children}</code>
                 </pre>
               </div>

@@ -74,16 +74,16 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl lg:max-w-4xl xl:max-w-5xl h-[88vh] max-h-[780px] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent fullscreen showCornerBrackets={false} className="p-0 gap-0 overflow-hidden flex flex-col">
         {/* Header */}
-        <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0">
+        <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0 pr-14 sm:pr-16">
           <div className="flex items-center gap-2 mb-1">
-            <span className="font-mono text-xs text-terracotta dark:text-[#D4A853] font-semibold uppercase tracking-widest flex items-center gap-1.5">
+            <span className="font-mono text-xs text-terracotta dark:text-ochre font-semibold uppercase tracking-widest flex items-center gap-1.5">
               <BookOpen className="w-3.5 h-3.5 text-ochre" />
               Traditional Japanese Kanji Library
             </span>
             <span className="text-light-ink-subtle text-xs">·</span>
-            <Badge variant="terracotta" className="text-[10px] py-0 px-1.5 font-mono">
+            <Badge variant="terracotta" className="text-2xs py-0 px-1.5 font-mono">
               {KANJI_PRESETS.length} Available
             </Badge>
           </div>
@@ -94,12 +94,12 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
         </DialogHeader>
 
         {/* Currently Selected Banner */}
-        <div className="px-4 py-2.5 sm:py-3 bg-terracotta/5 dark:bg-[#D4A853]/5 border-b border-light-border/60 dark:border-dark-border/60 flex items-center justify-between gap-3 shrink-0">
+        <div className="px-4 py-2.5 sm:py-3 bg-terracotta/5 dark:bg-ochre/5 border-b border-light-border/60 dark:border-dark-border/60 flex items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg border border-terracotta/40 dark:border-[#D4A853]/40 bg-light-surface dark:bg-dark-surface-card flex items-center justify-center font-serif font-black text-terracotta dark:text-[#D4A853] select-none shadow-2xs shrink-0 overflow-hidden p-1">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg border border-terracotta/40 dark:border-ochre/40 bg-light-surface dark:bg-dark-surface-card flex items-center justify-center font-serif font-black text-terracotta dark:text-ochre select-none shadow-2xs shrink-0 overflow-hidden p-1">
               <span className={`text-center leading-tight tracking-tight flex items-center justify-center ${
                 (selectedChar?.length || 0) > 2
-                  ? 'text-[10px] tracking-tighter'
+                  ? 'text-2xs tracking-tighter'
                   : (selectedChar?.length || 0) === 2
                   ? 'text-xs sm:text-sm font-bold'
                   : 'text-xl sm:text-2xl'
@@ -113,12 +113,12 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                   {activePreset ? `${activePreset.char} · ${activePreset.romaji}` : (selectedChar ? `${selectedChar} (Custom Symbol)` : 'No Kanji Selected')}
                 </span>
                 {activePreset && (
-                  <Badge variant="secondary" className="text-[10px] py-0 px-1.5 font-mono hidden xs:inline-flex">
+                  <Badge variant="secondary" className="text-2xs py-0 px-1.5 font-mono hidden xs:inline-flex">
                     {activePreset.category}
                   </Badge>
                 )}
               </div>
-              <p className="font-sans text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted mt-0.5 truncate">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-0.5 truncate">
                 {activePreset ? activePreset.meaning : 'Pick from presets below or enter custom.'}
               </p>
             </div>
@@ -179,10 +179,10 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                 type="button"
                 aria-pressed={selectedCategory === cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-2.5 py-1 rounded-md font-mono text-[11px] whitespace-nowrap transition-colors cursor-pointer ${
+                className={`px-2.5 py-1 rounded-md font-mono text-xs whitespace-nowrap transition-colors cursor-pointer ${
                   selectedCategory === cat
                     ? 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light font-semibold shadow-xs'
-                    : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50 dark:hover:border-[#D4A853]/50 hover:text-light-ink dark:hover:text-dark-ink'
+                    : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50 dark:hover:border-ochre/50 hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
                 {cat === 'all' ? 'All Categories' : cat}
@@ -205,16 +205,16 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                     onClick={() => handlePick(preset)}
                     className={`group relative text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer flex items-start gap-3 ${
                       isSelected
-                        ? 'bg-terracotta/10 dark:bg-[#D4A853]/10 border-terracotta dark:border-[#D4A853] ring-1 ring-terracotta dark:ring-[#D4A853] shadow-xs'
-                        : 'bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised'
+                        ? 'bg-terracotta/10 dark:bg-ochre/10 border-terracotta dark:border-ochre ring-1 ring-terracotta dark:ring-ochre shadow-xs'
+                        : 'bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised'
                     }`}
                   >
                     {/* Big Kanji Badge */}
-                    <div className="w-12 h-12 rounded-lg border border-terracotta/30 dark:border-[#D4A853]/30 bg-light-surface-card dark:bg-dark-canvas flex flex-col items-center justify-center shrink-0 group-hover:border-terracotta dark:group-hover:border-[#D4A853] transition-colors select-none shadow-2xs">
-                      <span className="font-serif text-xl font-bold text-terracotta dark:text-[#D4A853] leading-none">
+                    <div className="w-12 h-12 rounded-lg border border-terracotta/30 dark:border-ochre/30 bg-light-surface-card dark:bg-dark-canvas flex flex-col items-center justify-center shrink-0 group-hover:border-terracotta dark:group-hover:border-ochre transition-colors select-none shadow-2xs">
+                      <span className="font-serif text-xl font-bold text-terracotta dark:text-ochre leading-none">
                         {preset.char}
                       </span>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-ochre mt-0.5 font-semibold">
+                      <span className="font-mono text-2xs uppercase tracking-wider text-ochre mt-0.5 font-semibold">
                         {preset.romaji.split('/')[0].trim()}
                       </span>
                     </div>
@@ -222,14 +222,14 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                     {/* Details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-1">
-                        <span className="font-serif text-xs font-semibold text-light-ink dark:text-dark-ink truncate group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors">
+                        <span className="font-serif text-xs font-semibold text-light-ink dark:text-dark-ink truncate group-hover:text-terracotta dark:group-hover:text-ochre transition-colors">
                           {preset.meaning}
                         </span>
                         {isSelected && (
-                          <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0" />
+                          <Check className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
                         )}
                       </div>
-                      <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted line-clamp-2 mt-0.5 leading-snug">
+                      <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted line-clamp-2 mt-0.5 leading-snug">
                         {preset.conceptDescription}
                       </p>
                     </div>
@@ -269,7 +269,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="text-xs"
+            className="text-xs min-h-[44px] sm:min-h-0"
           >
             Cancel
           </Button>

@@ -372,12 +372,12 @@ export const ProjectsEditor: React.FC = () => {
                 </div>
               }
               emblem={
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 dark:border-[#D4A853]/40 bg-terracotta/5 dark:bg-[#D4A853]/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
-                  <span className={`font-serif font-bold text-terracotta dark:text-[#D4A853] leading-tight text-center ${
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 dark:border-ochre/40 bg-terracotta/5 dark:bg-ochre/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
+                  <span className={`font-serif font-bold text-terracotta dark:text-ochre leading-tight text-center ${
                     (project.kanji?.length || 0) > 2
-                      ? 'text-[10px] tracking-tighter leading-none'
+                      ? 'text-2xs tracking-tighter leading-none'
                       : (project.kanji?.length || 0) === 2
-                      ? 'text-[11px] sm:text-xs tracking-tight'
+                      ? 'text-xs tracking-tight'
                       : 'text-sm sm:text-base'
                   }`}>
                     {project.kanji || '案'}

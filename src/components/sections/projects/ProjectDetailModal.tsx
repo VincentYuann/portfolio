@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Project } from '../../../context/SiteDataContext';
 import { ExternalLink, Github, ListChecks, Layers, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import {
   Dialog,
   DialogContent,
@@ -52,18 +51,17 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
   return (
     <Dialog open={!!project} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
-        showCornerBrackets={false}
-        className="max-w-4xl lg:max-w-5xl xl:max-w-6xl w-[calc(100%-1.5rem)] sm:w-[calc(100%-3rem)] md:w-full p-0 overflow-hidden max-h-[calc(100dvh-2rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col craft-modal bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] shadow-2xl z-[101]"
+        fullscreen
+        showCornerBrackets={true}
+        className="p-0 overflow-hidden flex flex-col z-[101]"
       >
-        <CornerBrackets size="lg" />
-
         {/* Modal Top Bar: Left Archive Info + Center Navigation (←/→) + Unblocked Dedicated Zone for Close Button */}
         <div className="flex items-center justify-between gap-3 px-4 sm:px-7 py-3 sm:py-3.5 border-b border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised shrink-0 pr-14 sm:pr-16">
           <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-            <span className="font-serif text-terracotta dark:text-[#D4A853] text-lg sm:text-2xl font-bold shrink-0" aria-hidden="true">
+            <span className="font-serif text-terracotta dark:text-ochre text-lg sm:text-2xl font-bold shrink-0" aria-hidden="true">
               {project.kanji || '案'}
             </span>
-            <span className="font-mono text-[10px] sm:text-xs uppercase font-semibold text-light-ink-muted dark:text-dark-ink-muted tracking-wider truncate">
+            <span className="font-mono text-2xs sm:text-xs uppercase font-semibold text-light-ink-muted dark:text-dark-ink-muted tracking-wider truncate">
               {project.badge || 'ENGINEERING ARCHIVE'}
             </span>
           </div>
@@ -80,7 +78,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                 aria-label="Previous Project"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline text-[10px] text-light-ink-muted dark:text-dark-ink-muted">Prev [←]</span>
+                <span className="hidden sm:inline text-2xs text-light-ink-muted dark:text-dark-ink-muted">Prev [←]</span>
               </button>
               <button
                 type="button"
@@ -90,7 +88,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                 title="Next Project (→)"
                 aria-label="Next Project"
               >
-                <span className="hidden sm:inline text-[10px] text-light-ink-muted dark:text-dark-ink-muted">Next [→]</span>
+                <span className="hidden sm:inline text-2xs text-light-ink-muted dark:text-dark-ink-muted">Next [→]</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -98,7 +96,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
         </div>
 
         {/* Scrollable Content: Mobile-First Single Column & Desktop 2-Column Split */}
-        <div className="p-4 sm:p-7 overflow-y-auto space-y-6">
+        <div className="p-4 sm:p-7 overflow-y-auto flex-1 min-h-0 space-y-6">
           {/* Project Identity Header (Always at top of body for clear context) */}
           <div className="space-y-2 border-b border-light-border/60 dark:border-dark-border/60 pb-4 sm:pb-5">
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -110,7 +108,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
 
               {/* Status Badge with Japanese subtitle across all viewports */}
               <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[2px] font-mono text-[11px] font-semibold uppercase tracking-wider ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[2px] font-mono text-xs font-semibold uppercase tracking-wider ${
                   project.isActive
                     ? 'bg-bamboo/10 dark:bg-bamboo/20 border border-bamboo/30 dark:border-bamboo/40 text-bamboo-dark dark:text-bamboo-light'
                     : 'bg-light-surface-muted dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink'
@@ -166,7 +164,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                     href={project.links.live}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-[#DE9E36] transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none shadow-xs"
+                    className="flex-1 min-w-[140px] min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-ochre-hover transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none shadow-xs"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>Live Deployment</span>
@@ -177,7 +175,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                     href={project.links.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface text-light-ink dark:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none"
+                    className="flex-1 min-w-[140px] min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface text-light-ink dark:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none"
                   >
                     <Github className="w-3.5 h-3.5" />
                     <span>Repository</span>
@@ -270,7 +268,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               Project Specification
             </span>
             {(onPrev || onNext) && (
-              <span className="hidden sm:inline font-mono text-[10px] text-light-ink-subtle dark:text-dark-ink-subtle">
+              <span className="hidden sm:inline font-mono text-2xs text-light-ink-subtle dark:text-dark-ink-subtle">
                 Keyboard: <kbd className="px-1 py-0.5 border border-light-border dark:border-dark-border rounded-[2px] bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink">←</kbd> <kbd className="px-1 py-0.5 border border-light-border dark:border-dark-border rounded-[2px] bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink">→</kbd>
               </span>
             )}
@@ -278,31 +276,31 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
 
           <div className="flex items-center gap-2">
             {(onPrev || onNext) && (
-              <div className="flex items-center gap-1 sm:hidden">
+              <div className="flex items-center gap-1.5 sm:hidden">
                 <button
                   type="button"
                   onClick={onPrev}
                   disabled={!hasPrev}
-                  className="p-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 cursor-pointer"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 cursor-pointer"
                   aria-label="Previous Project"
                 >
-                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
                   type="button"
                   onClick={onNext}
                   disabled={!hasNext}
-                  className="p-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 cursor-pointer"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 cursor-pointer"
                   aria-label="Next Project"
                 >
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             )}
             <button
               type="button"
               onClick={onClose}
-              className="text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:outline-none rounded-[2px] px-3 py-1.5 cursor-pointer font-medium transition-colors"
+              className="min-h-[44px] sm:min-h-0 text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] px-3.5 py-2 sm:py-1.5 cursor-pointer font-medium transition-colors"
             >
               Close ✕
             </button>

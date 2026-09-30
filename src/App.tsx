@@ -3,6 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { SiteDataProvider, useSiteData } from './context/SiteDataContext';
 import { Header } from './components/layout/Header';
 import { Hero } from './components/sections/hero/Hero';
+import { SectionDividerDefs } from './components/common/SectionDivider';
 import { VariantProvider } from './context/VariantContext';
 import { WashiProvider } from './context/WashiContext';
 
@@ -388,7 +389,8 @@ export const App: React.FC = () => {
       <WashiProvider>
         <VariantProvider>
           <SiteDataProvider>
-          <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-[#D4A853]/25 dark:selection:text-[#D4A853] overflow-x-clip">
+          <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-ochre/25 dark:selection:text-ochre overflow-x-clip">
+            <SectionDividerDefs />
             <Header
               currentView={currentView}
               onNavigate={handleNavigate}

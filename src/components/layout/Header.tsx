@@ -238,7 +238,7 @@ export const Header: React.FC<HeaderProps> = ({
                     : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
-                <span className="opacity-40 text-[11px] font-mono">{item.num}</span>
+                <span className="opacity-40 text-2xs font-mono">{item.num}</span>
                 <span>{item.label}</span>
                 <span
                   className={`absolute bottom-0 left-0 h-[1.5px] bg-terracotta dark:bg-ochre rounded-full transition-all duration-300 ${
@@ -253,7 +253,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Right side cluster: always neatly aligned with zero overlap */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {/* Theme Switcher: Flat 2-segment track without nested card elevations */}
-          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-[11px] sm:text-xs select-none shrink-0 min-h-[44px]">
+          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-xs select-none shrink-0 min-h-[44px]">
             <button
               onClick={() => setTheme('day')}
               className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
@@ -285,7 +285,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Visual System / Art Button: Distinct sibling action, eliminating multi-card confusion */}
           <button
             onClick={() => onNavigate?.('visual-system')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[3px] font-sans font-semibold text-[11px] sm:text-xs tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[44px] group/art ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[3px] font-sans font-semibold text-xs tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[44px] group/art ${
               currentView === 'visual-system'
                 ? 'bg-terracotta/10 dark:bg-ochre/15 text-terracotta dark:text-ochre border border-terracotta/40 dark:border-ochre/40'
                 : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 hover:bg-light-surface-card/40 dark:hover:bg-dark-surface/40'
@@ -313,12 +313,12 @@ export const Header: React.FC<HeaderProps> = ({
                 {currentView === 'edit' ? (
                   <>
                     <Eye className="w-3.5 h-3.5" />
-                    <span className="text-[11px] font-mono font-medium">View Site</span>
+                    <span className="text-xs font-mono font-medium">View Site</span>
                   </>
                 ) : (
                   <>
                     <SlidersHorizontal className="w-3.5 h-3.5" />
-                    <span className="text-[11px] font-mono font-medium">Edit Site</span>
+                    <span className="text-xs font-mono font-medium">Edit Site</span>
                   </>
                 )}
               </button>
@@ -329,12 +329,12 @@ export const Header: React.FC<HeaderProps> = ({
                 aria-label="Sign Out"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span className="text-[11px] font-mono">Sign Out</span>
+                <span className="text-xs font-mono">Sign Out</span>
               </button>
             </div>
           ) : isVisitor ? (
             <div className="hidden xl:flex items-center gap-1.5 shrink-0">
-              <span className="inline-flex items-center px-2 py-1 rounded-[2px] text-[10px] font-mono font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20">
+              <span className="inline-flex items-center px-2 py-1 rounded-[2px] text-2xs font-mono font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20">
                 Visitor
               </span>
               <button
@@ -344,7 +344,7 @@ export const Header: React.FC<HeaderProps> = ({
                 aria-label="Exit Visitor"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span className="text-[11px] font-mono">Exit</span>
+                <span className="text-xs font-mono">Exit</span>
               </button>
             </div>
           ) : (
@@ -355,7 +355,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="Admin Login"
             >
               <LogIn className="w-3.5 h-3.5" />
-              <span className="text-[11px] font-mono">Sign In</span>
+              <span className="text-xs font-mono">Sign In</span>
             </button>
           )}
 
@@ -412,7 +412,7 @@ export const Header: React.FC<HeaderProps> = ({
                     {isActive && <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0" />}
                     <span className="font-medium">{item.fullLabel || item.label}</span>
                   </div>
-                  <span className="font-mono text-[11px] opacity-50">{item.num}</span>
+                  <span className="font-mono text-2xs opacity-50">{item.num}</span>
                 </a>
               );
             })}
@@ -434,7 +434,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <Palette className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
                   <span className="font-medium">Design &amp; Settings</span>
                 </div>
-                <span className="font-mono text-[10px] text-terracotta dark:text-ochre font-bold">[設定]</span>
+                <span className="font-mono text-2xs text-terracotta dark:text-ochre font-bold">[設定]</span>
               </button>
             </div>
 
@@ -477,7 +477,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               ) : isVisitor ? (
                 <div className="flex items-center justify-between pt-1 px-1 text-xs">
-                  <span className="py-2.5 text-amber-600 dark:text-amber-400 text-[11px] font-mono font-medium">
+                  <span className="py-2.5 text-amber-600 dark:text-amber-400 text-xs font-mono font-medium">
                     Visitor (View Only)
                   </span>
                   <button

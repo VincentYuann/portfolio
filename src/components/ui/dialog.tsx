@@ -28,21 +28,25 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     showCornerBrackets?: boolean;
+    fullscreen?: boolean;
   }
->(({ className, children, showCornerBrackets = true, ...props }, ref) => (
+>(({ className, children, showCornerBrackets = true, fullscreen = false, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed left-1/2 top-1/2 z-[101] grid w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-[3px] max-h-[90vh] craft-modal',
+        'fixed z-[101] grid gap-4 border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 craft-modal',
+        fullscreen
+          ? 'inset-0 left-0 top-0 translate-x-0 translate-y-0 w-full h-[100dvh] max-w-none max-h-none rounded-none border-0 p-0 sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[calc(100%-2rem)] sm:max-w-5xl lg:sm:max-w-6xl sm:h-[calc(100dvh-2.5rem)] sm:max-h-[calc(100dvh-2.5rem)] sm:rounded-[3px] sm:border'
+          : 'left-1/2 top-1/2 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 p-6 rounded-[3px] max-h-[90vh]',
         className,
       )}
       {...props}
     >
-      {showCornerBrackets && <CornerBrackets size="md" />}
+      {showCornerBrackets && <CornerBrackets size="md" className={fullscreen ? 'hidden sm:block' : ''} />}
       {children}
-      <DialogPrimitive.Close className="absolute right-3.5 top-3.5 z-10 p-2.5 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre opacity-80 transition-all hover:opacity-100 hover:bg-light-surface dark:hover:bg-dark-surface-raised focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-ochre disabled:pointer-events-none cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center">
+      <DialogPrimitive.Close className="absolute right-2.5 top-2.5 sm:right-3.5 sm:top-3.5 z-20 min-w-[44px] min-h-[44px] p-2.5 rounded-[2px] text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre opacity-80 transition-all hover:opacity-100 hover:bg-light-surface dark:hover:bg-dark-surface-raised focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-ochre disabled:pointer-events-none cursor-pointer flex items-center justify-center">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>

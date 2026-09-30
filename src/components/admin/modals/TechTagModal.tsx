@@ -184,11 +184,11 @@ const SearchBadgePreview: React.FC<{ query: string }> = ({ query }) => {
       <span>Preview:</span>
       <TechTag tag={name} size="sm" />
       {isOfficialBrand ? (
-        <span className="text-[10px] font-mono text-bamboo font-semibold uppercase">
+        <span className="text-2xs font-mono text-bamboo font-semibold uppercase">
           Official Brand Logo Found
         </span>
       ) : (
-        <span className="text-[10px] font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase">
+        <span className="text-2xs font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase">
           Custom Tag (Text Only)
         </span>
       )}
@@ -285,20 +285,20 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl lg:max-w-4xl xl:max-w-5xl h-[88vh] max-h-[780px] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent fullscreen showCornerBrackets={false} className="p-0 gap-0 overflow-hidden flex flex-col">
         {/* Header */}
-        <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0">
+        <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0 pr-14 sm:pr-16">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-terracotta dark:text-[#D4A853] font-semibold uppercase tracking-widest flex items-center gap-1.5">
+              <span className="font-mono text-xs text-terracotta dark:text-ochre font-semibold uppercase tracking-widest flex items-center gap-1.5">
                 <Layers className="w-3.5 h-3.5 text-ochre" />
                 Universal Tech Stack Library
               </span>
               <span className="text-light-ink-subtle text-xs">·</span>
-              <Badge variant="terracotta" className="text-[10px] py-0 px-1.5 font-mono">
+              <Badge variant="terracotta" className="text-2xs py-0 px-1.5 font-mono">
                 {selectedTags.length} selected
               </Badge>
-              <Badge variant="secondary" className="text-[10px] py-0 px-1.5 font-mono hidden sm:inline-flex">
+              <Badge variant="secondary" className="text-2xs py-0 px-1.5 font-mono hidden sm:inline-flex">
                 {totalTagCount} Curated Badges + Dynamic Iconify
               </Badge>
             </div>
@@ -309,7 +309,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                 <button
                   type="button"
                   onClick={expandAll}
-                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors px-2 py-1 rounded hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 cursor-pointer"
+                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors px-2 py-1.5 sm:py-1 rounded hover:bg-terracotta/10 dark:hover:bg-ochre/10 cursor-pointer min-h-[36px] sm:min-h-0"
                 >
                   Expand All
                 </button>
@@ -317,7 +317,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                 <button
                   type="button"
                   onClick={collapseAll}
-                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors px-2 py-1 rounded hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 cursor-pointer"
+                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors px-2 py-1.5 sm:py-1 rounded hover:bg-terracotta/10 dark:hover:bg-ochre/10 cursor-pointer min-h-[36px] sm:min-h-0"
                 >
                   Collapse All
                 </button>
@@ -370,8 +370,8 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
 
         {/* Selected Tags Preview Bar */}
         {selectedTags.length > 0 && (
-          <div className="px-5 py-2.5 bg-terracotta/5 dark:bg-[#D4A853]/5 border-b border-light-border/60 dark:border-dark-border/60 flex items-center gap-2 overflow-y-auto max-h-24 shrink-0">
-            <span className="font-mono text-[10px] text-terracotta dark:text-[#D4A853] font-semibold uppercase tracking-wider shrink-0">
+          <div className="px-5 py-2.5 bg-terracotta/5 dark:bg-ochre/5 border-b border-light-border/60 dark:border-dark-border/60 flex items-center gap-2 overflow-y-auto max-h-24 shrink-0">
+            <span className="font-mono text-2xs text-terracotta dark:text-ochre font-semibold uppercase tracking-wider shrink-0">
               Active ({selectedTags.length}):
             </span>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -520,11 +520,11 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
 
                     <div className="flex items-center gap-2 shrink-0">
                       {selectedInCat > 0 && (
-                        <Badge variant="terracotta" className="text-[10px] py-0 px-1.5 font-mono">
+                        <Badge variant="terracotta" className="text-2xs py-0 px-1.5 font-mono">
                           {selectedInCat} active
                         </Badge>
                       )}
-                      <Badge variant="secondary" className="text-[10px] py-0 px-1.5 font-mono">
+                      <Badge variant="secondary" className="text-2xs py-0 px-1.5 font-mono">
                         {cat.tags.length} items
                       </Badge>
                     </div>
@@ -571,7 +571,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
           <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted text-center sm:text-left">
             Monochrome architectural badge design · Official Simple Icons &amp; Devicon dynamic integration
           </span>
-          <Button type="button" onClick={onClose} className="px-5">
+          <Button type="button" onClick={onClose} className="px-5 min-h-[44px] sm:min-h-0">
             Done
           </Button>
         </DialogFooter>

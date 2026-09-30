@@ -262,14 +262,14 @@ export const PhilosophyEditor: React.FC = () => {
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                 Origin Trajectory &amp; Journey (原点と軌跡)
               </h3>
-              <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
                 Configurable trajectory milestones and narrative engineering journey.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {!collapsed.origin ? (
-              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-ochre" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
@@ -287,7 +287,7 @@ export const PhilosophyEditor: React.FC = () => {
 
             {/* Headline */}
             <div>
-              <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+              <Label className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
                 Narrative Headline
               </Label>
               <Input
@@ -300,7 +300,7 @@ export const PhilosophyEditor: React.FC = () => {
 
             {/* Lead Narrative Paragraph */}
             <div>
-              <Label className="text-[11px] font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+              <Label className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
                 Origin Lead Paragraph
               </Label>
               <Textarea
@@ -329,13 +329,13 @@ export const PhilosophyEditor: React.FC = () => {
                         value={milestone.era}
                         onChange={(e) => updateMilestone(idx, { era: e.target.value })}
                         placeholder={`PHASE 0${idx + 1}`}
-                        className="w-28 font-mono font-bold text-terracotta dark:text-[#D4A853] text-xs h-8 uppercase"
+                        className="w-28 font-mono font-bold text-terracotta dark:text-ochre text-xs h-8 uppercase"
                       />
                       <Input
                         value={milestone.tag || ''}
                         onChange={(e) => updateMilestone(idx, { tag: e.target.value })}
                         placeholder="ERA TAG"
-                        className="w-32 font-mono text-[11px] text-right h-8 uppercase"
+                        className="w-32 font-mono text-xs text-right h-8 uppercase"
                       />
                     </div>
 

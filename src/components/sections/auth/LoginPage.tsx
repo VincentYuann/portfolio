@@ -73,7 +73,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
         <span className="font-serif text-2xl text-light-ink dark:text-dark-ink tracking-wide font-medium">
           Vincent Yuan
         </span>
-        <span className="font-sans text-[11px] font-semibold text-terracotta dark:text-[#D4A853] uppercase tracking-widest">
+        <span className="font-sans text-xs font-semibold text-terracotta dark:text-ochre uppercase tracking-widest">
           ADMIN ACCESS · 認印
         </span>
       </div>
@@ -93,14 +93,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
                 <span className="inline-block w-2 h-2 rounded-full bg-amber-500" />
                 Signed in as Visitor
               </p>
-              <p className="text-[11px] opacity-90 leading-relaxed font-light">
+              <p className="text-xs opacity-90 leading-relaxed font-light">
                 You currently have read-only visitor access. Only the portfolio owner can access the edit studio.
               </p>
             </div>
 
             <button
               onClick={() => onNavigate('projects')}
-              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-[#DE9E36] text-xs font-medium tracking-wide transition-colors cursor-pointer shadow-xs"
+              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-ochre-hover text-xs font-medium tracking-wide transition-colors cursor-pointer shadow-xs min-h-[44px]"
             >
               View Projects
             </button>
@@ -109,14 +109,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
               <button
                 onClick={handleGithubLogin}
                 disabled={loading}
-                className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] transition-colors text-[11px] font-mono cursor-pointer"
+                className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors text-xs font-mono cursor-pointer"
               >
                 Switch Account
               </button>
               {onLogout && (
                 <button
                   onClick={onLogout}
-                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors text-[11px] font-mono cursor-pointer"
+                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-red-400 transition-colors text-xs font-mono cursor-pointer"
                 >
                   Logout
                 </button>

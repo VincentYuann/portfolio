@@ -5,10 +5,8 @@ import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { Card } from '../../ui/card';
 import { useSiteData } from '../../../context/SiteDataContext';
-import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
 import { SectionHeading } from '../../common/SectionHeading';
-import { AkariLanternDecorator } from '../../common/AkariLanternDecorator';
 
 const TRAJECTORY_THEMES = [
   {
@@ -43,8 +41,8 @@ const PILLAR_CONFIGS = [
     num: 'PILLAR 01',
     kanjiColor: 'text-light-ink dark:text-dark-ink',
     iconColor: 'text-light-ink-muted dark:text-dark-ink-muted',
-    dotColor: 'bg-light-ink-subtle dark:bg-[#76736A]',
-    hoverBorder: 'hover:border-light-border-strong dark:hover:border-[#4E525D]',
+    dotColor: 'bg-light-ink-subtle dark:bg-dark-ink-subtle',
+    hoverBorder: 'hover:border-light-border-strong dark:hover:border-dark-border-strong',
     watermark: (
       <svg
         className="w-28 h-28 absolute right-1 bottom-1 text-ochre/15 dark:text-ochre/10 pointer-events-none"
@@ -63,8 +61,8 @@ const PILLAR_CONFIGS = [
     num: 'PILLAR 02',
     kanjiColor: 'text-light-ink dark:text-dark-ink',
     iconColor: 'text-light-ink-muted dark:text-dark-ink-muted',
-    dotColor: 'bg-light-ink-subtle dark:bg-[#76736A]',
-    hoverBorder: 'hover:border-light-border-strong dark:hover:border-[#4E525D]',
+    dotColor: 'bg-light-ink-subtle dark:bg-dark-ink-subtle',
+    hoverBorder: 'hover:border-light-border-strong dark:hover:border-dark-border-strong',
     watermark: (
       <div className="absolute right-1 bottom-1 w-28 h-32 opacity-20 dark:opacity-10 pointer-events-none">
         <img
@@ -84,8 +82,8 @@ const PILLAR_CONFIGS = [
     num: 'PILLAR 03',
     kanjiColor: 'text-light-ink dark:text-dark-ink',
     iconColor: 'text-light-ink-muted dark:text-dark-ink-muted',
-    dotColor: 'bg-light-ink-subtle dark:bg-[#76736A]',
-    hoverBorder: 'hover:border-light-border-strong dark:hover:border-[#4E525D]',
+    dotColor: 'bg-light-ink-subtle dark:bg-dark-ink-subtle',
+    hoverBorder: 'hover:border-light-border-strong dark:hover:border-dark-border-strong',
     watermark: (
       <div className="absolute right-1 bottom-1 w-24 h-36 opacity-25 dark:opacity-15 pointer-events-none">
         <BambooArt className="w-full h-full" sway={false} opacity={0.8} />
@@ -119,29 +117,6 @@ export const PhilosophyBento: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-light-canvas via-light-surface/35 to-light-canvas dark:from-dark-canvas dark:via-dark-surface-card/40 dark:to-dark-canvas pointer-events-none z-0" />
       {/* Zen Ambient Mist Radial Wash */}
       <div className="absolute inset-0 bg-radial-[at_50%_50%] from-ochre/[0.03] dark:from-ochre/[0.02] to-transparent pointer-events-none z-0" />
-
-      {/* 16:9 Washi Paper Ground & Asymmetric Sumi-e Mountain Horizon (Anchored Left for alternating rhythm) */}
-      <SectionSideBackdrop
-        textureDay="./background/white paper texture.webp"
-        textureNight="./background/black paper.webp"
-        painting="./decorators/mountain.webp"
-        paintingAlt="Sumi-e misty mountain ink wash painting"
-        placement="left"
-        artworkWidth="w-full lg:w-[48%]"
-        maskCenter="at 28% 50%"
-        textureOpacityDay={0.65}
-        textureOpacityNight={0.45}
-        paintingOpacityDay={0.35}
-        paintingOpacityNight={0.14}
-      />
-
-      {/* Ambient Standing Akari Tripod Paper Lamp on Right (Asymmetry Balance against Left Mountain) */}
-      <AkariLanternDecorator
-        variant="standing-tripod"
-        className="top-10 right-6 lg:right-10 xl:right-16"
-        sizeClassName="md:w-36 lg:w-44 xl:w-48"
-        glowSizeClassName="md:w-80 lg:w-96 md:h-80 lg:h-96"
-      />
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">

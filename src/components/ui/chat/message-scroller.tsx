@@ -184,14 +184,14 @@ export const MessageScrollerButton = React.forwardRef<
       type="button"
       onClick={handleClick}
       className={cn(
-        'absolute bottom-3 right-4 z-40 flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-[#D4A853] bg-light-surface-card dark:bg-dark-surface-card hover:bg-light-surface-raised dark:hover:bg-dark-surface text-light-ink dark:text-dark-ink text-xs font-mono shadow-md hover:shadow-lg transition-all animate-in fade-in zoom-in-95 duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-[#D4A853] focus-visible:ring-offset-1',
+        'absolute bottom-3 right-4 z-40 flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre bg-light-surface-card dark:bg-dark-surface-card hover:bg-light-surface-raised dark:hover:bg-dark-surface text-light-ink dark:text-dark-ink text-xs font-mono shadow-md hover:shadow-lg transition-all animate-in fade-in zoom-in-95 duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:ring-offset-1',
         className
       )}
       aria-label="Scroll to newest messages"
       {...props}
     >
-      <ArrowDown className="size-3.5 text-terracotta dark:text-[#D4A853]" />
-      <span className="font-sans text-[11px] font-medium text-light-ink dark:text-dark-ink">
+      <ArrowDown className="size-3.5 text-terracotta dark:text-ochre" />
+      <span className="font-sans text-xs font-medium text-light-ink dark:text-dark-ink">
         Latest
       </span>
     </button>

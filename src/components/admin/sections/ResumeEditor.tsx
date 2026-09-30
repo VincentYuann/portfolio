@@ -368,7 +368,7 @@ export const ResumeEditor: React.FC = () => {
                     <p className="font-sans text-sm font-semibold text-light-ink dark:text-dark-ink truncate mt-0.5">
                       {uploadedFile.name}
                     </p>
-                    <p className="font-mono text-[11px] text-light-ink-muted dark:text-dark-ink-muted">
+                    <p className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted">
                       {(uploadedFile.size / 1024).toFixed(1)} KB · Ready to publish to Supabase Storage
                     </p>
                   </div>
@@ -392,7 +392,7 @@ export const ResumeEditor: React.FC = () => {
                 <div className="w-full rounded-[2px] overflow-hidden border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface">
                   <div className="flex items-center justify-between px-3 py-2 bg-light-surface-raised dark:bg-dark-surface-raised border-b border-light-border dark:border-dark-border text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
                     <span className="flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853]" />
+                      <Sparkles className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
                       <span>Staged Document Preview</span>
                     </span>
                     <a
@@ -426,14 +426,14 @@ export const ResumeEditor: React.FC = () => {
                 fileInputRef.current?.click();
               }
             }}
-            className="w-full flex flex-col items-center gap-2.5 sm:gap-3 py-8 sm:py-10 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-[3px] hover:border-terracotta dark:hover:border-[#D4A853] hover:bg-terracotta/5 dark:hover:bg-[#D4A853]/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-[#D4A853]"
+            className="w-full flex flex-col items-center gap-2.5 sm:gap-3 py-8 sm:py-10 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-[3px] hover:border-terracotta dark:hover:border-ochre hover:bg-terracotta/5 dark:hover:bg-ochre/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-ochre"
           >
-            <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta dark:group-hover:text-[#D4A853] transition-colors" />
+            <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta dark:group-hover:text-ochre transition-colors" />
             <div className="text-center">
               <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink font-medium">
                 {uploadedFile ? 'Click or drag to select a different PDF' : 'Click or drag PDF / .tex file here to upload'}
               </p>
-              <p className="font-sans text-[11px] sm:text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
                 Accepts .pdf, .tex, .txt up to 10 MB
               </p>
             </div>
@@ -511,7 +511,7 @@ export const ResumeEditor: React.FC = () => {
                 </span>
               </div>
               <span className="text-light-ink-subtle text-xs">·</span>
-              <span className="font-mono text-[10px] text-light-ink-muted dark:text-dark-ink-muted truncate">
+              <span className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted truncate">
                 {lineCount} lines · UTF-8
               </span>
             </div>
@@ -546,7 +546,7 @@ export const ResumeEditor: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setPreviewMode((v) => !v)}
-                className="gap-1.5 h-7 text-xs bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-[#D4A853] cursor-pointer rounded-[2px] shadow-2xs"
+                className="gap-1.5 h-7 text-xs bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-ochre cursor-pointer rounded-[2px] shadow-2xs"
               >
                 {previewMode ? <EyeOff className="w-3.5 h-3.5 text-ochre" /> : <Eye className="w-3.5 h-3.5 text-terracotta" />}
                 <span>{previewMode ? 'Raw Code Editor' : 'Themed Syntax Viewer'}</span>
@@ -562,7 +562,7 @@ export const ResumeEditor: React.FC = () => {
                   const tokens = tokenizeLatexLine(line);
                   return (
                     <div key={idx} className="table-row hover:bg-light-surface-muted/40 dark:hover:bg-dark-surface-muted/30">
-                      <span className="table-cell select-none pr-4 text-right opacity-30 text-[10px] w-10 align-top font-mono">
+                      <span className="table-cell select-none pr-4 text-right opacity-30 text-2xs w-10 align-top font-mono">
                         {idx + 1}
                       </span>
                       <span className="table-cell whitespace-pre-wrap break-all">
@@ -580,7 +580,7 @@ export const ResumeEditor: React.FC = () => {
           ) : (
             /* Live Raw Code Editor with Line Gutter */
             <div className="flex bg-[#FDFCFA] dark:bg-[#18191D] max-h-[70vh] overflow-hidden">
-              <div className="select-none py-5 px-3 bg-light-surface/40 dark:bg-dark-surface/40 border-r border-light-border/40 dark:border-dark-border/40 text-right font-mono text-[10px] text-light-ink-muted/50 dark:text-dark-ink-muted/50 leading-relaxed min-w-[3rem] overflow-hidden">
+              <div className="select-none py-5 px-3 bg-light-surface/40 dark:bg-dark-surface/40 border-r border-light-border/40 dark:border-dark-border/40 text-right font-mono text-2xs text-light-ink-muted/50 dark:text-dark-ink-muted/50 leading-relaxed min-w-[3rem] overflow-hidden">
                 {latex.split('\n').map((_, idx) => (
                   <div key={idx}>{idx + 1}</div>
                 ))}

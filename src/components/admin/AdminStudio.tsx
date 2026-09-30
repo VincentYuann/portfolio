@@ -282,7 +282,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
                         dirtySectionKeys.length === 1 ? 'section' : 'sections'
                       })`}
                 </p>
-                <p className="font-sans text-[11px] text-light-ink-muted dark:text-dark-ink-muted truncate hidden sm:block">
+                <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted truncate hidden sm:block">
                   {activeSectionIsDirty
                     ? 'Click save or press Ctrl+S to persist changes'
                     : `Pending edits in: ${dirtySectionKeys

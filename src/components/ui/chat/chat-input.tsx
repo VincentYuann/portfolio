@@ -49,7 +49,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, ChatInputProps>(
         onChange={handleInput}
         onKeyDown={handleKeyDown}
         className={cn(
-          'flex min-h-[36px] max-h-[120px] w-full resize-none bg-transparent px-3 py-2 text-base sm:text-[13px] text-light-ink dark:text-dark-ink placeholder:text-light-ink-subtle/70 dark:placeholder:text-dark-ink-subtle/70 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 font-sans leading-relaxed transition-all',
+          'flex min-h-[36px] max-h-[120px] w-full resize-none bg-transparent px-3 py-2 text-base sm:text-sm text-light-ink dark:text-dark-ink placeholder:text-light-ink-subtle/70 dark:placeholder:text-dark-ink-subtle/70 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 font-sans leading-relaxed transition-all',
           className
         )}
         {...props}
