@@ -2,9 +2,6 @@ import React from 'react';
 import {
   ArrowRight,
   FileText,
-  Code2,
-  Cpu,
-  Sparkles,
   Mail,
 } from 'lucide-react';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
@@ -16,20 +13,6 @@ import { ViewMode } from '../../../App';
 interface HeroAkariStudioProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
 }
-
-const PILLAR_ICON_MATCHERS: Array<{ keywords: string[]; icon: typeof Sparkles }> = [
-  { keywords: ['ai', 'intelligence', 'rag', 'agent'], icon: Sparkles },
-  { keywords: ['front', 'ui', 'craft', 'web', 'lang', 'code'], icon: Code2 },
-  { keywords: ['system', 'cloud', 'tool', 'back'], icon: Cpu },
-];
-
-const DEFAULT_PILLAR_ICONS = [Cpu, Sparkles, Code2];
-
-const getPillarIcon = (label: string, idx: number) => {
-  const norm = (label || '').toLowerCase();
-  const matched = PILLAR_ICON_MATCHERS.find(({ keywords }) => keywords.some((k) => norm.includes(k)));
-  return matched ? matched.icon : (DEFAULT_PILLAR_ICONS[idx] || Code2);
-};
 
 export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) => {
   const { profile } = useSiteData();
@@ -142,7 +125,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2.5 pt-2.5 sm:pt-4 border-t border-light-border/50 dark:border-dark-border/50 max-w-3xl">
                 {capabilityPillars.map((pillar, idx) => {
                   const tags = parsePillarTags(pillar);
-                  const Icon = getPillarIcon(pillar.label, idx);
 
                   return (
                     <div
@@ -151,7 +133,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                     >
                       <div>
                         <div className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink">
-                          <Icon className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
                           <span className="font-mono text-xs sm:text-sm uppercase tracking-wider font-semibold text-light-ink dark:text-dark-ink truncate">
                             {pillar.label}
                           </span>
