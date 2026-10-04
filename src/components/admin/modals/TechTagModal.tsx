@@ -1,14 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, X, Plus, Check, ChevronDown, ChevronRight, Layers, Sparkles } from 'lucide-react';
+import { Search, X, Plus, Check, ChevronDown, ChevronRight, Layers, Sparkles, GripVertical } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { useTechIcon, searchTechIcons, normalizeTechSlug } from '../../../lib/techIcons';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
-  DialogDescription,
-  DialogFooter,
 } from '../../ui/dialog';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
@@ -216,8 +213,6 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
     return list;
   }, []);
 
-  const totalTagCount = allTags.length;
-
   const searchResults = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return null;
@@ -250,12 +245,51 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
     return () => clearTimeout(timer);
   }, [search, allTags]);
 
+  const [draggedTagIdx, setDraggedTagIdx] = useState<number | null>(null);
+  const [dragOverTagIdx, setDragOverTagIdx] = useState<number | null>(null);
+
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
       onChange(selectedTags.filter((t) => t !== tag));
     } else {
       onChange([...selectedTags, tag]);
     }
+  };
+
+  const handleMoveTag = (fromIdx: number, toIdx: number) => {
+    if (toIdx < 0 || toIdx >= selectedTags.length || fromIdx === toIdx) return;
+    const next = [...selectedTags];
+    const [moved] = next.splice(fromIdx, 1);
+    next.splice(toIdx, 0, moved);
+    onChange(next);
+  };
+
+  const handleDragTagStart = (idx: number) => (e: React.DragEvent<HTMLSpanElement>) => {
+    setDraggedTagIdx(idx);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', String(idx));
+  };
+
+  const handleDragTagOver = (idx: number) => (e: React.DragEvent<HTMLSpanElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverTagIdx !== idx) {
+      setDragOverTagIdx(idx);
+    }
+  };
+
+  const handleDragTagEnd = () => {
+    setDraggedTagIdx(null);
+    setDragOverTagIdx(null);
+  };
+
+  const handleDropTag = (targetIdx: number) => (e: React.DragEvent<HTMLSpanElement>) => {
+    e.preventDefault();
+    if (draggedTagIdx !== null && draggedTagIdx !== targetIdx) {
+      handleMoveTag(draggedTagIdx, targetIdx);
+    }
+    setDraggedTagIdx(null);
+    setDragOverTagIdx(null);
   };
 
   const handleAddCustom = (tagToAdd?: string) => {
@@ -286,54 +320,44 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent fullscreen showCornerBrackets={false} className="p-0 gap-0 overflow-hidden flex flex-col">
-        {/* Header */}
-        <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-light-border dark:border-dark-border shrink-0 pr-14 sm:pr-16">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-terracotta dark:text-ochre font-semibold uppercase tracking-widest flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5 text-ochre" />
-                Universal Tech Stack Library
-              </span>
-              <span className="text-light-ink-subtle text-xs">·</span>
-              <Badge variant="terracotta" className="text-2xs py-0 px-1.5 font-mono">
-                {selectedTags.length} selected
-              </Badge>
-              <Badge variant="secondary" className="text-2xs py-0 px-1.5 font-mono hidden sm:inline-flex">
-                {totalTagCount} Curated Badges + Dynamic Iconify
-              </Badge>
-            </div>
-
-            {/* Quick Expand / Collapse Actions */}
-            {!search && (
-              <div className="flex items-center gap-1.5 text-xs font-mono">
-                <button
-                  type="button"
-                  onClick={expandAll}
-                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors px-2 py-1.5 sm:py-1 rounded hover:bg-terracotta/10 dark:hover:bg-ochre/10 cursor-pointer min-h-[36px] sm:min-h-0"
-                >
-                  Expand All
-                </button>
-                <span className="text-light-ink-subtle">/</span>
-                <button
-                  type="button"
-                  onClick={collapseAll}
-                  className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors px-2 py-1.5 sm:py-1 rounded hover:bg-terracotta/10 dark:hover:bg-ochre/10 cursor-pointer min-h-[36px] sm:min-h-0"
-                >
-                  Collapse All
-                </button>
-              </div>
-            )}
+        {/* Header - Distilled, uncluttered header with integrated count & actions */}
+        <div className="px-4 py-3 sm:px-6 sm:py-3.5 border-b border-light-border dark:border-dark-border shrink-0 pr-14 sm:pr-16 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <Layers className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
+            <DialogTitle className="text-sm sm:text-base font-semibold tracking-tight text-light-ink dark:text-dark-ink truncate">
+              Technology Stack Library
+            </DialogTitle>
+            <span className="text-light-ink-subtle text-xs hidden xs:inline">·</span>
+            <Badge variant="terracotta" className="text-2xs py-0.5 px-2 font-mono shrink-0">
+              {selectedTags.length} selected
+            </Badge>
           </div>
 
-          <DialogTitle className="mt-1 text-lg sm:text-xl">Select Technology Badges</DialogTitle>
-          <DialogDescription className="text-xs sm:text-sm">
-            Instant official brand logos powered by local pre-bundled assets and dynamic Iconify registry.
-          </DialogDescription>
-        </DialogHeader>
+          {/* Quick Accordion Collapse/Expand Controls */}
+          {!search && (
+            <div className="flex items-center gap-1.5 text-2xs sm:text-xs font-mono shrink-0">
+              <button
+                type="button"
+                onClick={expandAll}
+                className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors px-1.5 py-0.5 rounded cursor-pointer"
+              >
+                Expand all
+              </button>
+              <span className="text-light-ink-subtle">/</span>
+              <button
+                type="button"
+                onClick={collapseAll}
+                className="text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors px-1.5 py-0.5 rounded cursor-pointer"
+              >
+                Collapse
+              </button>
+            </div>
+          )}
+        </div>
 
-        {/* Search Input Bar */}
-        <div className="p-3 sm:p-4 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface/50 dark:bg-dark-surface-muted/30 shrink-0">
-          <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+        {/* Search Bar - Generous breathing room, accessible touch input */}
+        <div className="px-4 py-2.5 sm:px-6 sm:py-3 border-b border-light-border/60 dark:border-dark-border/60 bg-light-surface/40 dark:bg-dark-surface-muted/20 shrink-0">
+          <div className="relative flex items-center gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-light-ink-subtle pointer-events-none" />
               <Input
@@ -346,18 +370,28 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                     handleAddCustom();
                   }
                 }}
-                className="pl-9 pr-3 text-xs sm:text-sm w-full"
-                placeholder="Search any tech (e.g. PyTorch, DeepSeek, Triton, Chroma, Pinecone, Rust, Next.js)…"
-                aria-label="Search technology logos"
+                className="pl-9 pr-8 text-xs sm:text-sm h-9 w-full bg-light-surface-card dark:bg-dark-surface-card rounded-md"
+                placeholder="Search technologies (e.g. PyTorch, React, Docker, FastAPI)…"
+                aria-label="Search technologies"
                 autoFocus
               />
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-light-ink-subtle hover:text-light-ink dark:hover:text-dark-ink p-1 cursor-pointer"
+                  aria-label="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
             {search.trim() && (
               <Button
                 type="button"
                 size="sm"
                 onClick={() => handleAddCustom()}
-                className="gap-1 shrink-0 text-xs"
+                className="gap-1.5 shrink-0 text-xs h-9 px-3"
               >
                 <Plus className="w-3.5 h-3.5" />
                 Add &ldquo;{search.trim()}&rdquo;
@@ -368,29 +402,57 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
           {search.trim() && <SearchBadgePreview query={search.trim()} />}
         </div>
 
-        {/* Selected Tags Preview Bar */}
+        {/* Selected Tags Tray - Clean horizontal scroll/wrap with ample breathing room */}
         {selectedTags.length > 0 && (
-          <div className="px-5 py-2.5 bg-terracotta/5 dark:bg-ochre/5 border-b border-light-border/60 dark:border-dark-border/60 flex items-center gap-2 overflow-y-auto max-h-24 shrink-0">
-            <span className="font-mono text-2xs text-terracotta dark:text-ochre font-semibold uppercase tracking-wider shrink-0">
-              Active ({selectedTags.length}):
-            </span>
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {selectedTags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1 bg-light-surface dark:bg-dark-surface border border-terracotta/40 dark:border-[#D4A853]/40 rounded-md pr-1.5 shadow-2xs"
-                >
-                  <TechTag tag={tag} size="sm" className="border-0 shadow-none bg-transparent dark:bg-transparent" />
-                  <button
-                    type="button"
-                    onClick={() => toggleTag(tag)}
-                    className="text-light-ink-subtle hover:text-red-500 transition-colors p-0.5 cursor-pointer"
-                    aria-label={`Remove ${tag}`}
+          <div className="px-4 py-2.5 sm:px-6 sm:py-3 bg-terracotta/5 dark:bg-ochre/5 border-b border-light-border/60 dark:border-dark-border/60 shrink-0 flex flex-col gap-1.5">
+            <div className="flex items-center justify-between text-2xs font-mono text-terracotta dark:text-ochre">
+              <span className="font-semibold uppercase tracking-wider">
+                Selected Badges ({selectedTags.length})
+              </span>
+              <span className="text-light-ink-muted dark:text-dark-ink-muted font-normal text-3xs">
+                Drag badges or tap &times; to remove
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5 flex-wrap overflow-y-auto max-h-32 sm:max-h-36 py-1 -mx-1 px-1 overscroll-contain">
+              {selectedTags.map((tag, idx) => {
+                const isDragging = draggedTagIdx === idx;
+                const isOver = dragOverTagIdx === idx;
+
+                return (
+                  <span
+                    key={`${tag}-${idx}`}
+                    draggable
+                    onDragStart={handleDragTagStart(idx)}
+                    onDragOver={handleDragTagOver(idx)}
+                    onDragEnd={handleDragTagEnd}
+                    onDrop={handleDropTag(idx)}
+                    title="Drag to reposition badge order"
+                    className={`inline-flex items-center gap-1 bg-light-surface dark:bg-dark-surface border rounded-md pl-1.5 pr-1 py-0.5 shadow-2xs transition-all select-none cursor-grab active:cursor-grabbing ${
+                      isDragging
+                        ? 'opacity-40 scale-95 border-dashed border-terracotta dark:border-ochre'
+                        : isOver
+                        ? 'border-terracotta dark:border-[#D4A853] ring-1 ring-terracotta/40 dark:ring-[#D4A853]/40 scale-[1.02]'
+                        : 'border-terracotta/30 dark:border-[#D4A853]/30 hover:border-terracotta dark:hover:border-[#D4A853]'
+                    }`}
                   >
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
+                    <GripVertical className="w-3 h-3 text-light-ink-subtle/50 hover:text-light-ink-muted transition-colors shrink-0" />
+                    <TechTag tag={tag} size="sm" className="border-0 shadow-none bg-transparent dark:bg-transparent pointer-events-none p-0" />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleTag(tag);
+                      }}
+                      className="text-light-ink-subtle hover:text-red-500 transition-colors p-1 rounded-sm cursor-pointer ml-0.5"
+                      aria-label={`Remove ${tag}`}
+                      title={`Remove ${tag}`}
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                );
+              })}
             </div>
           </div>
         )}
@@ -408,7 +470,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                 </div>
 
                 {searchResults.length > 0 ? (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {searchResults.map((tag) => {
                       const isSelected = selectedTags.includes(tag);
                       return (
@@ -417,17 +479,17 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                           type="button"
                           aria-pressed={isSelected}
                           onClick={() => toggleTag(tag)}
-                          className={`group inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer ${
+                          className={`group inline-flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer min-h-[38px] sm:min-h-[32px] select-none ${
                             isSelected
-                              ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs'
-                              : 'bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-[#D4A853] hover:text-terracotta dark:hover:text-[#D4A853]'
+                              ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-[#D4A853]/20'
+                              : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-[#D4A853]/70 hover:text-terracotta dark:hover:text-[#D4A853]'
                           }`}
                         >
-                          <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0" />
+                          <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0 pointer-events-none" />
                           {isSelected ? (
-                            <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-1" />
+                            <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-0.5" />
                           ) : (
-                            <Plus className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100 shrink-0 ml-1" />
+                            <Plus className="w-3.5 h-3.5 opacity-35 group-hover:opacity-100 shrink-0 ml-0.5" />
                           )}
                         </button>
                       );
@@ -449,7 +511,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                       Discovered via Iconify Registry ({dynamicSuggestions.length})
                     </span>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {dynamicSuggestions.map((tag) => {
                       const isSelected = selectedTags.includes(tag);
                       return (
@@ -458,17 +520,17 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                           type="button"
                           aria-pressed={isSelected}
                           onClick={() => toggleTag(tag)}
-                          className={`group inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer ${
+                          className={`group inline-flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer min-h-[38px] sm:min-h-[32px] select-none ${
                             isSelected
-                              ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs'
-                              : 'bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-[#D4A853] hover:text-terracotta dark:hover:text-[#D4A853]'
+                              ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-[#D4A853]/20'
+                              : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-[#D4A853]/70 hover:text-terracotta dark:hover:text-[#D4A853]'
                           }`}
                         >
-                          <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0" />
+                          <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0 pointer-events-none" />
                           {isSelected ? (
-                            <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-1" />
+                            <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-0.5" />
                           ) : (
-                            <Plus className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100 shrink-0 ml-1" />
+                            <Plus className="w-3.5 h-3.5 opacity-35 group-hover:opacity-100 shrink-0 ml-0.5" />
                           )}
                         </button>
                       );
@@ -498,14 +560,14 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
               return (
                 <div
                   key={cat.category}
-                  className="rounded-xl border border-light-border/80 dark:border-dark-border/80 overflow-hidden bg-light-surface/40 dark:bg-dark-surface/40"
+                  className="border-b border-light-border/70 dark:border-dark-border/70 pb-3"
                 >
-                  {/* Collapsible Category Header Bar */}
+                  {/* Collapsible Category Header Bar - flat and architectural */}
                   <button
                     type="button"
                     aria-expanded={!isCollapsed}
                     onClick={() => toggleCategory(cat.category)}
-                    className="w-full flex items-center justify-between p-3.5 sm:px-4 bg-light-surface-card dark:bg-dark-surface-card hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised transition-colors cursor-pointer select-none text-left"
+                    className="w-full flex items-center justify-between py-2.5 px-1 hover:text-terracotta dark:hover:text-[#D4A853] transition-colors cursor-pointer select-none text-left"
                   >
                     <div className="flex items-center gap-2">
                       {isCollapsed ? (
@@ -513,7 +575,7 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                       ) : (
                         <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853] shrink-0" />
                       )}
-                      <span className="font-mono text-xs font-semibold text-light-ink dark:text-dark-ink tracking-wide">
+                      <span className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide">
                         {cat.category}
                       </span>
                     </div>
@@ -524,16 +586,16 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                           {selectedInCat} active
                         </Badge>
                       )}
-                      <Badge variant="secondary" className="text-2xs py-0 px-1.5 font-mono">
-                        {cat.tags.length} items
-                      </Badge>
+                      <span className="text-2xs font-mono text-light-ink-subtle">
+                        {cat.tags.length} badges
+                      </span>
                     </div>
                   </button>
 
                   {/* Expanded Tags Grid */}
                   {!isCollapsed && (
-                    <div className="p-3.5 sm:p-4 border-t border-light-border/60 dark:border-dark-border/60 bg-light-surface/20 dark:bg-dark-surface/20">
-                      <div className="flex flex-wrap gap-2">
+                    <div className="pt-2 pb-1 px-1">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {cat.tags.map((tag) => {
                           const isSelected = selectedTags.includes(tag);
                           return (
@@ -542,17 +604,17 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                               type="button"
                               aria-pressed={isSelected}
                               onClick={() => toggleTag(tag)}
-                              className={`group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer ${
+                              className={`group inline-flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer min-h-[38px] sm:min-h-[32px] select-none ${
                                 isSelected
-                                  ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs'
-                                  : 'bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink hover:border-terracotta dark:hover:border-[#D4A853] hover:text-terracotta dark:hover:text-[#D4A853]'
+                                  ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-[#D4A853]/20'
+                                  : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-[#D4A853]/70 hover:text-terracotta dark:hover:text-[#D4A853]'
                               }`}
                             >
-                              <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0" />
+                              <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0 pointer-events-none" />
                               {isSelected ? (
-                                <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-1" />
+                                <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-0.5" />
                               ) : (
-                                <Plus className="w-3.5 h-3.5 opacity-30 group-hover:opacity-100 shrink-0 ml-1" />
+                                <Plus className="w-3.5 h-3.5 opacity-35 group-hover:opacity-100 shrink-0 ml-0.5" />
                               )}
                             </button>
                           );
@@ -566,15 +628,19 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
           )}
         </div>
 
-        {/* Footer */}
-        <DialogFooter className="p-3.5 sm:p-4 border-t border-light-border dark:border-dark-border bg-light-surface/90 dark:bg-dark-surface-card shrink-0 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted text-center sm:text-left">
-            Monochrome architectural badge design · Official Simple Icons &amp; Devicon dynamic integration
+        {/* Footer - Clear primary action with comfortable touch target */}
+        <div className="p-3 sm:px-6 sm:py-3.5 border-t border-light-border dark:border-dark-border bg-light-surface/90 dark:bg-dark-surface-card shrink-0 flex items-center justify-between gap-3">
+          <span className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:inline">
+            Official Simple Icons &amp; Devicon dynamic integration
           </span>
-          <Button type="button" onClick={onClose} className="px-5 min-h-[44px] sm:min-h-0">
-            Done
+          <Button
+            type="button"
+            onClick={onClose}
+            className="w-full sm:w-auto px-6 h-10 sm:h-9 font-medium text-xs sm:text-sm cursor-pointer ml-auto"
+          >
+            Done ({selectedTags.length})
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -36,10 +36,10 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed z-[101] grid gap-4 border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 craft-modal',
+        'fixed z-[101] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 craft-modal',
         fullscreen
-          ? 'inset-0 left-0 top-0 translate-x-0 translate-y-0 w-full h-[100dvh] max-w-none max-h-none rounded-none border-0 p-0 sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[calc(100%-2rem)] sm:max-w-5xl lg:sm:max-w-6xl sm:h-[calc(100dvh-2.5rem)] sm:max-h-[calc(100dvh-2.5rem)] sm:rounded-[3px] sm:border'
-          : 'left-1/2 top-1/2 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 p-6 rounded-[3px] max-h-[90vh]',
+          ? 'inset-0 left-0 top-0 translate-x-0 translate-y-0 w-full h-[100dvh] max-w-none max-h-none rounded-none border-0 p-0 flex flex-col overflow-hidden sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[calc(100%-2rem)] sm:max-w-5xl lg:sm:max-w-6xl sm:h-[calc(100dvh-2.5rem)] sm:max-h-[calc(100dvh-2.5rem)] sm:rounded-[3px] sm:border'
+          : 'left-1/2 top-1/2 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 grid gap-4 p-6 rounded-[3px] max-h-[90vh]',
         className,
       )}
       {...props}
