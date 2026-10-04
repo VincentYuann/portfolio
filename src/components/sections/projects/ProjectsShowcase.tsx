@@ -1,16 +1,15 @@
 import React, { useState, Suspense, lazy } from 'react';
-import { ArrowRight, Layers, Github, ExternalLink, Calendar } from 'lucide-react';
+import { ArrowRight, Layers, Github, ExternalLink } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
-import { Badge } from '../../ui/badge';
 import { Card } from '../../ui/card';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { SectionHeading } from '../../common/SectionHeading';
-import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { SectionDivider } from '../../common/SectionDivider';
+import { CardMetaStrip } from '../../common/CardMetaStrip';
 
 
 const ProjectDetailModal = lazy(() =>
@@ -173,20 +172,14 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                   >
                     {/* Unified Metadata Strip: Order + Date + Active Status Pill */}
                     <div>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                        <Badge variant="outline" className="font-mono text-xs px-1.5 sm:px-2 py-0.5 rounded-[2px] bg-light-surface-muted/60 dark:bg-dark-canvas border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted">
-                          #{String(index + 1).padStart(2, '0')}
-                        </Badge>
-
-                        {(project.startDate || project.endDate) && (
-                          <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium tracking-wider uppercase flex items-center gap-1.5">
-                            <Calendar className="w-3.5 h-3.5 opacity-70" />
-                            {project.startDate ? `${project.startDate} - ` : ''}{project.endDate || (isCurrent ? 'Present' : 'Completed')}
-                          </span>
-                        )}
-
-                        <StatusBadge isActive={isCurrent} />
-                      </div>
+                      <CardMetaStrip
+                        index={index + 1}
+                        startDate={project.startDate}
+                        endDate={project.endDate}
+                        isActive={isCurrent}
+                        activeLabel="ACTIVE / 稼働中"
+                        completedLabel="COMPLETED / 完了"
+                      />
 
                       <div className="flex items-center justify-between gap-4 mb-1.5">
                         <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-light-ink dark:text-dark-ink font-normal leading-[1.15] tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors duration-200">
@@ -213,30 +206,31 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                     </div>
 
                     {/* Action Foot Link & Direct Repository / Live Triggers */}
-                    <div className="pt-3 border-t border-light-border/60 dark:border-dark-border/80 flex items-center justify-between gap-4">
+                    <div className="pt-3.5 border-t border-light-border/60 dark:border-dark-border/80 flex flex-wrap items-center justify-between gap-3">
                       <button
                         type="button"
                         onClick={() => openProject(project)}
-                        className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-medium hover:text-terracotta dark:hover:text-ochre transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] min-h-[44px] sm:min-h-0 py-2 sm:py-1 px-1.5 sm:px-0.5 group/btn cursor-pointer"
+                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-[2px] font-sans text-xs font-bold uppercase tracking-wider bg-light-surface-raised dark:bg-dark-surface hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre transition-all duration-200 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer group/btn shadow-2xs"
                       >
                         <span>
                           {project.links.caseStudyText || 'View Architecture'}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/btn:text-terracotta dark:group-hover/btn:text-ochre" />
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1 text-terracotta dark:text-ochre group-hover/btn:text-white dark:group-hover/btn:text-dark-canvas" />
                       </button>
 
                       {/* Direct External Links */}
-                      <div className="flex items-center gap-1 sm:gap-1.5 text-light-ink-muted dark:text-dark-ink-muted" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                         {project.links.github && (
                           <a
                             href={project.links.github}
                             target="_blank"
                             rel="noreferrer"
-                            className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2.5 sm:p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-light-border/50 dark:border-dark-border/50 sm:border-transparent transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer flex items-center justify-center"
+                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] font-sans text-xs font-bold text-light-ink dark:text-dark-ink bg-light-surface/80 dark:bg-dark-surface/80 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer shadow-2xs"
                             title="GitHub Repository"
                             aria-label={`${project.title} GitHub Repository`}
                           >
-                            <Github className="w-4 h-4" />
+                            <Github className="w-3.5 h-3.5 shrink-0 text-light-ink-muted dark:text-dark-ink-muted" />
+                            <span>GitHub</span>
                           </a>
                         )}
                         {project.links.live && project.links.live !== '#' && (
@@ -244,11 +238,12 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             href={project.links.live}
                             target="_blank"
                             rel="noreferrer"
-                            className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2.5 sm:p-1.5 rounded-[2px] hover:bg-light-surface-raised dark:hover:bg-dark-surface hover:text-light-ink dark:hover:text-dark-ink border border-light-border/50 dark:border-dark-border/50 sm:border-transparent transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer flex items-center justify-center"
+                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] font-sans text-xs font-bold text-terracotta dark:text-ochre bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas border border-terracotta/35 dark:border-ochre/35 hover:border-terracotta dark:hover:border-ochre transition-all focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer shadow-2xs"
                             title="Live Deployment"
                             aria-label={`${project.title} Live Deployment`}
                           >
-                            <ExternalLink className="w-4 h-4" />
+                            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                            <span>Live Demo</span>
                           </a>
                         )}
                       </div>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { ArrowLeft, Search, ExternalLink, Github, Layers, Calendar } from 'lucide-react';
+import { ArrowLeft, Search, ExternalLink, Github, Layers } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
-import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
+import { CardMetaStrip } from '../../common/CardMetaStrip';
 import { ViewMode } from '../../../App';
 
 const ProjectDetailModal = lazy(() =>
@@ -178,7 +178,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, idx) => (
               <div
                 key={project.id}
                 onMouseEnter={() => setHoveredProjectId(project.id)}
@@ -212,20 +212,14 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                     </div>
                   </div>
 
-                  {/* Timeline Strip: Dates + Active Status Badge */}
-                  <div className="flex flex-wrap items-center justify-between gap-1.5 mb-2">
-                    <span className="font-mono text-xs text-terracotta dark:text-ochre font-semibold tracking-wider uppercase flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-terracotta dark:text-ochre" />
-                      {project.startDate || '2024'} - {project.endDate || (project.isActive ? 'Present' : 'Completed')}
-                    </span>
-
-                    <StatusBadge
-                      isActive={project.isActive}
-                      activeLabel="ACTIVE / 稼働中"
-                      completedLabel="COMPLETED / 完了"
-                      size="sm"
-                    />
-                  </div>
+                  {/* Unified Card Metadata Ribbon */}
+                  <CardMetaStrip
+                    index={idx + 1}
+                    startDate={project.startDate}
+                    endDate={project.endDate}
+                    isActive={project.isActive}
+                    size="sm"
+                  />
 
                   <h3 className="font-serif text-lg font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors line-clamp-1">
                     {project.title}
@@ -250,27 +244,28 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                   </div>
 
                   {/* Card Action Foot */}
-                  <div className="pt-3 border-t border-light-border/60 dark:border-dark-border/60 flex items-center justify-between text-xs">
+                  <div className="pt-3.5 border-t border-light-border/60 dark:border-dark-border/60 flex flex-wrap items-center justify-between gap-2.5 text-xs">
                     <button
                       type="button"
                       onClick={() => openProject(project)}
-                      className="font-sans text-xs font-medium text-terracotta dark:text-ochre hover:underline flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] min-h-[44px] sm:min-h-0 py-2 sm:py-0.5 cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] font-sans text-xs font-bold uppercase tracking-wider bg-light-surface-raised dark:bg-dark-surface hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre transition-all duration-200 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer group/btn shadow-2xs"
                     >
                       <span>Inspect System</span>
-                      <span>→</span>
+                      <span className="transition-transform duration-200 group-hover/btn:translate-x-1 text-terracotta dark:text-ochre group-hover/btn:text-white dark:group-hover/btn:text-dark-canvas">→</span>
                     </button>
 
-                    <div className="flex items-center gap-1 sm:gap-2 text-light-ink-muted dark:text-dark-ink-muted" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                       {project.links.github && (
                         <a
                           href={project.links.github}
                           target="_blank"
                           rel="noreferrer"
-                          className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2.5 sm:p-1 hover:text-light-ink dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 sm:border-transparent transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] flex items-center justify-center"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans text-xs font-bold text-light-ink dark:text-dark-ink bg-light-surface/80 dark:bg-dark-surface/80 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer shadow-2xs"
                           title="GitHub Repository"
                           aria-label={`${project.title} GitHub Repository`}
                         >
-                          <Github className="w-3.5 h-3.5" />
+                          <Github className="w-3.5 h-3.5 shrink-0 text-light-ink-muted dark:text-dark-ink-muted" />
+                          <span>GitHub</span>
                         </a>
                       )}
                       {project.links.live && project.links.live !== '#' && (
@@ -278,11 +273,12 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                           href={project.links.live}
                           target="_blank"
                           rel="noreferrer"
-                          className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2.5 sm:p-1 hover:text-light-ink dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 sm:border-transparent transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none rounded-[2px] flex items-center justify-center"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans text-xs font-bold text-terracotta dark:text-ochre bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas border border-terracotta/35 dark:border-ochre/35 hover:border-terracotta dark:hover:border-ochre transition-all focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer shadow-2xs"
                           title="Live Deployment"
                           aria-label={`${project.title} Live Deployment`}
                         >
-                          <ExternalLink className="w-3.5 h-3.5" />
+                          <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                          <span>Live Demo</span>
                         </a>
                       )}
                     </div>

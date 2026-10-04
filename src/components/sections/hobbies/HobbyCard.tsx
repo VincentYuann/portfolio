@@ -4,6 +4,7 @@ import { HobbyItem } from '../../../context/SiteDataContext';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { Card } from '../../ui/card';
+import { CardMetaStrip } from '../../common/CardMetaStrip';
 import { getCategoryStyle } from '../../../lib/hobbyTheme';
 
 // Lazy-load Lightbox module so yet-another-react-lightbox isn't in initial bundle
@@ -49,18 +50,13 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
       <div className="relative z-10">
         <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-light-border/60 dark:border-dark-border/60">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-mono text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted tracking-wider uppercase">
-                {`0${index + 1}`}{hobby.kanji ? ` · ${hobby.kanji}` : ''}
-              </span>
-              {hobby.category && (
-                <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-[2px] text-xs font-mono uppercase tracking-wider border font-medium ${categoryStyle}`}
-                >
-                  {hobby.category}
-                </span>
-              )}
-            </div>
+            <CardMetaStrip
+              index={index + 1}
+              category={hobby.category}
+              categoryStyle={categoryStyle}
+              size="sm"
+              className="mb-1.5"
+            />
             <h3 className="font-serif text-xl sm:text-2xl font-medium text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors leading-tight">
               {hobby.title}
             </h3>

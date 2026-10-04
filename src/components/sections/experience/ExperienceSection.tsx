@@ -3,7 +3,6 @@ import {
   Briefcase,
   ArrowRight,
   MapPin,
-  Calendar,
   Layers,
   ListChecks,
 } from 'lucide-react';
@@ -11,13 +10,12 @@ import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { TechTag } from '../../common/TechTag';
-import { Badge } from '../../ui/badge';
 import { Card } from '../../ui/card';
 import { SectionHeading } from '../../common/SectionHeading';
-import { StatusBadge } from '../../common/StatusBadge';
 import { handleImageError } from '../../../lib/constants';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
+import { CardMetaStrip } from '../../common/CardMetaStrip';
 
 interface ExperienceSectionProps {
   onNavigate?: (view: 'home' | 'projects' | 'resume', sectionId?: string) => void;
@@ -313,31 +311,20 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                       {/* Right: Role Header & Progressive Disclosure Body */}
                       <div className="flex-1 min-w-0 w-full pr-0 sm:pr-8">
                         {/* Metadata Strip: Dates + High-Contrast Active/Completed Pill */}
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
-                          {/* Order index */}
-                          <Badge variant="outline" className="font-mono text-xs px-1.5 sm:px-2 py-0.5 rounded-[2px] border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted">
-                            #{String(idx + 1).padStart(2, '0')}
-                          </Badge>
-
-                          {/* Date Range with Domain Color */}
-                          {(exp.startDate || exp.endDate) && (
-                            <span className={`font-mono text-xs ${isCardActive ? theme.textClass : 'text-light-ink-muted dark:text-dark-ink-muted'} font-medium tracking-wider uppercase flex items-center gap-1.5`}>
-                              <Calendar className="w-3.5 h-3.5 opacity-70" />
-                              {exp.startDate ? `${exp.startDate} - ` : ''}{exp.endDate || (isCurrent ? 'Present' : '')}
-                            </span>
-                          )}
-
-                          {/* High-Contrast Themed Status Badge */}
-                          <StatusBadge
-                            isActive={isCurrent}
-                            activeLabel="ACTIVE / 現職"
-                            completedLabel="歴任 / COMPLETED"
-                            activeBgClass={theme.badgeBg}
-                            activeBorderClass={theme.badgeBorder}
-                            activeTextClass={theme.badgeText}
-                            activeDotBgClass={theme.nodeActiveBg}
-                          />
-                        </div>
+                        <CardMetaStrip
+                          index={idx + 1}
+                          startDate={exp.startDate}
+                          endDate={exp.endDate}
+                          isActive={isCurrent}
+                          activeLabel="ACTIVE / 現職"
+                          completedLabel="歴任 / COMPLETED"
+                          statusBadgeProps={{
+                            activeBgClass: theme.badgeBg,
+                            activeBorderClass: theme.badgeBorder,
+                            activeTextClass: theme.badgeText,
+                            activeDotBgClass: theme.nodeActiveBg,
+                          }}
+                        />
 
                         {/* Title & Company */}
                         <h3 className="font-serif text-2xl sm:text-3xl font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors leading-snug tracking-tight">
@@ -370,13 +357,13 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             <button
                               type="button"
                               onClick={(e) => toggleExpand(cardKey, e)}
-                              className={`inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-[2px] font-mono text-xs transition-all duration-200 border cursor-pointer ${
+                              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-[2px] font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 border cursor-pointer shadow-2xs group/btn ${
                                 isExpanded
-                                  ? 'bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink border-light-border-strong dark:border-dark-border-strong font-medium'
-                                  : 'bg-light-surface/60 dark:bg-dark-surface/60 text-light-ink-muted dark:text-dark-ink-muted border-light-border dark:border-dark-border hover:text-light-ink dark:hover:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong'
+                                  ? 'bg-light-surface-raised dark:bg-dark-surface text-light-ink dark:text-dark-ink border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre'
+                                  : 'bg-light-surface-raised dark:bg-dark-surface hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre'
                               }`}
                             >
-                              <Layers className="w-3.5 h-3.5 text-light-ink-subtle dark:text-dark-ink-subtle" />
+                              <Layers className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:scale-110" />
                               <span>
                                 {isExpanded
                                   ? 'Collapse Details ↑'
@@ -416,13 +403,13 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                             {/* Tech Stack & Substrates */}
                             {exp.tags && exp.tags.length > 0 && (
-                              <div className="pt-1">
-                                <div className="text-2xs font-mono uppercase tracking-widest text-light-ink-muted dark:text-dark-ink-muted font-semibold mb-2">
+                              <div className="pt-2">
+                                <div className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-semibold mb-2.5">
                                   Substrates &amp; Core Tech Stack
                                 </div>
-                                <div className="flex flex-wrap gap-1.5">
+                                <div className="flex flex-wrap gap-2">
                                   {exp.tags.map((tag) => (
-                                    <TechTag key={tag} tag={tag} size="sm" />
+                                    <TechTag key={tag} tag={tag} size="md" />
                                   ))}
                                 </div>
                               </div>
