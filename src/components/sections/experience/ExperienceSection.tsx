@@ -401,11 +401,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                               </div>
                             )}
 
-                            {/* Tech Stack & Substrates */}
+                            {/* Tech Stack & Core Technologies */}
                             {exp.tags && exp.tags.length > 0 && (
                               <div className="pt-2">
                                 <div className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-semibold mb-2.5">
-                                  Substrates &amp; Core Tech Stack
+                                  Core Technologies &amp; Stack
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                   {exp.tags.map((tag) => (

@@ -116,7 +116,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
-                Initiate Dialogue
+                Get in Touch
               </a>
               <a
                 href="#resume"

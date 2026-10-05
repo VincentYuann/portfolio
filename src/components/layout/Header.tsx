@@ -151,7 +151,7 @@ export const Header: React.FC<HeaderProps> = ({
   // Close mobile drawer on resize to desktop
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1280) {
+      if (window.innerWidth >= 1024) {
         setMobileDrawerOpen(false);
       }
     };
@@ -160,13 +160,13 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navItems = [
-    { id: 'home', num: '01', label: 'Home', fullLabel: 'Home', href: '#home', view: 'home' as const },
-    { id: 'experience', num: '02', label: 'Experience', fullLabel: 'Experience', href: '#experience', view: 'home' as const },
-    { id: 'featured-works', num: '03', label: 'Projects', fullLabel: 'Projects', href: '#featured-works', view: 'home' as const },
-    { id: 'philosophy', num: '04', label: 'Philosophy', fullLabel: 'Philosophy', href: '#philosophy', view: 'home' as const },
-    { id: 'hobbies', num: '05', label: 'Hobbies', fullLabel: 'Hobbies & Interests', href: '#hobbies', view: 'home' as const },
-    { id: 'contact', num: '06', label: 'Contact', fullLabel: 'Contact', href: '#contact', view: 'home' as const },
-    { id: 'resume', num: '07', label: 'Resume', fullLabel: 'Resume', href: '#resume', view: 'resume' as const },
+    { id: 'home', label: 'Home', fullLabel: 'Home', href: '#home', view: 'home' as const },
+    { id: 'experience', label: 'Experience', fullLabel: 'Experience', href: '#experience', view: 'home' as const },
+    { id: 'featured-works', label: 'Projects', fullLabel: 'Projects', href: '#featured-works', view: 'home' as const },
+    { id: 'philosophy', label: 'Philosophy', fullLabel: 'Philosophy', href: '#philosophy', view: 'home' as const },
+    { id: 'hobbies', label: 'Hobbies', fullLabel: 'Hobbies & Interests', href: '#hobbies', view: 'home' as const },
+    { id: 'contact', label: 'Contact', fullLabel: 'Contact', href: '#contact', view: 'home' as const },
+    { id: 'resume', label: 'Resume', fullLabel: 'Resume', href: '#resume', view: 'resume' as const },
   ];
 
   const handleNavClick = (
@@ -213,8 +213,8 @@ export const Header: React.FC<HeaderProps> = ({
           </a>
         </div>
 
-        {/* Center: Desktop Navigation: Shown on wide screens (>= xl / 1280px) with deliberate breathing room */}
-        <nav className="hidden xl:flex items-center gap-3 2xl:gap-4 shrink-0">
+        {/* Center: Desktop Navigation: Shown on wide screens (>= lg / 1024px) with deliberate breathing room */}
+        <nav className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0">
           {navItems.map((item) => {
             const isActive =
               currentView === 'edit'
@@ -232,13 +232,12 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.id}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`group relative font-sans text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 py-1 whitespace-nowrap ${
+                className={`group relative font-sans text-xs uppercase tracking-wider transition-colors flex items-center py-1 whitespace-nowrap ${
                   isActive
                     ? 'text-light-ink dark:text-dark-ink font-semibold'
                     : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
-                <span className="opacity-40 text-2xs font-mono">{item.num}</span>
                 <span>{item.label}</span>
                 <span
                   className={`absolute bottom-0 left-0 h-[1.5px] bg-terracotta dark:bg-ochre rounded-full transition-all duration-300 ${
@@ -297,9 +296,9 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="hidden sm:inline">ART</span>
           </button>
 
-          {/* Desktop Action Cluster: Admin controls, Visitor badge, or Sign In button (>= xl) */}
+          {/* Desktop Action Cluster: Admin controls, Visitor badge, or Sign In button (>= lg) */}
           {isAdmin ? (
-            <div className="hidden xl:flex items-center gap-1.5 shrink-0">
+            <div className="hidden lg:flex items-center gap-1.5 shrink-0">
               <button
                 onClick={() => onNavigate?.(currentView === 'edit' ? 'home' : 'edit')}
                 className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] text-xs font-sans border transition-colors cursor-pointer min-h-[44px] ${
@@ -333,7 +332,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
           ) : isVisitor ? (
-            <div className="hidden xl:flex items-center gap-1.5 shrink-0">
+            <div className="hidden lg:flex items-center gap-1.5 shrink-0">
               <span className="inline-flex items-center px-2 py-1 rounded-[2px] text-2xs font-mono font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20">
                 Visitor
               </span>
@@ -350,7 +349,7 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <button
               onClick={() => onNavigate?.('login')}
-              className="hidden xl:inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[44px]"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[44px]"
               title="Admin Login"
               aria-label="Admin Login"
             >
@@ -359,8 +358,8 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* ── Bordered 三 Menu Button: Exclusively on Mobile and Tablet (< xl) ── */}
-          <div className="relative xl:hidden">
+          {/* ── Bordered 三 Menu Button: Exclusively on Mobile and Tablet (< lg) ── */}
+          <div className="relative lg:hidden">
             <button
               onClick={() => setMobileDrawerOpen((prev) => !prev)}
               className={`w-11 h-11 flex items-center justify-center rounded-[2px] border transition-all duration-200 select-none cursor-pointer shrink-0 ${
@@ -381,9 +380,9 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* ── Tablet & Mobile Navigation Drawer (Active on < xl screens) ── */}
+      {/* ── Tablet & Mobile Navigation Drawer (Active on < lg screens) ── */}
       {mobileDrawerOpen && (
-        <div className="xl:hidden px-6 py-5 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xl animate-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden px-6 py-5 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xl animate-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col space-y-1">
             {navItems.map((item) => {
               const isActive =
@@ -412,7 +411,6 @@ export const Header: React.FC<HeaderProps> = ({
                     {isActive && <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0" />}
                     <span className="font-medium">{item.fullLabel || item.label}</span>
                   </div>
-                  <span className="font-mono text-2xs opacity-50">{item.num}</span>
                 </a>
               );
             })}

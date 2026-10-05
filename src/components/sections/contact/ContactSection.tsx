@@ -137,7 +137,7 @@ export const ContactSection: React.FC = () => {
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
-        <SectionDivider label="INITIATE A DIALOGUE · 対話" shortLabel="DIALOGUE · 対話" />
+        <SectionDivider label="GET IN TOUCH · 連絡" shortLabel="CONTACT · 連絡" />
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
@@ -157,22 +157,21 @@ export const ContactSection: React.FC = () => {
             <div className="lg:col-span-6 flex flex-col gap-4 sm:gap-6">
               <div>
                 <div className="flex items-center gap-2 mb-1.5 sm:mb-2 flex-wrap">
-                  <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium whitespace-nowrap">06 //</span>
-                  <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
-                    Dialogue · 対話と通信
+                  <span className="font-mono text-xs font-semibold text-terracotta dark:text-ochre uppercase tracking-wider">
+                    Direct Contact · 連絡
                   </span>
                 </div>
 
                 <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-light-ink dark:text-dark-ink leading-tight font-normal tracking-tight">
-                  Initiate Dialogue{' '}
+                  Get in Touch{' '}
                   <span aria-hidden="true" className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-xl sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block select-none">
-                    対話
+                    連絡
                   </span>
                 </h2>
               </div>
 
               <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal max-w-prose">
-                Open to software engineering roles, autonomous systems research, and technical collaboration. Transmit a message or reach out through direct channels.
+                Open to full-time engineering roles, AI systems co-ops, and technical collaboration. Send a direct message or connect through any channel below.
               </p>
 
               {/* Direct Contact Links */}

@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowRight,
   FileText,
   Mail,
+  Download,
+  Github,
+  Linkedin,
+  MapPin,
 } from 'lucide-react';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 import { useTheme } from '../../../context/ThemeContext';
 import { HankoStamp } from '../../common/HankoStamp';
 import { TechTag } from '../../common/TechTag';
+import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
 
 interface HeroAkariStudioProps {
@@ -22,6 +27,25 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   const tagline = profile?.tagline || '';
   const displayName = profile?.name || '';
   const displayRole = profile?.role || '';
+
+  // Resume PDF URL with live Supabase query and fallback
+  const [supabasePdfUrl, setSupabasePdfUrl] = useState(getResumePdfUrl());
+
+  useEffect(() => {
+    fetchResumeData().then((data) => {
+      if (data?.resumeLink) setSupabasePdfUrl(data.resumeLink);
+    });
+  }, []);
+
+  const handleDownloadPdf = () => {
+    const link = document.createElement('a');
+    link.href = supabasePdfUrl;
+    link.download = 'Vincent_Yuan_Resume.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // Dynamic Hanko Card Configuration (from DB profile.hanko_card)
   const hanko = profile?.hanko_card;
@@ -85,8 +109,21 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 </p>
               )}
 
+              {/* Institutional & Location Byline - 5-Second Test Clarity */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5 text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
+                <span className="flex items-center gap-1.5 font-medium text-light-ink dark:text-dark-ink">
+                  <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-ochre inline-block" />
+                  <span>Drexel University · CS & Mathematics</span>
+                </span>
+                <span className="opacity-40">/</span>
+                <span className="flex items-center gap-1 text-light-ink dark:text-dark-ink">
+                  <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
+                  <span>Philadelphia, PA · Open to Relocation & Remote</span>
+                </span>
+              </div>
+
               {/* Action Buttons with 2px corners */}
-              <div className="pt-1 sm:pt-2 flex flex-row flex-wrap items-center gap-2 sm:gap-3">
+              <div className="pt-1 sm:pt-2 flex flex-row flex-wrap items-center gap-2 sm:gap-2.5">
                 <a
                   href="#featured-works"
                   onClick={(e) => {
@@ -109,11 +146,24 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       onNavigate('resume');
                     }
                   }}
-                  className="group inline-flex items-center justify-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 bg-light-surface-card/40 dark:bg-dark-surface-card/40 backdrop-blur-xs border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-[2px] shadow-2xs transition-all cursor-pointer min-h-[44px] sm:min-h-0"
+                  className="group inline-flex items-center justify-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 bg-light-surface-card/40 dark:bg-dark-surface-card/40 backdrop-blur-xs border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-[2px] shadow-2xs transition-all cursor-pointer min-h-[44px] sm:min-h-0"
+                  title="View interactive Curriculum Vitae with LaTeX source"
                 >
-                  <span>Technical CV</span>
+                  <span>Curriculum Vitae</span>
                   <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light-ink-muted dark:text-dark-ink-muted transition-transform duration-200 group-hover:translate-x-0.5" />
                 </a>
+
+                {/* 1-Click Hard Resume PDF Download */}
+                <button
+                  type="button"
+                  onClick={handleDownloadPdf}
+                  className="group inline-flex items-center justify-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 bg-terracotta/10 dark:bg-ochre/15 hover:bg-terracotta/20 dark:hover:bg-ochre/25 border border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs transition-all cursor-pointer min-h-[44px] sm:min-h-0"
+                  title="Direct 1-click download of official Resume PDF"
+                  aria-label="Download Official Resume PDF"
+                >
+                  <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+                  <span>Download PDF</span>
+                </button>
               </div>
             </div>
 
@@ -241,8 +291,30 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 </div>
               )}
 
-              {/* Direct Channel: Navigate to Contact Form */}
-              <div className="w-full pt-2 border-t border-light-border/50 dark:border-dark-border/50 relative z-10">
+              {/* Direct Channels: GitHub, LinkedIn & Contact */}
+              <div className="w-full pt-2 border-t border-light-border/50 dark:border-dark-border/50 grid grid-cols-3 gap-1 relative z-10">
+                <a
+                  href={profile?.github || 'https://github.com/VincentYuann'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-[2px] bg-light-surface/30 dark:bg-dark-surface/30 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border/50 dark:border-dark-border/50 hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-2xs sm:text-xs font-mono font-medium transition-colors shadow-2xs group/gh cursor-pointer min-h-[40px] sm:min-h-0"
+                  title="Inspect GitHub Repositories"
+                >
+                  <Github className="w-3 h-3 text-light-ink-muted dark:text-dark-ink-muted group-hover/gh:text-terracotta dark:group-hover/gh:text-ochre transition-transform duration-200 group-hover/gh:scale-110" />
+                  <span>GitHub</span>
+                </a>
+
+                <a
+                  href={profile?.linkedin || 'https://linkedin.com'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-[2px] bg-light-surface/30 dark:bg-dark-surface/30 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border/50 dark:border-dark-border/50 hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-2xs sm:text-xs font-mono font-medium transition-colors shadow-2xs group/li cursor-pointer min-h-[40px] sm:min-h-0"
+                  title="Open LinkedIn Profile"
+                >
+                  <Linkedin className="w-3 h-3 text-light-ink-muted dark:text-dark-ink-muted group-hover/li:text-terracotta dark:group-hover/li:text-ochre transition-transform duration-200 group-hover/li:scale-110" />
+                  <span>LinkedIn</span>
+                </a>
+
                 <a
                   href="#contact"
                   onClick={(e) => {
@@ -261,9 +333,10 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       }, 400);
                     }
                   }}
-                  className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface/30 dark:bg-dark-surface/30 backdrop-blur-xs border border-light-border/50 dark:border-dark-border/50 hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono transition-colors shadow-2xs group/btn cursor-pointer min-h-[44px] sm:min-h-0"
+                  className="inline-flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-[2px] bg-terracotta/10 dark:bg-ochre/15 hover:bg-terracotta/20 dark:hover:bg-ochre/25 border border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre text-2xs sm:text-xs font-mono font-semibold transition-colors shadow-2xs group/mail cursor-pointer min-h-[40px] sm:min-h-0"
+                  title="Direct Message / Get in Touch"
                 >
-                  <Mail className="w-3.5 h-3.5 text-terracotta dark:text-ochre transition-transform duration-200 group/btn:scale-110" />
+                  <Mail className="w-3 h-3 transition-transform duration-200 group-hover/mail:scale-110" />
                   <span>Contact</span>
                 </a>
               </div>
