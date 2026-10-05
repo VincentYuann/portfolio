@@ -7,6 +7,7 @@ import { handleImageError } from '../../../lib/constants';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
+import { PageContainer } from '../../common/PageContainer';
 import { ViewMode } from '../../../App';
 
 const ProjectDetailModal = lazy(() =>
@@ -100,7 +101,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
       />
-      <div className="w-full pt-20 sm:pt-28 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+      <PageContainer className="pt-20 sm:pt-28 pb-16 sm:pb-20 relative z-10">
         {/* Detail Modal (Loaded dynamically on-demand) */}
         {selectedProject && (
           <Suspense fallback={null}>
@@ -177,7 +178,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
             {filteredProjects.map((project, idx) => (
               <div
                 key={project.id}
@@ -288,7 +289,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             ))}
           </div>
         )}
-      </div>
+      </PageContainer>
     </div>
   );
 };

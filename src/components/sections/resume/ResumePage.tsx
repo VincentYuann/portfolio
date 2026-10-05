@@ -6,6 +6,7 @@ import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
+import { PageContainer } from '../../common/PageContainer';
 
 interface ResumePageProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -201,7 +202,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
         paintingOpacityDay={0.35}
         paintingOpacityNight={0.14}
       />
-      <div className="w-full pt-20 sm:pt-28 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+      <PageContainer className="pt-20 sm:pt-28 pb-16 sm:pb-20 relative z-10">
         {/* Back navigation button */}
         <div className="mb-4 sm:mb-8">
           <button
@@ -398,7 +399,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             </div>
           )}
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 };

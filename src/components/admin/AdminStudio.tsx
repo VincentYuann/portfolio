@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ViewMode } from '../../App';
+import { PageContainer } from '../common/PageContainer';
 
 type EditSection = 'intro' | 'experience' | 'projects' | 'philosophy' | 'hobbies' | 'resume';
 
@@ -185,7 +186,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
 
       {/* Sub Navbar: sticks just below main header with smooth horizontal scrolling */}
       <div className="sticky top-20 z-40 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xs">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden relative">
+        <PageContainer className="h-14 flex items-center justify-between gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden relative">
           <div
             role="tablist"
             aria-label="Editor sections"
@@ -249,11 +250,11 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
               <span className="sm:hidden">Exit</span>
             </button>
           </div>
-        </div>
+        </PageContainer>
       </div>
 
       {/* Section Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10">
+      <PageContainer className="py-8 sm:py-10 relative z-10">
         <div role="tabpanel" id={`panel-${activeSection}`} aria-labelledby={`tab-${activeSection}`}>
           {activeSection === 'intro' && <IntroEditor />}
           {activeSection === 'experience' && <ExperienceEditor />}
@@ -262,7 +263,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
           {activeSection === 'hobbies' && <HobbiesEditor />}
           {activeSection === 'resume' && <ResumeEditor />}
         </div>
-      </div>
+      </PageContainer>
 
       {/* Floating Bottom Unsaved Changes Dock (Mobile-Friendly & Clear) */}
       {hasAnyDirty && (

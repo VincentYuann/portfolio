@@ -21,6 +21,7 @@ import { TechTag } from '../../common/TechTag';
 import { StatusBadge } from '../../common/StatusBadge';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { HankoStamp } from '../../common/HankoStamp';
+import { PageContainer } from '../../common/PageContainer';
 import { toast } from 'sonner';
 
 interface VisualSystemPageProps {
@@ -101,7 +102,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
         />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <PageContainer className="relative z-10">
         {/* Back navigation & Reset Defaults bar */}
         <div className="mt-1 sm:mt-0 mb-3 sm:mb-8 flex flex-row items-center justify-between gap-2">
           <button
@@ -855,7 +856,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
             </div>
           </div>
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 };
