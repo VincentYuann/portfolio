@@ -140,7 +140,7 @@ export const ContactSection: React.FC = () => {
         <SectionDivider label="GET IN TOUCH · 連絡" shortLabel="CONTACT · 連絡" />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-5 sm:p-8 lg:p-10 xl:p-12 overflow-visible shadow-sm classical-card-frame transition-colors duration-300">
           {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
           <EnsoOrbital

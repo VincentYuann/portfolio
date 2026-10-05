@@ -87,7 +87,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
       </div>
 
       {/* Main Studio Frame Layout: Left Workspace + Right Hanko Card */}
-      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 flex flex-col gap-4 sm:gap-6 relative z-10">
+      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 flex flex-col gap-4 sm:gap-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-center">
           
           {/* 

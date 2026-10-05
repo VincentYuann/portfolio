@@ -60,17 +60,44 @@ const getMilestoneTheme = (_idx: number): MilestoneTheme => {
   return CANONICAL_MILESTONE_THEME;
 };
 
+// Formats bullet points with high-contrast bold lead-in anchors for rapid recruiter scanning
+function renderBulletContent(pt: string) {
+  const colonIdx = pt.indexOf(':');
+  if (colonIdx > 0 && colonIdx < 40) {
+    const lead = pt.slice(0, colonIdx + 1);
+    const body = pt.slice(colonIdx + 1);
+    return (
+      <>
+        <strong className="font-semibold text-light-ink dark:text-dark-ink">{lead}</strong>
+        <span>{body}</span>
+      </>
+    );
+  }
+
+  const match = pt.match(/^(Built|Developed|Automated|Engineered|Configured|Designed|Implemented|Streamlined|Maintained)\s+([^,;.]+?)(?:\s+(?:using|for|with|in|to|by)\s+|\s*,\s*|\s*--\s*)/i);
+  if (match) {
+    const lead = match[0];
+    const body = pt.slice(lead.length);
+    return (
+      <>
+        <strong className="font-semibold text-light-ink dark:text-dark-ink">{lead}</strong>
+        <span>{body}</span>
+      </>
+    );
+  }
+
+  return <span>{pt}</span>;
+}
+
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate }) => {
   const { experiences } = useSiteData();
   const list = Array.isArray(experiences) ? experiences : [];
 
-  // Track expanded cards for progressive disclosure
-  const [expandedCards, setExpandedCards] = useState<Record<string | number, boolean>>(() => {
-    // Top active card starts expanded for immediate impact
-    return list.length > 0 ? { [list[0].id || 0]: true } : {};
-  });
+  // Track expanded cards for progressive disclosure in stack mode (mobile)
+  // All cards remain collapsed by default for clean initial glanceability
+  const [expandedCards, setExpandedCards] = useState<Record<string | number, boolean>>({});
 
-  // Track active/selected milestone for scroll-spy and interaction
+  // Track active/selected milestone for scroll-spy and dual-rail detail view
   const [activeCardId, setActiveCardId] = useState<string | number | null>(() => {
     return list.length > 0 ? (list[0].id || 0) : null;
   });
@@ -116,22 +143,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
     setExpandedCards((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const toggleAll = () => {
-    const allOpen = list.every((exp, idx) => expandedCards[exp.id || idx]);
-    if (allOpen) {
-      setExpandedCards({});
-    } else {
-      const next: Record<string | number, boolean> = {};
-      list.forEach((exp, idx) => {
-        next[exp.id || idx] = true;
-      });
-      setExpandedCards(next);
-    }
-  };
-
   if (list.length === 0) return null;
-
-  const allOpen = list.every((exp, idx) => expandedCards[exp.id || idx]);
 
   return (
     <section id="experience" className="relative w-full pt-12 sm:pt-16 pb-28 lg:pb-36 scroll-mt-12 overflow-hidden bg-light-canvas dark:bg-dark-canvas">
@@ -160,7 +172,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
         <SectionDivider label="CAREER TRAJECTORY · 職歴" shortLabel="CAREER · 職歴" />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & Standardized Layout */}
         <SectionHeading
           numeral="02 //"
@@ -169,18 +181,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
           kanjiSubtitle="職歴"
           description="A chronology of software engineering roles, full-stack systems development, and real-world impact."
           actions={
-            <>
-              {/* Global Expand All / Collapse All */}
-              <button
-                type="button"
-                onClick={toggleAll}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-2xs transition-all duration-200 cursor-pointer"
-                title="Expand or collapse all career milestone details"
-              >
-                <Layers className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted" />
-                <span>{allOpen ? 'Collapse All' : 'Expand All'}</span>
-              </button>
-
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {/* Resume Link */}
               <a
                 href="#resume"
@@ -190,19 +191,238 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     onNavigate('resume');
                   }
                 }}
-                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-2xs transition-all duration-200"
+                className="group inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-2xs transition-all duration-200"
               >
                 <Briefcase className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted" />
                 <span className="hidden sm:inline">Curriculum Vitae</span>
                 <span className="sm:hidden">CV</span>
                 <ArrowRight className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted transition-transform duration-200 group-hover:translate-x-1" />
               </a>
-            </>
+            </div>
           }
         />
 
-        {/* Timeline Container */}
-        <div className="relative timeline-container">
+        {/* DUAL-RAIL ASYMMETRIC VIEW (Non-mobile: Desktop and wide tablets lg+) */}
+        <div className="hidden lg:grid grid-cols-12 gap-8 items-start">
+          {/* Left Rail (5 cols): Master Milestones Navigation */}
+            <div className="col-span-5 sticky top-24 space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-light-border dark:border-dark-border">
+                <span className="font-mono text-2xs uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-bold">
+                  Chronology &amp; Roles ({list.length})
+                </span>
+                <span className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted">
+                  Click to inspect
+                </span>
+              </div>
+
+              <div className="relative space-y-3">
+                {/* Vertical Joinery Spine - Positioned at 12px from left */}
+                <div className="absolute left-3 top-4 bottom-5 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B]/60 to-[#CDB38B]/20 dark:from-[#404450] dark:via-ochre/40 dark:to-[#404450]/20 pointer-events-none rounded-full z-0" />
+
+                {list.map((exp, idx) => {
+                  const cardKey = exp.id || idx;
+                  const isSelected = String(activeCardId) === String(cardKey);
+                  const theme = getMilestoneTheme(idx);
+                  const isCurrent = typeof exp.isActive === 'boolean' ? exp.isActive : idx === 0;
+
+                  return (
+                    <div key={cardKey} className="relative flex items-center group">
+                      {/* Timeline Node - Pinned precisely on the vertical spine line at left-3 (12px) */}
+                      <span
+                        className={`absolute left-3 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 pointer-events-none z-20 flex items-center justify-center ${
+                          isSelected
+                            ? 'w-4 h-4 rounded-full border-2 border-terracotta dark:border-ochre bg-light-canvas dark:bg-dark-canvas ring-2 ring-terracotta/20 dark:ring-ochre/20 scale-110'
+                            : 'w-3 h-3 rounded-full border-2 border-[#CDB38B] dark:border-[#6B7280] bg-light-canvas dark:bg-dark-canvas group-hover:border-terracotta dark:group-hover:border-ochre group-hover:scale-105'
+                        }`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                            isSelected
+                              ? 'bg-terracotta dark:bg-ochre'
+                              : 'bg-[#CDB38B] dark:bg-[#6B7280] group-hover:bg-terracotta dark:group-hover:bg-ochre'
+                          }`}
+                        />
+                      </span>
+
+                      {/* Milestone Card Button - Offset to the right of the spine */}
+                      <button
+                        type="button"
+                        onClick={() => setActiveCardId(cardKey)}
+                        className={`relative w-full ml-7 text-left p-3.5 rounded-[2px] transition-all duration-200 border cursor-pointer flex items-start gap-3.5 ${
+                          isSelected
+                            ? 'bg-light-surface-raised dark:bg-dark-surface border-terracotta/80 dark:border-ochre/80 shadow-xs ring-1 ring-terracotta/30 dark:ring-ochre/30'
+                            : 'bg-light-surface-card/60 dark:bg-dark-surface-card/60 border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-card dark:hover:bg-dark-surface-card'
+                        }`}
+                      >
+
+                      {/* Small Emblem */}
+                      <div className={`w-10 h-10 rounded-[2px] border ${isSelected ? theme.emblemBorder : 'border-light-border dark:border-dark-border'} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center overflow-hidden shrink-0`}>
+                        {exp.logoUrl ? (
+                          <img
+                            src={exp.logoUrl}
+                            alt=""
+                            className="w-full h-full object-cover"
+                            onError={handleImageError}
+                          />
+                        ) : (
+                          <span className={`font-serif font-black ${isSelected ? theme.textClass : 'text-light-ink dark:text-dark-ink'} text-base`}>
+                            {exp.kanji || '経'}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted truncate">
+                            {exp.startDate} – {exp.endDate}
+                          </span>
+                          {isCurrent && (
+                            <span className="font-mono text-3xs font-bold px-1 py-0.2 rounded-[2px] bg-terracotta/10 text-terracotta dark:bg-ochre/15 dark:text-ochre">
+                              ACTIVE
+                            </span>
+                          )}
+                        </div>
+                        <div className="font-serif text-base text-light-ink dark:text-dark-ink font-normal truncate group-hover:text-terracotta dark:group-hover:text-ochre transition-colors">
+                          {exp.title}
+                        </div>
+                        <div className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted truncate">
+                          {exp.company}
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right Rail (7 cols): Active Milestone Detailed Dossier */}
+            <div className="col-span-7">
+              {(() => {
+                const activeIndex = list.findIndex(
+                  (exp, idx) => String(exp.id || idx) === String(activeCardId)
+                );
+                const activeExp = activeIndex >= 0 ? list[activeIndex] : list[0];
+                const activeIdx = activeIndex >= 0 ? activeIndex : 0;
+                const theme = getMilestoneTheme(activeIdx);
+                const isCurrent = typeof activeExp.isActive === 'boolean' ? activeExp.isActive : activeIdx === 0;
+
+                const bullets = Array.isArray(activeExp.bullets) && activeExp.bullets.length > 0
+                  ? activeExp.bullets
+                  : activeExp.description
+                  ? activeExp.description.split(/(?<=[.!?])\s+/).map((p) => p.trim()).filter(Boolean)
+                  : [];
+
+                return (
+                  <Card className="p-6 lg:p-8 relative">
+                    <CornerBrackets size="md" />
+
+                    {/* Metadata Header Strip */}
+                    <CardMetaStrip
+                      index={activeIdx + 1}
+                      startDate={activeExp.startDate}
+                      endDate={activeExp.endDate}
+                      isActive={isCurrent}
+                      activeLabel="ACTIVE / 現職"
+                      completedLabel="歴任 / COMPLETED"
+                      statusBadgeProps={{
+                        activeBgClass: theme.badgeBg,
+                        activeBorderClass: theme.badgeBorder,
+                        activeTextClass: theme.badgeText,
+                        activeDotBgClass: theme.nodeActiveBg,
+                      }}
+                    />
+
+                    {/* Role Title & Organization */}
+                    <div className="mt-3 flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="font-serif text-3xl font-normal text-light-ink dark:text-dark-ink tracking-tight leading-snug">
+                          {activeExp.title}
+                        </h3>
+                        <div className="flex items-center gap-2 text-sm font-medium mt-1">
+                          <span className={`font-serif text-lg ${theme.textClass}`}>{activeExp.company}</span>
+                          {activeExp.location && (
+                            <>
+                              <span className="text-light-ink-subtle">·</span>
+                              <span className="inline-flex items-center gap-1 text-xs text-light-ink-muted dark:text-dark-ink-muted font-sans">
+                                <MapPin className="w-3 h-3 text-light-ink-subtle" />
+                                {activeExp.location}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Seal Emblem */}
+                      <div className={`w-14 h-14 rounded-[2px] border ${theme.emblemBorder} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center shrink-0`}>
+                        {activeExp.logoUrl ? (
+                          <img
+                            src={activeExp.logoUrl}
+                            alt=""
+                            className="w-full h-full object-cover"
+                            onError={handleImageError}
+                          />
+                        ) : (
+                          <span className={`font-serif font-black ${theme.textClass} text-2xl`}>
+                            {activeExp.kanji || '経'}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Narrative Overview */}
+                    {activeExp.overview && (
+                      <p className="font-sans text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-4 pb-4 border-b border-light-border/60 dark:border-dark-border/60">
+                        {activeExp.overview}
+                      </p>
+                    )}
+
+                    {/* Engineering Contributions & Quantified Impact */}
+                    {bullets.length > 0 && (
+                      <div className="mt-5 space-y-3">
+                        <div className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-bold flex items-center gap-1.5">
+                          <ListChecks className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                          Key Engineering Contributions ({bullets.length})
+                        </div>
+                        <ul className="space-y-2.5">
+                          {bullets.map((pt, pIdx) => (
+                            <li
+                              key={pIdx}
+                              className="p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border bg-light-surface-raised/40 dark:bg-dark-surface-raised/40 hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3"
+                            >
+                              <span className="font-mono text-2xs font-bold text-terracotta dark:text-ochre bg-terracotta/10 dark:bg-ochre/15 rounded-[2px] px-1.5 py-0.5 shrink-0 mt-0.5">
+                                #{String(pIdx + 1).padStart(2, '0')}
+                              </span>
+                              <div className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
+                                {renderBulletContent(pt)}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Tech Stack */}
+                    {activeExp.tags && activeExp.tags.length > 0 && (
+                      <div className="mt-6 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
+                        <div className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-bold mb-3">
+                          Core Technologies &amp; Stack
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {activeExp.tags.map((tag) => (
+                            <TechTag key={tag} tag={tag} size="md" />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </Card>
+                );
+              })()}
+            </div>
+          </div>
+
+        {/* LINEAR TIMELINE CONTAINER (Exclusively on mobile & tablet: lg:hidden) */}
+        <div className="relative timeline-container lg:hidden">
           {/* Vertical Joinery Axis Line: Crisp architectural spine rail */}
           <div className="absolute left-3.5 sm:left-5 top-8 bottom-10 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B] to-[#CDB38B]/40 dark:from-[#404450] dark:via-ochre/60 dark:to-[#404450]/40 -translate-x-1/2 pointer-events-none z-0 rounded-full shadow-2xs" />
 
@@ -270,7 +490,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         : ''
                     }`}
                   >
-                    {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover; disappears when not hovered or hovered elsewhere) */}
+                    {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
                     <EnsoOrbital
                       placement="top-left"
                       size={112}
@@ -281,7 +501,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     <CornerBrackets size="sm" />
 
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
-                      {/* Left: Clean Square Emblem (Custom Logo Image or Default Japanese Hanko Seal) */}
+                      {/* Left: Clean Square Emblem */}
                       <div className={`relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-[2px] border ${isCardActive ? theme.emblemBorder : 'border-light-border dark:border-dark-border'} bg-light-surface dark:bg-dark-surface-raised ${theme.emblemShadow} flex items-center justify-center overflow-hidden shrink-0 mx-auto sm:mx-0 transition-shadow duration-300`}>
                         {exp.logoUrl ? (
                           <img
@@ -344,14 +564,14 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           )}
                         </div>
 
-                        {/* High-Level Narrative Overview (Always visible) */}
+                        {/* High-Level Narrative Overview */}
                         {overviewText && (
                           <p className="font-sans text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-3.5 max-w-2xl">
                             {overviewText}
                           </p>
                         )}
 
-                        {/* Inspect / Collapse Button with 2px corners */}
+                        {/* Inspect / Collapse Button */}
                         {bullets.length > 0 && (
                           <div className="pt-3.5">
                             <button
@@ -392,9 +612,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                                       <span className="font-mono text-2xs sm:text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
                                         #{String(pIdx + 1).padStart(2, '0')}
                                       </span>
-                                      <span className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
-                                        {pt}
-                                      </span>
+                                      <div className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
+                                        {renderBulletContent(pt)}
+                                      </div>
                                     </li>
                                   ))}
                                 </ul>

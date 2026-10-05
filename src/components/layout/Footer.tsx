@@ -10,7 +10,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
     <footer className="w-full bg-light-surface-card dark:bg-dark-surface-card border-t border-light-border dark:border-dark-border mt-16 relative">
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-light-border/70 dark:border-dark-border/70">
           {/* Brand & Identity */}
           <div className="md:col-span-5 flex flex-col items-start text-left">

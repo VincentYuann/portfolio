@@ -160,13 +160,13 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navItems = [
-    { id: 'home', label: 'Home', fullLabel: 'Home', href: '#home', view: 'home' as const },
-    { id: 'experience', label: 'Experience', fullLabel: 'Experience', href: '#experience', view: 'home' as const },
-    { id: 'featured-works', label: 'Projects', fullLabel: 'Projects', href: '#featured-works', view: 'home' as const },
-    { id: 'philosophy', label: 'Philosophy', fullLabel: 'Philosophy', href: '#philosophy', view: 'home' as const },
-    { id: 'hobbies', label: 'Hobbies', fullLabel: 'Hobbies & Interests', href: '#hobbies', view: 'home' as const },
-    { id: 'contact', label: 'Contact', fullLabel: 'Contact', href: '#contact', view: 'home' as const },
-    { id: 'resume', label: 'Resume', fullLabel: 'Resume', href: '#resume', view: 'resume' as const },
+    { id: 'home', num: '01', label: 'Home', fullLabel: 'Home', href: '#home', view: 'home' as const },
+    { id: 'experience', num: '02', label: 'Experience', fullLabel: 'Experience', href: '#experience', view: 'home' as const },
+    { id: 'featured-works', num: '03', label: 'Projects', fullLabel: 'Projects', href: '#featured-works', view: 'home' as const },
+    { id: 'philosophy', num: '04', label: 'Philosophy', fullLabel: 'Philosophy', href: '#philosophy', view: 'home' as const },
+    { id: 'hobbies', num: '05', label: 'Hobbies', fullLabel: 'Hobbies & Interests', href: '#hobbies', view: 'home' as const },
+    { id: 'contact', num: '06', label: 'Contact', fullLabel: 'Contact', href: '#contact', view: 'home' as const },
+    { id: 'resume', num: '07', label: 'Resume', fullLabel: 'Resume', href: '#resume', view: 'resume' as const },
   ];
 
   const handleNavClick = (
@@ -193,8 +193,8 @@ export const Header: React.FC<HeaderProps> = ({
           : 'bg-light-canvas/95 dark:bg-dark-canvas/95 backdrop-blur-md border-b border-light-border/70 dark:border-dark-border/80 shadow-xs'
       }`}
     >
-      <div className="h-20 w-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3 sm:gap-4">
-        {/* Left: Brand */}
+      <div className="h-20 w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 sm:gap-4">
+        {/* Left: Brand / Hanko Stamp (Enlarged) */}
         <div className="flex items-center gap-3 shrink-0">
           <a
             href="#home"
@@ -208,13 +208,13 @@ export const Header: React.FC<HeaderProps> = ({
             aria-label="Vincent Yuan · Home"
           >
             <div className="relative flex items-center justify-center -rotate-1 transition-transform duration-300 group-hover:rotate-0 group-hover:scale-105">
-              <HankoStamp className="h-9 w-9 transition-all duration-300" />
+              <HankoStamp className="h-11 w-11 transition-all duration-300" />
             </div>
           </a>
         </div>
 
-        {/* Center: Desktop Navigation: Shown on wide screens (>= lg / 1024px) with deliberate breathing room */}
-        <nav className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0">
+        {/* Center: Desktop Navigation with Generous, Uniform Spacing & Right Monospace Numerals */}
+        <nav className="hidden lg:flex items-center justify-center gap-5 xl:gap-8 flex-1 max-w-3xl mx-auto">
           {navItems.map((item) => {
             const isActive =
               currentView === 'edit'
@@ -232,13 +232,16 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.id}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`group relative font-sans text-xs uppercase tracking-wider transition-colors flex items-center py-1 whitespace-nowrap ${
+                className={`group relative font-sans text-xs tracking-widest uppercase transition-colors flex items-center gap-2 py-1.5 whitespace-nowrap ${
                   isActive
                     ? 'text-light-ink dark:text-dark-ink font-semibold'
                     : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
                 <span>{item.label}</span>
+                <span className={`font-mono text-3xs tracking-normal transition-colors ${isActive ? 'text-terracotta dark:text-ochre font-bold' : 'text-light-ink-muted/60 dark:text-dark-ink-muted/60 group-hover:text-terracotta dark:group-hover:text-ochre'}`}>
+                  {item.num}
+                </span>
                 <span
                   className={`absolute bottom-0 left-0 h-[1.5px] bg-terracotta dark:bg-ochre rounded-full transition-all duration-300 ${
                     isActive ? 'w-full' : 'w-0 group-hover:w-full'
@@ -250,14 +253,14 @@ export const Header: React.FC<HeaderProps> = ({
         </nav>
 
         {/* Right side cluster: always neatly aligned with zero overlap */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
           {/* Theme Switcher: Flat 2-segment track without nested card elevations */}
-          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-xs select-none shrink-0 min-h-[44px]">
+          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-xs select-none shrink-0 min-h-[40px]">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
                 theme === 'day'
-                  ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink'
+                  ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink shadow-2xs'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
               }`}
               title="Day Mode"
@@ -268,9 +271,9 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
                 theme === 'night'
-                  ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink'
+                  ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink shadow-2xs'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
               }`}
               title="Night Mode"
@@ -281,12 +284,12 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Visual System / Art Button: Distinct sibling action, eliminating multi-card confusion */}
+          {/* Visual System / Art Button */}
           <button
             onClick={() => onNavigate?.('visual-system')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-[3px] font-sans font-semibold text-xs tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[44px] group/art ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[3px] font-sans font-semibold text-xs tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[40px] group/art ${
               currentView === 'visual-system'
-                ? 'bg-terracotta/10 dark:bg-ochre/15 text-terracotta dark:text-ochre border border-terracotta/40 dark:border-ochre/40'
+                ? 'bg-terracotta/10 dark:bg-ochre/15 text-terracotta dark:text-ochre border border-terracotta/40 dark:border-ochre/40 shadow-2xs'
                 : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 hover:bg-light-surface-card/40 dark:hover:bg-dark-surface/40'
             }`}
             title="Design System & Visual Settings"
@@ -296,12 +299,12 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="hidden sm:inline">ART</span>
           </button>
 
-          {/* Desktop Action Cluster: Admin controls, Visitor badge, or Sign In button (>= lg) */}
+          {/* Desktop Action Cluster: Admin controls with clean icon + text label */}
           {isAdmin ? (
-            <div className="hidden lg:flex items-center gap-1.5 shrink-0">
+            <div className="hidden lg:flex items-center gap-2 shrink-0">
               <button
                 onClick={() => onNavigate?.(currentView === 'edit' ? 'home' : 'edit')}
-                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] text-xs font-sans border transition-colors cursor-pointer min-h-[44px] ${
+                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] border font-sans text-xs font-semibold tracking-wider transition-colors cursor-pointer min-h-[40px] ${
                   currentView === 'edit'
                     ? 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light border-terracotta dark:border-ochre shadow-xs'
                     : 'text-terracotta dark:text-ochre border-terracotta/40 dark:border-ochre/40 bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta/20 dark:hover:bg-ochre/20 hover:border-terracotta dark:hover:border-ochre'
@@ -312,49 +315,46 @@ export const Header: React.FC<HeaderProps> = ({
                 {currentView === 'edit' ? (
                   <>
                     <Eye className="w-3.5 h-3.5" />
-                    <span className="text-xs font-mono font-medium">View Site</span>
+                    <span>View Site</span>
                   </>
                 ) : (
                   <>
                     <SlidersHorizontal className="w-3.5 h-3.5" />
-                    <span className="text-xs font-mono font-medium">Edit Site</span>
+                    <span>Edit Site</span>
                   </>
                 )}
               </button>
               <button
                 onClick={onLogout}
-                className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[44px]"
-                title="Sign out of Admin mode"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[40px]"
+                title="Sign Out"
                 aria-label="Sign Out"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span className="text-xs font-mono">Sign Out</span>
+                <span>Sign Out</span>
               </button>
             </div>
           ) : isVisitor ? (
-            <div className="hidden lg:flex items-center gap-1.5 shrink-0">
-              <span className="inline-flex items-center px-2 py-1 rounded-[2px] text-2xs font-mono font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20">
-                Visitor
-              </span>
+            <div className="hidden lg:flex items-center gap-2 shrink-0">
               <button
                 onClick={onLogout}
-                className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[44px]"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[40px]"
                 title="Exit Visitor session"
                 aria-label="Exit Visitor"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span className="text-xs font-mono">Exit</span>
+                <span>Sign Out</span>
               </button>
             </div>
           ) : (
             <button
               onClick={() => onNavigate?.('login')}
-              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] text-xs font-sans text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[44px]"
-              title="Admin Login"
-              aria-label="Admin Login"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[40px]"
+              title="Admin Sign In"
+              aria-label="Admin Sign In"
             >
               <LogIn className="w-3.5 h-3.5" />
-              <span className="text-xs font-mono">Sign In</span>
+              <span>Admin</span>
             </button>
           )}
 
@@ -401,16 +401,19 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.id}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item)}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-sans uppercase tracking-wider transition-colors ${
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-[2px] text-xs font-sans uppercase tracking-wider transition-colors ${
                     isActive
                       ? 'bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre font-semibold'
                       : 'text-light-ink-muted dark:text-dark-ink-muted hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised hover:text-light-ink dark:hover:text-dark-ink'
                   }`}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     {isActive && <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0" />}
-                    <span className="font-medium">{item.fullLabel || item.label}</span>
+                    <span className="font-medium tracking-wide">{item.fullLabel || item.label}</span>
                   </div>
+                  <span className={`font-mono text-2xs tracking-widest ${isActive ? 'text-terracotta dark:text-ochre font-bold' : 'text-light-ink-muted/50 dark:text-dark-ink-muted/50'}`}>
+                    {item.num}
+                  </span>
                 </a>
               );
             })}

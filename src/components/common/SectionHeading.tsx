@@ -36,7 +36,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         aria-hidden="true"
       />
 
-      <div className="max-w-4xl">
+      <div className="max-w-4xl xl:max-w-5xl">
         {/* Section Anchor & Rubric Seal */}
         <div className="flex items-center gap-3 mb-3.5">
           <span
@@ -53,13 +53,13 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-[1.08]">
           {title}{' '}
           {kanjiSubtitle && (
-            <span aria-hidden="true" className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl sm:text-3xl lg:text-4xl ml-3 whitespace-nowrap inline-block select-none">
+            <span aria-hidden="true" className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl sm:text-3xl lg:text-4xl ml-3 whitespace-nowrap inline-block select-none opacity-85">
               {kanjiSubtitle}
             </span>
           )}
         </h2>
         {description && (
-          <p className="font-sans text-base sm:text-lg text-light-ink-muted dark:text-dark-ink-muted mt-4 font-normal leading-relaxed max-w-2xl">
+          <p className="font-sans text-base sm:text-lg text-light-ink-muted dark:text-dark-ink-muted mt-3.5 sm:mt-4 font-normal leading-relaxed max-w-3xl">
             {description}
           </p>
         )}

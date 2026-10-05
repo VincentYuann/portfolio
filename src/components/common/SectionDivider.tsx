@@ -196,7 +196,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
   return (
     <div
       aria-hidden="true"
-      className={`relative w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center select-none ${className || 'my-8 sm:my-14'}`}
+      className={`relative w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center select-none ${className || 'my-8 sm:my-14'}`}
     >
       {/* Top Seigaiha Wave Arch Motif */}
       <div className="mb-1.5 sm:mb-2 flex items-center justify-center pointer-events-none relative z-10">
@@ -204,7 +204,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
       </div>
 
       {/* Horizontal Divider Line with Dashed Hairlines & Center Description */}
-      <div className="relative w-full flex items-center justify-center gap-2 sm:gap-3.5 max-w-7xl">
+      <div className="relative w-full flex items-center justify-center gap-2 sm:gap-3.5 max-w-[1536px]">
 
         {/* Left Dashed Hairline Line */}
         <div className="flex-1 min-w-[28px] sm:min-w-[48px] flex items-center overflow-hidden relative z-10">

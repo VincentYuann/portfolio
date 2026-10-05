@@ -69,7 +69,7 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
       </div>
 
       {/* Main Hobbies Content Container */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <SectionHeading
           numeral="05 //"

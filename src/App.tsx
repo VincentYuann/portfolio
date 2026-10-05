@@ -6,6 +6,8 @@ import { Hero } from './components/sections/hero/Hero';
 import { SectionDividerDefs } from './components/common/SectionDivider';
 import { VariantProvider } from './context/VariantContext';
 import { WashiProvider } from './context/WashiContext';
+import { LayoutProvider } from './context/LayoutContext';
+import { LayoutSwitcherDock } from './components/common/LayoutSwitcherDock';
 
 const ThemedToaster = lazy(() => import('./components/layout/ThemedToaster').then((m) => ({ default: m.ThemedToaster })));
 
@@ -388,77 +390,80 @@ export const App: React.FC = () => {
     <ThemeProvider>
       <WashiProvider>
         <VariantProvider>
-          <SiteDataProvider>
-          <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-ochre/25 dark:selection:text-ochre overflow-x-clip">
-            <SectionDividerDefs />
-            <Header
-              currentView={currentView}
-              onNavigate={handleNavigate}
-              onOpenContact={() => handleNavigate('home', 'contact')}
-              isAdmin={isAdmin}
-              isVisitor={isVisitor}
-              onLogout={handleLogout}
-            />
+          <LayoutProvider>
+            <SiteDataProvider>
+            <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-ochre/25 dark:selection:text-ochre overflow-x-clip">
+              <SectionDividerDefs />
+              <Header
+                currentView={currentView}
+                onNavigate={handleNavigate}
+                onOpenContact={() => handleNavigate('home', 'contact')}
+                isAdmin={isAdmin}
+                isVisitor={isVisitor}
+                onLogout={handleLogout}
+              />
 
-            <main className="flex-1 w-full">
-              <Suspense fallback={<RouteLoadingFallback currentView={currentView} />}>
-                {currentView === 'login' && (
-                  <LoginPage onNavigate={handleNavigate} isVisitor={isVisitor} onLogout={handleLogout} />
-                )}
+              <main className="flex-1 w-full">
+                <Suspense fallback={<RouteLoadingFallback currentView={currentView} />}>
+                  {currentView === 'login' && (
+                    <LoginPage onNavigate={handleNavigate} isVisitor={isVisitor} onLogout={handleLogout} />
+                  )}
 
-                <div key={currentView} className="animate-view-enter w-full">
-                  {currentView === 'edit' && (
-                    isAdmin ? (
-                      <EditPage onNavigate={handleNavigate} />
-                    ) : !authReady ? (
-                      <div className="min-h-screen flex items-center justify-center pt-20">
-                        <div className="text-center font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-                          Verifying authorization…
+                  <div key={currentView} className="animate-view-enter w-full">
+                    {currentView === 'edit' && (
+                      isAdmin ? (
+                        <EditPage onNavigate={handleNavigate} />
+                      ) : !authReady ? (
+                        <div className="min-h-screen flex items-center justify-center pt-20">
+                          <div className="text-center font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+                            Verifying authorization…
+                          </div>
                         </div>
-                      </div>
-                    ) : null
-                  )}
+                      ) : null
+                    )}
 
-                  {currentView === 'resume' && (
-                    <ResumePage onNavigate={handleNavigate} />
-                  )}
+                    {currentView === 'resume' && (
+                      <ResumePage onNavigate={handleNavigate} />
+                    )}
 
-                  {currentView === 'projects' && (
-                    <ProjectsPage onNavigate={handleNavigate} />
-                  )}
+                    {currentView === 'projects' && (
+                      <ProjectsPage onNavigate={handleNavigate} />
+                    )}
 
-                  {currentView === 'hobbies' && (
-                    <HobbiesPage onNavigate={handleNavigate} />
-                  )}
+                    {currentView === 'hobbies' && (
+                      <HobbiesPage onNavigate={handleNavigate} />
+                    )}
 
-                  {currentView === 'visual-system' && (
-                    <VisualSystemPage onNavigate={handleNavigate} />
-                  )}
+                    {currentView === 'visual-system' && (
+                      <VisualSystemPage onNavigate={handleNavigate} />
+                    )}
 
-                  {currentView === 'home' && (
-                    <HomeView onNavigate={handleNavigate} />
-                  )}
-                </div>
-              </Suspense>
-            </main>
+                    {currentView === 'home' && (
+                      <HomeView onNavigate={handleNavigate} />
+                    )}
+                  </div>
+                </Suspense>
+              </main>
 
-            {currentView === 'home' && (
-              <Suspense fallback={null}>
-                <Footer onNavigate={handleNavigate} />
-              </Suspense>
-            )}
-          </div>
-          <Suspense fallback={null}>
-            <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
-          </Suspense>
-          <Suspense fallback={null}>
-            <ThemedToaster />
-          </Suspense>
-        </SiteDataProvider>
-      </VariantProvider>
-    </WashiProvider>
-  </ThemeProvider>
-);
+              {currentView === 'home' && (
+                <Suspense fallback={null}>
+                  <Footer onNavigate={handleNavigate} />
+                </Suspense>
+              )}
+            </div>
+            {currentView === 'home' && <LayoutSwitcherDock />}
+            <Suspense fallback={null}>
+              <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
+            </Suspense>
+            <Suspense fallback={null}>
+              <ThemedToaster />
+            </Suspense>
+          </SiteDataProvider>
+          </LayoutProvider>
+        </VariantProvider>
+      </WashiProvider>
+    </ThemeProvider>
+  );
 };
 
 export default App;
