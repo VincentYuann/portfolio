@@ -245,8 +245,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           : 'bg-light-surface-card/60 dark:bg-dark-surface-card/60 border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-card dark:hover:bg-dark-surface-card'
                       }`}
                     >
-                      {/* Small Emblem */}
-                      <div className={`w-10 h-10 rounded-[2px] border ${isSelected ? theme.emblemBorder : 'border-light-border dark:border-dark-border'} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center overflow-hidden shrink-0 mt-0.5`}>
+                      {/* Emblem */}
+                      <div className={`w-12 h-12 rounded-[2px] border ${isSelected ? theme.emblemBorder : 'border-light-border dark:border-dark-border'} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center overflow-hidden shrink-0 mt-0.5 shadow-2xs`}>
                         {exp.logoUrl ? (
                           <img
                             src={exp.logoUrl}
@@ -255,7 +255,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             onError={handleImageError}
                           />
                         ) : (
-                          <span className={`font-serif font-black ${isSelected ? theme.textClass : 'text-light-ink dark:text-dark-ink'} text-base`}>
+                          <span className={`font-serif font-black ${isSelected ? theme.textClass : 'text-light-ink dark:text-dark-ink'} text-lg`}>
                             {exp.kanji || '経'}
                           </span>
                         )}
@@ -275,8 +275,14 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                         <div className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-medium leading-snug truncate group-hover:text-terracotta dark:group-hover:text-ochre transition-colors mt-0.5">
                           {exp.title}
                         </div>
-                        <div className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted truncate mt-0.5">
-                          {exp.company}
+                        <div className="flex items-center gap-1.5 text-xs sm:text-sm font-sans text-light-ink-muted dark:text-dark-ink-muted truncate mt-0.5">
+                          <span className="truncate font-medium">{exp.company}</span>
+                          {exp.location && (
+                            <>
+                              <span className="text-light-ink-subtle">·</span>
+                              <span className="truncate font-mono text-2xs text-light-ink-subtle">{exp.location}</span>
+                            </>
+                          )}
                         </div>
                       </div>
                     </button>
@@ -329,22 +335,19 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                       <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-light-ink dark:text-dark-ink tracking-tight leading-snug">
                         {activeExp.title}
                       </h3>
-                      <div className="flex items-center gap-2 text-sm font-medium mt-1">
-                        <span className={`font-serif text-lg ${theme.textClass}`}>{activeExp.company}</span>
+                      <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mt-1.5">
+                        <span className={`font-serif text-lg sm:text-xl font-medium ${theme.textClass}`}>{activeExp.company}</span>
                         {activeExp.location && (
-                          <>
-                            <span className="text-light-ink-subtle">·</span>
-                            <span className="inline-flex items-center gap-1 text-xs text-light-ink-muted dark:text-dark-ink-muted font-sans">
-                              <MapPin className="w-3 h-3 text-light-ink-subtle" />
-                              {activeExp.location}
-                            </span>
-                          </>
+                          <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono text-light-ink-muted dark:text-dark-ink-muted bg-light-surface/50 dark:bg-dark-surface/50 px-2.5 py-0.5 rounded-[2px] border border-light-border/70 dark:border-dark-border/70">
+                            <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
+                            <span>{activeExp.location}</span>
+                          </span>
                         )}
                       </div>
                     </div>
 
-                    {/* Seal Emblem */}
-                    <div className={`w-14 h-14 rounded-[2px] border ${theme.emblemBorder} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center shrink-0`}>
+                    {/* Seal Emblem: Scaled to w-16 h-16 sm:w-20 sm:h-20 */}
+                    <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-[2px] border ${theme.emblemBorder} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center shrink-0 shadow-xs`}>
                       {activeExp.logoUrl ? (
                         <img
                           src={activeExp.logoUrl}
@@ -353,7 +356,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                           onError={handleImageError}
                         />
                       ) : (
-                        <span className={`font-serif font-black ${theme.textClass} text-2xl`}>
+                        <span className={`font-serif font-black ${theme.textClass} text-2xl sm:text-3xl`}>
                           {activeExp.kanji || '経'}
                         </span>
                       )}
@@ -367,21 +370,23 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     </p>
                   )}
 
-                  {/* Engineering Contributions & Quantified Impact - Clean Editorial List */}
+                  {/* Engineering Contributions & Quantified Impact - Synced to Numbered Micro-Cards */}
                   {bullets.length > 0 && (
                     <div className="mt-5 space-y-3">
                       <div className="flex items-center gap-2 text-sm sm:text-base font-serif font-medium text-light-ink dark:text-dark-ink">
                         <ListChecks className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
                         <span>Key Engineering Contributions</span>
                       </div>
-                      <ul className="space-y-3 pt-1">
+                      <ul className="space-y-2.5 pt-1">
                         {bullets.map((pt, pIdx) => (
                           <li
                             key={pIdx}
-                            className="flex items-start gap-3 text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed"
+                            className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border/70 bg-light-surface-raised dark:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3 group shadow-2xs"
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre mt-2 shrink-0" />
-                            <div className="flex-1 font-sans">
+                            <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
+                              #{String(pIdx + 1).padStart(2, '0')}
+                            </span>
+                            <div className="flex-1 font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
                               {renderBulletContent(pt)}
                             </div>
                           </li>
@@ -591,14 +596,16 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                                   <ListChecks className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
                                   <span>Key Engineering Contributions</span>
                                 </div>
-                                <ul className="space-y-3 pt-1">
+                                <ul className="space-y-2.5 pt-1">
                                   {bullets.map((pt, pIdx) => (
                                     <li
                                       key={pIdx}
-                                      className="flex items-start gap-3 text-sm text-light-ink dark:text-dark-ink leading-relaxed"
+                                      className="p-3 rounded-[2px] border border-light-border/70 dark:border-dark-border/70 bg-light-surface-raised dark:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-2.5 group shadow-2xs"
                                     >
-                                      <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre mt-2 shrink-0" />
-                                      <div className="flex-1 font-sans">
+                                      <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
+                                        #{String(pIdx + 1).padStart(2, '0')}
+                                      </span>
+                                      <div className="flex-1 font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
                                         {renderBulletContent(pt)}
                                       </div>
                                     </li>

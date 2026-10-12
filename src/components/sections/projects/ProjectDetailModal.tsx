@@ -123,12 +123,12 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               </span>
             </div>
 
-            <DialogHeader className="text-left space-y-1">
+            <DialogHeader className="text-left">
               <DialogTitle className="font-serif text-2xl sm:text-3xl lg:text-4xl text-light-ink dark:text-dark-ink font-medium tracking-tight">
                 {project.title}
               </DialogTitle>
-              <DialogDescription className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted font-normal uppercase tracking-wider">
-                {project.subtitle}
+              <DialogDescription className="sr-only">
+                {project.overview || project.description || project.title}
               </DialogDescription>
             </DialogHeader>
           </div>

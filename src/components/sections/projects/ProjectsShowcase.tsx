@@ -193,11 +193,21 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         {project.description}
                       </p>
 
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        {project.tags.map((tag) => (
-                          <TechTag key={tag} tag={tag} size="md" />
-                        ))}
-                      </div>
+                      {project.tags && project.tags.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-2 pt-1">
+                          {project.tags.slice(0, 4).map((tag) => (
+                            <TechTag key={tag} tag={tag} size="md" />
+                          ))}
+                          {project.tags.length > 4 && (
+                            <span
+                              className="inline-flex items-center justify-center px-2 py-1 rounded-[2px] font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border dark:border-dark-border select-none"
+                              title={project.tags.slice(4).join(', ')}
+                            >
+                              +{project.tags.length - 4}
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                       <div className="pt-3.5 border-t border-light-border/60 dark:border-dark-border/80 flex flex-wrap items-center justify-between gap-3">
                         <button
