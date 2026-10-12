@@ -73,11 +73,6 @@ export const TechTagSelector: React.FC<TechTagSelectorProps> = ({
         <Label className="text-xs font-medium text-light-ink dark:text-dark-ink flex items-center gap-1.5">
           <Tag className="w-3.5 h-3.5 text-ochre" />
           <span>{label}</span>
-          {cleanTags.length > 1 && (
-            <span className="font-mono text-2xs text-light-ink-subtle font-normal">
-              (drag or click arrows to reorder)
-            </span>
-          )}
         </Label>
         <Button
           type="button"

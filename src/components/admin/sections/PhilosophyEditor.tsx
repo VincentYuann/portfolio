@@ -69,10 +69,10 @@ const createEmptyOriginStory = (): OriginStoryConfig => ({
 export const PhilosophyEditor: React.FC = () => {
   const { pillars: contextPillars, profile: contextProfile, refresh } = useSiteData();
 
-  // Collapsible cards state: both start closed by default
+  // Collapsible cards state: both open by default
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({
-    origin: true,
-    pillars: true,
+    origin: false,
+    pillars: false,
   });
 
   const toggle = (section: string) => {
@@ -246,7 +246,7 @@ export const PhilosophyEditor: React.FC = () => {
       />
 
       {/* Collapsible Card 1: Origin Trajectory Narrative */}
-      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs classical-card-frame overflow-hidden transition-colors">
+      <div className="rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs classical-card-frame overflow-hidden transition-colors">
         <CornerBrackets size="sm" />
         <button
           type="button"
@@ -255,7 +255,7 @@ export const PhilosophyEditor: React.FC = () => {
           aria-expanded={!collapsed.origin}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
+            <div className="w-8 h-8 rounded-[3px] bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
               <Compass className="w-4 h-4" />
             </div>
             <div>
@@ -263,7 +263,7 @@ export const PhilosophyEditor: React.FC = () => {
                 Origin Trajectory &amp; Journey (原点と軌跡)
               </h3>
               <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
-                Configurable trajectory milestones and narrative engineering journey.
+                Engineering trajectory milestones and personal journey narrative.
               </p>
             </div>
           </div>
@@ -277,14 +277,7 @@ export const PhilosophyEditor: React.FC = () => {
         </button>
 
         {!collapsed.origin && (
-          <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-6 border-t border-light-border/60 dark:border-dark-border/60">
-            {/* Header row */}
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted">
-                Narrative Header &amp; Lead
-              </span>
-            </div>
-
+          <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-5 border-t border-light-border/60 dark:border-dark-border/60">
             {/* Headline */}
             <div>
               <Label className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
@@ -308,12 +301,12 @@ export const PhilosophyEditor: React.FC = () => {
                 value={originData.leadParagraph || ''}
                 onChange={(e) => updateOrigin({ leadParagraph: e.target.value })}
                 placeholder="Explain the spark, curiosity, and human principles behind your engineering path…"
-                className="text-xs leading-relaxed font-light"
+                className="text-sm leading-relaxed"
               />
             </div>
 
             {/* 4 Milestones */}
-            <div className="space-y-4 pt-2 border-t border-light-border/60 dark:border-dark-border/60">
+            <div className="space-y-3 pt-3 border-t border-light-border/60 dark:border-dark-border/60">
               <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted block">
                 Four Trajectory Milestones (Phases 01-04)
               </Label>
@@ -322,7 +315,7 @@ export const PhilosophyEditor: React.FC = () => {
                 {milestoneList.map((milestone, idx) => (
                   <div
                     key={idx}
-                    className="p-3.5 space-y-3 relative border-t-2 border-ochre/30 dark:border-ochre/20 pt-3"
+                    className="p-3.5 space-y-3 rounded-[3px] border border-light-border/80 dark:border-dark-border/80 bg-light-surface/40 dark:bg-dark-surface/40 hover:border-terracotta/40 dark:hover:border-ochre/40 transition-colors"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <Input
@@ -344,7 +337,7 @@ export const PhilosophyEditor: React.FC = () => {
                         value={milestone.title}
                         onChange={(e) => updateMilestone(idx, { title: e.target.value })}
                         placeholder="Milestone Title"
-                        className="font-serif font-medium text-xs h-8"
+                        className="font-serif font-medium text-sm h-8"
                       />
                       <Input
                         value={milestone.subtitle || ''}
@@ -357,7 +350,7 @@ export const PhilosophyEditor: React.FC = () => {
                         value={milestone.description}
                         onChange={(e) => updateMilestone(idx, { description: e.target.value })}
                         placeholder="Milestone description…"
-                        className="text-xs leading-relaxed font-light min-h-[75px]"
+                        className="text-sm leading-relaxed min-h-[75px]"
                       />
                     </div>
                   </div>
@@ -369,7 +362,7 @@ export const PhilosophyEditor: React.FC = () => {
       </div>
 
       {/* Collapsible Card 2: Core Philosophy Pillars */}
-      <div className="rounded-xl border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs classical-card-frame overflow-hidden transition-colors">
+      <div className="rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs classical-card-frame overflow-hidden transition-colors">
         <CornerBrackets size="sm" />
         <button
           type="button"
@@ -378,7 +371,7 @@ export const PhilosophyEditor: React.FC = () => {
           aria-expanded={!collapsed.pillars}
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-[#D4A853] shrink-0">
+            <div className="w-8 h-8 rounded-[3px] bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
               <ScrollText className="w-4 h-4" />
             </div>
             <div>
@@ -386,16 +379,16 @@ export const PhilosophyEditor: React.FC = () => {
                 Architectural Philosophy Pillars (三つの信条)
               </h3>
               <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block max-w-prose">
-                Up to 3 core architectural tenets displayed as cards in the Japanese Bento on the homepage.
+                Up to 3 core architectural tenets displayed on the homepage showcase.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs uppercase tracking-wider text-light-ink dark:text-dark-ink font-semibold px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+            <span className="font-mono text-xs uppercase tracking-wider text-light-ink dark:text-dark-ink font-semibold px-2 py-0.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
               {pillars.length}/3 PILLARS
             </span>
             {!collapsed.pillars ? (
-              <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
+              <ChevronDown className="w-4 h-4 text-terracotta dark:text-ochre" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
             )}
@@ -409,7 +402,7 @@ export const PhilosophyEditor: React.FC = () => {
               {pillars.map((pillar) => (
                 <div
                   key={pillar.position}
-                  className="relative rounded-lg border border-light-border/80 dark:border-dark-border/80 bg-light-surface/40 dark:bg-dark-surface/40 p-4 sm:p-5 shadow-2xs group hover:border-terracotta/40 dark:hover:border-[#D4A853]/40 transition-colors"
+                  className="relative rounded-[3px] border border-light-border/80 dark:border-dark-border/80 bg-light-surface/40 dark:bg-dark-surface/40 p-4 sm:p-5 shadow-2xs group hover:border-terracotta/40 dark:hover:border-ochre/40 transition-colors"
                 >
                   <div className="space-y-4">
                     {/* Header Pill & Delete */}
@@ -426,7 +419,7 @@ export const PhilosophyEditor: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => deletePillar(pillar.position)}
-                          className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded-md hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer"
+                          className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded-[2px] hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer"
                           title="Delete pillar"
                           aria-label={`Delete Pillar 0${pillar.position}`}
                         >
@@ -492,11 +485,11 @@ export const PhilosophyEditor: React.FC = () => {
                       </Label>
                       <Textarea
                         id={`pillar-${pillar.position}-desc`}
-                        rows={6}
+                        rows={5}
                         value={pillar.description}
                         onChange={(e) => updatePillar(pillar.position, { description: e.target.value })}
                         placeholder="Explain how this Japanese aesthetic principle informs your engineering and software craft…"
-                        className="text-xs leading-relaxed font-light min-h-[140px] resize-y"
+                        className="text-sm leading-relaxed min-h-[130px] resize-y"
                       />
                     </div>
                   </div>
@@ -504,7 +497,7 @@ export const PhilosophyEditor: React.FC = () => {
               ))}
 
               {pillars.length === 0 && (
-                <div className="col-span-3 text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-xl bg-light-surface/30 dark:bg-dark-surface/30">
+                <div className="col-span-3 text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-[3px] bg-light-surface/30 dark:bg-dark-surface/30">
                   <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
                     No philosophy pillars defined. Click "+ Add Pillar" above to create one.
                   </p>

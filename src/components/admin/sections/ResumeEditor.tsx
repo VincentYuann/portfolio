@@ -326,9 +326,9 @@ export const ResumeEditor: React.FC = () => {
             onValueChange={(val) => setTab(val as Tab)}
             className="w-auto shrink-0"
           >
-            <TabsList className="h-9 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px]">
+              <TabsList className="h-9 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-[3px]">
               <TabsTrigger value="upload" className="text-xs px-3 gap-1.5 cursor-pointer rounded-[2px]">
-                <Upload className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853]" />
+                <Upload className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
                 <span>Upload PDF</span>
               </TabsTrigger>
               <TabsTrigger value="editor" className="text-xs px-3 gap-1.5 cursor-pointer rounded-[2px]">
@@ -361,7 +361,7 @@ export const ResumeEditor: React.FC = () => {
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-2xs uppercase tracking-wider px-2 py-0.5 rounded-[2px] bg-bamboo/10 text-bamboo font-semibold">
+                      <span className="font-mono text-xs uppercase tracking-wider px-2 py-0.5 rounded-[2px] bg-bamboo/10 text-bamboo font-semibold">
                         Staged for Publishing
                       </span>
                     </div>
@@ -446,16 +446,13 @@ export const ResumeEditor: React.FC = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-bamboo animate-pulse" />
-                    <span className="font-mono text-2xs uppercase tracking-widest text-bamboo font-semibold">
-                      Live Published Resume Document · 公開中
+                    <span className="font-mono text-xs uppercase tracking-widest text-bamboo font-semibold">
+                      Live Published Resume Document
                     </span>
                   </div>
                   <h3 className="font-sans text-sm font-semibold text-light-ink dark:text-dark-ink mt-1">
                     Vincent_Yuan_Resume.pdf
                   </h3>
-                  <p className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted truncate max-w-lg mt-0.5">
-                    {currentPdfUrl}
-                  </p>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
@@ -463,15 +460,15 @@ export const ResumeEditor: React.FC = () => {
                     href={currentPdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                   >
-                    <ExternalLink className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853]" />
+                    <ExternalLink className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
                     <span>View Live PDF</span>
                   </a>
                   <a
                     href={currentPdfUrl}
                     download="Vincent_Yuan_Resume.pdf"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-[#D4A853]/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Download</span>
@@ -511,7 +508,7 @@ export const ResumeEditor: React.FC = () => {
                 </span>
               </div>
               <span className="text-light-ink-subtle text-xs">·</span>
-              <span className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted truncate">
+              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted truncate">
                 {lineCount} lines · UTF-8
               </span>
             </div>
@@ -562,7 +559,7 @@ export const ResumeEditor: React.FC = () => {
                   const tokens = tokenizeLatexLine(line);
                   return (
                     <div key={idx} className="table-row hover:bg-light-surface-muted/40 dark:hover:bg-dark-surface-muted/30">
-                      <span className="table-cell select-none pr-4 text-right opacity-30 text-2xs w-10 align-top font-mono">
+                      <span className="table-cell select-none pr-4 text-right opacity-30 text-xs w-10 align-top font-mono">
                         {idx + 1}
                       </span>
                       <span className="table-cell whitespace-pre-wrap break-all">
@@ -580,7 +577,7 @@ export const ResumeEditor: React.FC = () => {
           ) : (
             /* Live Raw Code Editor with Line Gutter */
             <div className="flex bg-[#FDFCFA] dark:bg-[#18191D] max-h-[70vh] overflow-hidden">
-              <div className="select-none py-5 px-3 bg-light-surface/40 dark:bg-dark-surface/40 border-r border-light-border/40 dark:border-dark-border/40 text-right font-mono text-2xs text-light-ink-muted/50 dark:text-dark-ink-muted/50 leading-relaxed min-w-[3rem] overflow-hidden">
+              <div className="select-none py-5 px-3 bg-light-surface/40 dark:bg-dark-surface/40 border-r border-light-border/40 dark:border-dark-border/40 text-right font-mono text-xs text-light-ink-muted/50 dark:text-dark-ink-muted/50 leading-relaxed min-w-[3rem] overflow-hidden">
                 {latex.split('\n').map((_, idx) => (
                   <div key={idx}>{idx + 1}</div>
                 ))}
@@ -591,7 +588,7 @@ export const ResumeEditor: React.FC = () => {
                   notifyDirty();
                   setLatex(e.target.value);
                 }}
-                className="w-full p-5 font-mono text-xs text-light-ink dark:text-dark-ink bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-terracotta/20 selection:text-terracotta overflow-y-auto"
+                className="w-full p-5 font-mono text-sm text-light-ink dark:text-dark-ink bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-terracotta/20 selection:text-terracotta overflow-y-auto"
                 style={{ minHeight: '65vh' }}
                 spellCheck={false}
                 placeholder="Write or paste your LaTeX resume code…"

@@ -318,17 +318,17 @@ export const ExperienceEditor: React.FC = () => {
                 >
                   <span
                     className={`w-2 h-2 rounded-full ${
-                      exp.isActive ? 'bg-terracotta dark:bg-[#D4A853]' : 'bg-stone-400 dark:bg-neutral-500'
+                      exp.isActive ? 'bg-terracotta dark:bg-ochre' : 'bg-stone-400 dark:bg-neutral-500'
                     }`}
                   />
                   <span>{exp.isActive ? 'ACTIVE / 現職' : 'COMPLETED / 歴任'}</span>
                 </span>
               }
               emblem={
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 dark:border-ochre/40 bg-terracotta/5 dark:bg-ochre/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-[3px] border border-terracotta/40 dark:border-ochre/40 bg-terracotta/5 dark:bg-ochre/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
                   <span className={`font-serif font-bold text-terracotta dark:text-ochre leading-tight text-center ${
                     (exp.kanji?.length || 0) > 2
-                      ? 'text-2xs tracking-tighter leading-none'
+                      ? 'text-xs tracking-tighter leading-none'
                       : (exp.kanji?.length || 0) === 2
                       ? 'text-xs tracking-tight'
                       : 'text-sm sm:text-base'
@@ -378,45 +378,15 @@ export const ExperienceEditor: React.FC = () => {
                       value={exp.title}
                       onChange={(e) => updateEntry(exp.id, { title: e.target.value })}
                       placeholder="e.g. Full-Stack & Systems Engineer"
-                      className="mt-1 text-xs"
+                      className="mt-1 text-sm"
                     />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <Label htmlFor={`exp-${exp.id}-location`} className="text-xs font-medium flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-light-ink-muted" />
-                        <span>Location</span>
-                      </Label>
-                      <Input
-                        id={`exp-${exp.id}-location`}
-                        value={exp.location}
-                        onChange={(e) => updateEntry(exp.id, { location: e.target.value })}
-                        placeholder="e.g. Philadelphia, PA / Remote"
-                        className="mt-1 text-xs"
-                      />
-                    </div>
-
-                    <div className="flex flex-col justify-end">
-                      <label className="flex items-center gap-2 p-2 min-h-[38px] rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          checked={exp.isActive}
-                          onChange={(e) => updateEntry(exp.id, { isActive: e.target.checked })}
-                          className="rounded text-terracotta dark:text-[#D4A853] focus:ring-terracotta dark:focus:ring-[#D4A853] h-4 w-4"
-                        />
-                        <span className="text-xs font-medium text-light-ink dark:text-dark-ink">
-                          Current Active Role
-                        </span>
-                      </label>
-                    </div>
                   </div>
 
                   {/* Dates */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <Label htmlFor={`exp-${exp.id}-start`} className="text-xs font-medium flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-light-ink-muted" />
+                        <Calendar className="w-3.5 h-3.5 text-light-ink-muted" />
                         <span>Start Date</span>
                       </Label>
                       <Input
@@ -424,13 +394,13 @@ export const ExperienceEditor: React.FC = () => {
                         value={exp.startDate}
                         onChange={(e) => updateEntry(exp.id, { startDate: e.target.value })}
                         placeholder="e.g. May 2024"
-                        className="mt-1 text-xs font-mono"
+                        className="mt-1 text-sm font-mono"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor={`exp-${exp.id}-end`} className="text-xs font-medium flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-light-ink-muted" />
+                        <Calendar className="w-3.5 h-3.5 text-light-ink-muted" />
                         <span>End Date</span>
                       </Label>
                       <Input
@@ -439,8 +409,39 @@ export const ExperienceEditor: React.FC = () => {
                         disabled={exp.isActive}
                         onChange={(e) => updateEntry(exp.id, { endDate: e.target.value })}
                         placeholder={exp.isActive ? 'Present (Active)' : 'e.g. Dec 2024'}
-                        className="mt-1 text-xs font-mono disabled:opacity-60"
+                        className="mt-1 text-sm font-mono disabled:opacity-60"
                       />
+                    </div>
+                  </div>
+
+                  {/* Location & Active Role Toggle */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-end">
+                    <div>
+                      <Label htmlFor={`exp-${exp.id}-location`} className="text-xs font-medium flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5 text-light-ink-muted" />
+                        <span>Location</span>
+                      </Label>
+                      <Input
+                        id={`exp-${exp.id}-location`}
+                        value={exp.location}
+                        onChange={(e) => updateEntry(exp.id, { location: e.target.value })}
+                        placeholder="e.g. Philadelphia, PA / Remote"
+                        className="mt-1 text-sm"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="flex items-center gap-2 p-2 min-h-[38px] rounded-[3px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none hover:border-terracotta/40 dark:hover:border-ochre/40 transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={exp.isActive}
+                          onChange={(e) => updateEntry(exp.id, { isActive: e.target.checked })}
+                          className="rounded-[2px] text-terracotta dark:text-ochre focus:ring-terracotta dark:focus:ring-ochre h-4 w-4"
+                        />
+                        <span className="text-xs font-medium text-light-ink dark:text-dark-ink">
+                          Current Active Role
+                        </span>
+                      </label>
                     </div>
                   </div>
 
@@ -453,7 +454,7 @@ export const ExperienceEditor: React.FC = () => {
                     onKanjiSubtitleChange={(subtitle) => updateEntry(exp.id, { kanjiSubtitle: subtitle })}
                     onLogoUrlChange={(url) => updateEntry(exp.id, { logoUrl: url })}
                     onUploadImage={(file) => handleUploadLogoFile(exp.id, file)}
-                    label="Company Emblem Seal or Logo"
+                    label="Company Seal or Logo"
                   />
                 </div>
 
@@ -461,7 +462,7 @@ export const ExperienceEditor: React.FC = () => {
                 <div className="md:col-span-7 space-y-5">
                   <div>
                     <Label htmlFor={`exp-${exp.id}-overview`} className="text-xs font-medium">
-                      Executive Overview &amp; Role Context
+                      Role Overview
                     </Label>
                     <Textarea
                       id={`exp-${exp.id}-overview`}
@@ -473,8 +474,8 @@ export const ExperienceEditor: React.FC = () => {
                           description: e.target.value,
                         })
                       }
-                      placeholder="High-level narrative summarizing your leadership, team context, and core system responsibility…"
-                      className="mt-1 text-xs leading-relaxed"
+                      placeholder="Brief summary of responsibilities, leadership, and system impact…"
+                      className="mt-1 text-sm leading-relaxed"
                     />
                   </div>
 
@@ -482,14 +483,14 @@ export const ExperienceEditor: React.FC = () => {
                   <TechTagSelector
                     tags={exp.tags}
                     onChange={(tags) => updateEntry(exp.id, { tags })}
-                    label="Substrates & Core Tech Stack"
+                    label="Core Technologies &amp; Stack"
                   />
 
                   {/* Universal Bullet List Editor */}
                   <BulletListEditor
                     bullets={exp.bullets}
                     onChange={(bullets) => updateEntry(exp.id, { bullets })}
-                    label="Engineering Contributions & Quantified Impact"
+                    label="Key Contributions &amp; Impact"
                     placeholder="e.g. Engineered real-time WebGL canvas pipeline reducing render latency by 45%…"
                   />
                 </div>
@@ -499,7 +500,7 @@ export const ExperienceEditor: React.FC = () => {
         })}
 
         {experiences.length === 0 && (
-          <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-xl bg-light-surface/30 dark:bg-dark-surface/30">
+          <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-[3px] bg-light-surface/30 dark:bg-dark-surface/30">
             <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
               No career milestones found. Click "+ Add Milestone" above to add your first role.
             </p>

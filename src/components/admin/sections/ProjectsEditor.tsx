@@ -317,7 +317,7 @@ export const ProjectsEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Projects & Works"
-        subtitle={`Manage portfolio projects, case study architecture, and star up to 3 to feature on the homepage (${featuredCount}/3 featured).`}
+        subtitle={`Manage portfolio projects and star up to 3 for the homepage showcase (${featuredCount}/3 featured).`}
         saveState={saveState}
         onSave={handleSaveAll}
         saveLabel="Save All Projects"
@@ -344,7 +344,7 @@ export const ProjectsEditor: React.FC = () => {
                       e.stopPropagation();
                       toggleFeatured(project.id);
                     }}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-[3px] font-mono text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
                       project.isFeatured
                         ? 'bg-ochre/15 text-ochre border border-ochre/40'
                         : 'bg-light-surface dark:bg-dark-surface text-light-ink-muted dark:text-dark-ink-muted border border-light-border dark:border-dark-border hover:text-ochre hover:border-ochre/40'
@@ -356,15 +356,15 @@ export const ProjectsEditor: React.FC = () => {
                   </button>
 
                   <span
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md font-mono text-xs font-semibold uppercase tracking-wider ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-[3px] font-mono text-xs font-semibold uppercase tracking-wider ${
                       project.isActive
-                        ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border border-terracotta/40 dark:border-[#D4A853]/40 text-terracotta dark:text-[#D4A853]'
+                        ? 'bg-terracotta/15 dark:bg-ochre/15 border border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre'
                         : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted'
                     }`}
                   >
                     <span
                       className={`w-2 h-2 rounded-full ${
-                        project.isActive ? 'bg-terracotta dark:bg-[#D4A853]' : 'bg-stone-400 dark:bg-neutral-500'
+                        project.isActive ? 'bg-terracotta dark:bg-ochre' : 'bg-stone-400 dark:bg-neutral-500'
                       }`}
                     />
                     <span>{project.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'}</span>
@@ -372,10 +372,10 @@ export const ProjectsEditor: React.FC = () => {
                 </div>
               }
               emblem={
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 dark:border-ochre/40 bg-terracotta/5 dark:bg-ochre/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-[3px] border border-terracotta/40 dark:border-ochre/40 bg-terracotta/5 dark:bg-ochre/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
                   <span className={`font-serif font-bold text-terracotta dark:text-ochre leading-tight text-center ${
                     (project.kanji?.length || 0) > 2
-                      ? 'text-2xs tracking-tighter leading-none'
+                      ? 'text-xs tracking-tighter leading-none'
                       : (project.kanji?.length || 0) === 2
                       ? 'text-xs tracking-tight'
                       : 'text-sm sm:text-base'
@@ -418,22 +418,22 @@ export const ProjectsEditor: React.FC = () => {
 
                   <div>
                     <Label htmlFor={`proj-${project.id}-sub`}>
-                      Subtitle / Focus Area
+                      Subtitle / Domain
                     </Label>
                     <Input
                       id={`proj-${project.id}-sub`}
                       value={project.subtitle}
                       onChange={(e) => updateProject(project.id, { subtitle: e.target.value })}
                       placeholder="e.g. Sensory Computing & Systems Logic"
-                      className="mt-1 text-xs"
+                      className="mt-1 text-sm"
                     />
                   </div>
 
-                  {/* Dates & Active Status */}
+                  {/* Dates: Start Date & End Date side-by-side */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <Label htmlFor={`proj-${project.id}-start`} className="text-xs font-medium flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-light-ink-muted" />
+                        <Calendar className="w-3.5 h-3.5 text-light-ink-muted" />
                         <span>Start Date</span>
                       </Label>
                       <Input
@@ -441,45 +441,46 @@ export const ProjectsEditor: React.FC = () => {
                         value={project.startDate}
                         onChange={(e) => updateProject(project.id, { startDate: e.target.value })}
                         placeholder="e.g. May 2024"
-                        className="mt-1 text-xs font-mono"
+                        className="mt-1 text-sm font-mono"
                       />
                     </div>
 
-                    <div className="flex flex-col justify-end">
-                      <label className="flex items-center gap-2 p-2 min-h-[38px] rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          checked={project.isActive}
-                          onChange={(e) => updateProject(project.id, { isActive: e.target.checked })}
-                          className="rounded text-terracotta dark:text-[#D4A853] focus:ring-terracotta dark:focus:ring-[#D4A853] h-4 w-4"
-                        />
-                        <span className="text-xs font-medium text-light-ink dark:text-dark-ink">
-                          Active Project
-                        </span>
-                      </label>
+                    <div>
+                      <Label htmlFor={`proj-${project.id}-end`} className="text-xs font-medium flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5 text-light-ink-muted" />
+                        <span>End Date</span>
+                      </Label>
+                      <Input
+                        id={`proj-${project.id}-end`}
+                        value={project.endDate}
+                        disabled={project.isActive}
+                        onChange={(e) => updateProject(project.id, { endDate: e.target.value })}
+                        placeholder={project.isActive ? 'Present (Active)' : 'e.g. Dec 2024'}
+                        className="mt-1 text-sm font-mono disabled:opacity-60"
+                      />
                     </div>
                   </div>
 
+                  {/* Active Project Toggle */}
                   <div>
-                    <Label htmlFor={`proj-${project.id}-end`} className="text-xs font-medium flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-light-ink-muted" />
-                      <span>End Date</span>
-                    </Label>
-                    <Input
-                      id={`proj-${project.id}-end`}
-                      value={project.endDate}
-                      disabled={project.isActive}
-                      onChange={(e) => updateProject(project.id, { endDate: e.target.value })}
-                      placeholder={project.isActive ? 'Present (Active)' : 'e.g. Dec 2024'}
-                      className="mt-1 text-xs font-mono disabled:opacity-60"
-                    />
+                    <label className="flex items-center gap-2 p-2 min-h-[38px] rounded-[3px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border cursor-pointer select-none hover:border-terracotta/40 dark:hover:border-ochre/40 transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={project.isActive}
+                        onChange={(e) => updateProject(project.id, { isActive: e.target.checked })}
+                        className="rounded-[2px] text-terracotta dark:text-ochre focus:ring-terracotta dark:focus:ring-ochre h-4 w-4"
+                      />
+                      <span className="text-xs font-medium text-light-ink dark:text-dark-ink">
+                        Active Project
+                      </span>
+                    </label>
                   </div>
 
                   {/* GitHub & Live Links */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <Label htmlFor={`proj-${project.id}-gh`} className="text-xs font-medium flex items-center gap-1">
-                        <Github className="w-3 h-3 text-light-ink-muted" />
+                        <Github className="w-3.5 h-3.5 text-light-ink-muted" />
                         <span>GitHub Link</span>
                       </Label>
                       <Input
@@ -488,13 +489,13 @@ export const ProjectsEditor: React.FC = () => {
                         value={project.githubLink}
                         onChange={(e) => updateProject(project.id, { githubLink: e.target.value })}
                         placeholder="https://github.com/..."
-                        className="mt-1 text-xs font-mono"
+                        className="mt-1 text-sm font-mono"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor={`proj-${project.id}-live`} className="text-xs font-medium flex items-center gap-1">
-                        <ExternalLink className="w-3 h-3 text-light-ink-muted" />
+                        <ExternalLink className="w-3.5 h-3.5 text-light-ink-muted" />
                         <span>Live Demo URL</span>
                       </Label>
                       <Input
@@ -503,7 +504,7 @@ export const ProjectsEditor: React.FC = () => {
                         value={project.liveLink}
                         onChange={(e) => updateProject(project.id, { liveLink: e.target.value })}
                         placeholder="https://..."
-                        className="mt-1 text-xs font-mono"
+                        className="mt-1 text-sm font-mono"
                       />
                     </div>
                   </div>
@@ -515,7 +516,7 @@ export const ProjectsEditor: React.FC = () => {
                     onKanjiChange={(char) => updateProject(project.id, { kanji: char })}
                     onLogoUrlChange={(url) => updateProject(project.id, { image: url })}
                     onUploadImage={(file) => handleUploadImageFile(project.id, file)}
-                    label="Project Emblem & Cover Image"
+                    label="Project Seal & Cover Image"
                   />
                 </div>
 
@@ -523,7 +524,7 @@ export const ProjectsEditor: React.FC = () => {
                 <div className="md:col-span-7 space-y-5">
                   <div>
                     <Label htmlFor={`proj-${project.id}-desc`} className="text-xs font-medium">
-                      Project Narrative Summary
+                      Project Overview
                     </Label>
                     <Textarea
                       id={`proj-${project.id}-desc`}
@@ -535,8 +536,8 @@ export const ProjectsEditor: React.FC = () => {
                           overview: e.target.value,
                         })
                       }
-                      placeholder="Concise overview of the system architecture, core engineering decisions, and problems solved…"
-                      className="mt-1 text-xs leading-relaxed"
+                      placeholder="Brief overview of system architecture, engineering challenges, and solutions…"
+                      className="mt-1 text-sm leading-relaxed"
                     />
                   </div>
 
@@ -544,14 +545,14 @@ export const ProjectsEditor: React.FC = () => {
                   <TechTagSelector
                     tags={project.techStacks}
                     onChange={(tags) => updateProject(project.id, { techStacks: tags })}
-                    label="Core Technologies & Stack"
+                    label="Core Technologies &amp; Stack"
                   />
 
                   {/* Universal Bullet List Editor for Architecture Highlights */}
                   <BulletListEditor
                     bullets={project.bullets}
                     onChange={(bullets) => updateProject(project.id, { bullets })}
-                    label="Key Architectural Highlights & Contributions"
+                    label="Key Highlights &amp; Architecture"
                     placeholder="e.g. Implemented zero-copy shared memory ring buffer reducing message latency to <12μs…"
                   />
                 </div>
@@ -561,7 +562,7 @@ export const ProjectsEditor: React.FC = () => {
         })}
 
         {projects.length === 0 && (
-          <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-xl bg-light-surface/30 dark:bg-dark-surface/30">
+          <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-[3px] bg-light-surface/30 dark:bg-dark-surface/30">
             <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
               No projects found. Click "+ Add Project" above to create one.
             </p>

@@ -43,9 +43,7 @@ const newHobbyTemplate = (pos: number): HobbyItem => ({
   kanji: '好',
   category: 'Interests',
   subtitle: 'What I enjoy doing and why',
-  images: [
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuBIQr3bTk3yvKCBXiAYi_kPdrzrSDIS4QJkYLWaCRKFOh_Iyvqgn2IkCe1PeeRqs_ScybEjUyNSBVPfSoqCDoXz-iTNgSOXxxNxKheHSrcnFQZE-bhBwH5mmkRJxXWbCWlus4MxGuYXevVL7oTqwrTcvbKPWwGtZj2VEYvaUrcisA4rRI0jgNhTBKtJgVQFJ86vzJ-h43U6tuThqzyw2TBz0s1ypULVS2GnMSJ5B4Q19cWnTVqag0yRHw',
-  ],
+  images: [],
   whyDescription:
     'A personal hobby that brings fun, balance, and joy to my daily routine.',
   metadata: [
@@ -344,7 +342,7 @@ export const HobbiesEditor: React.FC = () => {
       {/* Universal Section Header */}
       <EditorSectionHeader
         title="Hobbies & Interests"
-        subtitle="Manage your personal hobbies, upload photos (up to 5 per hobby) to Supabase Storage, and write notes about what you enjoy."
+        subtitle="Manage personal pursuits, photo galleries, and commentary."
         saveState={saveState}
         onSave={handleSave}
         saveLabel="Save Hobbies"
@@ -367,10 +365,10 @@ export const HobbiesEditor: React.FC = () => {
               title={hobby.title || 'Untitled Hobby'}
               subtitle={hobby.subtitle}
               emblem={
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-terracotta/40 dark:border-ochre/40 bg-terracotta/5 dark:bg-ochre/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-[3px] border border-terracotta/40 dark:border-ochre/40 bg-terracotta/5 dark:bg-ochre/10 flex items-center justify-center p-0.5 overflow-hidden select-none shrink-0">
                   <span className={`font-serif font-bold text-terracotta dark:text-ochre leading-tight text-center ${
                     (hobby.kanji?.length || 0) > 2
-                      ? 'text-2xs tracking-tighter leading-none'
+                      ? 'text-xs tracking-tighter leading-none'
                       : (hobby.kanji?.length || 0) === 2
                       ? 'text-xs tracking-tight'
                       : 'text-sm sm:text-base'
@@ -382,11 +380,11 @@ export const HobbiesEditor: React.FC = () => {
               badge={
                 <div className="flex items-center gap-1.5">
                   {hobby.category && (
-                    <span className="font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center rounded-md bg-stone-200/70 dark:bg-neutral-800 text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border font-medium uppercase tracking-wide">
+                    <span className="font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center rounded-[3px] bg-stone-200/70 dark:bg-neutral-800 text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border font-medium uppercase tracking-wide">
                       {hobby.category}
                     </span>
                   )}
-                  <span className="font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center rounded-md bg-terracotta/15 dark:bg-[#D4A853]/15 text-terracotta dark:text-[#D4A853] border border-terracotta/30 dark:border-[#D4A853]/30 font-medium">
+                  <span className="font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center rounded-[3px] bg-terracotta/15 dark:bg-ochre/15 text-terracotta dark:text-ochre border border-terracotta/30 dark:border-ochre/30 font-medium">
                     {imageCount}/{MAX_IMAGES_PER_HOBBY} Photos
                   </span>
                 </div>
@@ -437,10 +435,10 @@ export const HobbiesEditor: React.FC = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => setKanjiPickerTargetId(hobby.id)}
-                        className="h-9 px-2.5 text-xs font-mono text-light-ink-muted hover:text-terracotta dark:hover:text-[#D4A853] border-light-border dark:border-dark-border cursor-pointer shrink-0"
+                        className="h-9 px-2.5 text-xs font-mono text-light-ink-muted hover:text-terracotta dark:hover:text-ochre border-light-border dark:border-dark-border cursor-pointer shrink-0 rounded-[3px]"
                         title="Choose Kanji Emblem"
                       >
-                        <BookOpen className="w-3.5 h-3.5 mr-1 text-terracotta dark:text-[#D4A853]" />
+                        <BookOpen className="w-3.5 h-3.5 mr-1 text-terracotta dark:text-ochre" />
                         Picker
                       </Button>
                     </div>
@@ -454,7 +452,7 @@ export const HobbiesEditor: React.FC = () => {
                       value={hobby.category || ''}
                       onChange={(e) => updateHobby(hobby.id, { category: e.target.value })}
                       placeholder="e.g. Storytelling, Interactive, Discipline"
-                      className="bg-light-surface dark:bg-dark-surface text-xs font-mono uppercase"
+                      className="bg-light-surface dark:bg-dark-surface text-xs font-mono uppercase rounded-[3px]"
                     />
                   </div>
                 </div>
@@ -468,7 +466,7 @@ export const HobbiesEditor: React.FC = () => {
                     value={hobby.subtitle || ''}
                     onChange={(e) => updateHobby(hobby.id, { subtitle: e.target.value })}
                     placeholder="e.g. Character Arcs, World-Building & Sakuga Animation"
-                    className="bg-light-surface dark:bg-dark-surface text-xs"
+                    className="bg-light-surface dark:bg-dark-surface text-sm rounded-[3px]"
                   />
                 </div>
 
@@ -476,7 +474,7 @@ export const HobbiesEditor: React.FC = () => {
                 <div className="space-y-3 pt-3 border-t border-light-border/50 dark:border-dark-border/50">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <ImageIcon className="w-4 h-4 text-terracotta dark:text-[#D4A853]" />
+                      <ImageIcon className="w-4 h-4 text-terracotta dark:text-ochre" />
                       <span className="font-mono text-xs font-semibold text-light-ink dark:text-dark-ink uppercase tracking-wider">
                         Photo Gallery ({imageCount}/{MAX_IMAGES_PER_HOBBY})
                       </span>
@@ -484,7 +482,7 @@ export const HobbiesEditor: React.FC = () => {
 
                     {/* Direct File Upload Button */}
                     <label
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono border border-terracotta/40 dark:border-[#D4A853]/40 text-terracotta dark:text-[#D4A853] bg-terracotta/5 dark:bg-[#D4A853]/10 hover:bg-terracotta/15 dark:hover:bg-[#D4A853]/20 cursor-pointer transition-colors shadow-2xs ${
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] text-xs font-mono border border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre bg-terracotta/5 dark:bg-ochre/10 hover:bg-terracotta/15 dark:hover:bg-ochre/20 cursor-pointer transition-colors shadow-2xs ${
                         !canAddMoreImages || isUploading ? 'opacity-50 pointer-events-none' : ''
                       }`}
                     >
@@ -520,23 +518,20 @@ export const HobbiesEditor: React.FC = () => {
                           <img
                             src={imgUrl}
                             alt={`Preview ${imgIdx + 1}`}
-                            className="w-12 h-12 rounded object-cover border border-light-border/40 dark:border-dark-border/40 shrink-0"
+                            className="w-12 h-12 rounded-[3px] object-cover border border-light-border/40 dark:border-dark-border/40 shrink-0"
                             onError={(e) => {
                               (e.target as HTMLElement).style.opacity = '0.3';
                             }}
                           />
                           <div className="min-w-0 flex-1 overflow-hidden">
-                            <span className="font-mono text-xs text-terracotta dark:text-[#D4A853] font-semibold block truncate">
+                            <span className="font-mono text-xs text-terracotta dark:text-ochre font-semibold block truncate">
                               Photo 0{imgIdx + 1} {imgIdx === 0 && '· Main Display'}
                             </span>
-                            <p className="font-mono text-xs text-light-ink dark:text-dark-ink truncate w-full" title={imgUrl}>
-                              {imgUrl}
-                            </p>
                             {imgIdx !== 0 && (
                               <button
                                 type="button"
                                 onClick={() => handleSetMainImage(hobby.id, imgIdx)}
-                                className="text-xs font-mono text-terracotta dark:text-[#D4A853] hover:underline mt-0.5 flex items-center gap-1 cursor-pointer"
+                                className="text-xs font-mono text-terracotta dark:text-ochre hover:underline mt-0.5 flex items-center gap-1 cursor-pointer"
                               >
                                 <Check className="w-2.5 h-2.5" /> Set as Main
                               </button>
@@ -545,7 +540,7 @@ export const HobbiesEditor: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleRemoveImage(hobby.id, imgIdx)}
-                            className="p-1 rounded text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
+                            className="p-1 rounded-[3px] text-light-ink-muted hover:text-red-500 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
                             title="Remove photo"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -568,7 +563,7 @@ export const HobbiesEditor: React.FC = () => {
                           setNewImageUrls((prev) => ({ ...prev, [hobby.id]: e.target.value }))
                         }
                         placeholder="Or paste external image URL (https://...)"
-                        className="bg-light-surface dark:bg-dark-surface text-xs font-mono flex-1"
+                        className="bg-light-surface dark:bg-dark-surface text-sm font-mono flex-1 rounded-[3px]"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
@@ -581,7 +576,7 @@ export const HobbiesEditor: React.FC = () => {
                         onClick={() => handleAddImageUrl(hobby.id)}
                         variant="outline"
                         size="sm"
-                        className="font-mono text-xs border-terracotta/40 dark:border-[#D4A853]/40 text-terracotta dark:text-[#D4A853] hover:bg-terracotta/10 dark:hover:bg-[#D4A853]/10 shrink-0 cursor-pointer"
+                        className="font-mono text-xs border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre hover:bg-terracotta/10 dark:hover:bg-ochre/10 shrink-0 cursor-pointer rounded-[3px]"
                       >
                         <Plus className="w-3.5 h-3.5 mr-1" />
                         Add URL
@@ -590,17 +585,17 @@ export const HobbiesEditor: React.FC = () => {
                   )}
                 </div>
 
-                {/* Row 4: What I Love About This Hobby */}
+                {/* Row 4: Reflection & Commentary */}
                 <div className="space-y-1.5">
                   <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted block">
-                    What I Love About This Hobby
+                    Reflection & Commentary
                   </Label>
                   <Textarea
                     rows={3}
                     value={hobby.whyDescription}
                     onChange={(e) => updateHobby(hobby.id, { whyDescription: e.target.value })}
                     placeholder="Share what makes this hobby fun, exciting, or meaningful to you..."
-                    className="bg-light-surface dark:bg-dark-surface text-xs leading-relaxed"
+                    className="bg-light-surface dark:bg-dark-surface text-sm leading-relaxed rounded-[3px]"
                   />
                 </div>
               </div>
@@ -609,8 +604,8 @@ export const HobbiesEditor: React.FC = () => {
         })}
 
         {hobbies.length === 0 && (
-          <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-xl bg-light-surface/30 dark:bg-dark-surface/30">
-            <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
+          <div className="text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-[3px] bg-light-surface/30 dark:bg-dark-surface/30">
+            <p className="font-sans text-sm text-light-ink-muted dark:text-dark-ink-muted">
               No hobby cards found. Click "+ Add Hobby" above to create one.
             </p>
           </div>
