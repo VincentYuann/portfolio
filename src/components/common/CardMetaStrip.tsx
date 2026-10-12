@@ -57,7 +57,9 @@ export const CardMetaStrip: React.FC<CardMetaStripProps> = ({
     >
       {/* Universal Sequence Index Badge */}
       {formattedIndex && (
-        <span className="inline-flex items-center px-1.5 py-0.5 rounded-[2px] font-mono text-2xs font-semibold bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted shrink-0">
+        <span className={`inline-flex items-center rounded-[2px] font-mono font-semibold bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink shrink-0 ${
+          isSm ? 'text-2xs px-1.5 py-0.5' : 'text-xs px-2 py-0.5'
+        }`}>
           {formattedIndex}
         </span>
       )}

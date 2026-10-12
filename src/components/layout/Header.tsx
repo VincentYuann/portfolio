@@ -239,7 +239,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <span>{item.label}</span>
-                <span className={`font-mono text-3xs tracking-normal transition-colors ${isActive ? 'text-terracotta dark:text-ochre font-bold' : 'text-light-ink-muted/60 dark:text-dark-ink-muted/60 group-hover:text-terracotta dark:group-hover:text-ochre'}`}>
+                <span className={`font-mono text-xs tracking-normal transition-colors ${isActive ? 'text-terracotta dark:text-ochre font-bold' : 'text-light-ink-muted dark:text-dark-ink-muted group-hover:text-terracotta dark:group-hover:text-ochre'}`}>
                   {item.num}
                 </span>
                 <span
@@ -255,10 +255,10 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Right side cluster: always neatly aligned with zero overlap */}
         <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
           {/* Theme Switcher: Flat 2-segment track without nested card elevations */}
-          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-xs select-none shrink-0 min-h-[40px]">
+          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-xs select-none shrink-0 min-h-[44px]">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-3 py-2 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[40px] ${
                 theme === 'day'
                   ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink shadow-2xs'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -271,7 +271,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-3 py-2 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[40px] ${
                 theme === 'night'
                   ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink shadow-2xs'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -411,7 +411,7 @@ export const Header: React.FC<HeaderProps> = ({
                     {isActive && <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0" />}
                     <span className="font-medium tracking-wide">{item.fullLabel || item.label}</span>
                   </div>
-                  <span className={`font-mono text-2xs tracking-widest ${isActive ? 'text-terracotta dark:text-ochre font-bold' : 'text-light-ink-muted/50 dark:text-dark-ink-muted/50'}`}>
+                  <span className={`font-mono text-xs tracking-widest ${isActive ? 'text-terracotta dark:text-ochre font-bold' : 'text-light-ink-muted/70 dark:text-dark-ink-muted/70'}`}>
                     {item.num}
                   </span>
                 </a>
@@ -435,7 +435,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <Palette className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
                   <span className="font-medium">Design &amp; Settings</span>
                 </div>
-                <span className="font-mono text-2xs text-terracotta dark:text-ochre font-bold">[設定]</span>
+                <span className="font-mono text-xs text-terracotta dark:text-ochre font-bold">[設定]</span>
               </button>
             </div>
 

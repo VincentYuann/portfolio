@@ -1,6 +1,7 @@
 import React from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { CornerBrackets } from './CornerBrackets';
+import { PageContainer } from './PageContainer';
 
 /**
  * Skeleton Loader for the All Projects Archive View (/portfolio#projects)
@@ -8,7 +9,7 @@ import { CornerBrackets } from './CornerBrackets';
 export const ProjectsPageSkeleton: React.FC = () => {
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto animate-in fade-in duration-300">
+      <PageContainer className="pt-28 pb-20 animate-in fade-in duration-300">
         {/* Back navigation skeleton */}
         <div className="mb-6 sm:mb-8">
           <Skeleton className="h-9 w-28 rounded-lg" />
@@ -77,7 +78,7 @@ export const ProjectsPageSkeleton: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 };
@@ -88,7 +89,7 @@ export const ProjectsPageSkeleton: React.FC = () => {
 export const HobbiesPageSkeleton: React.FC = () => {
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto animate-in fade-in duration-300">
+      <PageContainer className="pt-28 pb-20 animate-in fade-in duration-300">
         {/* Back navigation */}
         <div className="mb-6 sm:mb-8">
           <Skeleton className="h-9 w-28 rounded-lg" />
@@ -156,7 +157,7 @@ export const HobbiesPageSkeleton: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 };
@@ -167,7 +168,7 @@ export const HobbiesPageSkeleton: React.FC = () => {
 export const ResumePageSkeleton: React.FC = () => {
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
-      <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto animate-in fade-in duration-300">
+      <PageContainer className="pt-28 pb-20 animate-in fade-in duration-300">
         {/* Top Control Bar */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <Skeleton className="h-9 w-28 rounded-lg" />
@@ -208,7 +209,7 @@ export const ResumePageSkeleton: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 };
@@ -229,7 +230,7 @@ export const AdminStudioSkeleton: React.FC = () => {
       </div>
 
       {/* Main Layout: Sidebar + Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <PageContainer className="py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Sidebar Navigation */}
         <div className="lg:col-span-3 space-y-2">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -256,7 +257,7 @@ export const AdminStudioSkeleton: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 };
@@ -285,7 +286,7 @@ export const LoginPageSkeleton: React.FC = () => {
  */
 export const DefaultPageSkeleton: React.FC = () => {
   return (
-    <div className="w-full pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto animate-in fade-in duration-300">
+    <PageContainer className="pt-28 pb-20 animate-in fade-in duration-300">
       <div className="space-y-4 mb-12">
         <Skeleton className="h-4 w-32 rounded" />
         <Skeleton className="h-10 sm:h-12 w-64 rounded-lg" />
@@ -306,7 +307,7 @@ export const DefaultPageSkeleton: React.FC = () => {
           </div>
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 };
 

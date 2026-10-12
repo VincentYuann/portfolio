@@ -20,7 +20,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <span className="font-serif text-lg font-medium text-light-ink dark:text-dark-ink block leading-none">
                   Vincent Yuan
                 </span>
-                <span className="font-serif text-2xs text-terracotta dark:text-ochre tracking-widest mt-0.5 block">
+                <span className="font-mono text-xs text-terracotta dark:text-ochre tracking-widest mt-0.5 block font-medium">
                   CRAFT & COMPUTING
                 </span>
               </div>
@@ -30,7 +30,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* DESIGN & CRAFT PHILOSOPHY */}
           <div className="md:col-span-4 flex flex-col">
             <div className="flex items-center gap-1.5 mb-2.5">
-              <Compass className="w-3.5 h-3.5 text-ochre" />
+              <Compass className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
               <span className="font-sans text-xs font-semibold text-light-ink dark:text-dark-ink uppercase tracking-widest">
                 INSPIRATION &amp; CRAFT
               </span>
@@ -142,9 +142,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
 
           <div className="flex items-center gap-3 text-light-ink-subtle dark:text-dark-ink-subtle text-xs font-sans">
-            <span className="uppercase tracking-widest text-2xs font-mono">Clarity · Balance · Craft</span>
+            <span className="uppercase tracking-widest text-xs font-mono">Clarity · Balance · Craft</span>
             <span className="text-terracotta dark:text-ochre text-xs">✦</span>
-            <span className="uppercase tracking-widest text-2xs font-mono">Solid Washi</span>
+            <span className="uppercase tracking-widest text-xs font-mono">Solid Washi</span>
           </div>
         </div>
       </div>

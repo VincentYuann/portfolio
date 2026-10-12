@@ -78,17 +78,17 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
         {/* Header - Compact responsive layout */}
         <DialogHeader className="p-3 sm:p-5 pb-2.5 sm:pb-3 border-b border-light-border dark:border-dark-border shrink-0 pr-12 sm:pr-16">
           <div className="flex items-center gap-1.5 mb-0.5">
-            <span className="font-mono text-2xs sm:text-xs text-terracotta dark:text-ochre font-semibold uppercase tracking-wider flex items-center gap-1">
-              <BookOpen className="w-3.5 h-3.5 text-ochre shrink-0" />
+            <span className="font-mono text-xs text-terracotta dark:text-ochre font-semibold uppercase tracking-wider flex items-center gap-1">
+              <BookOpen className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
               Kanji Library
             </span>
             <span className="text-light-ink-subtle text-xs">·</span>
-            <Badge variant="terracotta" className="text-2xs py-0 px-1.5 font-mono shrink-0">
+            <Badge variant="terracotta" className="text-xs py-0.5 px-2 font-mono shrink-0">
               {KANJI_PRESETS.length} Available
             </Badge>
           </div>
           <DialogTitle className="text-base sm:text-lg">{title}</DialogTitle>
-          <DialogDescription className="text-2xs sm:text-xs hidden xs:block">
+          <DialogDescription className="text-xs sr-only xs:not-sr-only">
             Select a symbolic character representing your philosophy, role, or architecture.
           </DialogDescription>
         </DialogHeader>
@@ -214,7 +214,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                       <span className="font-serif text-xl font-bold text-terracotta dark:text-ochre leading-none">
                         {preset.char}
                       </span>
-                      <span className="font-mono text-2xs uppercase tracking-wider text-ochre mt-0.5 font-semibold">
+                      <span className="font-mono text-xs uppercase tracking-wider text-terracotta dark:text-ochre mt-0.5 font-semibold">
                         {preset.romaji.split('/')[0].trim()}
                       </span>
                     </div>

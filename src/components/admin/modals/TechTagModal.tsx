@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  DialogDescription,
 } from '../../ui/dialog';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
@@ -327,6 +328,9 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
             <DialogTitle className="text-sm sm:text-base font-semibold tracking-tight text-light-ink dark:text-dark-ink truncate">
               Technology Stack Library
             </DialogTitle>
+            <DialogDescription className="sr-only">
+              Browse and assign technology stack tags to this portfolio item.
+            </DialogDescription>
             <span className="text-light-ink-subtle text-xs hidden xs:inline">·</span>
             <Badge variant="terracotta" className="text-2xs py-0.5 px-2 font-mono shrink-0">
               {selectedTags.length} selected
@@ -432,8 +436,8 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                       isDragging
                         ? 'opacity-40 scale-95 border-dashed border-terracotta dark:border-ochre'
                         : isOver
-                        ? 'border-terracotta dark:border-[#D4A853] ring-1 ring-terracotta/40 dark:ring-[#D4A853]/40 scale-[1.02]'
-                        : 'border-terracotta/30 dark:border-[#D4A853]/30 hover:border-terracotta dark:hover:border-[#D4A853]'
+                        ? 'border-terracotta dark:border-ochre ring-1 ring-terracotta/40 dark:ring-ochre/40 scale-[1.02]'
+                        : 'border-terracotta/30 dark:border-ochre/30 hover:border-terracotta dark:hover:border-ochre'
                     }`}
                   >
                     <GripVertical className="w-3 h-3 text-light-ink-subtle/50 hover:text-light-ink-muted transition-colors shrink-0" />
@@ -481,13 +485,13 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                           onClick={() => toggleTag(tag)}
                           className={`group inline-flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer min-h-[38px] sm:min-h-[32px] select-none ${
                             isSelected
-                              ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-[#D4A853]/20'
-                              : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-[#D4A853]/70 hover:text-terracotta dark:hover:text-[#D4A853]'
+                              ? 'bg-terracotta/15 dark:bg-ochre/15 border-terracotta dark:border-ochre text-terracotta dark:text-ochre font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-ochre/20'
+                              : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-ochre/70 hover:text-terracotta dark:hover:text-ochre'
                           }`}
                         >
                           <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0 pointer-events-none" />
                           {isSelected ? (
-                            <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-0.5" />
+                            <Check className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0 ml-0.5" />
                           ) : (
                             <Plus className="w-3.5 h-3.5 opacity-35 group-hover:opacity-100 shrink-0 ml-0.5" />
                           )}
@@ -522,13 +526,13 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                           onClick={() => toggleTag(tag)}
                           className={`group inline-flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer min-h-[38px] sm:min-h-[32px] select-none ${
                             isSelected
-                              ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-[#D4A853]/20'
-                              : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-[#D4A853]/70 hover:text-terracotta dark:hover:text-[#D4A853]'
+                              ? 'bg-terracotta/15 dark:bg-ochre/15 border-terracotta dark:border-ochre text-terracotta dark:text-ochre font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-ochre/20'
+                              : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-ochre/70 hover:text-terracotta dark:hover:text-ochre'
                           }`}
                         >
                           <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0 pointer-events-none" />
                           {isSelected ? (
-                            <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-0.5" />
+                            <Check className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0 ml-0.5" />
                           ) : (
                             <Plus className="w-3.5 h-3.5 opacity-35 group-hover:opacity-100 shrink-0 ml-0.5" />
                           )}
@@ -567,13 +571,13 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                     type="button"
                     aria-expanded={!isCollapsed}
                     onClick={() => toggleCategory(cat.category)}
-                    className="w-full flex items-center justify-between py-2.5 px-1 hover:text-terracotta dark:hover:text-[#D4A853] transition-colors cursor-pointer select-none text-left"
+                    className="w-full flex items-center justify-between py-2.5 px-1 hover:text-terracotta dark:hover:text-ochre transition-colors cursor-pointer select-none text-left"
                   >
                     <div className="flex items-center gap-2">
                       {isCollapsed ? (
-                        <ChevronRight className="w-4 h-4 text-terracotta dark:text-[#D4A853] shrink-0" />
+                        <ChevronRight className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-terracotta dark:text-[#D4A853] shrink-0" />
+                        <ChevronDown className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
                       )}
                       <span className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide">
                         {cat.category}
@@ -606,13 +610,13 @@ export const TechTagModal: React.FC<TechTagModalProps> = ({
                               onClick={() => toggleTag(tag)}
                               className={`group inline-flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg border font-mono text-xs transition-all cursor-pointer min-h-[38px] sm:min-h-[32px] select-none ${
                                 isSelected
-                                  ? 'bg-terracotta/15 dark:bg-[#D4A853]/15 border-terracotta dark:border-[#D4A853] text-terracotta dark:text-[#D4A853] font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-[#D4A853]/20'
-                                  : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-[#D4A853]/70 hover:text-terracotta dark:hover:text-[#D4A853]'
+                                  ? 'bg-terracotta/15 dark:bg-ochre/15 border-terracotta dark:border-ochre text-terracotta dark:text-ochre font-semibold shadow-xs ring-1 ring-terracotta/20 dark:ring-ochre/20'
+                                  : 'bg-light-surface dark:bg-dark-surface border-light-border/90 dark:border-dark-border/90 text-light-ink dark:text-dark-ink hover:border-terracotta/70 dark:hover:border-ochre/70 hover:text-terracotta dark:hover:text-ochre'
                               }`}
                             >
                               <TechTag tag={tag} size="sm" className="border-0 bg-transparent dark:bg-transparent shadow-none p-0 pointer-events-none" />
                               {isSelected ? (
-                                <Check className="w-3.5 h-3.5 text-terracotta dark:text-[#D4A853] shrink-0 ml-0.5" />
+                                <Check className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0 ml-0.5" />
                               ) : (
                                 <Plus className="w-3.5 h-3.5 opacity-35 group-hover:opacity-100 shrink-0 ml-0.5" />
                               )}
