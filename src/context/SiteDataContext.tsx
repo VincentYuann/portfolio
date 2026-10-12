@@ -341,19 +341,6 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           } catch {}
         }
 
-        const cleanHanko: HankoCardConfig | undefined = mappedHankoCard ? {
-          ...mappedHankoCard,
-          headerLabel: (mappedHankoCard.headerLabel || 'Drexel University · CS & Math')
-            .replace(/[\uFFFD\u00C2\u00A0]+/g, ' · ')
-            .replace(/\s*[·•/]\s*/g, ' · ')
-            .trim(),
-          stampCharacter: (
-            mappedHankoCard.stampCharacter && 
-            mappedHankoCard.stampCharacter !== '?' && 
-            !mappedHankoCard.stampCharacter.includes('\uFFFD')
-          ) ? mappedHankoCard.stampCharacter : '原',
-        } : undefined;
-
         const mappedProfile: SiteProfile = {
           name:     row.name     || '',
           headline: row.headline || '',
@@ -363,16 +350,13 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           linkedin: row.linkedin || '',
           role:     row.role     || '',
           capability_pillars: Array.isArray(row.capability_pillars)
-            ? row.capability_pillars.map((p: any) => {
-                const tags = parsePillarTags(p);
-                return {
-                  label: (p.label || '').trim(),
-                  tags,
-                  items: tags.join(' · ') || (p.items || '').replace(/[\uFFFD\u00C2\u00A0]+/g, ' · ').trim(),
-                };
-              })
+            ? row.capability_pillars.map((p: any) => ({
+                label: (p.label || '').trim(),
+                tags: parsePillarTags(p),
+                items: p.items || '',
+              }))
             : [],
-          hanko_card: cleanHanko,
+          hanko_card: mappedHankoCard,
           origin_story: mappedOriginStory,
           hobbies: mappedHobbies,
         };

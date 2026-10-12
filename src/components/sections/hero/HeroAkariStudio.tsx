@@ -198,22 +198,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
               <div className="w-full flex flex-col gap-1.5 pb-4 border-b border-light-border dark:border-dark-border relative z-10">
                 <div className="flex items-center gap-2 font-serif text-sm sm:text-base font-semibold text-light-ink dark:text-dark-ink">
                   <GraduationCap className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
-                  <span className="truncate inline-flex items-center gap-1.5 flex-wrap">
-                    {(hanko?.headerLabel || 'Drexel University · CS & Math')
-                      .replace(/[\uFFFD\u00C2\u00A0]+/g, ' · ')
-                      .split(/\s*[·•/]\s*/)
-                      .filter(Boolean)
-                      .map((seg, idx, arr) => (
-                        <React.Fragment key={idx}>
-                          <span>{seg}</span>
-                          {idx < arr.length - 1 && (
-                            <span className="text-light-border-strong dark:text-dark-border-strong font-sans select-none opacity-80">
-                              ·
-                            </span>
-                          )}
-                        </React.Fragment>
-                      ))}
-                  </span>
+                  <span className="truncate">{hanko?.headerLabel || ''}</span>
                 </div>
                 <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-light-ink/90 dark:text-dark-ink/90">
                   <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
@@ -226,11 +211,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 {/* Red Seal Mark: Authentic Hanko Stamp with Breathing Pulse */}
                 <div className="relative p-0.5 flex items-center justify-center animate-seal-breathe shrink-0">
                   <HankoStamp
-                    char={
-                      hanko?.stampCharacter && hanko.stampCharacter !== '?' && !hanko.stampCharacter.includes('\uFFFD')
-                        ? hanko.stampCharacter
-                        : (displayName?.slice(0, 1) || '原')
-                    }
+                    char={hanko?.stampCharacter || displayName.slice(0, 1) || '原'}
                     className="w-14 h-14 sm:w-16 sm:h-16 transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
