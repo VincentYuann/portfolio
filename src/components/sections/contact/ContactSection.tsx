@@ -382,7 +382,7 @@ export const ContactSection: React.FC = () => {
                   <button
                     type="submit"
                     disabled={status === 'sending'}
-                    className="w-full py-2.5 px-4 rounded-[2px] font-sans text-sm font-medium bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none"
+                    className="w-full py-2.5 px-4 rounded-[2px] font-sans text-sm font-medium bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 dark:hover:bg-white transition-all flex items-center justify-center gap-2 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>{status === 'sending' ? 'Transmitting...' : 'Send Message'}</span>

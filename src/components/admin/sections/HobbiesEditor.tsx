@@ -415,7 +415,7 @@ export const HobbiesEditor: React.FC = () => {
                       value={hobby.title}
                       onChange={(e) => updateHobby(hobby.id, { title: e.target.value })}
                       placeholder="e.g. Anime, Gaming, Fitness, Markets, Food"
-                      className="bg-light-surface dark:bg-dark-surface text-sm font-serif font-medium"
+                      className="text-sm font-serif font-medium"
                     />
                   </div>
 
@@ -428,7 +428,7 @@ export const HobbiesEditor: React.FC = () => {
                         value={hobby.kanji || ''}
                         onChange={(e) => updateHobby(hobby.id, { kanji: e.target.value })}
                         placeholder="鑑賞"
-                        className="bg-light-surface dark:bg-dark-surface font-serif text-sm w-20 text-center"
+                        className="font-serif text-sm w-20 text-center"
                       />
                       <Button
                         type="button"
@@ -452,7 +452,7 @@ export const HobbiesEditor: React.FC = () => {
                       value={hobby.category || ''}
                       onChange={(e) => updateHobby(hobby.id, { category: e.target.value })}
                       placeholder="e.g. Storytelling, Interactive, Discipline"
-                      className="bg-light-surface dark:bg-dark-surface text-xs font-mono uppercase rounded-[3px]"
+                      className="text-xs font-mono uppercase"
                     />
                   </div>
                 </div>
@@ -466,7 +466,7 @@ export const HobbiesEditor: React.FC = () => {
                     value={hobby.subtitle || ''}
                     onChange={(e) => updateHobby(hobby.id, { subtitle: e.target.value })}
                     placeholder="e.g. Character Arcs, World-Building & Sakuga Animation"
-                    className="bg-light-surface dark:bg-dark-surface text-sm rounded-[3px]"
+                    className="text-sm"
                   />
                 </div>
 
@@ -563,7 +563,7 @@ export const HobbiesEditor: React.FC = () => {
                           setNewImageUrls((prev) => ({ ...prev, [hobby.id]: e.target.value }))
                         }
                         placeholder="Or paste external image URL (https://...)"
-                        className="bg-light-surface dark:bg-dark-surface text-sm font-mono flex-1 rounded-[3px]"
+                        className="text-sm font-mono flex-1"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
@@ -595,7 +595,7 @@ export const HobbiesEditor: React.FC = () => {
                     value={hobby.whyDescription}
                     onChange={(e) => updateHobby(hobby.id, { whyDescription: e.target.value })}
                     placeholder="Share what makes this hobby fun, exciting, or meaningful to you..."
-                    className="bg-light-surface dark:bg-dark-surface text-sm leading-relaxed rounded-[3px]"
+                    className="text-sm leading-relaxed"
                   />
                 </div>
               </div>

@@ -151,7 +151,7 @@ export const Header: React.FC<HeaderProps> = ({
   // Close mobile drawer on resize to desktop
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
+      if (window.innerWidth >= 1280) {
         setMobileDrawerOpen(false);
       }
     };
@@ -213,8 +213,8 @@ export const Header: React.FC<HeaderProps> = ({
           </a>
         </div>
 
-        {/* Center: Desktop Navigation with Generous, Uniform Spacing & Right Monospace Numerals */}
-        <nav className="hidden lg:flex items-center justify-center gap-5 xl:gap-8 flex-1 max-w-3xl mx-auto">
+        {/* Center: Desktop Navigation with Fluid Spacing & Right Monospace Numerals (>= xl / 1280px) */}
+        <nav className="hidden xl:flex items-center justify-center gap-3.5 2xl:gap-7 flex-1 max-w-4xl mx-auto px-2">
           {navItems.map((item) => {
             const isActive =
               currentView === 'edit'
@@ -232,14 +232,14 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.id}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`group relative font-sans text-xs tracking-widest uppercase transition-colors flex items-center gap-2 py-1.5 whitespace-nowrap ${
+                className={`group relative font-sans text-xs tracking-wider 2xl:tracking-widest uppercase transition-colors flex items-center gap-1.5 2xl:gap-2 py-1.5 whitespace-nowrap ${
                   isActive
                     ? 'text-light-ink dark:text-dark-ink font-semibold'
                     : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >
                 <span>{item.label}</span>
-                <span className={`font-mono text-xs tracking-normal transition-colors ${isActive ? 'text-terracotta dark:text-ochre font-bold' : 'text-light-ink-muted dark:text-dark-ink-muted group-hover:text-terracotta dark:group-hover:text-ochre'}`}>
+                <span className={`font-mono text-2xs 2xl:text-xs tracking-normal transition-colors opacity-75 2xl:opacity-100 ${isActive ? 'text-terracotta dark:text-ochre font-bold' : 'text-light-ink-muted dark:text-dark-ink-muted group-hover:text-terracotta dark:group-hover:text-ochre'}`}>
                   {item.num}
                 </span>
                 <span
@@ -252,13 +252,13 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </nav>
 
-        {/* Right side cluster: always neatly aligned with zero overlap */}
-        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        {/* Right side cluster: neatly aligned with zero overlap across all breakpoints */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {/* Theme Switcher: Flat 2-segment track without nested card elevations */}
-          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-xs select-none shrink-0 min-h-[44px]">
+          <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-xs select-none shrink-0 min-h-[40px]">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-3 py-2 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[40px] ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[36px] ${
                 theme === 'day'
                   ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink shadow-2xs'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -271,7 +271,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-3 py-2 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[40px] ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[36px] ${
                 theme === 'night'
                   ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink shadow-2xs'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -287,7 +287,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Visual System / Art Button */}
           <button
             onClick={() => onNavigate?.('visual-system')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[3px] font-sans font-semibold text-xs tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[40px] group/art ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-[3px] font-sans font-semibold text-xs tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[36px] group/art ${
               currentView === 'visual-system'
                 ? 'bg-terracotta/10 dark:bg-ochre/15 text-terracotta dark:text-ochre border border-terracotta/40 dark:border-ochre/40 shadow-2xs'
                 : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 hover:bg-light-surface-card/40 dark:hover:bg-dark-surface/40'
@@ -299,12 +299,12 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="hidden sm:inline">ART</span>
           </button>
 
-          {/* Desktop Action Cluster: Admin controls with clean icon + text label */}
+          {/* Desktop Action Cluster: Admin controls with clean icon + text label (>= xl) */}
           {isAdmin ? (
-            <div className="hidden lg:flex items-center gap-2 shrink-0">
+            <div className="hidden xl:flex items-center gap-2 shrink-0">
               <button
                 onClick={() => onNavigate?.(currentView === 'edit' ? 'home' : 'edit')}
-                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] border font-sans text-xs font-semibold tracking-wider transition-colors cursor-pointer min-h-[40px] ${
+                className={`inline-flex items-center gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-[2px] border font-sans text-xs font-semibold tracking-wider transition-colors cursor-pointer min-h-[36px] ${
                   currentView === 'edit'
                     ? 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light border-terracotta dark:border-ochre shadow-xs'
                     : 'text-terracotta dark:text-ochre border-terracotta/40 dark:border-ochre/40 bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta/20 dark:hover:bg-ochre/20 hover:border-terracotta dark:hover:border-ochre'
@@ -326,7 +326,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               <button
                 onClick={onLogout}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[40px]"
+                className="inline-flex items-center gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[36px]"
                 title="Sign Out"
                 aria-label="Sign Out"
               >
@@ -335,10 +335,10 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
           ) : isVisitor ? (
-            <div className="hidden lg:flex items-center gap-2 shrink-0">
+            <div className="hidden xl:flex items-center gap-2 shrink-0">
               <button
                 onClick={onLogout}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[40px]"
+                className="inline-flex items-center gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[36px]"
                 title="Exit Visitor session"
                 aria-label="Exit Visitor"
               >
@@ -349,7 +349,7 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <button
               onClick={() => onNavigate?.('login')}
-              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-2 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[40px]"
+              className="hidden xl:inline-flex items-center gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[36px]"
               title="Admin Sign In"
               aria-label="Admin Sign In"
             >
@@ -358,11 +358,11 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* ── Bordered 三 Menu Button: Exclusively on Mobile and Tablet (< lg) ── */}
-          <div className="relative lg:hidden">
+          {/* ── Bordered 三 Menu Button: Exclusively on Mobile and Tablet (< xl) ── */}
+          <div className="relative xl:hidden">
             <button
               onClick={() => setMobileDrawerOpen((prev) => !prev)}
-              className={`w-11 h-11 flex items-center justify-center rounded-[2px] border transition-all duration-200 select-none cursor-pointer shrink-0 ${
+              className={`w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-[2px] border transition-all duration-200 select-none cursor-pointer shrink-0 ${
                 mobileDrawerOpen
                   ? 'border-terracotta dark:border-ochre bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre shadow-xs'
                   : 'border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface text-light-ink dark:text-dark-ink hover:border-terracotta/60 dark:hover:border-ochre/60 hover:text-terracotta dark:hover:text-ochre'
@@ -380,9 +380,9 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* ── Tablet & Mobile Navigation Drawer (Active on < lg screens) ── */}
+      {/* ── Tablet & Mobile Navigation Drawer (Active on < xl screens) ── */}
       {mobileDrawerOpen && (
-        <div className="lg:hidden px-6 py-5 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xl animate-in slide-in-from-top-2 duration-200">
+        <div className="xl:hidden px-6 py-5 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xl animate-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col space-y-1">
             {navItems.map((item) => {
               const isActive =
@@ -450,7 +450,7 @@ export const Header: React.FC<HeaderProps> = ({
                   }
                   setMobileDrawerOpen(false);
                 }}
-                className="w-full flex items-center justify-center py-2.5 px-4 rounded-[2px] text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 transition-opacity"
+                className="w-full flex items-center justify-center py-2.5 px-4 rounded-[2px] text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 dark:hover:bg-white transition-all cursor-pointer"
               >
                 Get in Touch
               </a>

@@ -3,12 +3,12 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-mono font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-ochre focus:ring-offset-2 select-none',
+  'inline-flex items-center rounded-[2px] border px-2.5 py-0.5 text-xs font-mono font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-ochre focus:ring-offset-2 select-none',
   {
     variants: {
       variant: {
         default:
-          'border-transparent bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light shadow-2xs hover:bg-terracotta-hover',
+          'border-transparent bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-2xs hover:opacity-95',
         secondary:
           'border-transparent bg-light-surface-raised dark:bg-dark-surface-raised text-light-ink dark:text-dark-ink',
         destructive:

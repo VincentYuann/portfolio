@@ -135,7 +135,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
                 setSearchQuery('');
                 setSelectedCategory('all');
               }}
-              className="mt-4 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans rounded-[2px] transition-opacity hover:opacity-90 cursor-pointer"
+              className="mt-4 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans rounded-[2px] transition-all hover:opacity-90 dark:hover:bg-white cursor-pointer"
             >
               Reset Filters
             </button>

@@ -963,7 +963,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
             <div className="flex items-center gap-2.5">
               <div
                 onPointerDown={(e) => e.stopPropagation()}
-                className="w-7 h-7 rounded-[2px] bg-terracotta dark:bg-dark-button-light flex items-center justify-center text-white dark:text-dark-on-light shadow-xs shrink-0 select-none cursor-default"
+                className="w-7 h-7 rounded-[2px] bg-terracotta flex items-center justify-center text-white shadow-xs shrink-0 select-none cursor-default"
               >
                 <span className="font-serif font-bold text-xs">問</span>
               </div>
@@ -1154,7 +1154,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                           {/* Assistant Identity Row */}
                           <div className="flex items-center justify-between px-1">
                             <div className="flex items-center gap-2">
-                              <div className="w-5 h-5 rounded bg-terracotta dark:bg-dark-button-light flex items-center justify-center text-white dark:text-dark-on-light text-xs font-serif font-bold shadow-2xs">
+                              <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-xs font-serif font-bold shadow-2xs">
                                 問
                               </div>
                               <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
@@ -1212,7 +1212,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                           className="w-full flex items-center justify-between p-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta dark:hover:border-ochre transition-all text-left group/card cursor-pointer shadow-2xs"
                         >
                           <div className="flex items-center gap-2 min-w-0 pr-2">
-                            <div className="w-6 h-6 rounded-[2px] bg-terracotta dark:bg-dark-button-light flex items-center justify-center text-white dark:text-dark-on-light shrink-0">
+                            <div className="w-6 h-6 rounded-[2px] bg-terracotta flex items-center justify-center text-white shrink-0">
                               <Terminal className="w-3.5 h-3.5" />
                             </div>
                             <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted truncate">
@@ -1307,7 +1307,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                     <MessageScrollerItem messageId="streaming">
                       <div className="flex flex-col space-y-1.5 animate-in fade-in duration-150">
                         <div className="flex items-center gap-2 px-1">
-                          <div className="w-5 h-5 rounded-[2px] bg-terracotta dark:bg-dark-button-light flex items-center justify-center text-white dark:text-dark-on-light text-xs font-serif font-bold">
+                          <div className="w-5 h-5 rounded-[2px] bg-terracotta flex items-center justify-center text-white text-xs font-serif font-bold">
                             原
                           </div>
                           <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">

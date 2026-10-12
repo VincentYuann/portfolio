@@ -313,7 +313,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('portfolio-admin-save'))}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[40px] rounded-lg bg-terracotta dark:bg-dark-button-light hover:bg-terracotta-hover dark:hover:bg-white text-white dark:text-dark-on-light font-sans text-xs font-medium shadow-xs transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[40px] rounded-[2px] bg-terracotta dark:bg-dark-button-light hover:bg-terracotta-hover dark:hover:bg-white text-white dark:text-dark-on-light font-sans text-xs font-medium shadow-xs transition-colors cursor-pointer"
               >
                 <Save className="w-3.5 h-3.5 shrink-0" />
                 <span>Save {activeSectionObj?.shortLabel || 'Section'}</span>

@@ -36,7 +36,7 @@ colors:
   dark-border-channel: "#18191E"
   dark-border-inner: "#2E313A"
   dark-border-strong: "#4E5362"
-  dark-button-light: "#D4A853"
+  dark-button-light: "#FAF6EE"
   dark-on-light: "#121316"
 typography:
   display:
@@ -242,7 +242,7 @@ Form language is architectural, disciplined, and crisp.
 ### Buttons
 - **Shape:** Hand-planed architectural radius (`2px`).
 - **Day Primary:** High-contrast dark charcoal (`#26262E`) background with cream text (`#FAF6EE`), `px-4 py-2 text-xs font-semibold uppercase tracking-wider`.
-- **Night Primary:** Warm brushed gold ochre (`#D4A853`) background with charred charcoal text (`#121316`), `px-4 py-2 text-xs font-semibold uppercase tracking-wider`.
+- **Night Primary:** High-contrast crisp washi white (`#FAF6EE`) background with charred cedar text (`#121316`), `px-4 py-2 text-xs font-semibold uppercase tracking-wider`.
 - **Identity Accent (Terracotta):** Sacred vermilion (`#B5482E`) background with white text (`#FFFFFF`), `hover:bg-[#9E3D27]`.
 - **Outline / Ghost:** Transparent background, `border border-light-border dark:border-dark-border`, text ink with terracotta/ochre hover tint.
 

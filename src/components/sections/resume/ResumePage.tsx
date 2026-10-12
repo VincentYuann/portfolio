@@ -274,7 +274,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                 </button>
                 <button
                   onClick={handleDownloadTex}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-[2px] shadow-sm hover:opacity-95 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-[2px] shadow-sm hover:opacity-95 dark:hover:bg-white transition-all cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Download .tex</span>
@@ -283,7 +283,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             ) : (
               <button
                 onClick={handleDownloadPdf}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-[2px] shadow-sm hover:opacity-95 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light text-xs font-sans font-medium rounded-[2px] shadow-sm hover:opacity-95 dark:hover:bg-white transition-all cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download Official PDF</span>
@@ -338,7 +338,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={handleDownloadPdf}
-                        className="px-4 py-2 bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light text-xs font-sans rounded-[2px] shadow-xs cursor-pointer"
+                        className="px-4 py-2 bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light dark:hover:bg-white text-xs font-sans rounded-[2px] shadow-xs cursor-pointer"
                       >
                         Download Resume PDF
                       </button>

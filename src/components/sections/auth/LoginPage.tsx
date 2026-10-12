@@ -100,7 +100,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, isVisitor = fa
 
             <button
               onClick={() => onNavigate('projects')}
-              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-ochre-hover text-xs font-medium tracking-wide transition-colors cursor-pointer shadow-xs min-h-[44px]"
+              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-white text-xs font-medium tracking-wide transition-colors cursor-pointer shadow-xs min-h-[44px]"
             >
               View Projects
             </button>

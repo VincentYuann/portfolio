@@ -8,7 +8,6 @@ import {
   ExternalLink,
   CheckCircle2,
   Download,
-  Sparkles,
   Copy,
   Check,
 } from 'lucide-react';
@@ -340,9 +339,9 @@ export const ResumeEditor: React.FC = () => {
         }
       />
 
-      {/* Upload & Published PDF Panel */}
+      {/* Upload & Published PDF Panel (Split-Pane Studio Workstation) */}
       {tab === 'upload' && (
-        <div className="relative pt-1 space-y-6">
+        <div className="relative pt-1">
           <input
             ref={fileInputRef}
             type="file"
@@ -351,145 +350,167 @@ export const ResumeEditor: React.FC = () => {
             className="hidden"
           />
 
-          {/* Staged New Upload Card */}
-          {uploadedFile && (
-            <div className="flex flex-col gap-4 p-5 rounded-[3px] bg-light-surface-card dark:bg-dark-surface-card border-2 border-dashed border-bamboo/60 shadow-2xs">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-[2px] bg-bamboo/10 dark:bg-bamboo/20 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-5 h-5 text-bamboo" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs uppercase tracking-wider px-2 py-0.5 rounded-[2px] bg-bamboo/10 text-bamboo font-semibold">
-                        Staged for Publishing
-                      </span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Left Column: Controls, Upload Dropzone & Document Specs */}
+            <div className="lg:col-span-4 xl:col-span-4 space-y-5 lg:sticky lg:top-24">
+              {/* Staged New Upload Card */}
+              {uploadedFile && (
+                <div className="flex flex-col gap-3 p-4 rounded-[3px] bg-light-surface-card dark:bg-dark-surface-card border-2 border-dashed border-bamboo/60 shadow-2xs">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-[2px] bg-bamboo/10 dark:bg-bamboo/20 flex items-center justify-center shrink-0">
+                        <CheckCircle2 className="w-4 h-4 text-bamboo" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="font-mono text-2xs uppercase tracking-wider px-1.5 py-0.5 rounded-[2px] bg-bamboo/10 text-bamboo font-semibold">
+                          Staged for Publishing
+                        </span>
+                        <p className="font-sans text-xs font-semibold text-light-ink dark:text-dark-ink truncate mt-0.5">
+                          {uploadedFile.name}
+                        </p>
+                        <p className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted">
+                          {(uploadedFile.size / 1024).toFixed(1)} KB · Ready to save
+                        </p>
+                      </div>
                     </div>
-                    <p className="font-sans text-sm font-semibold text-light-ink dark:text-dark-ink truncate mt-0.5">
-                      {uploadedFile.name}
-                    </p>
-                    <p className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted">
-                      {(uploadedFile.size / 1024).toFixed(1)} KB · Ready to publish to Supabase Storage
-                    </p>
-                  </div>
-                </div>
 
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearStagedFile}
-                  className="h-8 px-2.5 text-xs text-light-ink-muted hover:text-red-500 rounded-[2px] cursor-pointer gap-1"
-                  aria-label="Cancel staged upload"
-                >
-                  <X className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Cancel</span>
-                </Button>
-              </div>
-
-              {/* Staged Preview Frame */}
-              {stagedPreviewUrl && (
-                <div className="w-full rounded-[2px] overflow-hidden border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface">
-                  <div className="flex items-center justify-between px-3 py-2 bg-light-surface-raised dark:bg-dark-surface-raised border-b border-light-border dark:border-dark-border text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
-                    <span className="flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
-                      <span>Staged Document Preview</span>
-                    </span>
-                    <a
-                      href={stagedPreviewUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 hover:text-light-ink dark:hover:text-dark-ink transition-colors"
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearStagedFile}
+                      className="h-7 px-2 text-xs text-light-ink-muted hover:text-red-500 rounded-[2px] cursor-pointer gap-1"
+                      aria-label="Cancel staged upload"
                     >
-                      <span>Open Preview</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
+                      <X className="w-3.5 h-3.5" />
+                      <span>Cancel</span>
+                    </Button>
                   </div>
-                  <iframe
-                    src={stagedPreviewUrl}
-                    title="Staged PDF Preview"
-                    className="w-full h-[450px] border-none"
-                  />
                 </div>
               )}
-            </div>
-          )}
 
-          {/* Upload Dropzone */}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => fileInputRef.current?.click()}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-            className="w-full flex flex-col items-center gap-2.5 sm:gap-3 py-8 sm:py-10 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-[3px] hover:border-terracotta dark:hover:border-ochre hover:bg-terracotta/5 dark:hover:bg-ochre/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-ochre"
-          >
-            <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta dark:group-hover:text-ochre transition-colors" />
-            <div className="text-center">
-              <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink font-medium">
-                {uploadedFile ? 'Click or drag to select a different PDF' : 'Click or drag PDF / .tex file here to upload'}
-              </p>
-              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
-                Accepts .pdf, .tex, .txt up to 10 MB
-              </p>
-            </div>
-          </div>
-
-          {/* Active Live Published PDF Panel */}
-          {currentPdfUrl && (
-            <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-5 sm:p-6 shadow-2xs space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-light-border/60 dark:border-dark-border/60">
+              {/* Upload Dropzone */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => fileInputRef.current?.click()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
+                className="w-full flex flex-col items-center gap-2 py-7 px-4 border-2 border-dashed border-light-border dark:border-dark-border rounded-[3px] hover:border-terracotta dark:hover:border-ochre hover:bg-terracotta/5 dark:hover:bg-ochre/5 transition-all group cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta dark:focus:ring-ochre text-center"
+              >
+                <Upload className="w-7 h-7 text-light-ink-subtle dark:text-dark-ink-subtle group-hover:text-terracotta dark:group-hover:text-ochre transition-colors" />
                 <div>
+                  <p className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink font-medium">
+                    {uploadedFile ? 'Select a different file' : 'Click or drop PDF / .tex here'}
+                  </p>
+                  <p className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted mt-1">
+                    Accepts .pdf, .tex, .txt up to 10 MB
+                  </p>
+                </div>
+              </div>
+
+              {/* Live Published Document Credentials Card */}
+              {currentPdfUrl && (
+                <div className="bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] p-4 sm:p-5 shadow-2xs space-y-3.5">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-bamboo animate-pulse" />
                     <span className="font-mono text-xs uppercase tracking-widest text-bamboo font-semibold">
-                      Live Published Resume Document
+                      Live Document
                     </span>
                   </div>
-                  <h3 className="font-sans text-sm font-semibold text-light-ink dark:text-dark-ink mt-1">
-                    Vincent_Yuan_Resume.pdf
-                  </h3>
+                  <div>
+                    <h3 className="font-sans text-sm font-semibold text-light-ink dark:text-dark-ink">
+                      Vincent_Yuan_Resume.pdf
+                    </h3>
+                    <p className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted mt-0.5">
+                      S3-backed Supabase Storage
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-1 border-t border-light-border/60 dark:border-dark-border/60">
+                    <a
+                      href={currentPdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                      <span>View Live</span>
+                    </a>
+                    <a
+                      href={currentPdfUrl}
+                      download="Vincent_Yuan_Resume.pdf"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download</span>
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted leading-relaxed">
+                Uploading a <code className="font-mono bg-light-surface dark:bg-dark-surface px-1 py-0.5 rounded-[2px] border border-light-border dark:border-dark-border">.tex</code> file will populate the LaTeX editor directly.
+              </p>
+            </div>
+
+            {/* Right Column: Tall Portrait Studio PDF Viewer Stage */}
+            <div className="lg:col-span-8 xl:col-span-8">
+              <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] shadow-xs overflow-hidden classical-card-frame">
+                <CornerBrackets size="md" />
+
+                {/* Viewer Header Bar */}
+                <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="w-2.5 h-2.5 rounded-full bg-terracotta/80 dark:bg-ochre/80 inline-block" />
+                    <span className="font-mono text-xs text-light-ink font-semibold dark:text-dark-ink">
+                      {stagedPreviewUrl ? 'Staged PDF Document Preview' : 'Live Document Preview'}
+                    </span>
+                    {stagedPreviewUrl && (
+                      <span className="font-mono text-2xs uppercase tracking-wider px-1.5 py-0.5 rounded-[2px] bg-bamboo/10 text-bamboo font-semibold">
+                        Unsaved Staging
+                      </span>
+                    )}
+                  </div>
+
+                  {(stagedPreviewUrl || currentPdfUrl) && (
+                    <a
+                      href={stagedPreviewUrl || currentPdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink transition-colors"
+                    >
+                      <span>Fullscreen View</span>
+                      <ExternalLink className="w-3 h-3 text-terracotta dark:text-ochre" />
+                    </a>
+                  )}
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <a
-                    href={currentPdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
-                    <span>View Live PDF</span>
-                  </a>
-                  <a
-                    href={currentPdfUrl}
-                    download="Vincent_Yuan_Resume.pdf"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink text-xs font-mono transition-colors shadow-2xs"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Download</span>
-                  </a>
-                </div>
-              </div>
-
-              {/* Embedded Live PDF Document Viewer */}
-              <div className="w-full rounded-[2px] overflow-hidden border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface">
-                <iframe
-                  src={currentPdfUrl}
-                  title="Current Published Resume PDF"
-                  className="w-full h-[520px] border-none"
-                />
+                {/* PDF Viewer Frame */}
+                {stagedPreviewUrl || currentPdfUrl ? (
+                  <iframe
+                    src={stagedPreviewUrl || currentPdfUrl}
+                    title="PDF Document Preview"
+                    className="w-full h-[78vh] min-h-[720px] max-h-[1000px] border-none bg-white"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-24 text-center px-4">
+                    <Upload className="w-10 h-10 text-light-ink-subtle dark:text-dark-ink-subtle mb-3" />
+                    <p className="font-sans text-sm font-medium text-light-ink dark:text-dark-ink">
+                      No resume document published yet
+                    </p>
+                    <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted mt-1 max-w-sm">
+                      Upload a PDF file to preview it here in portrait studio format before saving.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
-          )}
-
-          <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-            Uploading a <code className="font-mono bg-light-surface dark:bg-dark-surface px-1 py-0.5 rounded-[2px] border border-light-border dark:border-dark-border">.tex</code> file will populate the LaTeX editor directly.
-          </p>
+          </div>
         </div>
       )}
 

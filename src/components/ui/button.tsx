@@ -4,12 +4,14 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-xs font-semibold uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta/50 dark:focus-visible:ring-ochre/50 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[2px] text-xs font-semibold uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta/50 dark:focus-visible:ring-ochre/50 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer',
   {
     variants: {
       variant: {
-        default: 'bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-xs hover:opacity-95 dark:hover:bg-ochre-light',
-        terracotta: 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light shadow-xs hover:bg-terracotta-hover dark:hover:bg-ochre-light',
+        default: 'bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-xs hover:opacity-95 dark:hover:bg-white',
+        primary: 'bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-xs hover:opacity-95 dark:hover:bg-white',
+        terracotta: 'bg-terracotta text-white shadow-xs hover:bg-terracotta-hover',
+        ochre: 'bg-ochre text-dark-canvas shadow-xs hover:bg-ochre-light',
         destructive: 'bg-red-500 text-white shadow-xs hover:bg-red-600',
         outline:
           'border border-light-border dark:border-dark-border bg-transparent text-light-ink dark:text-dark-ink hover:border-light-border-strong dark:hover:border-dark-border-strong hover:text-terracotta dark:hover:text-ochre',
@@ -19,10 +21,10 @@ const buttonVariants = cva(
         link: 'text-terracotta dark:text-ochre underline-offset-4 hover:underline normal-case',
       },
       size: {
-        default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-10 rounded-lg px-6 text-sm',
-        icon: 'h-9 w-9 p-0',
+        default: 'h-9 px-4 py-2 rounded-[2px]',
+        sm: 'h-8 px-3 text-xs rounded-[2px]',
+        lg: 'h-10 px-6 text-sm rounded-[2px]',
+        icon: 'h-9 w-9 p-0 rounded-[2px]',
       },
     },
     defaultVariants: {

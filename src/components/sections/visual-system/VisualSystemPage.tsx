@@ -764,7 +764,7 @@ export const VisualSystemPage: React.FC<VisualSystemPageProps> = ({ onNavigate }
                       e.preventDefault();
                       onNavigate('home', 'featured-works');
                     }}
-                    className="group px-3.5 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-opacity min-h-[40px] inline-flex items-center gap-1.5 cursor-pointer"
+                    className="group px-3.5 py-2 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs font-semibold rounded-[2px] shadow-2xs hover:opacity-95 dark:hover:bg-white transition-opacity min-h-[40px] inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Explore Selected Works</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
