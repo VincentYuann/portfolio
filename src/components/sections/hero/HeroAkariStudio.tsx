@@ -192,13 +192,28 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             Neither overly horizontal nor overly vertical — balanced, dignified, and perfectly spaced.
           */}
           <aside className="lg:col-span-5 xl:col-span-5 flex flex-col items-center lg:items-end justify-center order-2 lg:order-2 relative w-full mt-4 lg:mt-0">
-            <div className="double-frame-simple bg-light-surface dark:bg-dark-surface border border-light-border-strong dark:border-dark-border-strong hover:border-terracotta/60 dark:hover:border-ochre/60 rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 shadow-[0_4px_20px_-4px_rgba(40,46,58,0.06)] dark:shadow-[0_4px_24px_-4px_rgba(0,0,0,0.45)] w-full max-w-[400px] sm:max-w-[420px] relative group z-10 transition-colors duration-300">
+            <div className="double-frame-simple bg-light-surface dark:bg-dark-surface rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 w-full max-w-[400px] sm:max-w-[420px] relative group z-10 transition-all duration-300">
 
               {/* Box Top Header: Credential & Geographic Anchor clearly displayed without truncation */}
               <div className="w-full flex flex-col gap-1.5 pb-4 border-b border-light-border dark:border-dark-border relative z-10">
                 <div className="flex items-center gap-2 font-serif text-sm sm:text-base font-semibold text-light-ink dark:text-dark-ink">
                   <GraduationCap className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
-                  <span>{hanko?.headerLabel || 'Drexel University · CS & Math'}</span>
+                  <span className="truncate inline-flex items-center gap-1.5 flex-wrap">
+                    {(hanko?.headerLabel || 'Drexel University · CS & Math')
+                      .replace(/[\uFFFD\u00C2\u00A0]+/g, ' · ')
+                      .split(/\s*[·•/]\s*/)
+                      .filter(Boolean)
+                      .map((seg, idx, arr) => (
+                        <React.Fragment key={idx}>
+                          <span>{seg}</span>
+                          {idx < arr.length - 1 && (
+                            <span className="text-light-border-strong dark:text-dark-border-strong font-sans select-none opacity-80">
+                              ·
+                            </span>
+                          )}
+                        </React.Fragment>
+                      ))}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-light-ink/90 dark:text-dark-ink/90">
                   <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
@@ -211,7 +226,11 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 {/* Red Seal Mark: Authentic Hanko Stamp with Breathing Pulse */}
                 <div className="relative p-0.5 flex items-center justify-center animate-seal-breathe shrink-0">
                   <HankoStamp
-                    char={hanko?.stampCharacter || displayName.slice(0, 1) || '原'}
+                    char={
+                      hanko?.stampCharacter && hanko.stampCharacter !== '?' && !hanko.stampCharacter.includes('\uFFFD')
+                        ? hanko.stampCharacter
+                        : (displayName?.slice(0, 1) || '原')
+                    }
                     className="w-14 h-14 sm:w-16 sm:h-16 transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>

@@ -341,6 +341,19 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           } catch {}
         }
 
+        const cleanHanko: HankoCardConfig | undefined = mappedHankoCard ? {
+          ...mappedHankoCard,
+          headerLabel: (mappedHankoCard.headerLabel || 'Drexel University · CS & Math')
+            .replace(/[\uFFFD\u00C2\u00A0]+/g, ' · ')
+            .replace(/\s*[·•/]\s*/g, ' · ')
+            .trim(),
+          stampCharacter: (
+            mappedHankoCard.stampCharacter && 
+            mappedHankoCard.stampCharacter !== '?' && 
+            !mappedHankoCard.stampCharacter.includes('\uFFFD')
+          ) ? mappedHankoCard.stampCharacter : '原',
+        } : undefined;
+
         const mappedProfile: SiteProfile = {
           name:     row.name     || '',
           headline: row.headline || '',
@@ -355,11 +368,11 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 return {
                   label: (p.label || '').trim(),
                   tags,
-                  items: tags.join(' · ') || (p.items || '').replace(/\uFFFD/g, ' · ').trim(),
+                  items: tags.join(' · ') || (p.items || '').replace(/[\uFFFD\u00C2\u00A0]+/g, ' · ').trim(),
                 };
               })
             : [],
-          hanko_card: mappedHankoCard,
+          hanko_card: cleanHanko,
           origin_story: mappedOriginStory,
           hobbies: mappedHobbies,
         };

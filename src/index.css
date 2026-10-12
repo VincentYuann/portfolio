@@ -42,8 +42,8 @@
 
   /* Card Joinery Shadows & Hover States */
   --card-shadow: 0 1px 2px rgba(40, 46, 58, 0.04);
-  --card-hover-border: rgba(181, 72, 46, 0.45);
-  --card-hover-shadow: inset 0 0 0 1.5px var(--surface-bg), inset 0 0 0 2.5px rgba(181, 72, 46, 0.25), 0 2px 8px rgba(181, 72, 46, 0.08);
+  --card-hover-border: #BDAB8F;
+  --card-hover-shadow: inset 0 0 0 1px var(--border-channel-fill), inset 0 0 0 2px var(--border-inner);
   --modal-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
   --double-hairline-shadow: 0 0 0 1px var(--border-color), inset 0 0 0 1px var(--border-color), inset 0 0 0 4px var(--surface-bg), inset 0 0 0 5px rgb(var(--color-ochre-rgb) / 0.25);
   --btn-bloom-hover-glow: 0 8px 24px -4px rgb(var(--color-terracotta-rgb) / 0.45);
@@ -108,8 +108,8 @@
 
   /* Borders & Joinery Channels */
   --border-color: #383B44;
-  --border-channel-fill: #23262F;
-  --border-inner: #383B44;
+  --border-channel-fill: #18191E;
+  --border-inner: #2E313A;
   --border-strong: #4E5362;
 
   /* Interactive Elements & Buttons */
@@ -124,8 +124,8 @@
 
   /* Card Joinery Shadows & Hover States */
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-  --card-hover-border: rgba(212, 168, 83, 0.45);
-  --card-hover-shadow: inset 0 0 0 1.5px #1B1D23, inset 0 0 0 2.5px rgba(212, 168, 83, 0.25), 0 2px 8px rgba(0, 0, 0, 0.5);
+  --card-hover-border: #4E5362;
+  --card-hover-shadow: inset 0 0 0 1px var(--border-channel-fill), inset 0 0 0 2px var(--border-inner);
   --modal-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
   --double-hairline-shadow: 0 0 0 1px var(--border-color), inset 0 0 0 1px var(--border-color), inset 0 0 0 4px var(--surface-bg), inset 0 0 0 5px rgb(var(--color-ochre-rgb) / 0.25);
   --btn-bloom-hover-glow: 0 8px 24px -4px rgba(212, 168, 83, 0.35);
@@ -624,7 +624,7 @@ body.font-variant-v7 {
   padding: 24px;
 }
 
-/* Compact double hairline frame across all cards */
+/* Compact double hairline frame across all cards (Inlaid Joinery: 1px outer hairline, 1px recessed channel, 1px inner hairline) */
 .double-frame-simple,
 .craft-card,
 .classical-card-frame,
@@ -633,15 +633,16 @@ body.font-variant-v7 {
   border-width: 1px;
   border-style: solid;
   border-color: var(--border-color);
+  border-radius: 3px;
   box-shadow: 
-    inset 0 0 0 1.5px var(--border-channel-fill),
-    inset 0 0 0 2.5px var(--border-color);
+    inset 0 0 0 1px var(--border-channel-fill),
+    inset 0 0 0 2px var(--border-inner);
   transition: border-color 0.25s var(--ease-zen), box-shadow 0.25s var(--ease-zen), background-color 0.25s var(--ease-zen);
 }
 
+.double-frame-simple:hover,
 .craft-card:hover,
 .classical-card-frame:hover,
-.double-frame-simple:hover,
 .interactive-card:hover {
   border-color: var(--card-hover-border);
   box-shadow: var(--card-hover-shadow);
