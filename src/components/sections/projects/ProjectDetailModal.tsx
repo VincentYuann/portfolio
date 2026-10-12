@@ -185,8 +185,8 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
 
               {/* Technologies & Substrates */}
               <div className="space-y-2 pt-2 border-t border-light-border/60 dark:border-dark-border/60">
-                <div className="font-sans text-xs uppercase tracking-wider font-semibold text-light-ink-muted dark:text-dark-ink-muted">
-                  Technologies &amp; Infrastructure
+                <div className="font-mono text-xs uppercase tracking-wider font-bold text-light-ink-muted dark:text-dark-ink-muted">
+                  Core Technologies &amp; Stack
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {project.tags.map((tag) => (
@@ -196,25 +196,25 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               </div>
             </div>
 
-            {/* Right Column: Narrative, Architectural Highlights, Metrics */}
+            {/* Right Column: Narrative, Highlights, Metrics */}
             <div className="lg:col-span-7 space-y-5">
-              {/* Architectural Overview */}
+              {/* Overview */}
               <div className="space-y-2">
-                <h3 className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-medium flex items-center gap-2">
+                <h3 className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-semibold flex items-center gap-2">
                   <Layers className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
-                  <span>Architectural Overview</span>
+                  <span>Overview</span>
                 </h3>
                 <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal max-w-prose">
                   {project.overview}
                 </p>
               </div>
 
-              {/* Key Architectural Highlights & Engineering Principles */}
+              {/* Highlights & Engineering Principles */}
               {project.bullets && project.bullets.length > 0 && (
                 <div className="space-y-2.5">
-                  <h3 className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-medium flex items-center gap-2">
+                  <h3 className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-semibold flex items-center gap-2">
                     <ListChecks className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
-                    <span>Key Architectural Highlights</span>
+                    <span>Highlights</span>
                   </h3>
                   <ul className="space-y-2">
                     {project.bullets.map((point, idx) => (

@@ -205,8 +205,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
         {/* DUAL-RAIL ASYMMETRIC VIEW (Non-mobile: Desktop and wide tablets lg+) */}
         <div className="hidden lg:grid grid-cols-12 gap-8 items-start">
           {/* Left Rail (5 cols): Master Milestones Navigation */}
-          <div className="col-span-5 sticky top-24 space-y-3">
-            <div className="relative space-y-3">
+          <div className="col-span-5 sticky top-24 space-y-4">
+            <div className="relative space-y-4 sm:space-y-4.5">
               {/* Vertical Joinery Spine - Positioned at 12px from left */}
               <div className="absolute left-3 top-4 bottom-5 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B]/60 to-[#CDB38B]/20 dark:from-[#404450] dark:via-ochre/40 dark:to-[#404450]/20 pointer-events-none rounded-full z-0" />
 
@@ -239,14 +239,14 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     <button
                       type="button"
                       onClick={() => setActiveCardId(cardKey)}
-                      className={`relative w-full ml-7 text-left p-3.5 sm:p-4 rounded-[2px] transition-all duration-200 border cursor-pointer flex items-start gap-3.5 ${
+                      className={`relative w-full ml-7 text-left p-4 sm:p-5 rounded-[2px] transition-all duration-200 border cursor-pointer flex items-start gap-4 ${
                         isSelected
                           ? 'bg-light-surface-raised dark:bg-dark-surface border-terracotta/80 dark:border-ochre/80 shadow-xs ring-1 ring-terracotta/30 dark:ring-ochre/30'
                           : 'bg-light-surface-card/60 dark:bg-dark-surface-card/60 border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-card dark:hover:bg-dark-surface-card'
                       }`}
                     >
                       {/* Emblem */}
-                      <div className={`w-12 h-12 rounded-[2px] border ${isSelected ? theme.emblemBorder : 'border-light-border dark:border-dark-border'} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center overflow-hidden shrink-0 mt-0.5 shadow-2xs`}>
+                      <div className={`w-14 h-14 rounded-[2px] border ${isSelected ? theme.emblemBorder : 'border-light-border dark:border-dark-border'} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center overflow-hidden shrink-0 mt-0.5 shadow-2xs`}>
                         {exp.logoUrl ? (
                           <img
                             src={exp.logoUrl}
@@ -255,7 +255,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             onError={handleImageError}
                           />
                         ) : (
-                          <span className={`font-serif font-black ${isSelected ? theme.textClass : 'text-light-ink dark:text-dark-ink'} text-lg`}>
+                          <span className={`font-serif font-black ${isSelected ? theme.textClass : 'text-light-ink dark:text-dark-ink'} text-xl`}>
                             {exp.kanji || '経'}
                           </span>
                         )}
@@ -263,7 +263,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted truncate">
+                          <span className="font-mono text-xs font-semibold text-light-ink/80 dark:text-dark-ink/80 truncate">
                             {exp.startDate} – {exp.endDate}
                           </span>
                           {isCurrent && (
@@ -272,15 +272,15 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             </span>
                           )}
                         </div>
-                        <div className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-medium leading-snug truncate group-hover:text-terracotta dark:group-hover:text-ochre transition-colors mt-0.5">
+                        <div className="font-serif text-lg sm:text-xl text-light-ink dark:text-dark-ink font-semibold leading-snug tracking-tight truncate group-hover:text-terracotta dark:group-hover:text-ochre transition-colors mt-1">
                           {exp.title}
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs sm:text-sm font-sans text-light-ink-muted dark:text-dark-ink-muted truncate mt-0.5">
-                          <span className="truncate font-medium">{exp.company}</span>
+                        <div className="flex items-center gap-1.5 text-xs sm:text-sm font-sans truncate mt-1">
+                          <span className="truncate font-semibold text-light-ink dark:text-dark-ink">{exp.company}</span>
                           {exp.location && (
                             <>
-                              <span className="text-light-ink-subtle">·</span>
-                              <span className="truncate font-mono text-2xs text-light-ink-subtle">{exp.location}</span>
+                              <span className="text-light-ink-muted">·</span>
+                              <span className="truncate font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted">{exp.location}</span>
                             </>
                           )}
                         </div>
@@ -310,7 +310,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                 : [];
 
               return (
-                <Card className="p-6 lg:p-8 relative">
+                <Card className="p-6 sm:p-8 lg:p-9 relative">
                   <CornerBrackets size="md" />
 
                   {/* Metadata Header Strip */}
@@ -330,12 +330,12 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                   />
 
                   {/* Role Title & Organization */}
-                  <div className="mt-3 flex items-start justify-between gap-4">
+                  <div className="mt-3.5 flex items-start justify-between gap-4">
                     <div>
                       <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-light-ink dark:text-dark-ink tracking-tight leading-snug">
                         {activeExp.title}
                       </h3>
-                      <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mt-1.5">
+                      <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mt-2">
                         <span className={`font-serif text-lg sm:text-xl font-medium ${theme.textClass}`}>{activeExp.company}</span>
                         {activeExp.location && (
                           <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono text-light-ink-muted dark:text-dark-ink-muted bg-light-surface/50 dark:bg-dark-surface/50 px-2.5 py-0.5 rounded-[2px] border border-light-border/70 dark:border-dark-border/70">
@@ -365,17 +365,17 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                   {/* Narrative Overview with comfortable reading measure */}
                   {activeExp.overview && (
-                    <p className="font-sans text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-4 pb-4 border-b border-light-border/60 dark:border-dark-border/60 max-w-2xl">
+                    <p className="font-sans text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-5 pb-5 border-b border-light-border/60 dark:border-dark-border/60 max-w-2xl">
                       {activeExp.overview}
                     </p>
                   )}
 
-                  {/* Engineering Contributions & Quantified Impact - Synced to Numbered Micro-Cards */}
+                  {/* Contributions & Quantified Impact - Synced to Numbered Micro-Cards */}
                   {bullets.length > 0 && (
-                    <div className="mt-5 space-y-3">
-                      <div className="flex items-center gap-2 text-sm sm:text-base font-serif font-medium text-light-ink dark:text-dark-ink">
+                    <div className="mt-6 space-y-3.5">
+                      <div className="flex items-center gap-2 text-sm sm:text-base font-serif font-semibold text-light-ink dark:text-dark-ink">
                         <ListChecks className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
-                        <span>Key Engineering Contributions</span>
+                        <span>Contributions</span>
                       </div>
                       <ul className="space-y-2.5 pt-1">
                         {bullets.map((pt, pIdx) => (
@@ -397,7 +397,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                   {/* Tech Stack */}
                   {activeExp.tags && activeExp.tags.length > 0 && (
-                    <div className="mt-6 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
+                    <div className="mt-7 pt-6 border-t border-light-border/60 dark:border-dark-border/60">
                       <div className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-bold mb-3">
                         Core Technologies &amp; Stack
                       </div>
@@ -592,9 +592,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             {/* Engineering Impact Bullets */}
                             {bullets.length > 0 && (
                               <div>
-                                <div className="text-sm font-serif font-medium text-light-ink dark:text-dark-ink mb-2.5 flex items-center gap-2">
+                                <div className="text-sm font-serif font-semibold text-light-ink dark:text-dark-ink mb-2.5 flex items-center gap-2">
                                   <ListChecks className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
-                                  <span>Key Engineering Contributions</span>
+                                  <span>Contributions</span>
                                 </div>
                                 <ul className="space-y-2.5 pt-1">
                                   {bullets.map((pt, pIdx) => (

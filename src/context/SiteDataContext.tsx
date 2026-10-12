@@ -203,7 +203,7 @@ function mapRowToProject(row: any, index?: number): Project {
     kanji: row.kanji || '',
     category: row.category || undefined,
     badge: row.badge || '',
-    subtitle: row.subtitle || overview,
+    subtitle: row.subtitle || '',
     description: overview,
     image: row.image || '',
     tags: Array.isArray(row.tech_stacks) ? row.tech_stacks : [],

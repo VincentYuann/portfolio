@@ -162,7 +162,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
 
                     {/* Narrative & Specifications Column */}
                     <div
-                      className={`lg:col-span-6 flex flex-col justify-center gap-4 ${
+                      className={`lg:col-span-6 flex flex-col justify-center gap-4.5 sm:gap-5 ${
                         isAlternate ? 'lg:col-start-1' : ''
                       }`}
                     >
@@ -176,7 +176,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                           completedLabel="COMPLETED / 完了"
                         />
 
-                        <div className="flex items-center justify-between gap-4 mb-1.5">
+                        <div className="flex items-center justify-between gap-4 mb-2">
                           <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-light-ink dark:text-dark-ink font-normal leading-[1.15] tracking-tight group-hover:text-terracotta dark:group-hover:text-ochre transition-colors duration-200">
                             {project.title}
                           </h3>
@@ -184,9 +184,11 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                             {project.kanji}
                           </span>
                         </div>
-                        <p className="font-chakra text-xs sm:text-sm font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
-                          {project.subtitle}
-                        </p>
+                        {Boolean(project.subtitle?.trim()) && project.subtitle.trim() !== project.description?.trim() && (
+                          <p className="font-chakra text-xs sm:text-sm font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
+                            {project.subtitle}
+                          </p>
+                        )}
                       </div>
 
                       <p className="font-sans text-sm sm:text-base text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-normal max-w-prose">
@@ -209,7 +211,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                         </div>
                       )}
 
-                      <div className="pt-3.5 border-t border-light-border/60 dark:border-dark-border/80 flex flex-wrap items-center justify-between gap-3">
+                      <div className="pt-4 border-t border-light-border/60 dark:border-dark-border/80 flex flex-wrap items-center justify-between gap-3">
                         <button
                           type="button"
                           onClick={() => openProject(project)}
