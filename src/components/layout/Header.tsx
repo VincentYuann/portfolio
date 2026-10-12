@@ -189,7 +189,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isHeroTransparent
-          ? 'bg-light-canvas/15 dark:bg-dark-canvas/20 backdrop-blur-sm border-b border-light-border/15 dark:border-dark-border/15'
+          ? 'bg-light-surface/20 dark:bg-dark-surface/20 backdrop-blur-sm border-b border-light-border/40 dark:border-dark-border/40'
           : 'bg-light-canvas/95 dark:bg-dark-canvas/95 backdrop-blur-md border-b border-light-border/70 dark:border-dark-border/80 shadow-xs'
       }`}
     >
@@ -306,7 +306,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => onNavigate?.(currentView === 'edit' ? 'home' : 'edit')}
                 className={`inline-flex items-center gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-[2px] border font-sans text-xs font-semibold tracking-wider transition-colors cursor-pointer min-h-[36px] ${
                   currentView === 'edit'
-                    ? 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light border-terracotta dark:border-ochre shadow-xs'
+                    ? 'bg-terracotta dark:bg-ochre text-white dark:text-[#121316] border-terracotta dark:border-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] shadow-xs'
                     : 'text-terracotta dark:text-ochre border-terracotta/40 dark:border-ochre/40 bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta/20 dark:hover:bg-ochre/20 hover:border-terracotta dark:hover:border-ochre'
                 }`}
                 title={currentView === 'edit' ? 'Exit Studio & view public site' : 'Open Studio to edit portfolio'}
@@ -450,7 +450,7 @@ export const Header: React.FC<HeaderProps> = ({
                   }
                   setMobileDrawerOpen(false);
                 }}
-                className="w-full flex items-center justify-center py-2.5 px-4 rounded-[2px] text-xs font-sans font-medium tracking-wide bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light hover:opacity-90 dark:hover:bg-white transition-all cursor-pointer"
+                className="w-full flex items-center justify-center py-2.5 px-4 rounded-[2px] text-xs font-sans font-medium tracking-wide bg-terracotta dark:bg-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] text-white dark:text-[#121316] transition-all cursor-pointer shadow-xs"
               >
                 Get in Touch
               </a>

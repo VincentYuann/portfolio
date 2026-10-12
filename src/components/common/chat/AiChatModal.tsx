@@ -963,7 +963,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
             <div className="flex items-center gap-2.5">
               <div
                 onPointerDown={(e) => e.stopPropagation()}
-                className="w-7 h-7 rounded-[2px] bg-terracotta flex items-center justify-center text-white shadow-xs shrink-0 select-none cursor-default"
+                className="size-7 rounded-[2px] bg-terracotta text-white dark:bg-ochre dark:text-[#121316] flex items-center justify-center shadow-xs shrink-0 select-none cursor-default"
               >
                 <span className="font-serif font-bold text-xs">問</span>
               </div>
@@ -1505,7 +1505,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                     <Button
                       type="submit"
                       disabled={(!inputValue.trim() && !attachedFile) || isStreaming}
-                      className="w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-[2px] bg-terracotta dark:bg-dark-button-light hover:bg-terracotta-hover dark:hover:bg-white text-white dark:text-dark-on-light flex items-center justify-center transition-transform active:scale-95 shrink-0 p-0 shadow-xs"
+                      className="w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-[2px] bg-terracotta dark:bg-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] text-white dark:text-[#121316] flex items-center justify-center transition-transform active:scale-95 shrink-0 p-0 shadow-xs"
                       aria-label="Send query"
                     >
                       <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />

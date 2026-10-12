@@ -37,6 +37,7 @@ export interface HankoCardConfig {
   locationArchive?: string;   // e.g. "KYOTO ARCHIVE" or "TORONTO, CA"
   stampCharacter?: string;    // e.g. "原", "匠", "創", "道"
   statusBadge?: string;       // e.g. "AVAILABLE FOR WORK"
+  avatarUrl?: string;         // e.g. profile picture URL or uploaded avatar
   lines?: HankoCardLine[];
 }
 
@@ -75,6 +76,7 @@ export interface SiteProfile {
   github: string;
   linkedin: string;
   role: string;
+  avatar_url?: string;
   capability_pillars: CapabilityPillar[];
   hanko_card?: HankoCardConfig;
   origin_story?: OriginStoryConfig;
@@ -345,6 +347,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           name:     row.name     || '',
           headline: row.headline || '',
           tagline:  row.tagline  || '',
+          avatar_url: row.avatar_url || '',
           email:    row.email    || '',
           github:   row.github   || '',
           linkedin: row.linkedin || '',

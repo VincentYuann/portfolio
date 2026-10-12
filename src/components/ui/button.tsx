@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-xs hover:opacity-95 dark:hover:bg-white',
-        primary: 'bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-xs hover:opacity-95 dark:hover:bg-white',
+        primary: 'bg-terracotta hover:bg-terracotta-hover text-white dark:bg-ochre dark:text-[#121316] dark:hover:bg-[#C29845] shadow-xs',
         terracotta: 'bg-terracotta text-white shadow-xs hover:bg-terracotta-hover',
         ochre: 'bg-ochre text-dark-canvas shadow-xs hover:bg-ochre-light',
         destructive: 'bg-red-500 text-white shadow-xs hover:bg-red-600',

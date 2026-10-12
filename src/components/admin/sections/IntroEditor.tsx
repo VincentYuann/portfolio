@@ -12,8 +12,10 @@ import {
   MapPin,
   Sparkles,
   LayoutGrid,
+  Upload,
+  Loader2,
 } from 'lucide-react';
-import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
+import { supabase, formatErrorMessage, withTimeout, uploadProfileAvatar } from '../../../lib/supabase';
 import {
   useSiteData,
   CapabilityPillar,
@@ -30,6 +32,7 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
+import { Avatar, AvatarImage, AvatarFallback } from '../../ui/avatar';
 import { toast } from 'sonner';
 
 interface IntroData {
@@ -37,6 +40,7 @@ interface IntroData {
   role: string;
   headline: string;
   tagline: string;
+  avatar_url?: string;
   email: string;
   github: string;
   linkedin: string;
@@ -49,6 +53,7 @@ const mapProfileToIntroData = (profile: any): IntroData => ({
   role: profile?.role || '',
   headline: profile?.headline || '',
   tagline: profile?.tagline || '',
+  avatar_url: profile?.avatar_url || profile?.hanko_card?.avatarUrl || '',
   email: profile?.email || '',
   github: profile?.github || '',
   linkedin: profile?.linkedin || '',
@@ -61,6 +66,7 @@ const mapProfileToIntroData = (profile: any): IntroData => ({
     locationArchive: '',
     stampCharacter: '',
     statusBadge: '',
+    avatarUrl: profile?.avatar_url || '',
     lines: [],
   },
 });
@@ -75,6 +81,8 @@ export const IntroEditor: React.FC = () => {
     right_plaque: false,
   });
   const [kanjiModalOpen, setKanjiModalOpen] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const toggle = (section: string) => {
     setCollapsed((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -146,6 +154,53 @@ export const IntroEditor: React.FC = () => {
     }));
   };
 
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file (PNG, JPG, WebP)');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be under 5MB');
+      return;
+    }
+
+    setUploadingAvatar(true);
+    try {
+      const url = await uploadProfileAvatar(file);
+      notifyDirty();
+      setData((prev) => ({
+        ...prev,
+        avatar_url: url,
+        hanko_card: {
+          ...(prev.hanko_card || {}),
+          avatarUrl: url,
+        },
+      }));
+      toast.success('Profile avatar uploaded successfully');
+    } catch (err: unknown) {
+      toast.error('Failed to upload avatar: ' + formatErrorMessage(err));
+    } finally {
+      setUploadingAvatar(false);
+      if (e.target) e.target.value = '';
+    }
+  };
+
+  const handleRemoveAvatar = () => {
+    notifyDirty();
+    setData((prev) => ({
+      ...prev,
+      avatar_url: '',
+      hanko_card: {
+        ...(prev.hanko_card || {}),
+        avatarUrl: '',
+      },
+    }));
+    toast.info('Profile picture removed (reverting to default avatar)');
+  };
 
   const handleSave = async () => {
     if (saveState === 'saving') return;
@@ -161,21 +216,47 @@ export const IntroEditor: React.FC = () => {
             .update({ ...data, updated_at: new Date().toISOString() })
             .eq('id', 1);
           if (error) {
-            // Graceful fallback if hanko_card column does not exist in Postgres yet
-            if (error.code === '42703' || error.message?.includes('hanko_card')) {
+            // Graceful fallback if hanko_card or avatar_url column does not exist in Postgres yet
+            if (error.code === '42703' || error.message?.includes('hanko_card') || error.message?.includes('avatar_url')) {
               const { hanko_card, ...rest } = data as any;
-              const retry = await supabase
+              let retry = await supabase
                 .from('profile')
                 .update({ ...rest, updated_at: new Date().toISOString() })
                 .eq('id', 1);
+              if (retry.error && retry.error.code === '42703') {
+                const { avatar_url, ...restWithoutAvatar } = rest;
+                retry = await supabase
+                  .from('profile')
+                  .update({ ...restWithoutAvatar, updated_at: new Date().toISOString() })
+                  .eq('id', 1);
+              }
               if (retry.error) throw retry.error;
-              if (hanko_card) {
+              if (hanko_card || data.avatar_url) {
                 try {
-                  localStorage.setItem('portfolio_hanko_card_override', JSON.stringify(hanko_card));
+                  localStorage.setItem(
+                    'portfolio_hanko_card_override',
+                    JSON.stringify({
+                      ...(hanko_card || {}),
+                      avatarUrl: data.avatar_url || hanko_card?.avatarUrl,
+                    })
+                  );
                 } catch {}
               }
             } else {
               throw error;
+            }
+          } else {
+            // Also synchronize local storage fallback
+            if (data.hanko_card || data.avatar_url) {
+              try {
+                localStorage.setItem(
+                  'portfolio_hanko_card_override',
+                  JSON.stringify({
+                    ...(data.hanko_card || {}),
+                    avatarUrl: data.avatar_url || data.hanko_card?.avatarUrl,
+                  })
+                );
+              } catch {}
             }
           }
         })(),
@@ -391,6 +472,74 @@ export const IntroEditor: React.FC = () => {
                     placeholder="Full-Stack AI & Software Engineer"
                     className="mt-1 text-xs h-9"
                   />
+                </div>
+              </div>
+
+              {/* Profile Picture */}
+              <div className="pt-3 border-t border-light-border/40 dark:border-dark-border/40 space-y-2">
+                <Label className="text-xs font-semibold text-light-ink dark:text-dark-ink">Profile Picture</Label>
+
+                <div className="flex items-center gap-4 p-3 rounded-[3px] bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border">
+                  {/* Circular Avatar Preview via shadcn Avatar */}
+                  <div className="relative shrink-0">
+                    <Avatar className="size-16 sm:size-18 border border-light-border dark:border-dark-border shadow-xs ring-2 ring-light-border/30 dark:ring-dark-border/40">
+                      <AvatarImage
+                        src={data.avatar_url || data.hanko_card?.avatarUrl}
+                        alt={data.name || 'Profile'}
+                        className="object-cover"
+                      />
+                      <AvatarFallback className="bg-[#E5E1D8] dark:bg-[#1E2027]">
+                        <svg className="size-9 sm:size-10 text-[#9E9A8E] dark:text-[#736F64]" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleAvatarUpload}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={uploadingAvatar}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="h-8 px-3 text-xs font-mono text-light-ink hover:text-terracotta dark:hover:text-ochre border-light-border dark:border-dark-border cursor-pointer flex items-center gap-1.5"
+                    >
+                      {uploadingAvatar ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-terracotta dark:text-ochre" />
+                          <span>Uploading...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
+                          <span>Upload Picture</span>
+                        </>
+                      )}
+                    </Button>
+
+                    {(data.avatar_url || data.hanko_card?.avatarUrl) && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        disabled={uploadingAvatar}
+                        onClick={handleRemoveAvatar}
+                        className="h-8 px-2.5 text-xs font-mono text-red-600 dark:text-red-400 hover:bg-red-500/10 cursor-pointer flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>Remove</span>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
 

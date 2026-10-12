@@ -181,7 +181,7 @@ export const KanjiPickerModal: React.FC<KanjiPickerModalProps> = ({
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-2.5 py-1 rounded-md font-mono text-xs whitespace-nowrap transition-colors cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-terracotta dark:bg-dark-button-light text-white dark:text-dark-on-light font-semibold shadow-xs'
+                    ? 'bg-terracotta dark:bg-ochre text-white dark:text-[#121316] font-semibold shadow-xs'
                     : 'bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50 dark:hover:border-ochre/50 hover:text-light-ink dark:hover:text-dark-ink'
                 }`}
               >

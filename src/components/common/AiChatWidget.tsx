@@ -64,10 +64,10 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           )}
 
           {/* Authentic Hanko Stamp Mark */}
-          <div className="w-9 h-9 rounded-full bg-terracotta text-white flex items-center justify-center font-serif font-bold text-sm shadow-xs group-hover:scale-105 transition-transform shrink-0 relative overflow-hidden">
+          <div className="size-9 rounded-full bg-terracotta text-white dark:bg-ochre dark:text-[#121316] flex items-center justify-center font-serif font-bold text-sm shadow-xs group-hover:scale-105 transition-transform shrink-0 relative overflow-hidden">
             問
             {isStamping && (
-              <span className="absolute inset-0 bg-white/25 animate-pulse pointer-events-none" />
+              <span className="absolute inset-0 bg-white/25 dark:bg-black/20 animate-pulse pointer-events-none" />
             )}
           </div>
           {/* Launcher Label & Shortcut Affordance (Responsive Desktop Expansion) */}

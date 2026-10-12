@@ -67,10 +67,10 @@ export const EditorSectionHeader: React.FC<EditorSectionHeaderProps> = ({
             disabled={saveState === 'saving'}
             className={`text-xs h-9 px-4 flex-1 sm:flex-initial font-medium transition-all duration-200 cursor-pointer ${
               saveState === 'success'
-                ? 'bg-emerald-600 hover:bg-emerald-600 text-white'
+                ? '!bg-black !text-white hover:!bg-black dark:!bg-white dark:!text-black dark:hover:!bg-white shadow-xs'
                 : saveState === 'error'
-                ? 'bg-rose-600 hover:bg-rose-600 text-white'
-                : 'bg-terracotta dark:bg-dark-button-light hover:bg-terracotta-hover dark:hover:bg-white text-white dark:text-dark-on-light shadow-xs'
+                ? '!bg-rose-600 hover:!bg-rose-600 !text-white'
+                : 'bg-terracotta dark:bg-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] text-white dark:text-[#121316] shadow-xs'
             }`}
           >
             {saveState === 'saving' ? (

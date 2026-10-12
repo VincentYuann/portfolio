@@ -164,7 +164,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                     href={project.links.live}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 min-w-[140px] min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-dark-button-light dark:text-dark-on-light dark:hover:bg-white transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none shadow-xs"
+                    className="flex-1 min-w-[140px] min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-ochre dark:text-[#121316] dark:hover:bg-[#C29845] transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none shadow-xs"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>Live Deployment</span>

@@ -10,8 +10,8 @@ import {
 } from 'lucide-react';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 import { useTheme } from '../../../context/ThemeContext';
-import { HankoStamp } from '../../common/HankoStamp';
 import { TechTag } from '../../common/TechTag';
+import { Avatar, AvatarImage, AvatarFallback } from '../../ui/avatar';
 import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
 
@@ -64,6 +64,8 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
   // Dynamic Hanko Card Configuration (from DB profile.hanko_card)
   const hanko = profile?.hanko_card;
+  const avatarUrl = hanko?.avatarUrl || profile?.avatar_url || '';
+  const statusBadge = hanko?.statusBadge?.trim() || 'OPEN TO FULL-STACK ROLES';
 
   // Dynamic Technical Domains (synced directly with DB profile.capability_pillars)
   const capabilityPillars = Array.isArray(profile?.capability_pillars)
@@ -158,7 +160,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   return (
                     <div
                       key={pillar.label || idx}
-                      className="flex flex-col justify-between gap-2 sm:gap-2.5 p-3 sm:p-3.5 rounded-[3px] bg-light-surface-card/20 dark:bg-dark-surface-card/25 backdrop-blur-md border border-light-border/50 dark:border-dark-border/50 hover:border-terracotta/40 dark:hover:border-ochre/40 hover:bg-light-surface-card/30 dark:hover:bg-dark-surface-card/35 transition-all duration-300 shadow-2xs group h-full"
+                      className="flex flex-col justify-between gap-2 sm:gap-2.5 p-3 sm:p-3.5 rounded-[3px] bg-light-surface-card/20 dark:bg-dark-surface-card/20 backdrop-blur-sm border border-light-border/50 dark:border-dark-border/50 hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-card dark:hover:bg-dark-surface-card transition-all duration-300 shadow-2xs group h-full"
                     >
                       <div className="pb-1.5 border-b border-light-border/40 dark:border-dark-border/40">
                         <span className="font-mono text-xs uppercase tracking-wider font-semibold text-light-ink dark:text-dark-ink block truncate">
@@ -174,7 +176,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                               key={tag}
                               tag={tag}
                               size="sm"
-                              className="bg-light-surface/40 dark:bg-dark-surface/40 border-light-border/50 dark:border-dark-border/50 text-xs py-1 px-2.5 font-medium backdrop-blur-xs"
+                              className="bg-light-surface/20 dark:bg-dark-surface/20 border-light-border/50 dark:border-dark-border/50 text-xs py-1 px-2.5 font-medium backdrop-blur-xs"
                             />
                           ))}
                         </div>
@@ -189,60 +191,69 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           {/* 
             RIGHT COLUMN: RECRUITER IDENTITY PLAQUE (Atelier Washi Stationery Plaque)
             Yamato-hi (Silver Ratio) Proportions: ~1 : 1.35 vertical elegance.
-            Neither overly horizontal nor overly vertical — balanced, dignified, and perfectly spaced.
+            Semi-transparent at rest to reveal ambient backdrop, solid on hover.
           */}
           <aside className="lg:col-span-5 xl:col-span-5 flex flex-col items-center lg:items-end justify-center order-2 lg:order-2 relative w-full mt-4 lg:mt-0">
-            <div className="double-frame-simple bg-light-surface dark:bg-dark-surface rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 w-full max-w-[400px] sm:max-w-[420px] relative group z-10 transition-all duration-300">
+            <div className="double-frame-simple bg-light-surface/20 dark:bg-dark-surface/20 backdrop-blur-sm hover:bg-light-surface/95 dark:hover:bg-dark-surface/95 rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 w-full max-w-[340px] sm:max-w-[360px] relative group z-10 transition-all duration-300">
 
-              {/* Box Top Header: Credential & Geographic Anchor clearly displayed without truncation */}
-              <div className="w-full flex flex-col gap-1.5 pb-4 border-b border-light-border dark:border-dark-border relative z-10">
-                <div className="flex items-center gap-2 font-serif text-sm sm:text-base font-semibold text-light-ink dark:text-dark-ink">
+              {/* Box Top Header: Centered Credential & Geographic Anchor */}
+              <div className="w-full flex flex-col items-center text-center gap-1.5 pb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
+                <div className="flex items-center justify-center gap-2 font-serif text-sm font-semibold text-light-ink dark:text-dark-ink">
                   <GraduationCap className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
-                  <span className="truncate">{hanko?.headerLabel || ''}</span>
+                  <span className="truncate">{hanko?.headerLabel || 'Drexel University · CS & Math'}</span>
                 </div>
-                <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-light-ink/90 dark:text-dark-ink/90">
-                  <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
-                  <span>{hanko?.locationArchive || 'Philadelphia, PA'}</span>
+                <div className="flex items-center justify-center gap-2 font-serif text-sm font-semibold text-light-ink/90 dark:text-dark-ink/90">
+                  <MapPin className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
+                  <span className="truncate">{hanko?.locationArchive || 'Philadelphia, PA'}</span>
                 </div>
               </div>
 
-              {/* Core Profile Stack: Hanko Seal + Name + Role + Live Availability Status */}
-              <div className="w-full flex items-center gap-4 py-1 relative z-10">
-                {/* Red Seal Mark: Authentic Hanko Stamp with Breathing Pulse */}
-                <div className="relative p-0.5 flex items-center justify-center animate-seal-breathe shrink-0">
-                  <HankoStamp
-                    char={hanko?.stampCharacter || displayName.slice(0, 1) || '原'}
-                    className="w-14 h-14 sm:w-16 sm:h-16 transition-transform duration-300 group-hover:scale-105"
-                  />
+              {/* Core Profile Stack: Centered Avatar */}
+              <div className="w-full flex flex-col items-center text-center gap-3.5 py-1 relative z-10">
+                {/* Circular Profile Picture via shadcn Avatar */}
+                <div className="relative inline-block animate-seal-breathe">
+                  <Avatar className="size-24 sm:size-28 border border-light-border dark:border-dark-border shadow-xs ring-2 ring-light-border/30 dark:ring-dark-border/40">
+                    <AvatarImage
+                      src={avatarUrl}
+                      alt={displayName || 'Profile Avatar'}
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="bg-[#E5E1D8] dark:bg-[#1E2027]">
+                      <svg className="size-13 sm:size-16 text-[#9E9A8E] dark:text-[#736F64]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                      </svg>
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
 
-                {/* Identity & Status */}
-                <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
-                  <h2 className="font-display text-2xl sm:text-3xl font-semibold text-light-ink dark:text-dark-ink tracking-tight leading-tight">
+                {/* Identity: Centered Full-width Name & Title */}
+                <div className="w-full flex flex-col items-center text-center gap-1">
+                  <h2 className="font-display text-2xl sm:text-3xl font-semibold text-light-ink dark:text-dark-ink tracking-tight leading-tight truncate max-w-full">
                     {displayName || 'Vincent Yuan'}
                   </h2>
-                  <p className="font-mono text-xs font-semibold text-terracotta dark:text-ochre tracking-wide leading-tight uppercase">
+                  <p className="font-sans text-xs sm:text-sm font-medium text-terracotta dark:text-ochre tracking-tight leading-tight truncate max-w-full">
                     {displayRole || 'Full-Stack AI & Software Engineer'}
                   </p>
-                  {hanko?.statusBadge && (
-                    <div className="mt-1.5 inline-flex items-center gap-2 px-2.5 py-1 rounded-[2px] bg-bamboo/10 dark:bg-bamboo/20 border border-bamboo/40 dark:border-bamboo/50 text-xs font-mono font-bold tracking-wider text-bamboo dark:text-[#76A88B] uppercase w-fit">
-                      <span className="relative flex h-2 w-2 shrink-0">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-bamboo opacity-40 dark:bg-[#76A88B]" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-bamboo dark:bg-[#76A88B]" />
-                      </span>
-                      <span>{hanko.statusBadge}</span>
-                    </div>
-                  )}
                 </div>
+
+                {/* Live Availability Status Signal */}
+                {statusBadge && (
+                  <div className="pt-0.5 flex items-center justify-center">
+                    <div className="inline-flex items-center gap-2 py-1 px-3 rounded-[2px] bg-terracotta/[0.07] dark:bg-ochre/[0.09] border border-terracotta/30 dark:border-ochre/35 text-terracotta dark:text-ochre text-2xs font-mono font-semibold uppercase tracking-wider shadow-2xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0 animate-pulse" />
+                      <span>{statusBadge}</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Direct Channels Dock: Normalized GitHub, LinkedIn & Bold Contact CTA */}
-              <div className="w-full pt-4 border-t border-light-border dark:border-dark-border grid grid-cols-3 gap-2.5 relative z-10">
+              <div className="w-full pt-4 border-t border-light-border/60 dark:border-dark-border/60 grid grid-cols-3 gap-2 relative z-10">
                 <a
                   href={githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface-raised hover:bg-light-surface-card dark:hover:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono font-semibold transition-all shadow-2xs group/gh cursor-pointer min-h-[44px]"
+                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/20 dark:bg-dark-surface-raised/20 hover:bg-light-surface dark:hover:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono font-semibold transition-all shadow-2xs group/gh cursor-pointer min-h-[44px]"
                   title="Inspect GitHub Repositories"
                 >
                   <Github className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/gh:text-terracotta dark:group-hover/gh:text-ochre transition-transform duration-200 group-hover/gh:scale-110" />
@@ -253,7 +264,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   href={linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-[2px] bg-light-surface-raised dark:bg-dark-surface-raised hover:bg-light-surface-card dark:hover:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono font-semibold transition-all shadow-2xs group/li cursor-pointer min-h-[44px]"
+                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/20 dark:bg-dark-surface-raised/20 hover:bg-light-surface dark:hover:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono font-semibold transition-all shadow-2xs group/li cursor-pointer min-h-[44px]"
                   title="Open LinkedIn Profile"
                 >
                   <Linkedin className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/li:text-terracotta dark:group-hover/li:text-ochre transition-transform duration-200 group-hover/li:scale-110" />
@@ -278,7 +289,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       }, 400);
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-[2px] bg-terracotta hover:bg-[#9E3D27] text-white dark:bg-ochre dark:hover:bg-[#C29845] dark:text-[#121316] border border-terracotta dark:border-ochre text-xs font-mono font-bold tracking-wide transition-all shadow-xs group/mail cursor-pointer min-h-[44px]"
+                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-terracotta hover:bg-[#9E3D27] text-white dark:bg-ochre dark:hover:bg-[#C29845] dark:text-[#121316] border border-terracotta dark:border-ochre text-xs font-mono font-bold tracking-wide transition-all shadow-xs group/mail cursor-pointer min-h-[44px]"
                   title="Direct Message / Get in Touch"
                 >
                   <Mail className="w-3.5 h-3.5 transition-transform duration-200 group-hover/mail:scale-110" />
