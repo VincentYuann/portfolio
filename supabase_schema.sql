@@ -55,7 +55,6 @@ CREATE TABLE IF NOT EXISTS public.profile (
   hanko_card JSONB DEFAULT '{
     "headerLabel": "SEAL / 認印",
     "locationArchive": "PHILADELPHIA, PA",
-    "stampCharacter": "原",
     "statusBadge": "OPEN TO ROLES · FULL-STACK",
     "lines": [
       {"text": "間と余白の美学", "label": "MA · 間", "tooltip": "Aesthetics of Negative Space (Ma)"},

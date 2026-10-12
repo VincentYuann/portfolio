@@ -7,13 +7,13 @@ import {
   Linkedin,
   ChevronDown,
   ChevronRight,
-  BookOpen,
   GraduationCap,
   MapPin,
   Sparkles,
   LayoutGrid,
   Upload,
   Loader2,
+  User,
 } from 'lucide-react';
 import { supabase, formatErrorMessage, withTimeout, uploadProfileAvatar } from '../../../lib/supabase';
 import {
@@ -22,8 +22,6 @@ import {
   parsePillarTags,
   HankoCardConfig,
 } from '../../../context/SiteDataContext';
-import { HankoStamp } from '../../common/HankoStamp';
-import { KanjiPickerModal } from '../modals/KanjiPickerModal';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { TechTagSelector } from '../shared/TechTagSelector';
@@ -64,7 +62,6 @@ const mapProfileToIntroData = (profile: any): IntroData => ({
   hanko_card: profile?.hanko_card || {
     headerLabel: '',
     locationArchive: '',
-    stampCharacter: '',
     statusBadge: '',
     avatarUrl: profile?.avatar_url || '',
     lines: [],
@@ -80,7 +77,6 @@ export const IntroEditor: React.FC = () => {
     left_canvas: false,
     right_plaque: false,
   });
-  const [kanjiModalOpen, setKanjiModalOpen] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -427,14 +423,14 @@ export const IntroEditor: React.FC = () => {
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
-                <HankoStamp char={hankoData.stampCharacter || '原'} className="w-5 h-5" />
+                <User className="w-4 h-4 text-terracotta dark:text-ochre" />
               </div>
               <div>
                 <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
                   Right Profile Plaque · Recruiter Snapshot
                 </h3>
                 <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
-                  Personal credentials, institution, location, seal stamp, and contact channels.
+                  Personal credentials, institution, location, and contact channels.
                 </p>
               </div>
             </div>
@@ -586,35 +582,7 @@ export const IntroEditor: React.FC = () => {
                 </div>
               </div>
 
-              {/* Hanko Stamp Character & Kanji Picker */}
-              <div className="pt-3 border-t border-light-border/40 dark:border-dark-border/40">
-                <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1.5 block">
-                  Hanko Seal Character (認印)
-                </Label>
-                <div className="flex items-center gap-2 max-w-sm">
-                  <div className="w-9 h-9 rounded-lg bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
-                    <HankoStamp char={hankoData.stampCharacter || '原'} className="w-6 h-6" />
-                  </div>
-                  <Input
-                    value={hankoData.stampCharacter || ''}
-                    onChange={(e) => updateHanko({ stampCharacter: e.target.value })}
-                    placeholder="原 (or 鑑賞)"
-                    maxLength={4}
-                    className="font-serif text-sm h-9 flex-1"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setKanjiModalOpen(true)}
-                    className="h-9 px-3 text-xs font-mono text-light-ink-muted hover:text-terracotta dark:hover:text-ochre border-light-border dark:border-dark-border cursor-pointer shrink-0"
-                    title="Choose Kanji"
-                  >
-                    <BookOpen className="w-3.5 h-3.5 mr-1 text-terracotta dark:text-ochre" />
-                    Picker
-                  </Button>
-                </div>
-              </div>
+
 
               {/* Public Channels & Contact (Synced across Hero Card and Contact Section) */}
               <div className="pt-3 border-t border-light-border/40 dark:border-dark-border/40 space-y-2.5">
@@ -670,16 +638,6 @@ export const IntroEditor: React.FC = () => {
           )}
         </div>
       </div>
-
-      <KanjiPickerModal
-        isOpen={kanjiModalOpen}
-        selectedChar={hankoData.stampCharacter || '原'}
-        onSelect={(char) => {
-          updateHanko({ stampCharacter: char });
-          setKanjiModalOpen(false);
-        }}
-        onClose={() => setKanjiModalOpen(false)}
-      />
     </div>
   );
 };

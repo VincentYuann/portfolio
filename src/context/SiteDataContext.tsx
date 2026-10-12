@@ -35,7 +35,6 @@ export interface HankoCardLine {
 export interface HankoCardConfig {
   headerLabel?: string;       // e.g. "SEAL / 認印"
   locationArchive?: string;   // e.g. "KYOTO ARCHIVE" or "TORONTO, CA"
-  stampCharacter?: string;    // e.g. "原", "匠", "創", "道"
   statusBadge?: string;       // e.g. "AVAILABLE FOR WORK"
   avatarUrl?: string;         // e.g. profile picture URL or uploaded avatar
   lines?: HankoCardLine[];
