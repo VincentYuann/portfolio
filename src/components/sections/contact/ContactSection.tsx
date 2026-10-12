@@ -8,6 +8,13 @@ import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
 
 
+const normalizeUrl = (url?: string) => {
+  if (!url) return '';
+  const trimmed = url.trim();
+  if (!trimmed) return '';
+  return trimmed.startsWith('http://') || trimmed.startsWith('https://') ? trimmed : `https://${trimmed}`;
+};
+
 export const ContactSection: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -100,8 +107,8 @@ export const ContactSection: React.FC = () => {
 
   const { profile } = useSiteData();
   const contactEmail = profile?.email || '';
-  const contactGithub = profile?.github || '';
-  const contactLinkedin = profile?.linkedin || '';
+  const contactGithub = normalizeUrl(profile?.github);
+  const contactLinkedin = normalizeUrl(profile?.linkedin);
 
   const handleCopyEmail = () => {
     if (!contactEmail) return;

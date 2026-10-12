@@ -6,8 +6,6 @@ import { Hero } from './components/sections/hero/Hero';
 import { SectionDividerDefs } from './components/common/SectionDivider';
 import { VariantProvider } from './context/VariantContext';
 import { WashiProvider } from './context/WashiContext';
-import { LayoutProvider } from './context/LayoutContext';
-import { LayoutSwitcherDock } from './components/common/LayoutSwitcherDock';
 
 const ThemedToaster = lazy(() => import('./components/layout/ThemedToaster').then((m) => ({ default: m.ThemedToaster })));
 
@@ -390,8 +388,7 @@ export const App: React.FC = () => {
     <ThemeProvider>
       <WashiProvider>
         <VariantProvider>
-          <LayoutProvider>
-            <SiteDataProvider>
+          <SiteDataProvider>
             <div className="min-h-screen bg-light-canvas dark:bg-dark-canvas text-light-ink dark:text-dark-ink transition-colors duration-300 flex flex-col selection:bg-terracotta/20 selection:text-terracotta dark:selection:bg-ochre/25 dark:selection:text-ochre overflow-x-clip">
               <SectionDividerDefs />
               <Header
@@ -451,7 +448,6 @@ export const App: React.FC = () => {
                 </Suspense>
               )}
             </div>
-            {currentView === 'home' && <LayoutSwitcherDock />}
             <Suspense fallback={null}>
               <AiChatWidget onNavigate={handleNavigate} isAdmin={isAdmin} />
             </Suspense>
@@ -459,7 +455,6 @@ export const App: React.FC = () => {
               <ThemedToaster />
             </Suspense>
           </SiteDataProvider>
-          </LayoutProvider>
         </VariantProvider>
       </WashiProvider>
     </ThemeProvider>

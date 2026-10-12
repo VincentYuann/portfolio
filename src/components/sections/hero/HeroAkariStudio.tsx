@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   ArrowRight,
-  FileText,
   Mail,
   Download,
   Github,
   Linkedin,
   MapPin,
+  GraduationCap,
 } from 'lucide-react';
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 import { useTheme } from '../../../context/ThemeContext';
@@ -14,6 +14,20 @@ import { HankoStamp } from '../../common/HankoStamp';
 import { TechTag } from '../../common/TechTag';
 import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
+
+const normalizeUrl = (url?: string) => {
+  if (!url) return '';
+  const trimmed = url.trim();
+  if (!trimmed) return '';
+  return trimmed.startsWith('http://') || trimmed.startsWith('https://') ? trimmed : `https://${trimmed}`;
+};
+
+const formatHeadline = (text: string) => {
+  if (!text) return '';
+  // Replace standard hyphens in compound words like full-stack with a non-breaking hyphen (\u2011)
+  // to prevent clumsy breaks across lines (e.g. "full-" on line 1 and "stack" on line 2)
+  return text.replace(/(\b\w+)-(\w+\b)/g, '$1\u2011$2');
+};
 
 interface HeroAkariStudioProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -24,9 +38,10 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   const { theme } = useTheme();
 
   const headline = profile?.headline || '';
-  const tagline = profile?.tagline || '';
   const displayName = profile?.name || '';
   const displayRole = profile?.role || '';
+  const githubUrl = normalizeUrl(profile?.github) || 'https://github.com/VincentYuann';
+  const linkedinUrl = normalizeUrl(profile?.linkedin) || 'https://www.linkedin.com/in/yuanvincent';
 
   // Resume PDF URL with live Supabase query and fallback
   const [supabasePdfUrl, setSupabasePdfUrl] = useState(getResumePdfUrl());
@@ -49,7 +64,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
   // Dynamic Hanko Card Configuration (from DB profile.hanko_card)
   const hanko = profile?.hanko_card;
-  const hankoLines = Array.isArray(hanko?.lines) ? hanko.lines : [];
 
   // Dynamic Technical Domains (synced directly with DB profile.capability_pillars)
   const capabilityPillars = Array.isArray(profile?.capability_pillars)
@@ -91,39 +105,19 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-center">
           
           {/* 
-            LEFT MAIN WORKSPACE (Akari Canvas - 7-8 Columns)
-            Display headline in Zen Old Mincho, body copy in Mulish, Action buttons,
+            LEFT MAIN WORKSPACE (Akari Canvas - 7 Columns)
+            Display headline in Zen Old Mincho, Action buttons,
             and Dynamic Tech Domains Ribbon mapped directly from the DB profile.
           */}
-          <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-3.5 sm:gap-5 order-1 lg:order-1">
-            <div className="space-y-2.5 sm:space-y-3.5 max-w-3xl">
-              {/* Bold Serif Editorial Display Headline */}
-              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-light-ink dark:text-dark-ink leading-[1.08] tracking-tight text-balance">
-                {headline || 'Software & AI Systems Engineer'}
+          <div className="lg:col-span-7 xl:col-span-7 flex flex-col gap-4 sm:gap-6 order-1 lg:order-1">
+            <div className="space-y-3 sm:space-y-4 max-w-3xl">
+              {/* Bold Serif Editorial Display Headline - United compound words with non-breaking hyphens */}
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-normal text-light-ink dark:text-dark-ink leading-[1.18] tracking-tight max-w-3xl">
+                {formatHeadline(headline) || 'Software & AI Systems Engineer'}
               </h1>
 
-              {/* Subtitle Paragraph in Dynamic Body Font */}
-              {tagline && (
-                <p className="font-sans text-xs xs:text-sm sm:text-base lg:text-lg text-light-ink-muted dark:text-dark-ink-muted max-w-xl leading-relaxed font-normal">
-                  {tagline}
-                </p>
-              )}
-
-              {/* Institutional & Location Byline - 5-Second Test Clarity */}
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5 text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted">
-                <span className="flex items-center gap-1.5 font-medium text-light-ink dark:text-dark-ink">
-                  <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-ochre inline-block" />
-                  <span>Drexel University · CS & Mathematics</span>
-                </span>
-                <span className="opacity-40">/</span>
-                <span className="flex items-center gap-1 text-light-ink dark:text-dark-ink">
-                  <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
-                  <span>Philadelphia, PA · Open to Relocation & Remote</span>
-                </span>
-              </div>
-
-              {/* Action Buttons with 2px corners */}
-              <div className="pt-1 sm:pt-2 flex flex-row flex-wrap items-center gap-2 sm:gap-2.5">
+              {/* Action Buttons: 2 decisive recruiter & hiring manager CTAs */}
+              <div className="pt-2 sm:pt-3 flex flex-row flex-wrap items-center gap-3 sm:gap-3.5">
                 <a
                   href="#featured-works"
                   onClick={(e) => {
@@ -132,32 +126,17 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       onNavigate('home', 'featured-works');
                     }
                   }}
-                  className="group inline-flex items-center justify-center gap-2 px-3.5 py-2 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-all cursor-pointer min-h-[44px] sm:min-h-0"
+                  className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs hover:opacity-95 transition-all cursor-pointer min-h-[44px] sm:min-h-0"
                 >
                   <span>Explore Selected Works</span>
                   <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-1" />
-                </a>
-
-                <a
-                  href="#resume"
-                  onClick={(e) => {
-                    if (onNavigate) {
-                      e.preventDefault();
-                      onNavigate('resume');
-                    }
-                  }}
-                  className="group inline-flex items-center justify-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 bg-light-surface-card/40 dark:bg-dark-surface-card/40 backdrop-blur-xs border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs sm:text-sm font-medium rounded-[2px] shadow-2xs transition-all cursor-pointer min-h-[44px] sm:min-h-0"
-                  title="View interactive Curriculum Vitae with LaTeX source"
-                >
-                  <span>Curriculum Vitae</span>
-                  <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light-ink-muted dark:text-dark-ink-muted transition-transform duration-200 group-hover:translate-x-0.5" />
                 </a>
 
                 {/* 1-Click Hard Resume PDF Download */}
                 <button
                   type="button"
                   onClick={handleDownloadPdf}
-                  className="group inline-flex items-center justify-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 bg-terracotta/10 dark:bg-ochre/15 hover:bg-terracotta/20 dark:hover:bg-ochre/25 border border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs transition-all cursor-pointer min-h-[44px] sm:min-h-0"
+                  className="group inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:px-5 sm:py-2.5 lg:px-5 lg:py-3 bg-terracotta/10 dark:bg-ochre/15 hover:bg-terracotta/20 dark:hover:bg-ochre/25 border border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs transition-all cursor-pointer min-h-[44px] sm:min-h-0"
                   title="Direct 1-click download of official Resume PDF"
                   aria-label="Download Official Resume PDF"
                 >
@@ -169,35 +148,33 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
             {/* 
               3 TECH STACK CORE PILLARS (Rendered dynamically from DB profile.capability_pillars)
-              Fine-tuned into a compact, elegant stationery shelf to preserve lake scenery
+              Fine-tuned into a balanced, elegant stationery shelf to preserve lake scenery
             */}
             {capabilityPillars.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2.5 pt-2.5 sm:pt-4 border-t border-light-border/50 dark:border-dark-border/50 max-w-3xl">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3.5 items-stretch pt-3 sm:pt-5 border-t border-light-border/50 dark:border-dark-border/50 max-w-3xl">
                 {capabilityPillars.map((pillar, idx) => {
                   const tags = parsePillarTags(pillar);
 
                   return (
                     <div
                       key={pillar.label || idx}
-                      className="flex flex-col justify-between gap-1 sm:gap-2 p-2 sm:p-2.5 rounded-[2px] bg-light-surface-card/15 dark:bg-dark-surface-card/20 backdrop-blur-md border border-light-border/50 dark:border-dark-border/50 hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-card/25 dark:hover:bg-dark-surface-card/30 transition-all duration-300 shadow-2xs group"
+                      className="flex flex-col justify-between gap-2 sm:gap-2.5 p-3 sm:p-3.5 rounded-[3px] bg-light-surface-card/20 dark:bg-dark-surface-card/25 backdrop-blur-md border border-light-border/50 dark:border-dark-border/50 hover:border-terracotta/40 dark:hover:border-ochre/40 hover:bg-light-surface-card/30 dark:hover:bg-dark-surface-card/35 transition-all duration-300 shadow-2xs group h-full"
                     >
-                      <div>
-                        <div className="flex items-center gap-1.5 text-light-ink dark:text-dark-ink">
-                          <span className="font-mono text-xs sm:text-sm uppercase tracking-wider font-semibold text-light-ink dark:text-dark-ink truncate">
-                            {pillar.label}
-                          </span>
-                        </div>
+                      <div className="pb-1.5 border-b border-light-border/40 dark:border-dark-border/40">
+                        <span className="font-mono text-xs uppercase tracking-wider font-semibold text-light-ink dark:text-dark-ink block truncate">
+                          {pillar.label}
+                        </span>
                       </div>
 
                       {/* Dynamic official technology tags from DB */}
                       {tags.length > 0 && (
-                        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 pt-0.5">
+                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
                           {tags.map((tag) => (
                             <TechTag
                               key={tag}
                               tag={tag}
                               size="sm"
-                              className="bg-light-surface/30 dark:bg-dark-surface/30 border-light-border/40 dark:border-dark-border/40 text-xs sm:text-sm py-1 px-2.5 font-semibold backdrop-blur-xs"
+                              className="bg-light-surface/40 dark:bg-dark-surface/40 border-light-border/50 dark:border-dark-border/50 text-xs py-1 px-2.5 font-medium backdrop-blur-xs"
                             />
                           ))}
                         </div>
@@ -210,108 +187,85 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
           </div>
 
           {/* 
-            RIGHT COLUMN: CLASSICAL HANKO SHOWCASE CARD (Sleek Compact Stationery Plaque)
-            Sculpted dimensions (compact max-w-[335px] on mobile, max-w-[360px] on desktop)
+            RIGHT COLUMN: RECRUITER IDENTITY PLAQUE (Atelier Washi Stationery Plaque)
+            Yamato-hi (Silver Ratio) Proportions: ~1 : 1.35 vertical elegance.
+            Neither overly horizontal nor overly vertical — balanced, dignified, and perfectly spaced.
           */}
-          <aside className="lg:col-span-5 xl:col-span-4 flex flex-col items-center lg:items-end justify-center order-2 lg:order-2 relative w-full mt-3 lg:mt-0">
-            <div className="double-frame-simple bg-light-surface-card/15 dark:bg-dark-surface-card/20 backdrop-blur-md hover:bg-light-surface-card dark:hover:bg-dark-surface-card hover:backdrop-blur-none transition-all duration-300 border border-light-border/60 dark:border-dark-border/60 hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-3 sm:p-3.5 flex flex-col justify-between gap-2 sm:gap-3 shadow-2xs hover:shadow-md w-full max-w-[335px] sm:max-w-[360px] relative group z-10">
+          <aside className="lg:col-span-5 xl:col-span-5 flex flex-col items-center lg:items-end justify-center order-2 lg:order-2 relative w-full mt-4 lg:mt-0">
+            <div className="double-frame-simple bg-light-surface-card/40 dark:bg-dark-surface-card/45 hover:bg-light-surface-card dark:hover:bg-dark-surface-card backdrop-blur-md hover:backdrop-blur-none transition-all duration-300 border border-light-border-strong/70 dark:border-dark-border-strong/70 hover:border-terracotta/50 dark:hover:border-ochre/50 rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 shadow-sm hover:shadow-md w-full max-w-[400px] sm:max-w-[420px] relative group z-10">
 
-              {/* Box Header: Header Label & Archive Coordinate from DB (Crisp single-line layout) */}
-              {(hanko?.headerLabel || hanko?.locationArchive) && (
-                <div className="w-full flex items-center justify-between gap-2 pb-1.5 border-b border-light-border/50 dark:border-dark-border/50 relative z-10">
-                  {hanko?.headerLabel ? (
-                    <div className="flex items-center gap-1.5 font-mono uppercase text-xs tracking-tight text-light-ink dark:text-dark-ink font-semibold whitespace-nowrap min-w-0">
-                      <span className="w-1.5 h-1.5 rounded-[1px] bg-terracotta dark:bg-ochre inline-block shrink-0" />
-                      <span className="whitespace-nowrap">{hanko.headerLabel}</span>
-                    </div>
-                  ) : <div />}
-                  {hanko?.locationArchive && (
-                    <span className="font-mono text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-tight text-2xs sm:text-xs font-semibold shrink-0 text-right whitespace-nowrap pl-1">
-                      {hanko.locationArchive}
-                    </span>
-                  )}
+              {/* Box Top Header: Credential & Geographic Anchor with Generous Breathing Room */}
+              <div className="w-full flex flex-col gap-1.5 pb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
+                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink">
+                  <GraduationCap className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
+                  <span className="truncate">{hanko?.headerLabel || 'Drexel University · CS & Math'}</span>
                 </div>
-              )}
-
-              {/* Red Seal Mark: Authentic Hanko Stamp with Breathing Pulse */}
-              <div className="relative p-0.5 flex flex-col items-center justify-center z-10">
-                <div className="relative p-0.5 flex items-center justify-center animate-seal-breathe">
-                  <HankoStamp
-                    char={hanko?.stampCharacter || displayName.slice(0, 1) || ''}
-                    className="w-11 h-11 sm:w-12.5 sm:h-12.5 transition-transform duration-300 group-hover:scale-105"
-                  />
+                <div className="flex items-center gap-1.5 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">
+                  <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
+                  <span>{hanko?.locationArchive || 'Philadelphia, PA'}</span>
                 </div>
-                {hanko?.statusBadge && (
-                  <div className="mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[2px] bg-light-surface/40 dark:bg-dark-surface/40 backdrop-blur-xs border border-light-border/50 dark:border-dark-border/50 text-xs font-mono font-semibold text-terracotta dark:text-ochre tracking-wider uppercase shadow-2xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre animate-pulse" />
-                    <span>{hanko.statusBadge}</span>
-                  </div>
-                )}
               </div>
 
-              {/* Identity & Role Block */}
-              {(displayName || displayRole) && (
-                <div className="text-center relative z-10">
-                  {displayName && (
-                    <div className="font-display text-base sm:text-lg lg:text-xl font-medium tracking-tight text-light-ink dark:text-dark-ink">
-                      {displayName}
+              {/* Core Profile Stack: Hanko Seal + Name + Role + Live Availability Status */}
+              <div className="w-full flex items-center gap-4 py-1 relative z-10">
+                {/* Red Seal Mark: Authentic Hanko Stamp with Breathing Pulse */}
+                <div className="relative p-0.5 flex items-center justify-center animate-seal-breathe shrink-0">
+                  <HankoStamp
+                    char={hanko?.stampCharacter || displayName.slice(0, 1) || '原'}
+                    className="w-14 h-14 sm:w-16 sm:h-16 transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Identity & Status */}
+                <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+                  <h2 className="font-display text-2xl sm:text-3xl font-medium text-light-ink dark:text-dark-ink tracking-tight leading-tight">
+                    {displayName || 'Vincent Yuan'}
+                  </h2>
+                  <p className="font-sans text-xs sm:text-sm font-semibold text-terracotta dark:text-ochre leading-tight">
+                    {displayRole || 'Full-Stack AI & Software Engineer'}
+                  </p>
+                  {hanko?.statusBadge && (
+                    <div className="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[2px] bg-bamboo/15 dark:bg-bamboo/20 border border-bamboo/35 text-xs font-mono font-bold text-bamboo tracking-wider uppercase shadow-2xs w-fit">
+                      <span className="w-2 h-2 rounded-full bg-bamboo animate-pulse shrink-0" />
+                      <span>{hanko.statusBadge}</span>
                     </div>
                   )}
-                  {displayRole && (
-                    <p className="font-sans text-xs uppercase tracking-widest text-light-ink dark:text-dark-ink font-semibold mt-0.5">
-                      {displayRole}
-                    </p>
-                  )}
                 </div>
-              )}
+              </div>
 
-              {/* Vertical Tategaki Japanese Prose (Synced dynamically from DB hanko_card.lines) */}
-              {hankoLines.length > 0 && (
-                <div className="w-full pt-2.5 sm:pt-3 border-t border-light-border/50 dark:border-dark-border/50 flex flex-col items-center justify-center relative z-10">
-                  <div className="flex items-center justify-center gap-4 sm:gap-5 w-full pb-2 sm:pb-2.5">
-                    {hankoLines.map((line, lIdx) => (
-                      <div
-                        key={lIdx}
-                        title={line.tooltip || line.label}
-                        className={`writing-vertical-rl font-vertical text-xs sm:text-sm tracking-[0.22em] min-h-[64px] sm:min-h-[76px] leading-relaxed transition-all cursor-default whitespace-nowrap select-none font-semibold ${
-                          lIdx === 1
-                            ? 'text-[#8A2E16] dark:text-[#E2B75A] hover:scale-105'
-                            : 'text-light-ink dark:text-dark-ink hover:opacity-100'
-                        }`}
-                      >
-                        {line.text}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="pt-2 pb-0.5 border-t border-light-border/40 dark:border-dark-border/40 w-full flex items-center justify-between text-xs font-mono tracking-wider text-light-ink-muted dark:text-dark-ink-muted uppercase px-1 font-semibold">
-                    {hankoLines.map((line, lIdx) => (
-                      <span key={lIdx}>{line.label}</span>
-                    ))}
-                  </div>
+              {/* Recruiter Mobility & Intent Badges (High-visibility, crisp typography) */}
+              <div className="w-full grid grid-cols-2 gap-2.5 py-1 relative z-10">
+                <div className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-[2px] bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border dark:border-dark-border text-xs font-mono font-medium text-light-ink dark:text-dark-ink shadow-2xs whitespace-nowrap">
+                  <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0" />
+                  <span>Open to Relocation</span>
                 </div>
-              )}
+                <div className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-[2px] bg-light-surface/60 dark:bg-dark-surface/60 border border-light-border dark:border-dark-border text-xs font-mono font-medium text-light-ink dark:text-dark-ink shadow-2xs whitespace-nowrap">
+                  <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0" />
+                  <span>Remote &amp; On-Site</span>
+                </div>
+              </div>
 
-              {/* Direct Channels: GitHub, LinkedIn & Contact */}
-              <div className="w-full pt-2 border-t border-light-border/50 dark:border-dark-border/50 grid grid-cols-3 gap-1 relative z-10">
+              {/* Direct Channels Dock: Normalized GitHub, LinkedIn & Contact */}
+              <div className="w-full pt-4 border-t border-light-border/60 dark:border-dark-border/60 grid grid-cols-3 gap-2.5 relative z-10">
                 <a
-                  href={profile?.github || 'https://github.com/VincentYuann'}
+                  href={githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-[2px] bg-light-surface/30 dark:bg-dark-surface/30 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border/50 dark:border-dark-border/50 hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-2xs sm:text-xs font-mono font-medium transition-colors shadow-2xs group/gh cursor-pointer min-h-[40px] sm:min-h-0"
+                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-[2px] bg-light-surface/50 dark:bg-dark-surface/50 hover:bg-light-surface dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono font-semibold transition-colors shadow-2xs group/gh cursor-pointer min-h-[44px]"
                   title="Inspect GitHub Repositories"
                 >
-                  <Github className="w-3 h-3 text-light-ink-muted dark:text-dark-ink-muted group-hover/gh:text-terracotta dark:group-hover/gh:text-ochre transition-transform duration-200 group-hover/gh:scale-110" />
+                  <Github className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/gh:text-terracotta dark:group-hover/gh:text-ochre transition-transform duration-200 group-hover/gh:scale-110" />
                   <span>GitHub</span>
                 </a>
 
                 <a
-                  href={profile?.linkedin || 'https://linkedin.com'}
+                  href={linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-[2px] bg-light-surface/30 dark:bg-dark-surface/30 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border/50 dark:border-dark-border/50 hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-2xs sm:text-xs font-mono font-medium transition-colors shadow-2xs group/li cursor-pointer min-h-[40px] sm:min-h-0"
+                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-[2px] bg-light-surface/50 dark:bg-dark-surface/50 hover:bg-light-surface dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono font-semibold transition-colors shadow-2xs group/li cursor-pointer min-h-[44px]"
                   title="Open LinkedIn Profile"
                 >
-                  <Linkedin className="w-3 h-3 text-light-ink-muted dark:text-dark-ink-muted group-hover/li:text-terracotta dark:group-hover/li:text-ochre transition-transform duration-200 group-hover/li:scale-110" />
+                  <Linkedin className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/li:text-terracotta dark:group-hover/li:text-ochre transition-transform duration-200 group-hover/li:scale-110" />
                   <span>LinkedIn</span>
                 </a>
 
@@ -333,10 +287,10 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                       }, 400);
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-[2px] bg-terracotta/10 dark:bg-ochre/15 hover:bg-terracotta/20 dark:hover:bg-ochre/25 border border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre text-2xs sm:text-xs font-mono font-semibold transition-colors shadow-2xs group/mail cursor-pointer min-h-[40px] sm:min-h-0"
+                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-[2px] bg-terracotta/15 dark:bg-ochre/20 hover:bg-terracotta/25 dark:hover:bg-ochre/30 border border-terracotta/50 dark:border-ochre/50 text-terracotta dark:text-ochre text-xs font-mono font-semibold transition-colors shadow-2xs group/mail cursor-pointer min-h-[44px]"
                   title="Direct Message / Get in Touch"
                 >
-                  <Mail className="w-3 h-3 transition-transform duration-200 group-hover/mail:scale-110" />
+                  <Mail className="w-3.5 h-3.5 transition-transform duration-200 group-hover/mail:scale-110" />
                   <span>Contact</span>
                 </a>
               </div>
