@@ -495,7 +495,6 @@ body.font-variant-v7 {
 }
 
 .animate-seal-breathe {
-  filter: drop-shadow(0 0 10px rgb(var(--color-terracotta-rgb) / 0.45));
   animation: seal-breathe 6s ease-in-out infinite;
   will-change: transform, opacity;
 }
@@ -511,7 +510,6 @@ body.font-variant-v7 {
 
 .animate-status-glow {
   animation: status-glow 2.8s var(--ease-zen) infinite;
-  box-shadow: 0 0 6px 1px rgb(var(--color-bamboo-rgb) / 0.4);
   will-change: transform, opacity;
 }
 

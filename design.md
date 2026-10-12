@@ -36,7 +36,7 @@ colors:
   dark-border-channel: "#18191E"
   dark-border-inner: "#2E313A"
   dark-border-strong: "#4E5362"
-  dark-button-light: "#FAF6EE"
+  dark-button-light: "#FFFFFF"
   dark-on-light: "#121316"
 typography:
   display:

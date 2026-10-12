@@ -41,7 +41,7 @@ export default {
           'border-channel': '#18191E',
           'border-inner': '#2E313A',
           'border-strong': '#4E5362',
-          'button-light': '#FAF6EE',
+          'button-light': '#FFFFFF',
           'on-light': '#121316',
           accent: '#D4A853',
         },
