@@ -205,58 +205,48 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
         {/* DUAL-RAIL ASYMMETRIC VIEW (Non-mobile: Desktop and wide tablets lg+) */}
         <div className="hidden lg:grid grid-cols-12 gap-8 items-start">
           {/* Left Rail (5 cols): Master Milestones Navigation */}
-            <div className="col-span-5 sticky top-24 space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-light-border dark:border-dark-border">
-                <span className="font-mono text-2xs uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-bold">
-                  Chronology &amp; Roles ({list.length})
-                </span>
-                <span className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted">
-                  Click to inspect
-                </span>
-              </div>
+          <div className="col-span-5 sticky top-24 space-y-3">
+            <div className="relative space-y-3">
+              {/* Vertical Joinery Spine - Positioned at 12px from left */}
+              <div className="absolute left-3 top-4 bottom-5 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B]/60 to-[#CDB38B]/20 dark:from-[#404450] dark:via-ochre/40 dark:to-[#404450]/20 pointer-events-none rounded-full z-0" />
 
-              <div className="relative space-y-3">
-                {/* Vertical Joinery Spine - Positioned at 12px from left */}
-                <div className="absolute left-3 top-4 bottom-5 w-[2px] bg-gradient-to-b from-[#CDB38B] via-[#CDB38B]/60 to-[#CDB38B]/20 dark:from-[#404450] dark:via-ochre/40 dark:to-[#404450]/20 pointer-events-none rounded-full z-0" />
+              {list.map((exp, idx) => {
+                const cardKey = exp.id || idx;
+                const isSelected = String(activeCardId) === String(cardKey);
+                const theme = getMilestoneTheme(idx);
+                const isCurrent = typeof exp.isActive === 'boolean' ? exp.isActive : idx === 0;
 
-                {list.map((exp, idx) => {
-                  const cardKey = exp.id || idx;
-                  const isSelected = String(activeCardId) === String(cardKey);
-                  const theme = getMilestoneTheme(idx);
-                  const isCurrent = typeof exp.isActive === 'boolean' ? exp.isActive : idx === 0;
-
-                  return (
-                    <div key={cardKey} className="relative flex items-center group">
-                      {/* Timeline Node - Pinned precisely on the vertical spine line at left-3 (12px) */}
+                return (
+                  <div key={cardKey} className="relative flex items-center group">
+                    {/* Timeline Node - Pinned precisely on the vertical spine line at left-3 (12px) */}
+                    <span
+                      className={`absolute left-3 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 pointer-events-none z-20 flex items-center justify-center ${
+                        isSelected
+                          ? 'w-4 h-4 rounded-full border-2 border-terracotta dark:border-ochre bg-light-canvas dark:bg-dark-canvas ring-2 ring-terracotta/20 dark:ring-ochre/20 scale-110'
+                          : 'w-3 h-3 rounded-full border-2 border-[#CDB38B] dark:border-[#6B7280] bg-light-canvas dark:bg-dark-canvas group-hover:border-terracotta dark:group-hover:border-ochre group-hover:scale-105'
+                      }`}
+                    >
                       <span
-                        className={`absolute left-3 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 pointer-events-none z-20 flex items-center justify-center ${
+                        className={`w-1.5 h-1.5 rounded-full transition-colors ${
                           isSelected
-                            ? 'w-4 h-4 rounded-full border-2 border-terracotta dark:border-ochre bg-light-canvas dark:bg-dark-canvas ring-2 ring-terracotta/20 dark:ring-ochre/20 scale-110'
-                            : 'w-3 h-3 rounded-full border-2 border-[#CDB38B] dark:border-[#6B7280] bg-light-canvas dark:bg-dark-canvas group-hover:border-terracotta dark:group-hover:border-ochre group-hover:scale-105'
+                            ? 'bg-terracotta dark:bg-ochre'
+                            : 'bg-[#CDB38B] dark:bg-[#6B7280] group-hover:bg-terracotta dark:group-hover:bg-ochre'
                         }`}
-                      >
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                            isSelected
-                              ? 'bg-terracotta dark:bg-ochre'
-                              : 'bg-[#CDB38B] dark:bg-[#6B7280] group-hover:bg-terracotta dark:group-hover:bg-ochre'
-                          }`}
-                        />
-                      </span>
+                      />
+                    </span>
 
-                      {/* Milestone Card Button - Offset to the right of the spine */}
-                      <button
-                        type="button"
-                        onClick={() => setActiveCardId(cardKey)}
-                        className={`relative w-full ml-7 text-left p-3.5 rounded-[2px] transition-all duration-200 border cursor-pointer flex items-start gap-3.5 ${
-                          isSelected
-                            ? 'bg-light-surface-raised dark:bg-dark-surface border-terracotta/80 dark:border-ochre/80 shadow-xs ring-1 ring-terracotta/30 dark:ring-ochre/30'
-                            : 'bg-light-surface-card/60 dark:bg-dark-surface-card/60 border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-card dark:hover:bg-dark-surface-card'
-                        }`}
-                      >
-
+                    {/* Milestone Card Button - Offset to the right of the spine */}
+                    <button
+                      type="button"
+                      onClick={() => setActiveCardId(cardKey)}
+                      className={`relative w-full ml-7 text-left p-3.5 sm:p-4 rounded-[2px] transition-all duration-200 border cursor-pointer flex items-start gap-3.5 ${
+                        isSelected
+                          ? 'bg-light-surface-raised dark:bg-dark-surface border-terracotta/80 dark:border-ochre/80 shadow-xs ring-1 ring-terracotta/30 dark:ring-ochre/30'
+                          : 'bg-light-surface-card/60 dark:bg-dark-surface-card/60 border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-card dark:hover:bg-dark-surface-card'
+                      }`}
+                    >
                       {/* Small Emblem */}
-                      <div className={`w-10 h-10 rounded-[2px] border ${isSelected ? theme.emblemBorder : 'border-light-border dark:border-dark-border'} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center overflow-hidden shrink-0`}>
+                      <div className={`w-10 h-10 rounded-[2px] border ${isSelected ? theme.emblemBorder : 'border-light-border dark:border-dark-border'} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center overflow-hidden shrink-0 mt-0.5`}>
                         {exp.logoUrl ? (
                           <img
                             src={exp.logoUrl}
@@ -273,153 +263,151 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="font-mono text-2xs text-light-ink-muted dark:text-dark-ink-muted truncate">
+                          <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted truncate">
                             {exp.startDate} – {exp.endDate}
                           </span>
                           {isCurrent && (
-                            <span className="font-mono text-3xs font-bold px-1 py-0.2 rounded-[2px] bg-terracotta/10 text-terracotta dark:bg-ochre/15 dark:text-ochre">
+                            <span className="font-mono text-2xs font-bold px-1.5 py-0.5 rounded-[2px] bg-bamboo/15 text-bamboo dark:bg-bamboo/20 dark:text-bamboo border border-bamboo/30 shrink-0">
                               ACTIVE
                             </span>
                           )}
                         </div>
-                        <div className="font-serif text-base text-light-ink dark:text-dark-ink font-normal truncate group-hover:text-terracotta dark:group-hover:text-ochre transition-colors">
+                        <div className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-medium leading-snug truncate group-hover:text-terracotta dark:group-hover:text-ochre transition-colors mt-0.5">
                           {exp.title}
                         </div>
-                        <div className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted truncate">
+                        <div className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted truncate mt-0.5">
                           {exp.company}
                         </div>
                       </div>
                     </button>
                   </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right Rail (7 cols): Active Milestone Detailed Dossier */}
-            <div className="col-span-7">
-              {(() => {
-                const activeIndex = list.findIndex(
-                  (exp, idx) => String(exp.id || idx) === String(activeCardId)
                 );
-                const activeExp = activeIndex >= 0 ? list[activeIndex] : list[0];
-                const activeIdx = activeIndex >= 0 ? activeIndex : 0;
-                const theme = getMilestoneTheme(activeIdx);
-                const isCurrent = typeof activeExp.isActive === 'boolean' ? activeExp.isActive : activeIdx === 0;
+              })}
+            </div>
+          </div>
 
-                const bullets = Array.isArray(activeExp.bullets) && activeExp.bullets.length > 0
-                  ? activeExp.bullets
-                  : activeExp.description
-                  ? activeExp.description.split(/(?<=[.!?])\s+/).map((p) => p.trim()).filter(Boolean)
-                  : [];
+          {/* Right Rail (7 cols): Active Milestone Detailed Dossier */}
+          <div className="col-span-7">
+            {(() => {
+              const activeIndex = list.findIndex(
+                (exp, idx) => String(exp.id || idx) === String(activeCardId)
+              );
+              const activeExp = activeIndex >= 0 ? list[activeIndex] : list[0];
+              const activeIdx = activeIndex >= 0 ? activeIndex : 0;
+              const theme = getMilestoneTheme(activeIdx);
+              const isCurrent = typeof activeExp.isActive === 'boolean' ? activeExp.isActive : activeIdx === 0;
 
-                return (
-                  <Card className="p-6 lg:p-8 relative">
-                    <CornerBrackets size="md" />
+              const bullets = Array.isArray(activeExp.bullets) && activeExp.bullets.length > 0
+                ? activeExp.bullets
+                : activeExp.description
+                ? activeExp.description.split(/(?<=[.!?])\s+/).map((p) => p.trim()).filter(Boolean)
+                : [];
 
-                    {/* Metadata Header Strip */}
-                    <CardMetaStrip
-                      index={activeIdx + 1}
-                      startDate={activeExp.startDate}
-                      endDate={activeExp.endDate}
-                      isActive={isCurrent}
-                      activeLabel="ACTIVE / 現職"
-                      completedLabel="歴任 / COMPLETED"
-                      statusBadgeProps={{
-                        activeBgClass: theme.badgeBg,
-                        activeBorderClass: theme.badgeBorder,
-                        activeTextClass: theme.badgeText,
-                        activeDotBgClass: theme.nodeActiveBg,
-                      }}
-                    />
+              return (
+                <Card className="p-6 lg:p-8 relative">
+                  <CornerBrackets size="md" />
 
-                    {/* Role Title & Organization */}
-                    <div className="mt-3 flex items-start justify-between gap-4">
-                      <div>
-                        <h3 className="font-serif text-3xl font-normal text-light-ink dark:text-dark-ink tracking-tight leading-snug">
-                          {activeExp.title}
-                        </h3>
-                        <div className="flex items-center gap-2 text-sm font-medium mt-1">
-                          <span className={`font-serif text-lg ${theme.textClass}`}>{activeExp.company}</span>
-                          {activeExp.location && (
-                            <>
-                              <span className="text-light-ink-subtle">·</span>
-                              <span className="inline-flex items-center gap-1 text-xs text-light-ink-muted dark:text-dark-ink-muted font-sans">
-                                <MapPin className="w-3 h-3 text-light-ink-subtle" />
-                                {activeExp.location}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
+                  {/* Metadata Header Strip */}
+                  <CardMetaStrip
+                    index={activeIdx + 1}
+                    startDate={activeExp.startDate}
+                    endDate={activeExp.endDate}
+                    isActive={isCurrent}
+                    activeLabel="ACTIVE / 現職"
+                    completedLabel="歴任 / COMPLETED"
+                    statusBadgeProps={{
+                      activeBgClass: theme.badgeBg,
+                      activeBorderClass: theme.badgeBorder,
+                      activeTextClass: theme.badgeText,
+                      activeDotBgClass: theme.nodeActiveBg,
+                    }}
+                  />
 
-                      {/* Seal Emblem */}
-                      <div className={`w-14 h-14 rounded-[2px] border ${theme.emblemBorder} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center shrink-0`}>
-                        {activeExp.logoUrl ? (
-                          <img
-                            src={activeExp.logoUrl}
-                            alt=""
-                            className="w-full h-full object-cover"
-                            onError={handleImageError}
-                          />
-                        ) : (
-                          <span className={`font-serif font-black ${theme.textClass} text-2xl`}>
-                            {activeExp.kanji || '経'}
-                          </span>
+                  {/* Role Title & Organization */}
+                  <div className="mt-3 flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-light-ink dark:text-dark-ink tracking-tight leading-snug">
+                        {activeExp.title}
+                      </h3>
+                      <div className="flex items-center gap-2 text-sm font-medium mt-1">
+                        <span className={`font-serif text-lg ${theme.textClass}`}>{activeExp.company}</span>
+                        {activeExp.location && (
+                          <>
+                            <span className="text-light-ink-subtle">·</span>
+                            <span className="inline-flex items-center gap-1 text-xs text-light-ink-muted dark:text-dark-ink-muted font-sans">
+                              <MapPin className="w-3 h-3 text-light-ink-subtle" />
+                              {activeExp.location}
+                            </span>
+                          </>
                         )}
                       </div>
                     </div>
 
-                    {/* Narrative Overview */}
-                    {activeExp.overview && (
-                      <p className="font-sans text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-4 pb-4 border-b border-light-border/60 dark:border-dark-border/60">
-                        {activeExp.overview}
-                      </p>
-                    )}
+                    {/* Seal Emblem */}
+                    <div className={`w-14 h-14 rounded-[2px] border ${theme.emblemBorder} bg-light-surface dark:bg-dark-surface-raised flex items-center justify-center shrink-0`}>
+                      {activeExp.logoUrl ? (
+                        <img
+                          src={activeExp.logoUrl}
+                          alt=""
+                          className="w-full h-full object-cover"
+                          onError={handleImageError}
+                        />
+                      ) : (
+                        <span className={`font-serif font-black ${theme.textClass} text-2xl`}>
+                          {activeExp.kanji || '経'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-                    {/* Engineering Contributions & Quantified Impact */}
-                    {bullets.length > 0 && (
-                      <div className="mt-5 space-y-3">
-                        <div className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-bold flex items-center gap-1.5">
-                          <ListChecks className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
-                          Key Engineering Contributions ({bullets.length})
-                        </div>
-                        <ul className="space-y-2.5">
-                          {bullets.map((pt, pIdx) => (
-                            <li
-                              key={pIdx}
-                              className="p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border bg-light-surface-raised/40 dark:bg-dark-surface-raised/40 hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3"
-                            >
-                              <span className="font-mono text-2xs font-bold text-terracotta dark:text-ochre bg-terracotta/10 dark:bg-ochre/15 rounded-[2px] px-1.5 py-0.5 shrink-0 mt-0.5">
-                                #{String(pIdx + 1).padStart(2, '0')}
-                              </span>
-                              <div className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
-                                {renderBulletContent(pt)}
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                  {/* Narrative Overview with comfortable reading measure */}
+                  {activeExp.overview && (
+                    <p className="font-sans text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed font-normal mt-4 pb-4 border-b border-light-border/60 dark:border-dark-border/60 max-w-2xl">
+                      {activeExp.overview}
+                    </p>
+                  )}
 
-                    {/* Tech Stack */}
-                    {activeExp.tags && activeExp.tags.length > 0 && (
-                      <div className="mt-6 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
-                        <div className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-bold mb-3">
-                          Core Technologies &amp; Stack
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {activeExp.tags.map((tag) => (
-                            <TechTag key={tag} tag={tag} size="md" />
-                          ))}
-                        </div>
+                  {/* Engineering Contributions & Quantified Impact - Clean Editorial List */}
+                  {bullets.length > 0 && (
+                    <div className="mt-5 space-y-3">
+                      <div className="flex items-center gap-2 text-sm sm:text-base font-serif font-medium text-light-ink dark:text-dark-ink">
+                        <ListChecks className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
+                        <span>Key Engineering Contributions</span>
                       </div>
-                    )}
-                  </Card>
-                );
-              })()}
-            </div>
+                      <ul className="space-y-3 pt-1">
+                        {bullets.map((pt, pIdx) => (
+                          <li
+                            key={pIdx}
+                            className="flex items-start gap-3 text-sm sm:text-base text-light-ink dark:text-dark-ink leading-relaxed"
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre mt-2 shrink-0" />
+                            <div className="flex-1 font-sans">
+                              {renderBulletContent(pt)}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Tech Stack */}
+                  {activeExp.tags && activeExp.tags.length > 0 && (
+                    <div className="mt-6 pt-5 border-t border-light-border/60 dark:border-dark-border/60">
+                      <div className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted font-bold mb-3">
+                        Core Technologies &amp; Stack
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {activeExp.tags.map((tag) => (
+                          <TechTag key={tag} tag={tag} size="md" />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </Card>
+              );
+            })()}
           </div>
+        </div>
 
         {/* LINEAR TIMELINE CONTAINER (Exclusively on mobile & tablet: lg:hidden) */}
         <div className="relative timeline-container lg:hidden">
@@ -599,20 +587,18 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                             {/* Engineering Impact Bullets */}
                             {bullets.length > 0 && (
                               <div>
-                                <div className="text-xs sm:text-sm font-mono tracking-wide text-light-ink dark:text-dark-ink font-semibold mb-2.5 flex items-center gap-1.5">
-                                  <ListChecks className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted" />
-                                  Engineering Contributions &amp; Quantified Impact
+                                <div className="text-sm font-serif font-medium text-light-ink dark:text-dark-ink mb-2.5 flex items-center gap-2">
+                                  <ListChecks className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
+                                  <span>Key Engineering Contributions</span>
                                 </div>
-                                <ul className="space-y-2">
+                                <ul className="space-y-3 pt-1">
                                   {bullets.map((pt, pIdx) => (
                                     <li
                                       key={pIdx}
-                                      className="p-3 sm:p-3.5 rounded-[2px] border border-light-border/70 dark:border-dark-border bg-light-surface-raised/60 dark:bg-dark-surface-raised hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all flex items-start gap-3 group"
+                                      className="flex items-start gap-3 text-sm text-light-ink dark:text-dark-ink leading-relaxed"
                                     >
-                                      <span className="font-mono text-2xs sm:text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted bg-light-surface-muted dark:bg-dark-canvas border border-light-border dark:border-dark-border rounded-[2px] px-1.5 py-0.5 shrink-0 select-none mt-0.5">
-                                        #{String(pIdx + 1).padStart(2, '0')}
-                                      </span>
-                                      <div className="font-sans text-xs sm:text-sm text-light-ink dark:text-dark-ink leading-relaxed font-normal">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre mt-2 shrink-0" />
+                                      <div className="flex-1 font-sans">
                                         {renderBulletContent(pt)}
                                       </div>
                                     </li>

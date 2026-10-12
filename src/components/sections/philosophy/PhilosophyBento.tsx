@@ -7,7 +7,6 @@ import { Card } from '../../ui/card';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { SectionDivider } from '../../common/SectionDivider';
 import { SectionHeading } from '../../common/SectionHeading';
-import { useLayoutVariant } from '../../../context/LayoutContext';
 
 const TRAJECTORY_THEMES = [
   {
@@ -95,7 +94,6 @@ const PILLAR_CONFIGS = [
 
 export const PhilosophyBento: React.FC = () => {
   const { pillars: rawPillars, profile } = useSiteData();
-  const { layoutInfo } = useLayoutVariant();
   const displayPillars = Array.isArray(rawPillars) ? rawPillars : [];
   const originStory = profile?.origin_story;
   const rawMilestones =
@@ -247,10 +245,8 @@ export const PhilosophyBento: React.FC = () => {
                 ? 'max-w-xl mx-auto'
                 : displayPillars.length === 2
                 ? 'md:grid-cols-2 max-w-4xl mx-auto'
-                : layoutInfo.philosophyLayout === 'matrix'
-                ? 'md:grid-cols-3 gap-4 sm:gap-5'
-                : 'md:grid-cols-3 gap-6 lg:gap-8'
-            } ${layoutInfo.philosophyLayout !== 'matrix' ? 'gap-6 lg:gap-8' : ''}`}
+                : 'md:grid-cols-3 gap-4 sm:gap-5'
+            }`}
           >
           {displayPillars.map((pillar, idx) => {
             const config = PILLAR_CONFIGS[idx % PILLAR_CONFIGS.length];

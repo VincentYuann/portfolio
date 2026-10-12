@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { ArrowLeft, Search, ExternalLink, Github, Layers } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
@@ -20,11 +20,20 @@ interface ProjectsPageProps {
 
 export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [hoveredProjectId, setHoveredProjectId] = useState<string | number | null>(null);
   const { projects } = useSiteData();
 
   const allProjects = projects && projects.length > 0 ? projects : [];
+
+  // Extract unique categories for pill filter bar
+  const categories: string[] = useMemo(() => {
+    const rawCategories = allProjects
+      .map((p) => p.category?.trim() || p.badge?.trim())
+      .filter((c): c is string => Boolean(c));
+    return ['all', ...Array.from(new Set(rawCategories))];
+  }, [allProjects]);
 
   // Deep-linking: sync URL hash with selected project modal
   useEffect(() => {
@@ -66,7 +75,13 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
       project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    return matchesSearch;
+    const matchesCategory =
+      selectedCategory === 'all' ||
+      (project.category && project.category.toLowerCase() === selectedCategory.toLowerCase()) ||
+      (project.badge && project.badge.toLowerCase() === selectedCategory.toLowerCase()) ||
+      project.tags.some((tag) => tag.toLowerCase() === selectedCategory.toLowerCase());
+
+    return matchesSearch && matchesCategory;
   });
 
   const currentIndex = selectedProject
@@ -159,6 +174,26 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
             />
           </div>
         </div>
+
+        {/* Filter Pills */}
+        {categories.length > 2 && (
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1.5 rounded-[2px] font-mono text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  selectedCategory.toLowerCase() === cat.toLowerCase()
+                    ? 'bg-light-button-dark dark:bg-dark-button-light text-light-on-dark dark:text-dark-on-light shadow-xs'
+                    : 'bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink-muted dark:text-dark-ink-muted hover:border-terracotta/50 dark:hover:border-ochre/50'
+                }`}
+              >
+                {cat === 'all' ? 'All Works' : cat}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Projects Grid: Compact Widgets */}
         {filteredProjects.length === 0 ? (

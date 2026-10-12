@@ -10,7 +10,6 @@ import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { SectionDivider } from '../../common/SectionDivider';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
-import { useLayoutVariant } from '../../../context/LayoutContext';
 
 const ProjectDetailModal = lazy(() =>
   import('./ProjectDetailModal').then((m) => ({ default: m.ProjectDetailModal }))
@@ -24,7 +23,6 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [hoveredProjectId, setHoveredProjectId] = useState<string | number | null>(null);
   const { projects } = useSiteData();
-  const { layoutInfo } = useLayoutVariant();
 
   const allProjects = projects && projects.length > 0 ? projects : [];
   const featured = allProjects.filter((p) => p.isFeatured);
@@ -121,111 +119,8 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
           actions={archiveAction}
         />
 
-        {/* Projects Layout Variations: Editorial Stack (Default/Matrix) vs Telemetry Horizon vs Edge-Bleed Gallery */}
-        {layoutInfo.projectsLayout === 'telemetry' ? (
-          /* Telemetry Horizon: Dense horizontal telemetry strips with visible specs & direct action dock */
-          <div className="flex flex-col gap-6">
-            {displayedProjects.map((project, index) => {
-              const isCurrent = typeof project.isActive === 'boolean' ? project.isActive : index === 0;
-              return (
-                <div
-                  key={project.id}
-                  onMouseEnter={() => setHoveredProjectId(project.id)}
-                  onMouseLeave={() => setHoveredProjectId(null)}
-                  className="group relative w-full p-4 sm:p-6 rounded-[2px] bg-light-surface-card/80 dark:bg-dark-surface-card/80 border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong transition-all duration-200"
-                >
-                  <CornerBrackets size="sm" />
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-                    {/* Media Thumbnail Strip (3 cols) */}
-                    <div className="lg:col-span-3">
-                      <div className="relative aspect-[16/10] w-full rounded-[2px] overflow-hidden bg-light-surface-muted dark:bg-dark-canvas border border-light-border/70 dark:border-dark-border/70">
-                        <img
-                          src={project.image}
-                          alt={project.title}
-                          width={480}
-                          height={300}
-                          className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-300"
-                          loading="lazy"
-                          decoding="async"
-                          onError={handleImageError()}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Specifications & Overview (6 cols) */}
-                    <div className="lg:col-span-6 flex flex-col gap-2">
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono text-2xs font-bold text-terracotta dark:text-ochre">
-                          SPEC.0{index + 1}
-                        </span>
-                        <CardMetaStrip
-                          index={index + 1}
-                          startDate={project.startDate}
-                          endDate={project.endDate}
-                          isActive={isCurrent}
-                        />
-                      </div>
-                      <div className="flex items-baseline gap-3">
-                        <h3 className="font-serif text-2xl font-normal text-light-ink dark:text-dark-ink group-hover:text-terracotta dark:group-hover:text-ochre transition-colors">
-                          {project.title}
-                        </h3>
-                        <span className="font-serif text-lg text-light-ink-muted dark:text-dark-ink-muted">
-                          {project.kanji}
-                        </span>
-                      </div>
-                      <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted line-clamp-2 leading-relaxed">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {project.tags.map((tag) => (
-                          <TechTag key={tag} tag={tag} size="sm" />
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Telemetry Action Ribbon (3 cols) */}
-                    <div className="lg:col-span-3 flex flex-col sm:flex-row lg:flex-col items-stretch lg:items-end justify-center gap-2 lg:border-l lg:border-light-border/60 dark:lg:border-dark-border/60 lg:pl-5">
-                      <button
-                        type="button"
-                        onClick={() => openProject(project)}
-                        className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-[2px] font-sans text-2xs font-bold uppercase tracking-wider bg-light-surface-raised dark:bg-dark-surface hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre transition-all cursor-pointer"
-                      >
-                        <span>{project.links.caseStudyText || 'View Architecture'}</span>
-                        <ArrowRight className="w-3 h-3 text-terracotta dark:text-ochre" />
-                      </button>
-                      <div className="flex items-center gap-2 w-full">
-                        {project.links.github && (
-                          <a
-                            href={project.links.github}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans text-2xs font-semibold text-light-ink dark:text-dark-ink bg-light-surface/80 dark:bg-dark-surface/80 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-all"
-                          >
-                            <Github className="w-3 h-3 text-light-ink-muted dark:text-dark-ink-muted" />
-                            <span>Code</span>
-                          </a>
-                        )}
-                        {project.links.live && project.links.live !== '#' && (
-                          <a
-                            href={project.links.live}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans text-2xs font-semibold text-terracotta dark:text-ochre bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas border border-terracotta/35 dark:border-ochre/35 transition-all"
-                          >
-                            <ExternalLink className="w-3 h-3" />
-                            <span>Demo</span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          /* Alternating Editorial Project Cards Stack (Default Blueprint / Ma Gallery / Radar Matrix) */
-          <div className="flex flex-col gap-8 sm:gap-12 lg:gap-14">
+        {/* Alternating Editorial Project Cards Stack */}
+        <div className="flex flex-col gap-8 sm:gap-12 lg:gap-14">
             {displayedProjects.map((project, index) => {
               const isAlternate = index % 2 === 1;
               const isCurrent = typeof project.isActive === 'boolean' ? project.isActive : index === 0;
@@ -235,11 +130,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                   key={project.id}
                   onMouseEnter={() => setHoveredProjectId(project.id)}
                   onMouseLeave={() => setHoveredProjectId(null)}
-                  className={`group relative w-full p-5 sm:p-8 lg:p-10 ${
-                    layoutInfo.projectsLayout === 'gallery'
-                      ? 'border-light-border/40 dark:border-dark-border/40 bg-light-surface-card/40 dark:bg-dark-surface-card/40'
-                      : ''
-                  }`}
+                  className="group relative w-full p-5 sm:p-8 lg:p-10"
                 >
                   <EnsoOrbital
                     placement="top-left"
@@ -355,7 +246,6 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
               );
             })}
           </div>
-        )}
       </div>
 
       {/* Case Study Detail Modal (Loaded dynamically on-demand) */}
