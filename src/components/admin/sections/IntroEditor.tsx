@@ -9,7 +9,6 @@ import {
   ChevronRight,
   GraduationCap,
   MapPin,
-  Sparkles,
   LayoutGrid,
   Upload,
   Loader2,
@@ -564,18 +563,6 @@ export const IntroEditor: React.FC = () => {
                       value={hankoData.locationArchive || ''}
                       onChange={(e) => updateHanko({ locationArchive: e.target.value })}
                       placeholder="PHILADELPHIA, PA"
-                      className="font-mono uppercase text-xs h-8"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
-                      <span>Live Availability Status</span>
-                    </Label>
-                    <Input
-                      value={hankoData.statusBadge || ''}
-                      onChange={(e) => updateHanko({ statusBadge: e.target.value })}
-                      placeholder="OPEN TO FULL-STACK ROLES"
                       className="font-mono uppercase text-xs h-8"
                     />
                   </div>

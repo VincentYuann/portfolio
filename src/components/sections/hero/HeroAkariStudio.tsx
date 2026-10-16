@@ -65,7 +65,6 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
   // Dynamic Hanko Card Configuration (from DB profile.hanko_card)
   const hanko = profile?.hanko_card;
   const avatarUrl = hanko?.avatarUrl || profile?.avatar_url || '';
-  const statusBadge = hanko?.statusBadge?.trim() || 'OPEN TO FULL-STACK ROLES';
 
   // Dynamic Technical Domains (synced directly with DB profile.capability_pillars)
   const capabilityPillars = Array.isArray(profile?.capability_pillars)
@@ -138,12 +137,12 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 <button
                   type="button"
                   onClick={handleDownloadPdf}
-                  className="group inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:px-5 sm:py-2.5 lg:px-5 lg:py-3 bg-terracotta/10 dark:bg-ochre/15 hover:bg-terracotta/20 dark:hover:bg-ochre/25 border border-terracotta/40 dark:border-ochre/40 text-terracotta dark:text-ochre font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs transition-all cursor-pointer min-h-[44px] sm:min-h-0"
+                  className="group inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:px-5 sm:py-2.5 lg:px-5 lg:py-3 bg-terracotta/[0.08] dark:bg-ochre/[0.12] hover:bg-terracotta dark:hover:bg-ochre text-terracotta dark:text-ochre hover:text-white dark:hover:text-[#121316] border border-terracotta/35 dark:border-ochre/35 hover:border-terracotta dark:hover:border-ochre font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs hover:shadow-xs transition-all duration-300 cursor-pointer min-h-[44px] sm:min-h-0"
                   title="Direct 1-click download of official Resume PDF"
                   aria-label="Download Official Resume PDF"
                 >
                   <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-y-0.5" />
-                  <span>Download PDF</span>
+                  <span>Download Resume</span>
                 </button>
               </div>
             </div>
@@ -194,16 +193,16 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             Semi-transparent at rest to reveal ambient backdrop, solid on hover.
           */}
           <aside className="lg:col-span-5 xl:col-span-5 flex flex-col items-center lg:items-end justify-center order-2 lg:order-2 relative w-full mt-4 lg:mt-0">
-            <div className="double-frame-simple bg-light-surface/20 dark:bg-dark-surface/20 backdrop-blur-sm hover:bg-light-surface/95 dark:hover:bg-dark-surface/95 rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 w-full max-w-[340px] sm:max-w-[360px] relative group z-10 transition-all duration-300">
+            <div className="double-frame-simple bg-light-surface/85 dark:bg-dark-surface/80 backdrop-blur-md hover:bg-light-surface/95 dark:hover:bg-dark-surface/95 rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 w-full max-w-[340px] sm:max-w-[360px] relative group z-10 transition-all duration-300 shadow-xs">
 
               {/* Box Top Header: Centered Credential & Geographic Anchor */}
               <div className="w-full flex flex-col items-center text-center gap-1.5 pb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
                 <div className="flex items-center justify-center gap-2 font-serif text-sm font-semibold text-light-ink dark:text-dark-ink">
-                  <GraduationCap className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
+                  <GraduationCap className="w-4 h-4 text-terracotta/80 dark:text-ochre/85 shrink-0" />
                   <span className="truncate">{hanko?.headerLabel || 'Drexel University · CS & Math'}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 font-serif text-sm font-semibold text-light-ink/90 dark:text-dark-ink/90">
-                  <MapPin className="w-4 h-4 text-terracotta dark:text-ochre shrink-0" />
+                  <MapPin className="w-4 h-4 text-terracotta/80 dark:text-ochre/85 shrink-0" />
                   <span className="truncate">{hanko?.locationArchive || 'Philadelphia, PA'}</span>
                 </div>
               </div>
@@ -212,7 +211,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
               <div className="w-full flex flex-col items-center text-center gap-3.5 py-1 relative z-10">
                 {/* Circular Profile Picture via shadcn Avatar */}
                 <div className="relative inline-block animate-seal-breathe">
-                  <Avatar className="size-24 sm:size-28 border border-light-border dark:border-dark-border shadow-xs ring-2 ring-light-border/30 dark:ring-dark-border/40">
+                  <Avatar className="size-24 sm:size-28 border border-light-border dark:border-dark-border shadow-xs ring-2 ring-terracotta/20 dark:ring-ochre/25 group-hover:ring-terracotta/40 dark:group-hover:ring-ochre/45 transition-all duration-500">
                     <AvatarImage
                       src={avatarUrl}
                       alt={displayName || 'Profile Avatar'}
@@ -231,70 +230,62 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   <h2 className="font-display text-2xl sm:text-3xl font-semibold text-light-ink dark:text-dark-ink tracking-tight leading-tight truncate max-w-full">
                     {displayName || 'Vincent Yuan'}
                   </h2>
-                  <p className="font-sans text-xs sm:text-sm font-medium text-terracotta dark:text-ochre tracking-tight leading-tight truncate max-w-full">
+                  <p className="font-sans text-xs sm:text-sm font-semibold text-terracotta/90 dark:text-ochre/95 tracking-tight leading-tight truncate max-w-full">
                     {displayRole || 'Full-Stack AI & Software Engineer'}
                   </p>
                 </div>
-
-                {/* Live Availability Status Signal */}
-                {statusBadge && (
-                  <div className="pt-0.5 flex items-center justify-center">
-                    <div className="inline-flex items-center gap-2 py-1 px-3 rounded-[2px] bg-terracotta/[0.07] dark:bg-ochre/[0.09] border border-terracotta/30 dark:border-ochre/35 text-terracotta dark:text-ochre text-2xs font-mono font-semibold uppercase tracking-wider shadow-2xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-terracotta dark:bg-ochre shrink-0 animate-pulse" />
-                      <span>{statusBadge}</span>
-                    </div>
-                  </div>
-                )}
               </div>
 
-              {/* Direct Channels Dock: Normalized GitHub, LinkedIn & Bold Contact CTA */}
-              <div className="w-full pt-4 border-t border-light-border/60 dark:border-dark-border/60 grid grid-cols-3 gap-2 relative z-10">
-                <a
-                  href={githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/20 dark:bg-dark-surface-raised/20 hover:bg-light-surface dark:hover:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono font-semibold transition-all shadow-2xs group/gh cursor-pointer min-h-[44px]"
-                  title="Inspect GitHub Repositories"
-                >
-                  <Github className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/gh:text-terracotta dark:group-hover/gh:text-ochre transition-transform duration-200 group-hover/gh:scale-110" />
-                  <span>GitHub</span>
-                </a>
+              {/* Direct Channels Dock: 3 Action Buttons */}
+              <div className="w-full pt-4 border-t border-light-border/60 dark:border-dark-border/60 relative z-10">
+                <div className="grid grid-cols-3 gap-2">
+                  <a
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/25 dark:bg-dark-surface-raised/25 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs font-mono font-semibold transition-all duration-200 shadow-2xs group/gh cursor-pointer min-h-[44px]"
+                    title="Inspect GitHub Repositories"
+                  >
+                    <Github className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/gh:text-light-ink dark:group-hover/gh:text-dark-ink transition-transform duration-200 group-hover/gh:scale-105" />
+                    <span>GitHub</span>
+                  </a>
 
-                <a
-                  href={linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/20 dark:bg-dark-surface-raised/20 hover:bg-light-surface dark:hover:bg-dark-surface border border-light-border dark:border-dark-border hover:border-terracotta/60 dark:hover:border-ochre/60 text-light-ink dark:text-dark-ink hover:text-terracotta dark:hover:text-ochre text-xs font-mono font-semibold transition-all shadow-2xs group/li cursor-pointer min-h-[44px]"
-                  title="Open LinkedIn Profile"
-                >
-                  <Linkedin className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/li:text-terracotta dark:group-hover/li:text-ochre transition-transform duration-200 group-hover/li:scale-110" />
-                  <span>LinkedIn</span>
-                </a>
+                  <a
+                    href={linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/25 dark:bg-dark-surface-raised/25 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs font-mono font-semibold transition-all duration-200 shadow-2xs group/li cursor-pointer min-h-[44px]"
+                    title="Open LinkedIn Profile"
+                  >
+                    <Linkedin className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/li:text-light-ink dark:group-hover/li:text-dark-ink transition-transform duration-200 group-hover/li:scale-105" />
+                    <span>LinkedIn</span>
+                  </a>
 
-                <a
-                  href="#contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (onNavigate) {
-                      onNavigate('home', 'contact');
-                    }
-                    const el = document.getElementById('contact');
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' });
-                      setTimeout(() => {
-                        const nameInput = document.getElementById('contact-name') as HTMLInputElement | null;
-                        if (nameInput) {
-                          nameInput.focus({ preventScroll: true });
-                        }
-                      }, 400);
-                    }
-                  }}
-                  className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-terracotta hover:bg-[#9E3D27] text-white dark:bg-ochre dark:hover:bg-[#C29845] dark:text-[#121316] border border-terracotta dark:border-ochre text-xs font-mono font-bold tracking-wide transition-all shadow-xs group/mail cursor-pointer min-h-[44px]"
-                  title="Direct Message / Get in Touch"
-                >
-                  <Mail className="w-3.5 h-3.5 transition-transform duration-200 group-hover/mail:scale-110" />
-                  <span>Contact</span>
-                </a>
+                  <a
+                    href="#contact"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (onNavigate) {
+                        onNavigate('home', 'contact');
+                      }
+                      const el = document.getElementById('contact');
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth' });
+                        setTimeout(() => {
+                          const nameInput = document.getElementById('contact-name') as HTMLInputElement | null;
+                          if (nameInput) {
+                            nameInput.focus({ preventScroll: true });
+                          }
+                        }, 400);
+                      }
+                    }}
+                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-terracotta/[0.08] dark:bg-ochre/[0.12] hover:bg-terracotta dark:hover:bg-ochre text-terracotta dark:text-ochre hover:text-white dark:hover:text-[#121316] border border-terracotta/35 dark:border-ochre/35 hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-semibold transition-all duration-300 shadow-2xs hover:shadow-xs group/mail cursor-pointer min-h-[44px]"
+                    title="Direct Message / Get in Touch"
+                  >
+                    <Mail className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover/mail:-translate-y-0.5 group-hover/mail:-rotate-12" />
+                    <span>Contact</span>
+                  </a>
+                </div>
               </div>
             </div>
           </aside>

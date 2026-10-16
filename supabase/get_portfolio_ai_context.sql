@@ -41,7 +41,7 @@ BEGIN
         'github', p.github,
         'linkedin', p.linkedin,
         'capability_pillars', to_jsonb(p.capability_pillars),
-        'hanko_card', to_jsonb(p.hanko_card),
+        'hanko_card', to_jsonb(p.hanko_card) - 'statusBadge',
         'origin_story', to_jsonb(p.origin_story),
         'hobbies', (
           SELECT COALESCE(
