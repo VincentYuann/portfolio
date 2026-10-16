@@ -125,13 +125,13 @@ export async function uploadResumePdf(file: File): Promise<string> {
     throw new Error('Supabase client is not configured.');
   }
 
-  // 1. Primary upload to 'portfolio-assets/resumes/vincent-yuan-cv.pdf'
+  // 1. Primary upload to 'portfolio-assets/resumes/vincent-yuan-cv.pdf' with cache disabled
   let res = await supabase.storage
     .from(RESUME_BUCKET)
     .upload(RESUME_PDF_FILENAME, file, {
       upsert: true,
       contentType: 'application/pdf',
-      cacheControl: '3600',
+      cacheControl: '0',
     });
 
   // 2. Fallback to 'resume' bucket if portfolio-assets is not found
@@ -143,7 +143,7 @@ export async function uploadResumePdf(file: File): Promise<string> {
         .upload('vincent-yuan-cv.pdf', file, {
           upsert: true,
           contentType: 'application/pdf',
-          cacheControl: '3600',
+          cacheControl: '0',
         });
       if (fallbackRes.error) {
         throw new Error(formatErrorMessage(fallbackRes.error));
@@ -157,14 +157,18 @@ export async function uploadResumePdf(file: File): Promise<string> {
     .from(RESUME_BUCKET)
     .getPublicUrl(RESUME_PDF_FILENAME);
 
-  const publicUrl = data?.publicUrl || '';
+  const rawPublicUrl = data?.publicUrl || '';
+  const timestamp = Date.now();
+  // Append unique timestamp to bust browser and CDN caches immediately
+  const publicUrl = rawPublicUrl ? `${rawPublicUrl}?v=${timestamp}` : '';
+
   if (publicUrl) {
     cachedResumeLink = publicUrl;
     try {
       await supabase.from('resume_latex').upsert({
         id: 1,
         resume_link: publicUrl,
-        updated_at: new Date().toISOString(),
+        updated_at: new Date(timestamp).toISOString(),
       });
     } catch (e) {
       console.warn('Could not sync resume_link to resume_latex:', e);
@@ -242,14 +246,18 @@ export async function fetchResumeData(): Promise<ResumeData | null> {
   try {
     const { data, error } = await supabase
       .from('resume_latex')
-      .select('latex, resume_link, content')
+      .select('latex, resume_link, content, updated_at')
       .eq('id', 1)
       .single();
 
     if (error || !data) return null;
     const latex = data.latex || data.content || '';
-    const resumeLink = data.resume_link || '';
+    let resumeLink = data.resume_link || '';
     if (resumeLink) {
+      if (!resumeLink.includes('?v=')) {
+        const v = data.updated_at ? new Date(data.updated_at).getTime() : Date.now();
+        resumeLink = `${resumeLink}?v=${v}`;
+      }
       cachedResumeLink = resumeLink;
     }
     return { latex, resumeLink };

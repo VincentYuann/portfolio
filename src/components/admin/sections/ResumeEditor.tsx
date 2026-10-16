@@ -276,11 +276,12 @@ export const ResumeEditor: React.FC = () => {
     try {
       if (!supabase) throw new Error('Supabase client is not configured.');
 
+      let uploadedUrl: string | undefined = undefined;
+
       await withTimeout(
         (async () => {
-          let uploadedUrl: string | undefined = undefined;
           // 1. If a PDF is uploaded, push it to the S3-backed Supabase Storage bucket
-          if (tab === 'upload' && uploadedFile && uploadedFile.name.toLowerCase().endsWith('.pdf')) {
+          if (uploadedFile && uploadedFile.name.toLowerCase().endsWith('.pdf')) {
             uploadedUrl = await uploadResumePdf(uploadedFile);
             if (uploadedUrl) {
               setCurrentPdfUrl(uploadedUrl);
@@ -297,7 +298,11 @@ export const ResumeEditor: React.FC = () => {
       clearStagedFile();
       notifyClean();
       setSaveState('success');
-      toast.success('Resume PDF & LaTeX source saved to Supabase!');
+      toast.success(
+        uploadedUrl
+          ? 'New Resume PDF published! Changes are live across the website.'
+          : 'Resume saved to Supabase!'
+      );
       setTimeout(() => setSaveState('idle'), 4000);
     } catch (err: unknown) {
       setSaveState('error');

@@ -165,13 +165,22 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleDownloadPdf = () => {
-    const link = document.createElement('a');
-    link.href = supabasePdfUrl;
-    link.download = 'Vincent_Yuan_Resume.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownloadPdf = async () => {
+    try {
+      const response = await fetch(supabasePdfUrl, { cache: 'no-cache' });
+      if (!response.ok) throw new Error('Download failed');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Vincent_Yuan_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } catch {
+      window.open(supabasePdfUrl, '_blank');
+    }
   };
 
   const handleDownloadTex = () => {
