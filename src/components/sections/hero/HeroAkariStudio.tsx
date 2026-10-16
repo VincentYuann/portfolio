@@ -193,7 +193,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             Semi-transparent at rest to reveal ambient backdrop, solid on hover.
           */}
           <aside className="lg:col-span-5 xl:col-span-5 flex flex-col items-center lg:items-end justify-center order-2 lg:order-2 relative w-full mt-4 lg:mt-0">
-            <div className="double-frame-simple bg-light-surface/85 dark:bg-dark-surface/80 backdrop-blur-md hover:bg-light-surface/95 dark:hover:bg-dark-surface/95 rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 w-full max-w-[340px] sm:max-w-[360px] relative group z-10 transition-all duration-300 shadow-xs">
+            <div className="double-frame-simple bg-light-surface/20 dark:bg-dark-surface/20 backdrop-blur-sm hover:bg-light-surface/95 dark:hover:bg-dark-surface/95 rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 w-full max-w-[340px] sm:max-w-[360px] relative group z-10 transition-all duration-300">
 
               {/* Box Top Header: Centered Credential & Geographic Anchor */}
               <div className="w-full flex flex-col items-center text-center gap-1.5 pb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
