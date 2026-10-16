@@ -137,7 +137,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                 <button
                   type="button"
                   onClick={handleDownloadPdf}
-                  className="group inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:px-5 sm:py-2.5 lg:px-5 lg:py-3 bg-terracotta/[0.08] dark:bg-ochre/[0.12] hover:bg-terracotta dark:hover:bg-ochre text-terracotta dark:text-ochre hover:text-white dark:hover:text-[#121316] border border-terracotta/35 dark:border-ochre/35 hover:border-terracotta dark:hover:border-ochre font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs hover:shadow-xs transition-all duration-300 cursor-pointer min-h-[44px] sm:min-h-0"
+                  className="group inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:px-5 sm:py-2.5 lg:px-5 lg:py-3 bg-terracotta/[0.14] dark:bg-ochre/[0.18] hover:bg-terracotta dark:hover:bg-ochre text-terracotta dark:text-ochre hover:text-white dark:hover:text-[#121316] border border-terracotta/40 dark:border-ochre/40 hover:border-terracotta dark:hover:border-ochre font-sans text-xs sm:text-sm font-semibold rounded-[2px] shadow-2xs hover:shadow-xs transition-all duration-300 cursor-pointer min-h-[44px] sm:min-h-0"
                   title="Direct 1-click download of official Resume PDF"
                   aria-label="Download Official Resume PDF"
                 >
@@ -175,7 +175,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                               key={tag}
                               tag={tag}
                               size="sm"
-                              className="bg-light-surface-raised/25 dark:bg-dark-surface-raised/25 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs py-1 px-2.5 font-medium transition-all duration-200 shadow-2xs"
+                              className="bg-light-surface-raised/60 dark:bg-dark-surface-raised/65 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs py-1 px-2.5 font-medium transition-all duration-200 shadow-2xs"
                             />
                           ))}
                         </div>
@@ -243,7 +243,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                     href={githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/25 dark:bg-dark-surface-raised/25 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs font-mono font-semibold transition-all duration-200 shadow-2xs group/gh cursor-pointer min-h-[44px]"
+                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/60 dark:bg-dark-surface-raised/65 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs font-mono font-semibold transition-all duration-200 shadow-2xs group/gh cursor-pointer min-h-[44px]"
                     title="Inspect GitHub Repositories"
                   >
                     <Github className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/gh:text-light-ink dark:group-hover/gh:text-dark-ink transition-transform duration-200 group-hover/gh:scale-105" />
@@ -254,7 +254,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                     href={linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/25 dark:bg-dark-surface-raised/25 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs font-mono font-semibold transition-all duration-200 shadow-2xs group/li cursor-pointer min-h-[44px]"
+                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-light-surface-raised/60 dark:bg-dark-surface-raised/65 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs font-mono font-semibold transition-all duration-200 shadow-2xs group/li cursor-pointer min-h-[44px]"
                     title="Open LinkedIn Profile"
                   >
                     <Linkedin className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted group-hover/li:text-light-ink dark:group-hover/li:text-dark-ink transition-transform duration-200 group-hover/li:scale-105" />
@@ -279,7 +279,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                         }, 400);
                       }
                     }}
-                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-terracotta/[0.08] dark:bg-ochre/[0.12] hover:bg-terracotta dark:hover:bg-ochre text-terracotta dark:text-ochre hover:text-white dark:hover:text-[#121316] border border-terracotta/35 dark:border-ochre/35 hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-semibold transition-all duration-300 shadow-2xs hover:shadow-xs group/mail cursor-pointer min-h-[44px]"
+                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-terracotta/[0.14] dark:bg-ochre/[0.18] hover:bg-terracotta dark:hover:bg-ochre text-terracotta dark:text-ochre hover:text-white dark:hover:text-[#121316] border border-terracotta/40 dark:border-ochre/40 hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-semibold transition-all duration-300 shadow-2xs hover:shadow-xs group/mail cursor-pointer min-h-[44px]"
                     title="Direct Message / Get in Touch"
                   >
                     <Mail className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover/mail:-translate-y-0.5 group-hover/mail:-rotate-12" />
