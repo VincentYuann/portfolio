@@ -159,9 +159,9 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                   return (
                     <div
                       key={pillar.label || idx}
-                      className="flex flex-col justify-between gap-2 sm:gap-2.5 p-3 sm:p-3.5 rounded-[3px] bg-light-surface-card/20 dark:bg-dark-surface-card/20 backdrop-blur-sm border border-light-border/50 dark:border-dark-border/50 hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface-card dark:hover:bg-dark-surface-card transition-all duration-300 shadow-2xs group h-full"
+                      className="flex flex-col justify-between gap-2 sm:gap-2.5 p-3 sm:p-3.5 rounded-[3px] bg-light-surface/20 dark:bg-dark-surface/20 backdrop-blur-sm border border-light-border/60 dark:border-dark-border/60 hover:border-light-border-strong dark:hover:border-dark-border-strong hover:bg-light-surface/95 dark:hover:bg-dark-surface/95 transition-all duration-300 shadow-2xs group h-full"
                     >
-                      <div className="pb-1.5 border-b border-light-border/40 dark:border-dark-border/40">
+                      <div className="pb-1.5 border-b border-light-border/60 dark:border-dark-border/60">
                         <span className="font-mono text-xs uppercase tracking-wider font-semibold text-light-ink dark:text-dark-ink block truncate">
                           {pillar.label}
                         </span>
@@ -175,7 +175,7 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
                               key={tag}
                               tag={tag}
                               size="sm"
-                              className="bg-light-surface/20 dark:bg-dark-surface/20 border-light-border/50 dark:border-dark-border/50 text-xs py-1 px-2.5 font-medium backdrop-blur-xs"
+                              className="bg-light-surface-raised/25 dark:bg-dark-surface-raised/25 hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink text-xs py-1 px-2.5 font-medium transition-all duration-200 shadow-2xs"
                             />
                           ))}
                         </div>
