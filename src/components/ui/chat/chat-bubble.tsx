@@ -56,7 +56,7 @@ const chatBubbleMessageVariants = cva(
   {
     variants: {
       variant: {
-        sent: 'bg-light-button-dark dark:bg-dark-surface-raised text-light-on-dark dark:text-dark-ink border border-light-border dark:border-dark-border-strong rounded-br-xs shadow-xs',
+        sent: 'bg-light-surface-raised dark:bg-dark-surface-raised text-light-ink dark:text-dark-ink border border-light-border-strong dark:border-dark-border-strong rounded-br-xs shadow-xs',
         received:
           'bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink rounded-bl-xs shadow-xs',
       },

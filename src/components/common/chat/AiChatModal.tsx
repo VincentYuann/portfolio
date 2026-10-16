@@ -977,7 +977,11 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                   <span>Vincent's AI Assistant</span>
                 </h3>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-bamboo animate-pulse" />
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      isStreaming ? 'bg-terracotta dark:bg-ochre' : 'bg-bamboo'
+                    } animate-pulse`}
+                  />
                   <span className="font-mono text-xs tracking-wider text-light-ink-subtle dark:text-dark-ink-subtle">
                     {isStreaming
                       ? 'Synthesizing...'
@@ -1113,11 +1117,11 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                                     <Attachment
                                       state="done"
                                       size="xs"
-                                      className="bg-white/10 dark:bg-black/20 border-white/20 text-white"
+                                      className="bg-light-surface dark:bg-dark-surface border-light-border dark:border-dark-border"
                                     >
                                       <AttachmentMedia
                                         variant={msg.attachmentUrl ? 'image' : 'icon'}
-                                        className="size-6 bg-white/20 text-white border-0 overflow-hidden"
+                                        className="size-6 bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre border border-terracotta/30 dark:border-ochre/30 overflow-hidden"
                                       >
                                         {msg.attachmentUrl ? (
                                           <img
@@ -1126,14 +1130,14 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                                             className="size-full object-cover"
                                           />
                                         ) : (
-                                          <FileText className="size-3 text-white" />
+                                          <FileText className="size-3 text-terracotta dark:text-ochre" />
                                         )}
                                       </AttachmentMedia>
                                       <AttachmentContent>
-                                        <AttachmentTitle className="text-white text-xs truncate max-w-[160px]">
+                                        <AttachmentTitle className="text-light-ink dark:text-dark-ink text-xs truncate max-w-[160px]">
                                           {msg.attachmentName}
                                         </AttachmentTitle>
-                                        <AttachmentDescription className="text-white/80 text-xs">
+                                        <AttachmentDescription className="text-light-ink-subtle dark:text-dark-ink-subtle text-xs">
                                           ATTACHMENT
                                         </AttachmentDescription>
                                       </AttachmentContent>
@@ -1154,7 +1158,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                           {/* Assistant Identity Row */}
                           <div className="flex items-center justify-between px-1">
                             <div className="flex items-center gap-2">
-                              <div className="w-5 h-5 rounded bg-terracotta flex items-center justify-center text-white text-xs font-serif font-bold shadow-2xs">
+                              <div className="w-5 h-5 rounded-[2px] bg-terracotta text-white dark:bg-ochre dark:text-[#121316] flex items-center justify-center text-xs font-serif font-bold shadow-2xs select-none">
                                 問
                               </div>
                               <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
@@ -1212,7 +1216,7 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                           className="w-full flex items-center justify-between p-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised hover:border-terracotta dark:hover:border-ochre transition-all text-left group/card cursor-pointer shadow-2xs"
                         >
                           <div className="flex items-center gap-2 min-w-0 pr-2">
-                            <div className="w-6 h-6 rounded-[2px] bg-terracotta flex items-center justify-center text-white shrink-0">
+                            <div className="w-6 h-6 rounded-[2px] bg-terracotta text-white dark:bg-ochre dark:text-[#121316] flex items-center justify-center shrink-0">
                               <Terminal className="w-3.5 h-3.5" />
                             </div>
                             <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted truncate">
@@ -1307,8 +1311,8 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                     <MessageScrollerItem messageId="streaming">
                       <div className="flex flex-col space-y-1.5 animate-in fade-in duration-150">
                         <div className="flex items-center gap-2 px-1">
-                          <div className="w-5 h-5 rounded-[2px] bg-terracotta flex items-center justify-center text-white text-xs font-serif font-bold">
-                            原
+                          <div className="w-5 h-5 rounded-[2px] bg-terracotta text-white dark:bg-ochre dark:text-[#121316] flex items-center justify-center text-xs font-serif font-bold shadow-2xs select-none">
+                            問
                           </div>
                           <span className="font-serif font-medium text-xs text-light-ink dark:text-dark-ink">
                             Vincent AI

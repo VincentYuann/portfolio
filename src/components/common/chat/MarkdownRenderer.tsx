@@ -27,7 +27,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           strong({ children }) {
             return (
-              <strong className="font-bold text-light-ink dark:text-white">
+              <strong className="font-bold text-light-ink dark:text-dark-ink">
                 {children}
               </strong>
             );
@@ -89,7 +89,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-terracotta dark:text-[#D4A853] underline hover:text-terracotta-hover dark:hover:text-[#DE9E36] underline-offset-2 transition-colors font-medium"
+                className="text-terracotta dark:text-ochre underline hover:text-terracotta-hover dark:hover:text-ochre-hover underline-offset-2 transition-colors font-medium"
               >
                 {children}
               </a>
@@ -98,7 +98,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           code({ inline, className, children }: any) {
             if (inline) {
               return (
-                <code className="font-mono text-2xs px-1.5 py-0.5 rounded bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre border border-terracotta/20 dark:border-ochre/20 select-text">
+                <code className="font-mono text-2xs px-1.5 py-0.5 rounded-[2px] bg-terracotta/10 dark:bg-ochre/10 text-terracotta dark:text-ochre border border-terracotta/20 dark:border-ochre/20 select-text">
                   {children}
                 </code>
               );
@@ -106,7 +106,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
             const codeString = String(children).replace(/\n$/, '');
             const language = className?.replace('language-', '') || 'code';
             return (
-              <div className="relative my-2.5 rounded-lg border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised overflow-hidden group/code select-text shadow-2xs">
+              <div className="relative my-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface-raised overflow-hidden group/code select-text shadow-2xs">
                 <div className="flex items-center justify-between px-3 py-1 bg-black/5 dark:bg-white/5 border-b border-light-border/40 dark:border-dark-border/40 text-2xs font-mono text-light-ink-subtle dark:text-dark-ink-subtle select-none">
                   <span>{language}</span>
                   <button
@@ -131,7 +131,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           table({ children }) {
             return (
-              <div className="my-2.5 overflow-x-auto rounded-lg border border-light-border dark:border-dark-border">
+              <div className="my-2.5 overflow-x-auto rounded-[2px] border border-light-border dark:border-dark-border">
                 <table className="min-w-full divide-y divide-light-border dark:divide-dark-border text-xs">
                   {children}
                 </table>
@@ -140,7 +140,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = memo(({ content
           },
           th({ children }) {
             return (
-              <th className="px-3 py-1.5 bg-light-surface-raised dark:bg-dark-surface-raised font-serif font-semibold text-terracotta dark:text-[#D4A853] text-left">
+              <th className="px-3 py-1.5 bg-light-surface-raised dark:bg-dark-surface-raised font-serif font-semibold text-terracotta dark:text-ochre text-left">
                 {children}
               </th>
             );
