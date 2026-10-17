@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Code2, Download, Copy, Check, ExternalLink, ArrowLeft } from 'lucide-react';
+import { FileText, Code2, Download, Copy, Check, ExternalLink } from 'lucide-react';
 import { tokenizeLatexLine, getTokenClassName } from '../../../lib/latexHighlight';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
@@ -7,6 +7,8 @@ import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
 import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { PageContainer } from '../../common/PageContainer';
+import { ReturnToPortfolio } from '../../common/ReturnToPortfolio';
+import { SubpageHeader } from '../../common/SubpageHeader';
 
 interface ResumePageProps {
   onNavigate?: (view: ViewMode, sectionId?: string) => void;
@@ -213,93 +215,73 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
       />
       <PageContainer className="pt-20 sm:pt-28 pb-16 sm:pb-20 relative z-10">
         {/* Back navigation button */}
-        <div className="mb-4 sm:mb-8">
-          <button
-            onClick={() => onNavigate?.('home')}
-            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors group cursor-pointer py-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-            <span>Return to Portfolio</span>
-          </button>
-        </div>
+        <ReturnToPortfolio onNavigate={onNavigate} />
 
-        {/* Top Header Section - distilled on mobile */}
-        <div className="mb-5 sm:mb-10 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
-              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">Archive //</span>
-              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
-                Curriculum Vitae · 履歴書
-              </span>
-            </div>
-            <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-tight">
-              Curriculum Vitae{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-lg sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block">
-                履歴書
-              </span>
-            </h1>
-            <p className="font-sans text-xs sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 max-w-prose font-normal leading-relaxed">
-              Complete technical qualifications, research background, and systems engineering experience of Vincent Yuan.
-            </p>
-          </div>
-
-          {/* Action Controls & Format Switcher */}
-          <div className="flex flex-wrap items-center gap-2.5">
-            {/* View Mode Switcher */}
-            <div className="bg-light-surface-muted dark:bg-dark-surface p-1 rounded-[3px] border border-light-border dark:border-dark-border flex items-center">
-              <button
-                onClick={() => setActiveTab('pdf')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans tracking-wide transition-all ${
-                  activeTab === 'pdf'
-                    ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
-                    : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
-                }`}
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span>PDF Document</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('latex')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans tracking-wide transition-all ${
-                  activeTab === 'latex'
-                    ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
-                    : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
-                }`}
-              >
-                <Code2 className="w-3.5 h-3.5" />
-                <span>LaTeX Source</span>
-              </button>
-            </div>
-
-            {/* Quick Actions */}
-            {activeTab === 'latex' ? (
-              <div className="flex items-center gap-2">
+        {/* Top Header Section */}
+        <SubpageHeader
+          archiveKicker="Archive //"
+          categoryTag="Curriculum Vitae · 履歴書"
+          title="Curriculum Vitae"
+          kanjiSubtitle="履歴書"
+          description="Complete technical qualifications, research background, and systems engineering experience of Vincent Yuan."
+          actions={
+            <div className="flex flex-wrap items-center gap-2.5">
+              {/* View Mode Switcher */}
+              <div className="bg-light-surface-muted dark:bg-dark-surface p-1 rounded-[3px] border border-light-border dark:border-dark-border flex items-center">
                 <button
-                  onClick={handleCopyLatex}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-[2px] hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer"
+                  onClick={() => setActiveTab('pdf')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans tracking-wide transition-all ${
+                    activeTab === 'pdf'
+                      ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
+                      : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
+                  }`}
                 >
-                  {copied ? <Check className="w-3.5 h-3.5 text-bamboo" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copied ? 'Copied' : 'Copy LaTeX'}</span>
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>PDF Document</span>
                 </button>
                 <button
-                  onClick={handleDownloadTex}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-terracotta dark:bg-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] text-white dark:text-[#121316] text-xs font-sans font-medium rounded-[2px] shadow-sm transition-all cursor-pointer"
+                  onClick={() => setActiveTab('latex')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-sans tracking-wide transition-all ${
+                    activeTab === 'latex'
+                      ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-terracotta dark:text-ochre font-semibold shadow-xs'
+                      : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
+                  }`}
                 >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Download .tex</span>
+                  <Code2 className="w-3.5 h-3.5" />
+                  <span>LaTeX Source</span>
                 </button>
               </div>
-            ) : (
-              <button
-                onClick={handleDownloadPdf}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-terracotta dark:bg-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] text-white dark:text-[#121316] text-xs font-sans font-medium rounded-[2px] shadow-sm transition-all cursor-pointer"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>Download Official PDF</span>
-              </button>
-            )}
-          </div>
-        </div>
+
+              {/* Quick Actions */}
+              {activeTab === 'latex' ? (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleCopyLatex}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 bg-light-surface-raised dark:bg-dark-surface border border-light-border dark:border-dark-border text-xs font-sans text-light-ink dark:text-dark-ink rounded-[2px] hover:border-light-border-strong dark:hover:border-dark-border-strong transition-colors cursor-pointer"
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5 text-bamboo" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copied ? 'Copied' : 'Copy LaTeX'}</span>
+                  </button>
+                  <button
+                    onClick={handleDownloadTex}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 bg-terracotta dark:bg-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] text-white dark:text-[#121316] text-xs font-sans font-medium rounded-[2px] shadow-sm transition-all cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download .tex</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleDownloadPdf}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-terracotta dark:bg-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] text-white dark:text-[#121316] text-xs font-sans font-medium rounded-[2px] shadow-sm transition-all cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download Official PDF</span>
+                </button>
+              )}
+            </div>
+          }
+        />
 
         {/* Main Presentation Container - Balanced Proportions & Generous Desktop Vertical View */}
         <div className="w-full max-w-[1100px] 2xl:max-w-[1180px] mx-auto relative transition-all duration-300">

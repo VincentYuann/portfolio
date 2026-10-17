@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
-import { ArrowLeft, Search, ExternalLink, Github, Layers } from 'lucide-react';
+import { Search, ExternalLink, Github, Layers } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { CornerBrackets } from '../../common/CornerBrackets';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
@@ -8,6 +8,8 @@ import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
 import { PageContainer } from '../../common/PageContainer';
+import { ReturnToPortfolio } from '../../common/ReturnToPortfolio';
+import { SubpageHeader } from '../../common/SubpageHeader';
 import { ViewMode } from '../../../App';
 
 const ProjectDetailModal = lazy(() =>
@@ -132,48 +134,28 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         )}
 
         {/* Back navigation button */}
-        <div className="mb-4 sm:mb-8">
-          <button
-            onClick={() => onNavigate?.('home', 'featured-works')}
-            className="inline-flex items-center gap-2 font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors group cursor-pointer py-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-            <span>Return to Portfolio</span>
-          </button>
-        </div>
+        <ReturnToPortfolio onNavigate={onNavigate} sectionId="featured-works" />
 
-        {/* Header Title Section - distilled on mobile */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-8 border-b border-light-border/70 dark:border-dark-border/80 mb-5 sm:mb-10">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
-              <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted font-medium">ARCHIVE //</span>
-              <span className="font-mono text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
-                SELECTED PORTFOLIO · 作品全集
-              </span>
+        {/* Header Title Section */}
+        <SubpageHeader
+          archiveKicker="ARCHIVE //"
+          categoryTag="SELECTED PORTFOLIO · 作品全集"
+          title="All Engineering Works"
+          kanjiSubtitle="作品全集"
+          description="A comprehensive collection of web applications, system architectures, and software engineering projects."
+          actions={
+            <div className="relative w-full sm:w-72">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-light-ink-muted" />
+              <input
+                type="text"
+                placeholder="Search projects, technologies..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 text-xs rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60 dark:focus:border-ochre/60 font-sans"
+              />
             </div>
-            <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-tight">
-              All Engineering Works{' '}
-              <span className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-lg sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block">
-                作品全集
-              </span>
-            </h1>
-            <p className="font-sans text-xs sm:text-base text-light-ink-muted dark:text-dark-ink-muted mt-2 sm:mt-3 font-normal leading-relaxed max-w-3xl">
-              A comprehensive collection of web applications, system architectures, and software engineering projects.
-            </p>
-          </div>
-
-          {/* Search Input */}
-          <div className="relative w-full sm:w-72">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-light-ink-muted" />
-            <input
-              type="text"
-              placeholder="Search projects, technologies..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs rounded-[2px] bg-light-surface-card dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-ink dark:text-dark-ink focus:outline-none focus:border-terracotta/60 dark:focus:border-ochre/60 font-sans"
-            />
-          </div>
-        </div>
+          }
+        />
 
         {/* Filter Pills */}
         {categories.length > 2 && (
