@@ -204,12 +204,12 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
             <div className="double-frame-simple bg-light-surface/20 dark:bg-dark-surface/20 backdrop-blur-sm hover:bg-light-surface/95 dark:hover:bg-dark-surface/95 rounded-[3px] p-6 sm:p-7 flex flex-col justify-between gap-5 sm:gap-6 w-full max-w-[340px] sm:max-w-[360px] relative group z-10 transition-all duration-300">
 
               {/* Box Top Header: Centered Credential & Geographic Anchor */}
-              <div className="w-full flex flex-col items-center text-center gap-1.5 pb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
-                <div className="flex items-center justify-center gap-2 font-serif text-sm font-semibold text-light-ink dark:text-dark-ink">
-                  <GraduationCap className="w-4 h-4 text-terracotta/80 dark:text-ochre/85 shrink-0" />
+              <div className="w-full flex flex-col items-center text-center gap-2 pb-4 border-b border-light-border/60 dark:border-dark-border/60 relative z-10">
+                <div className="flex items-center justify-center gap-2 font-sans text-[15px] sm:text-base font-semibold text-light-ink dark:text-dark-ink tracking-tight">
+                  <GraduationCap className="w-4.5 h-4.5 text-terracotta/85 dark:text-ochre/90 shrink-0" />
                   <span className="truncate">{hanko?.headerLabel || 'Drexel University · CS & Math'}</span>
                 </div>
-                <div className="flex items-center justify-center gap-2 font-serif text-sm font-semibold text-light-ink/90 dark:text-dark-ink/90">
+                <div className="flex items-center justify-center gap-2 font-sans text-sm sm:text-[15px] font-medium text-light-ink/90 dark:text-dark-ink/90">
                   <MapPin className="w-4 h-4 text-terracotta/80 dark:text-ochre/85 shrink-0" />
                   <span className="truncate">{hanko?.locationArchive || 'Philadelphia, PA'}</span>
                 </div>

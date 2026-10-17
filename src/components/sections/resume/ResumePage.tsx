@@ -301,8 +301,8 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Main Presentation Container */}
-        <div className="w-full relative">
+        {/* Main Presentation Container - Balanced Proportions & Generous Desktop Vertical View */}
+        <div className="w-full max-w-[1100px] 2xl:max-w-[1180px] mx-auto relative transition-all duration-300">
           {activeTab === 'pdf' && (
             /* PDF Document Tab */
             <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] overflow-visible shadow-sm classical-card-frame">
@@ -328,10 +328,10 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              {/* Embedded PDF View */}
-              <div className="w-full h-[780px] bg-light-canvas/40 dark:bg-dark-canvas/60 relative flex flex-col items-center justify-center p-0 overflow-hidden">
+              {/* Embedded PDF View with Desktop Full Vertical View */}
+              <div className="w-full h-[750px] sm:h-[880px] md:h-[1050px] lg:h-[1160px] xl:h-[1200px] bg-light-canvas/40 dark:bg-dark-canvas/60 relative flex flex-col items-center justify-center p-0 overflow-hidden">
                 <object
-                  data={`${supabasePdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
+                  data={`${supabasePdfUrl}#view=Fit&toolbar=1&navpanes=0`}
                   type="application/pdf"
                   className="w-full h-full"
                 >
@@ -384,7 +384,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
               </div>
 
               {/* Syntax Highlighted Code Viewer */}
-              <div className="w-full max-h-[780px] overflow-auto p-4 sm:p-6 font-mono text-xs leading-relaxed bg-[#FDFCFA] dark:bg-[#18191D]">
+              <div className="w-full max-h-[750px] sm:max-h-[880px] md:max-h-[1050px] lg:max-h-[1160px] xl:max-h-[1200px] overflow-auto p-4 sm:p-6 font-mono text-xs leading-relaxed bg-[#FDFCFA] dark:bg-[#18191D]">
                 <pre className="table w-full">
                   {latexSource.split('\n').map((line, idx) => {
                     const tokens = tokenizeLatexLine(line);
