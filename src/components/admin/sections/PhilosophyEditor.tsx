@@ -25,7 +25,7 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
     id: 'education',
     title: 'Education',
     items: [
-      'Drexel University — Math and Computer Science',
+      'Drexel University · Math and Computer Science',
       'GPA: 3.52',
     ],
   },
@@ -34,7 +34,7 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
     title: 'About',
     items: [
       "Hi, my name is Vincent Yuan. I find coding interesting and fun, which is why I'm studying Computer Science. Coding expands into 2 industries I'm deeply passionate about:",
-      'First is Software Engineering: when we code, we need to think about the product for customers and what problems it can solve. Being a SWE also means I build programs to solve everyday problems around me, from idea to implementation—and I find genuine enjoyment in that.',
+      'First is Software Engineering: when we code, we need to think about the product for customers and what problems it can solve. Being a SWE also means I build programs to solve everyday problems around me, from idea to implementation, and I find genuine enjoyment in that.',
       'Secondly, I want to get into game development.',
     ],
   },

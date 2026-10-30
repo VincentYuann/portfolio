@@ -248,7 +248,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
                           <span className="font-mono text-xs font-semibold text-light-ink/80 dark:text-dark-ink/80 truncate">
-                            {exp.startDate} – {exp.endDate}
+                            {exp.startDate} - {exp.endDate}
                           </span>
                           {isCurrent && (
                             <span className="font-mono text-2xs font-bold px-1.5 py-0.5 rounded-[2px] bg-bamboo/15 text-bamboo dark:bg-bamboo/20 dark:text-bamboo border border-bamboo/30 shrink-0">

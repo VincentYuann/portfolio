@@ -12,7 +12,7 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
     id: 'education',
     title: 'Education',
     items: [
-      'Drexel University — Math and Computer Science',
+      'Drexel University · Math and Computer Science',
       'GPA: 3.52',
     ],
   },
@@ -21,7 +21,7 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
     title: 'About',
     items: [
       "Hi, my name is Vincent Yuan. I find coding interesting and fun, which is why I'm studying Computer Science. Coding expands into 2 industries I'm deeply passionate about:",
-      'First is Software Engineering: when we code, we need to think about the product for customers and what problems it can solve. Being a SWE also means I build programs to solve everyday problems around me, from idea to implementation—and I find genuine enjoyment in that.',
+      'First is Software Engineering: when we code, we need to think about the product for customers and what problems it can solve. Being a SWE also means I build programs to solve everyday problems around me, from idea to implementation, and I find genuine enjoyment in that.',
       'Secondly, I want to get into game development.',
     ],
   },
@@ -98,7 +98,7 @@ export const PhilosophyBento: React.FC = () => {
           <div className="lg:col-span-7 flex flex-col">
             <Card className="p-6 sm:p-8 lg:p-9 flex flex-col justify-between h-full relative overflow-visible group shadow-sm border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card">
               {/* Ensō brush placed on top-left, subtle and atmospheric */}
-              <EnsoOrbital placement="top-left" size={90} hoverOnly={true} />
+              <EnsoOrbital placement="top-left" size={90} hoverOnly={false} />
 
               <div className="space-y-6 sm:space-y-7">
                 
@@ -127,7 +127,7 @@ export const PhilosophyBento: React.FC = () => {
                           {section.items.map((itemText, iIdx) => (
                             <div key={iIdx} className="flex items-start gap-2 text-xs sm:text-sm text-light-ink/90 dark:text-dark-ink/90 leading-relaxed font-sans font-normal">
                               <span className="text-terracotta dark:text-ochre font-mono select-none mt-0.5 text-xs">
-                                —
+                                ·
                               </span>
                               <span className="flex-1 whitespace-pre-line">
                                 {itemText}

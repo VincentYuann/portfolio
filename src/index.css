@@ -298,6 +298,34 @@ body.font-variant-v7 {
     font-family: var(--font-mono);
   }
 
+  /* Cohesive Japanese Palette Text Selection */
+  ::selection {
+    background-color: rgb(var(--color-terracotta-rgb) / 0.22);
+    color: inherit;
+  }
+
+  .dark ::selection {
+    background-color: rgb(var(--color-ochre-rgb) / 0.28);
+    color: inherit;
+  }
+
+  /* Cohesive Caret Color */
+  input, textarea, [contenteditable] {
+    caret-color: var(--accent-color);
+  }
+
+  /* Focus Visible Cohesive Ring */
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-ochre-rgb) / 0.65);
+    outline-offset: 2px;
+  }
+
+  /* Cross-browser Scrollbar Palette */
+  html {
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+    scrollbar-width: thin;
+  }
+
   /* Tactile Washi Paper Tooth Overlay (Physical Japanese Paper Fiber Grain for Day & Night) */
   body::before {
     content: '';

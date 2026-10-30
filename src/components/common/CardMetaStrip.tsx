@@ -46,7 +46,7 @@ export const CardMetaStrip: React.FC<CardMetaStripProps> = ({
       : null;
 
   const dateText = hasDate
-    ? `${startDate || ''}${startDate && endDate ? ' — ' : ''}${endDate || (isActive ? 'Present' : '')}`
+    ? `${startDate || ''}${startDate && endDate ? ' - ' : ''}${endDate || (isActive ? 'Present' : '')}`
     : null;
 
   return (
