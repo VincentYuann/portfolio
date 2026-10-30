@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Github, Linkedin, Mail, Sparkles } from 'lucide-react';
+import { MapPin, Github, Linkedin, Mail } from 'lucide-react';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { Card } from '../../ui/card';
 import { useSiteData, AboutMenuItem } from '../../../context/SiteDataContext';
@@ -9,38 +9,20 @@ import { handleImageError, DEFAULT_ABOUT_MENU } from '../../../lib/constants';
 
 /**
  * AboutMeSection
- * Editorial "Tasting Menu" layout distilled to its essence.
- * High cohesion, zero nested cards, balanced per-course hierarchy, and pristine typography.
+ * Pure, distilled editorial menu layout.
+ * Equal per-course balance, zero nested cards, no redundant headers or complex string filtering.
  */
 export const AboutMeSection: React.FC = () => {
   const { profile } = useSiteData();
 
   const photoSrc = profile?.about_image_url || profile?.avatar_url || './images/photo.png';
-
-  // Format location string cleanly: remove hard all-caps, convert hyphens to middle dots, and ensure title-case
-  const rawLocation = profile?.location || 'Philadelphia, PA · Seeking Internship';
-  const location = rawLocation
-    .replace(/\s*-\s*/g, ' · ')
-    .split(' · ')
-    .map((part) =>
-      part
-        .trim()
-        .split(' ')
-        .map((w) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ''))
-        .join(' ')
-    )
-    .join(' · ');
+  const location = profile?.location || 'Philadelphia, PA';
 
   // Customizable about_menu from CMS/database if present, otherwise centralized default
   const menuItems: AboutMenuItem[] =
     Array.isArray(profile?.about_menu) && profile.about_menu.length > 0
       ? profile.about_menu
       : DEFAULT_ABOUT_MENU;
-
-  // Dynamic school & year credit
-  const schoolCredit = profile?.education
-    ? `${profile.education.split('·')[0].trim()} · Est. 2024`
-    : 'Drexel University · Est. 2024';
 
   return (
     <section
@@ -100,132 +82,107 @@ export const AboutMeSection: React.FC = () => {
             </Card>
           </div>
 
-          {/* Right Column (7 cols): Editorial Bill of Fare / Tasting Menu */}
+          {/* Right Column (7 cols): Editorial Tasting Menu Card */}
           <div className="lg:col-span-7 flex flex-col">
             <Card variant="craft" className="p-6 sm:p-8 lg:p-9 flex flex-col justify-between h-full relative overflow-visible group">
               {/* Ensō brush placed on top-left vertex */}
               <EnsoOrbital placement="top-left" size={84} hoverOnly={false} />
 
-              <div className="space-y-6 sm:space-y-7">
-                
-                {/* ── Menu Masthead (Distilled & Dignified) ── */}
-                <div className="border-b border-light-border/80 dark:border-dark-border/80 pb-4">
-                  {/* Masthead Eyebrow */}
-                  <div className="flex items-center justify-between text-xs font-mono text-light-ink-muted dark:text-dark-ink-muted mb-2">
-                    <span className="flex items-center gap-1.5 text-terracotta dark:text-ochre font-medium">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>Table d&apos;Hôte · Vol. 04</span>
-                    </span>
-                    <span className="font-sans text-xs">{schoolCredit}</span>
-                  </div>
+              {/* ── Four Balanced Courses (Equal Structure & Rhythm) ── */}
+              <div className="space-y-6 sm:space-y-7 my-auto">
+                {menuItems.map((course, idx) => {
+                  const courseNumber = String(idx + 1).padStart(2, '0');
 
-                  {/* Main Menu Title & Subtitle */}
-                  <div className="pt-1">
-                    <h3 className="font-serif text-2xl sm:text-3xl text-light-ink dark:text-dark-ink font-semibold tracking-tight">
-                      Profile &amp; Trajectory Menu
-                    </h3>
-                    <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed mt-1">
-                      A curated tasting of academic foundation, engineering craft, milestones, and future horizon.
-                    </p>
-                  </div>
-                </div>
-
-                {/* ── Four Balanced Courses (Equal Structure & Rhythm) ── */}
-                <div className="space-y-5 sm:space-y-6">
-                  {menuItems.map((course, idx) => {
-                    const courseNumber = String(idx + 1).padStart(2, '0');
-
-                    return (
-                      <div
-                        key={course.id || idx}
-                        className="pb-5 sm:pb-6 border-b border-light-border/40 dark:border-dark-border/40 last:border-b-0 last:pb-0"
-                      >
-                        {/* Course Header: Clean course number + serif title with subtle dotted leader */}
-                        <div className="flex items-center justify-between gap-3 mb-2.5">
-                          <div className="flex items-center gap-2.5">
-                            <span className="font-mono text-xs sm:text-sm font-semibold text-terracotta dark:text-ochre tracking-wider">
-                              #{courseNumber}
-                            </span>
-                            <span className="text-light-border-strong dark:text-dark-border select-none text-xs">
-                              /
-                            </span>
-                            <h4 className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-semibold tracking-tight">
-                              {course.title}
-                            </h4>
-                          </div>
-
-                          {/* Subtle Dotted Leader Line */}
-                          <div className="hidden sm:block flex-1 border-b border-dotted border-light-border/60 dark:border-dark-border/50 mx-2 select-none" />
+                  return (
+                    <div
+                      key={course.id || idx}
+                      className="pb-5 sm:pb-6 border-b border-light-border/40 dark:border-dark-border/40 last:border-b-0 last:pb-0"
+                    >
+                      {/* Course Header: Clean course number + serif title with subtle dotted leader */}
+                      <div className="flex items-center justify-between gap-3 mb-2.5">
+                        <div className="flex items-center gap-2.5">
+                          <span className="font-mono text-xs sm:text-sm font-semibold text-terracotta dark:text-ochre tracking-wider">
+                            #{courseNumber}
+                          </span>
+                          <span className="text-light-border-strong dark:text-dark-border select-none text-xs">
+                            /
+                          </span>
+                          <h4 className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-semibold tracking-tight">
+                            {course.title}
+                          </h4>
                         </div>
 
-                        {/* Ingredients / Narrative Prose Items */}
-                        <div className="space-y-2 pl-5 sm:pl-6 border-l border-light-border/60 dark:border-dark-border/60 ml-1.5">
-                          {course.items.map((itemText, iIdx) => (
-                            <div
-                              key={iIdx}
-                              className="flex items-start gap-2.5 text-xs sm:text-sm text-light-ink/90 dark:text-dark-ink/90 leading-relaxed font-sans font-normal"
-                            >
-                              <span className="text-terracotta/80 dark:text-ochre/80 select-none mt-1 text-xs shrink-0">
-                                ✦
-                              </span>
-                              <span className="flex-1 whitespace-pre-line">
-                                {itemText}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
+                        {/* Subtle Dotted Leader Line */}
+                        <div className="hidden sm:block flex-1 border-b border-dotted border-light-border/60 dark:border-dark-border/50 mx-2 select-none" />
                       </div>
-                    );
-                  })}
-                </div>
 
-                {/* ── Bottom Credentials & Social Contacts Bar (Bill Footer) ── */}
-                <div className="pt-4 mt-2 border-t border-light-border/80 dark:border-dark-border/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-2 text-light-ink-muted dark:text-dark-ink-muted font-sans text-xs sm:text-sm">
-                    <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
-                    <span>{location}</span>
-                  </div>
-
-                  {/* Profile Links */}
-                  <div className="flex items-center gap-2">
-                    {profile?.github && (
-                      <a
-                        href={profile.github}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-medium transition-colors cursor-pointer"
-                        title="GitHub Profile"
-                      >
-                        <Github className="w-3.5 h-3.5" />
-                        <span>GitHub</span>
-                      </a>
-                    )}
-                    {profile?.linkedin && (
-                      <a
-                        href={profile.linkedin}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-medium transition-colors cursor-pointer"
-                        title="LinkedIn Profile"
-                      >
-                        <Linkedin className="w-3.5 h-3.5" />
-                        <span>LinkedIn</span>
-                      </a>
-                    )}
-                    {profile?.email && (
-                      <a
-                        href={`mailto:${profile.email}`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-medium transition-colors cursor-pointer"
-                        title="Send Email"
-                      >
-                        <Mail className="w-3.5 h-3.5" />
-                        <span>Email</span>
-                      </a>
-                    )}
-                  </div>
-                </div>
-
+                      {/* Ingredients / Narrative Prose Items */}
+                      <div className="space-y-2 pl-5 sm:pl-6 border-l border-light-border/60 dark:border-dark-border/60 ml-1.5">
+                        {course.items.map((itemText, iIdx) => (
+                          <div
+                            key={iIdx}
+                            className="flex items-start gap-2.5 text-xs sm:text-sm text-light-ink/90 dark:text-dark-ink/90 leading-relaxed font-sans font-normal"
+                          >
+                            <span className="text-terracotta/80 dark:text-ochre/80 select-none mt-1 text-xs shrink-0">
+                              ✦
+                            </span>
+                            <span className="flex-1 whitespace-pre-line">
+                              {itemText}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
+
+              {/* ── Bottom Credentials & Social Contacts Bar (Bill Footer) ── */}
+              <div className="pt-4 mt-6 border-t border-light-border/80 dark:border-dark-border/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2 text-light-ink-muted dark:text-dark-ink-muted font-sans text-xs sm:text-sm">
+                  <MapPin className="w-3.5 h-3.5 text-terracotta dark:text-ochre shrink-0" />
+                  <span>{location}</span>
+                </div>
+
+                {/* Profile Links */}
+                <div className="flex items-center gap-2">
+                  {profile?.github && (
+                    <a
+                      href={profile.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-medium transition-colors cursor-pointer"
+                      title="GitHub Profile"
+                    >
+                      <Github className="w-3.5 h-3.5" />
+                      <span>GitHub</span>
+                    </a>
+                  )}
+                  {profile?.linkedin && (
+                    <a
+                      href={profile.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-medium transition-colors cursor-pointer"
+                      title="LinkedIn Profile"
+                    >
+                      <Linkedin className="w-3.5 h-3.5" />
+                      <span>LinkedIn</span>
+                    </a>
+                  )}
+                  {profile?.email && (
+                    <a
+                      href={`mailto:${profile.email}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface hover:border-terracotta dark:hover:border-ochre text-xs font-mono font-medium transition-colors cursor-pointer"
+                      title="Send Email"
+                    >
+                      <Mail className="w-3.5 h-3.5" />
+                      <span>Email</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+
             </Card>
           </div>
 
