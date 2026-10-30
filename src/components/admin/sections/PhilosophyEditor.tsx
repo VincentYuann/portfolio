@@ -12,7 +12,7 @@ import {
 import { supabase, formatErrorMessage, withTimeout, uploadProfileAvatar } from '../../../lib/supabase';
 import { useSiteData, AboutMenuItem } from '../../../context/SiteDataContext';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
-import { KanjiPickerModal } from '../modals/KanjiPickerModal';
+
 import { useAdminDirty } from '../shared/useAdminDirty';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
@@ -24,7 +24,6 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
   {
     id: 'education',
     title: 'Education',
-    kanji: '学歴',
     items: [
       'Drexel University — Math and Computer Science',
       'GPA: 3.52',
@@ -33,7 +32,6 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
   {
     id: 'about',
     title: 'About',
-    kanji: '紹介',
     items: [
       "Hi, my name is Vincent Yuan. I find coding interesting and fun, which is why I'm studying Computer Science. Coding expands into 2 industries I'm deeply passionate about:",
       'First is Software Engineering: when we code, we need to think about the product for customers and what problems it can solve. Being a SWE also means I build programs to solve everyday problems around me, from idea to implementation—and I find genuine enjoyment in that.',
@@ -43,7 +41,6 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
   {
     id: 'achievement',
     title: "One Achievement I'm Proud Of",
-    kanji: '達成',
     items: [
       "When I started stepping outside of tutorials, that's when I learned more. Copying tutorials step-by-step only brings me so far. Ever since I had my own idea, I could no longer follow along and had to complete the rest myself. With the help of AI as a personal mentor, I'm able to achieve far more than I was before.",
     ],
@@ -51,7 +48,6 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
   {
     id: 'vision',
     title: '5 Years From Now...',
-    kanji: '展望',
     items: [
       'I want to be a full-stack engineer working on enterprise projects and solving problems that interact directly with customers. I see myself becoming a person who is really good at designing, connecting application components, and building robust distributed systems.',
     ],
@@ -82,7 +78,6 @@ export const PhilosophyEditor: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Kanji picker modal
-  const [kanjiModalIdx, setKanjiModalIdx] = useState<number | null>(null);
 
   const { notifyDirty, notifyClean } = useAdminDirty('philosophy');
 
@@ -394,41 +389,16 @@ export const PhilosophyEditor: React.FC = () => {
                     </Button>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-                    <div className="sm:col-span-8">
-                      <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                        Main Title
-                      </Label>
-                      <Input
-                        value={section.title}
-                        onChange={(e) => updateMenuItem(idx, { title: e.target.value })}
-                        placeholder="e.g. Education, About, One Achievement..."
-                        className="font-serif text-sm h-9"
-                      />
-                    </div>
-                    <div className="sm:col-span-4">
-                      <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                        Kanji Stamp
-                      </Label>
-                      <div className="flex items-center gap-1.5">
-                        <Input
-                          value={section.kanji || ''}
-                          onChange={(e) => updateMenuItem(idx, { kanji: e.target.value })}
-                          placeholder="学"
-                          maxLength={2}
-                          className="font-serif text-sm h-9 text-center w-16"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setKanjiModalIdx(idx)}
-                          className="h-9 px-2 text-xs"
-                        >
-                          Pick
-                        </Button>
-                      </div>
-                    </div>
+                  <div>
+                    <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                      Main Title
+                    </Label>
+                    <Input
+                      value={section.title}
+                      onChange={(e) => updateMenuItem(idx, { title: e.target.value })}
+                      placeholder="e.g. Education, About, One Achievement..."
+                      className="font-serif text-sm h-9"
+                    />
                   </div>
 
                   <div>
@@ -460,18 +430,7 @@ export const PhilosophyEditor: React.FC = () => {
         )}
       </div>
 
-      {/* Kanji Picker Modal */}
-      {kanjiModalIdx !== null && (
-        <KanjiPickerModal
-          isOpen={true}
-          selectedChar={menuItems[kanjiModalIdx]?.kanji || '案'}
-          onSelect={(selectedKanji) => {
-            updateMenuItem(kanjiModalIdx, { kanji: selectedKanji });
-            setKanjiModalIdx(null);
-          }}
-          onClose={() => setKanjiModalIdx(null)}
-        />
-      )}
+
     </div>
   );
 };

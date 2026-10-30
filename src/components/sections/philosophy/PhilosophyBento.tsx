@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, GraduationCap, Github, Linkedin, Mail, Sparkles, Award, Compass, Target } from 'lucide-react';
+import { MapPin, Github, Linkedin, Mail } from 'lucide-react';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { Card } from '../../ui/card';
 import { useSiteData, AboutMenuItem } from '../../../context/SiteDataContext';
@@ -11,7 +11,6 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
   {
     id: 'education',
     title: 'Education',
-    kanji: '学歴',
     items: [
       'Drexel University — Math and Computer Science',
       'GPA: 3.52',
@@ -20,7 +19,6 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
   {
     id: 'about',
     title: 'About',
-    kanji: '紹介',
     items: [
       "Hi, my name is Vincent Yuan. I find coding interesting and fun, which is why I'm studying Computer Science. Coding expands into 2 industries I'm deeply passionate about:",
       'First is Software Engineering: when we code, we need to think about the product for customers and what problems it can solve. Being a SWE also means I build programs to solve everyday problems around me, from idea to implementation—and I find genuine enjoyment in that.',
@@ -30,7 +28,6 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
   {
     id: 'achievement',
     title: "One Achievement I'm Proud Of",
-    kanji: '達成',
     items: [
       "When I started stepping outside of tutorials, that's when I learned more. Copying tutorials step-by-step only brings me so far. Ever since I had my own idea, I could no longer follow along and had to complete the rest myself. With the help of AI as a personal mentor, I'm able to achieve far more than I was before.",
     ],
@@ -38,14 +35,11 @@ const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
   {
     id: 'vision',
     title: '5 Years From Now...',
-    kanji: '展望',
     items: [
       'I want to be a full-stack engineer working on enterprise projects and solving problems that interact directly with customers. I see myself becoming a person who is really good at designing, connecting application components, and building robust distributed systems.',
     ],
   },
 ];
-
-const MENU_ICONS = [GraduationCap, Sparkles, Award, Target, Compass];
 
 export const PhilosophyBento: React.FC = () => {
   const { profile } = useSiteData();
@@ -66,13 +60,12 @@ export const PhilosophyBento: React.FC = () => {
 
       {/* Rainbow Section Divider with Chapter Index */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
-        <SectionDivider label="04 // ABOUT ME · 自己紹介" shortLabel="04 // ABOUT · 自己紹介" />
+        <SectionDivider label="04 // ABOUT ME" shortLabel="04 // ABOUT" />
       </div>
 
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeading
           title="About Me"
-          kanjiSubtitle="自己紹介"
           description="Education, engineering background, and future aspirations."
         />
 
@@ -112,7 +105,6 @@ export const PhilosophyBento: React.FC = () => {
                 {/* ── Editorial Menu Stack (Customly Configurable) ── */}
                 <div className="space-y-5 sm:space-y-6">
                   {menuItems.map((section, idx) => {
-                    const IconComponent = MENU_ICONS[idx % MENU_ICONS.length];
                     const numString = String(idx + 1).padStart(2, '0');
 
                     return (
@@ -121,23 +113,13 @@ export const PhilosophyBento: React.FC = () => {
                         className="pb-5 sm:pb-6 border-b border-light-border/50 dark:border-dark-border/50 last:border-b-0 last:pb-0"
                       >
                         {/* Section Menu Header */}
-                        <div className="flex items-center justify-between gap-3 mb-2.5 sm:mb-3">
-                          <div className="flex items-center gap-2.5">
-                            <span className="font-mono text-xs font-semibold text-terracotta dark:text-ochre">
-                              {numString} //
-                            </span>
-                            <h3 className="font-serif text-lg sm:text-xl text-light-ink dark:text-dark-ink font-medium tracking-tight">
-                              {section.title}
-                            </h3>
-                            {section.kanji && (
-                              <span aria-hidden="true" className="font-serif font-light text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted ml-1 select-none opacity-70">
-                                {section.kanji}
-                              </span>
-                            )}
-                          </div>
-                          <div className="w-6 h-6 rounded-full bg-light-surface dark:bg-dark-surface-raised border border-light-border/60 dark:border-dark-border/60 flex items-center justify-center text-light-ink-muted dark:text-dark-ink-muted shrink-0">
-                            <IconComponent className="w-3.5 h-3.5" />
-                          </div>
+                        <div className="flex items-center gap-2.5 mb-2.5 sm:mb-3">
+                          <span className="font-mono text-xs font-semibold text-terracotta dark:text-ochre">
+                            {numString} //
+                          </span>
+                          <h3 className="font-serif text-lg sm:text-xl text-light-ink dark:text-dark-ink font-medium tracking-tight">
+                            {section.title}
+                          </h3>
                         </div>
 
                         {/* Sub Contents */}
