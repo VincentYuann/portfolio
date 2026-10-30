@@ -297,9 +297,8 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (!supabase) { setLoading(false); return; }
 
     try {
-      const [profileRes, pillarsRes, projectsRes, expRes] = await Promise.all([
+      const [profileRes, projectsRes, expRes] = await Promise.all([
         supabase.from('profile').select('*').eq('id', 1).single(),
-        supabase.from('philosophy_pillars').select('*').order('position').limit(3),
         supabase.from('projects').select('*').order('created_at'),
         supabase.from('experience').select('*').order('created_at'),
       ]);
@@ -365,6 +364,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           location: row.location || (row.hanko_card ? row.hanko_card.locationArchive : '') || 'Philadelphia, PA',
           career_objective: row.career_objective || '',
           about_me: row.about_me || '',
+          about_menu: Array.isArray(row.about_menu) ? row.about_menu : [],
           email:    row.email    || '',
           github:   row.github   || '',
           linkedin: row.linkedin || '',
@@ -388,22 +388,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setProfile(EMPTY_PROFILE);
       }
 
-      if (pillarsRes.data) {
-        const mappedPillars: PhilosophyPillar[] = pillarsRes.data.map((row: any) => ({
-          position:    row.position,
-          kanji:       row.kanji       || '',
-          romaji:      row.romaji      || '',
-          title:       row.title       || '',
-          tag:         row.tag         || '',
-          description: row.description || '',
-        }));
-        setPillars(mappedPillars);
-        try {
-          localStorage.setItem('portfolio_pillars_cache', JSON.stringify(mappedPillars));
-        } catch {}
-      } else {
-        setPillars([]);
-      }
+      setPillars([]);
 
       if (projectsRes.data && projectsRes.data.length > 0) {
         const mapped = projectsRes.data.map((row: any, idx: number) => {

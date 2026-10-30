@@ -87,7 +87,7 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
   const { experiences, projects, pillars, profile, hobbies } = useSiteData();
   const hasExperiences = Array.isArray(experiences) && experiences.length > 0;
   const hasProjects = Array.isArray(projects) && projects.length > 0;
-  const hasPhilosophy = (Array.isArray(pillars) && pillars.length > 0) || Boolean(profile?.origin_story);
+  const hasPhilosophy = (Array.isArray(profile?.about_menu) && profile.about_menu.length > 0) || Boolean(profile?.about_me) || Boolean(profile?.origin_story) || (Array.isArray(pillars) && pillars.length > 0);
   const hasHobbies = Array.isArray(hobbies) && hobbies.length > 0;
 
   return (

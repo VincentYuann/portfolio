@@ -2,7 +2,7 @@
 -- Supabase Database Function: get_portfolio_ai_context
 -- ------------------------------------------------------------------------------
 -- Purpose:
--- Aggregates all portfolio knowledge (profile, projects, experience, philosophy)
+-- Aggregates all portfolio knowledge (profile, projects, experience, about_menu)
 -- into a single, structured JSON document tailored specifically for AI consumption.
 --
 -- AI Filtering Rules (Zero-Leakage & Byte-Efficiency):
@@ -10,7 +10,7 @@
 -- 2. Strips heavy binary/URL assets (e.g. project image URLs, experience logo URLs).
 -- 3. Strips 'images' array and 'displayOrder' from profile hobbies.
 -- 4. Normalizes overview/description fallbacks.
--- 5. Orders projects and experience by display_order ASC, and philosophy by position ASC.
+-- 5. Orders projects and experience by display_order ASC.
 --
 -- Security:
 -- SECURITY DEFINER with search_path = public ensures safe execution across roles.
@@ -36,10 +36,14 @@ BEGIN
         'name', p.name,
         'role', p.role,
         'headline', p.headline,
-        'tagline', p.tagline,
         'email', p.email,
         'github', p.github,
         'linkedin', p.linkedin,
+        'education', p.education,
+        'location', p.location,
+        'career_objective', p.career_objective,
+        'about_me', p.about_me,
+        'about_menu', to_jsonb(p.about_menu),
         'capability_pillars', to_jsonb(p.capability_pillars),
         'hanko_card', to_jsonb(p.hanko_card) - 'statusBadge',
         'origin_story', to_jsonb(p.origin_story),
@@ -70,9 +74,7 @@ BEGIN
             'title', pr.title,
             'subtitle', pr.subtitle,
             'category', pr.category,
-            'badge', pr.badge,
             'kanji', pr.kanji,
-            'status_label', pr.status_label,
             'is_active', pr.is_active,
             'is_featured', pr.is_featured,
             'tech_stacks', to_jsonb(pr.tech_stacks),
@@ -99,9 +101,7 @@ BEGIN
             'start_date', e.start_date,
             'end_date', e.end_date,
             'is_active', e.is_active,
-            'status_label', e.status_label,
             'kanji', e.kanji,
-            'kanji_subtitle', e.kanji_subtitle,
             'tags', to_jsonb(e.tags),
             'overview', COALESCE(NULLIF(e.overview, ''), e.description),
             'bullets', to_jsonb(e.bullets)
@@ -112,21 +112,11 @@ BEGIN
       )
       FROM experience e
     ),
-    'philosophy', (
-      SELECT COALESCE(
-        jsonb_agg(
-          jsonb_build_object(
-            'kanji', ph.kanji,
-            'romaji', ph.romaji,
-            'title', ph.title,
-            'tag', ph.tag,
-            'description', ph.description
-          )
-          ORDER BY ph.position ASC NULLS LAST
-        ),
-        '[]'::jsonb
-      )
-      FROM philosophy_pillars ph
+    'about_menu', (
+      SELECT to_jsonb(p.about_menu)
+      FROM profile p
+      WHERE p.id = 1
+      LIMIT 1
     )
   ) INTO result;
 
