@@ -6,7 +6,6 @@ import {
   Layers,
   ListChecks,
 } from 'lucide-react';
-import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { TechTag } from '../../common/TechTag';
 import { Card } from '../../ui/card';
@@ -461,18 +460,14 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
                   {/* Milestone Card Frame */}
                   <Card
-                    className={`group relative p-5 sm:p-8 overflow-visible transition-all duration-200 ${
+                    withEnso
+                    ensoSize={112}
+                    ensoActive={hoveredCardId === cardKey}
+                    className={`p-5 sm:p-8 transition-all duration-200 ${
                       isCardActive
                         ? 'border-light-border-strong dark:border-dark-border-strong shadow-xs'
                         : ''
-                    }`}
-                  >
-                    {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
-                    <EnsoOrbital
-                      placement="top-left"
-                      size={112}
-                      active={hoveredCardId === cardKey}
-                    />
+                    }`}>
 
                     {/* Corner Hairline Brackets (Subtle) */}
                     

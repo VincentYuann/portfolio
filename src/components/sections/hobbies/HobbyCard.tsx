@@ -1,7 +1,6 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { Image as ImageIcon, Maximize2 } from 'lucide-react';
 import { HobbyItem } from '../../../context/SiteDataContext';
-import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { Card } from '../../ui/card';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
 import { getCategoryStyle } from '../../../lib/hobbyTheme';
@@ -34,14 +33,10 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
   return (
     <Card
       variant="interactive"
-      className="p-5 sm:p-7 shadow-sm relative overflow-visible group transition-all duration-300 flex flex-col justify-between"
+      withEnso
+      ensoSize={112}
+      className="p-5 sm:p-7 shadow-sm transition-all duration-300 flex flex-col justify-between"
     >
-      {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
-      <EnsoOrbital
-        placement="top-left"
-        size={112}
-        hoverOnly={true}
-      />
 
       
 

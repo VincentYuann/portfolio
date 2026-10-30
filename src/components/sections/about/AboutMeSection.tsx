@@ -1,6 +1,5 @@
 import React from 'react';
 import { MapPin, Github, Linkedin, Mail } from 'lucide-react';
-import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { Card } from '../../ui/card';
 import { useSiteData, AboutMenuItem } from '../../../context/SiteDataContext';
 import { SectionDivider } from '../../common/SectionDivider';
@@ -11,6 +10,7 @@ import { handleImageError, DEFAULT_ABOUT_MENU } from '../../../lib/constants';
  * AboutMeSection
  * Pure, distilled editorial menu layout.
  * Equal per-course balance, zero nested cards, no redundant headers or complex string filtering.
+ * Cohesive Card primitive with encapsulated Ensō flourish on hover.
  */
 export const AboutMeSection: React.FC = () => {
   const { profile } = useSiteData();
@@ -82,12 +82,15 @@ export const AboutMeSection: React.FC = () => {
             </Card>
           </div>
 
-          {/* Right Column (7 cols): Editorial Tasting Menu Card */}
+          {/* Right Column (7 cols): Editorial Tasting Menu Card with Encapsulated Hover Ensō */}
           <div className="lg:col-span-7 flex flex-col">
-            <Card variant="craft" className="p-6 sm:p-8 lg:p-9 flex flex-col justify-between h-full relative overflow-visible group">
-              {/* Ensō brush placed on top-left vertex */}
-              <EnsoOrbital placement="top-left" size={84} hoverOnly={false} />
-
+            <Card
+              variant="craft"
+              withEnso
+              ensoPlacement="top-left"
+              ensoSize={96}
+              className="p-6 sm:p-8 lg:p-9 flex flex-col justify-between h-full"
+            >
               {/* ── Four Balanced Courses (Equal Structure & Rhythm) ── */}
               <div className="space-y-6 sm:space-y-7 my-auto">
                 {menuItems.map((course, idx) => {

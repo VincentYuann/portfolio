@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import { EnsoOrbital, type EnsoPlacement } from '../common/EnsoOrbital';
 
 const cardVariants = cva(
-  'rounded-[3px] border transition-colors duration-200 relative overflow-visible',
+  'rounded-[3px] border transition-colors duration-200 relative overflow-visible group',
   {
     variants: {
       variant: {
@@ -27,15 +28,42 @@ const cardVariants = cva(
 
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {}
+    VariantProps<typeof cardVariants> {
+  withEnso?: boolean;
+  ensoPlacement?: EnsoPlacement;
+  ensoSize?: number;
+  ensoActive?: boolean;
+}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, ...props }, ref) => (
+  (
+    {
+      className,
+      variant,
+      withEnso = false,
+      ensoPlacement = 'top-left',
+      ensoSize = 100,
+      ensoActive,
+      children,
+      ...props
+    },
+    ref,
+  ) => (
     <div
       ref={ref}
       className={cn(cardVariants({ variant }), className)}
       {...props}
-    />
+    >
+      {withEnso && (
+        <EnsoOrbital
+          placement={ensoPlacement}
+          size={ensoSize}
+          active={ensoActive}
+          hoverOnly={true}
+        />
+      )}
+      {children}
+    </div>
   ),
 );
 Card.displayName = 'Card';

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Mail, Github, Linkedin, Send, CheckCircle2, AlertCircle, Copy, Check } from 'lucide-react';
 import { sendContactMessage } from '../../../lib/supabase';
-import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
+import { Card } from '../../ui/card';
 import { SectionDivider } from '../../common/SectionDivider';
 
 
@@ -134,13 +134,12 @@ export const ContactSection: React.FC = () => {
       </div>
 
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong rounded-[3px] p-5 sm:p-8 lg:p-10 xl:p-12 overflow-visible shadow-sm classical-card-frame transition-colors duration-300">
-          {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
-          <EnsoOrbital
-            placement="top-left"
-            size={132}
-            hoverOnly={true}
-          />
+        <Card
+          variant="craft"
+          withEnso
+          ensoSize={128}
+          className="p-5 sm:p-8 lg:p-10 xl:p-12 transition-colors duration-300"
+        >
 
           {/* Corner Hairline Brackets (Subtle) */}
           
@@ -377,7 +376,7 @@ export const ContactSection: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
+        </Card>
       </div>
     </section>
   );

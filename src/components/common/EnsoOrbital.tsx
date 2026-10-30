@@ -1,10 +1,12 @@
 import React from 'react';
 
-interface EnsoOrbitalProps {
+export type EnsoPlacement = 'top-left' | 'top-right' | 'center' | 'custom';
+
+export interface EnsoOrbitalProps {
   className?: string;
   style?: React.CSSProperties;
   size?: number; // Size in px (default 100)
-  placement?: 'top-left' | 'top-right' | 'center' | 'custom';
+  placement?: EnsoPlacement;
   interactive?: boolean;
   hoverOnly?: boolean;
   active?: boolean;
@@ -15,7 +17,7 @@ interface EnsoOrbitalProps {
  * Authentic Japanese sumi-e Ensō calligraphic brush circle:
  * - Anchored right on the top-left or top-right corner vertex of the card
  * - Restored original organic calligraphic brushwork with ink bleed (not a stroked noodle)
- * - Subtle, atmospheric water-wash presence that does not overpower content
+ * - Ephemeral hover flourish: strictly hidden (opacity-0) when idle, organically reveals on card hover
  */
 export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
   className = '',
@@ -48,13 +50,14 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
     custom: '',
   }[placement];
 
+  // Strictly hidden (opacity-0) when idle so cards stay clean; reveals smoothly on hover or when active
   const hoverClasses = typeof active === 'boolean'
     ? (active
         ? 'opacity-35 dark:opacity-30 scale-100 transition-all duration-500 ease-out'
         : 'opacity-0 scale-95 pointer-events-none transition-all duration-500 ease-out')
     : hoverOnly
       ? 'opacity-0 scale-95 pointer-events-none group-hover:opacity-35 dark:group-hover:opacity-30 group-hover:scale-100 transition-all duration-500 ease-out'
-      : 'opacity-25 dark:opacity-20 group-hover:opacity-40 dark:group-hover:opacity-35 transition-all duration-500';
+      : 'opacity-0 scale-95 pointer-events-none group-hover:opacity-35 dark:group-hover:opacity-30 group-hover:scale-100 transition-all duration-500 ease-out';
 
   return (
     <div

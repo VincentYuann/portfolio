@@ -5,7 +5,6 @@ import { Card } from '../../ui/card';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { SectionHeading } from '../../common/SectionHeading';
 import { handleImageError } from '../../../lib/constants';
-import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { SectionDivider } from '../../common/SectionDivider';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
 
@@ -112,15 +111,13 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
               return (
                 <Card
                   key={project.id}
+                  withEnso
+                  ensoSize={120}
+                  ensoActive={hoveredProjectId === project.id}
                   onMouseEnter={() => setHoveredProjectId(project.id)}
                   onMouseLeave={() => setHoveredProjectId(null)}
-                  className="group relative w-full p-5 sm:p-8 lg:p-10"
+                  className="w-full p-5 sm:p-8 lg:p-10"
                 >
-                  <EnsoOrbital
-                    placement="top-left"
-                    size={120}
-                    active={hoveredProjectId === project.id}
-                  />
                   
 
                   <div

@@ -3,7 +3,7 @@ import { Search, ExternalLink, Github, Layers } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { handleImageError } from '../../../lib/constants';
-import { EnsoOrbital } from '../../common/EnsoOrbital';
+import { Card } from '../../ui/card';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
 import { PageContainer } from '../../common/PageContainer';
 import { ReturnToPortfolio } from '../../common/ReturnToPortfolio';
@@ -183,18 +183,16 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
             {filteredProjects.map((project, idx) => (
-              <div
+              <Card
                 key={project.id}
+                variant="craft"
+                withEnso
+                ensoSize={100}
+                ensoActive={hoveredProjectId === project.id}
                 onMouseEnter={() => setHoveredProjectId(project.id)}
                 onMouseLeave={() => setHoveredProjectId(null)}
-                className="group relative bg-light-surface-card dark:bg-dark-surface-card craft-card classical-card-frame border border-light-border dark:border-dark-border rounded-[3px] overflow-visible p-5 shadow-sm transition-colors duration-200 flex flex-col justify-between"
+                className="p-5 shadow-sm transition-colors duration-200 flex flex-col justify-between"
               >
-                {/* Celestial Ensō Orbital Circle with Brushstroke (Appears strictly on card hover) */}
-                <EnsoOrbital
-                  placement="top-left"
-                  size={100}
-                  active={hoveredProjectId === project.id}
-                />
 
 
                 <div>
@@ -286,7 +284,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         )}
