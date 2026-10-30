@@ -3,7 +3,7 @@ import React from 'react';
 export interface SectionHeadingProps {
   numeral?: string;
   categoryTag?: string;
-  title: string;
+  title: React.ReactNode;
   kanjiSubtitle?: string;
   description?: string;
   action?: React.ReactNode;

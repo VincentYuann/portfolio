@@ -69,6 +69,7 @@ export const PhilosophyEditor: React.FC = () => {
 
   // Form State
   const [aboutImageUrl, setAboutImageUrl] = useState<string>('');
+  const [aboutDescription, setAboutDescription] = useState<string>('Education, engineering background, and future aspirations.');
   const [education, setEducation] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   const [menuItems, setMenuItems] = useState<AboutMenuItem[]>(DEFAULT_ABOUT_MENU);
@@ -85,6 +86,9 @@ export const PhilosophyEditor: React.FC = () => {
   useEffect(() => {
     if (contextProfile) {
       setAboutImageUrl(contextProfile.about_image_url || contextProfile.avatar_url || '');
+      if (contextProfile.about_description) {
+        setAboutDescription(contextProfile.about_description);
+      }
       setEducation(contextProfile.education || '');
       setLocation(contextProfile.location || '');
       if (Array.isArray(contextProfile.about_menu) && contextProfile.about_menu.length > 0) {
@@ -170,6 +174,7 @@ export const PhilosophyEditor: React.FC = () => {
             .from('profile')
             .update({
               about_image_url: aboutImageUrl,
+              about_description: aboutDescription,
               about_menu: menuItems,
               education: education,
               location: location,
@@ -336,6 +341,24 @@ export const PhilosophyEditor: React.FC = () => {
                       className="font-mono text-xs h-9"
                     />
                   </div>
+                </div>
+
+                <div className="pt-2">
+                  <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
+                    Section Subtitle / Description
+                  </Label>
+                  <Input
+                    value={aboutDescription}
+                    onChange={(e) => {
+                      notifyDirty();
+                      setAboutDescription(e.target.value);
+                    }}
+                    placeholder="Education, engineering background, and future aspirations."
+                    className="font-sans text-xs h-9"
+                  />
+                  <p className="text-2xs text-light-ink-muted/80 dark:text-dark-ink-muted/80 mt-1">
+                    Displayed below the &quot;About Me&quot; section heading. Easily customizable when your story evolves.
+                  </p>
                 </div>
 
               </div>

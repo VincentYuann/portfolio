@@ -88,6 +88,7 @@ export interface SiteProfile {
   location?: string;
   career_objective?: string;
   about_me?: string;
+  about_description?: string;
   capability_pillars: CapabilityPillar[];
   hanko_card?: HankoCardConfig;
   origin_story?: OriginStoryConfig;
@@ -364,6 +365,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           location: row.location || (row.hanko_card ? row.hanko_card.locationArchive : '') || 'Philadelphia, PA',
           career_objective: row.career_objective || '',
           about_me: row.about_me || '',
+          about_description: row.about_description || 'Education, engineering background, and future aspirations.',
           about_menu: Array.isArray(row.about_menu) ? row.about_menu : [],
           email:    row.email    || '',
           github:   row.github   || '',

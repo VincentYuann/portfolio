@@ -60,13 +60,21 @@ export const PhilosophyBento: React.FC = () => {
 
       {/* Rainbow Section Divider with Chapter Index */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
-        <SectionDivider label="04 // ABOUT ME" shortLabel="04 // ABOUT" />
+        <SectionDivider label="04 // ABOUT ME · 自己紹介" shortLabel="04 // ABOUT · 自己紹介" />
       </div>
 
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeading
-          title="About Me"
-          description="Education, engineering background, and future aspirations."
+          title={
+            <>
+              About{' '}
+              <span className="font-serif font-bold italic text-terracotta dark:text-ochre">
+                Me
+              </span>
+            </>
+          }
+          kanjiSubtitle="自己紹介"
+          description={profile?.about_description || "Education, engineering background, and future aspirations."}
         />
 
         {/* ── Two-Column Layout: Vertical Rectangle Image on Left + 1 Big Menu Card on Right ── */}

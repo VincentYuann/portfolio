@@ -192,6 +192,7 @@ ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS career_objective TEXT DEFAUL
 ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS about_me TEXT DEFAULT '';
 ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS about_image_url TEXT DEFAULT '';
 ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS about_menu JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS about_description TEXT DEFAULT 'Education, engineering background, and future aspirations.';
 
 -- Seed initial profile row
 INSERT INTO public.profile (id, name, email)
