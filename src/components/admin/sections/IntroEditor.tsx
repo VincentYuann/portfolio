@@ -53,7 +53,7 @@ const mapProfileToIntroData = (profile: any): IntroData => ({
   email: profile?.email || '',
   github: profile?.github || '',
   linkedin: profile?.linkedin || '',
-  education: profile?.education || profile?.hanko_card?.headerLabel || 'Drexel University ? CS & Math',
+  education: profile?.education || profile?.hanko_card?.headerLabel || 'Drexel University · CS & Math',
   location: profile?.location || profile?.hanko_card?.locationArchive || 'Philadelphia, PA',
   capability_pillars:
     Array.isArray(profile?.capability_pillars)

@@ -124,8 +124,15 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
       >
         {/* Left: Drag Handle, Ordinal Badge, Emblem & Title (Clicking triggers toggle) */}
         <CollapsibleTrigger asChild>
-          <button
-            type="button"
+          <div
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onToggleExpand();
+              }
+            }}
             className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-terracotta/50 dark:focus-visible:ring-ochre/50 rounded-md"
           >
             <div
@@ -156,7 +163,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
                 </p>
               )}
             </div>
-          </button>
+          </div>
         </CollapsibleTrigger>
 
         {/* Right: Actions Toolbar */}

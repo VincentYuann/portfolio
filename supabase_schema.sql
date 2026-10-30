@@ -250,12 +250,18 @@ CREATE TABLE IF NOT EXISTS public.projects (
 -- Resume LaTeX Table
 CREATE TABLE IF NOT EXISTS public.resume_latex (
   id INT PRIMARY KEY DEFAULT 1,
+  latex TEXT NOT NULL DEFAULT '',
   content TEXT NOT NULL DEFAULT '',
+  resume_link TEXT DEFAULT '',
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-INSERT INTO public.resume_latex (id, content)
-VALUES (1, '% Vincent Yuan Resume LaTeX Source')
+ALTER TABLE public.resume_latex ADD COLUMN IF NOT EXISTS latex TEXT DEFAULT '';
+ALTER TABLE public.resume_latex ADD COLUMN IF NOT EXISTS content TEXT DEFAULT '';
+ALTER TABLE public.resume_latex ADD COLUMN IF NOT EXISTS resume_link TEXT DEFAULT '';
+
+INSERT INTO public.resume_latex (id, latex, content)
+VALUES (1, '% Vincent Yuan Resume LaTeX Source', '% Vincent Yuan Resume LaTeX Source')
 ON CONFLICT (id) DO NOTHING;
 
 -- Contact Messages Cleanup (Replaced by Resend + Supabase Edge Function 'send-contact-email')
