@@ -148,12 +148,6 @@ export const ContactSection: React.FC = () => {
             {/* Left Column: Narrative & Direct Links */}
             <div className="lg:col-span-6 flex flex-col gap-4 sm:gap-6">
               <div>
-                <div className="flex items-center gap-2 mb-1.5 sm:mb-2 flex-wrap">
-                  <span className="font-mono text-xs font-semibold text-terracotta dark:text-ochre uppercase tracking-wider">
-                    Direct Contact · 連絡
-                  </span>
-                </div>
-
                 <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-light-ink dark:text-dark-ink leading-tight font-normal tracking-tight">
                   Get in Touch{' '}
                   <span aria-hidden="true" className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-xl sm:text-2xl lg:text-3xl ml-1.5 sm:ml-2 whitespace-nowrap inline-block select-none">
