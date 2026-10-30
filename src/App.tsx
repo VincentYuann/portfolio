@@ -21,7 +21,7 @@ import {
 // Route-level and below-the-fold code-splitting (drastically reduces initial bundle size and TBT)
 const ExperienceSection = lazy(() => import('./components/sections/experience/ExperienceSection').then((m) => ({ default: m.ExperienceSection })));
 const ProjectsShowcase = lazy(() => import('./components/sections/projects/ProjectsShowcase').then((m) => ({ default: m.ProjectsShowcase })));
-const PhilosophyBento = lazy(() => import('./components/sections/philosophy/PhilosophyBento').then((m) => ({ default: m.PhilosophyBento })));
+const AboutMeSection = lazy(() => import('./components/sections/about/AboutMeSection').then((m) => ({ default: m.AboutMeSection })));
 const HobbiesSection = lazy(() => import('./components/sections/hobbies/HobbiesSection').then((m) => ({ default: m.HobbiesSection })));
 const ContactSection = lazy(() => import('./components/sections/contact/ContactSection').then((m) => ({ default: m.ContactSection })));
 const Footer = lazy(() => import('./components/layout/Footer').then((m) => ({ default: m.Footer })));
@@ -84,10 +84,10 @@ const getInitialView = (): ViewMode => {
 };
 
 const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => void }> = ({ onNavigate }) => {
-  const { experiences, projects, pillars, profile, hobbies } = useSiteData();
+  const { experiences, projects, profile, hobbies } = useSiteData();
   const hasExperiences = Array.isArray(experiences) && experiences.length > 0;
   const hasProjects = Array.isArray(projects) && projects.length > 0;
-  const hasPhilosophy = (Array.isArray(profile?.about_menu) && profile.about_menu.length > 0) || Boolean(profile?.about_me) || Boolean(profile?.origin_story) || (Array.isArray(pillars) && pillars.length > 0);
+  const hasAbout = (Array.isArray(profile?.about_menu) && profile.about_menu.length > 0) || Boolean(profile?.about_me) || Boolean(profile?.origin_story);
   const hasHobbies = Array.isArray(hobbies) && hobbies.length > 0;
 
   return (
@@ -111,9 +111,9 @@ const HomeView: React.FC<{ onNavigate: (view: ViewMode, sectionId?: string) => v
               <ProjectsShowcase onNavigate={onNavigate} />
             </div>
           )}
-          {hasPhilosophy && (
+          {hasAbout && (
             <div className="[content-visibility:auto] [contain-intrinsic-size:1px_650px]">
-              <PhilosophyBento />
+              <AboutMeSection />
             </div>
           )}
           {hasHobbies && (
@@ -289,7 +289,7 @@ export const App: React.FC = () => {
         return;
       }
 
-      const HOME_SECTION_HASHES = ['#home', '#experience', '#featured-works', '#philosophy', '#hobbies', '#contact'];
+      const HOME_SECTION_HASHES = ['#home', '#experience', '#featured-works', '#about', '#philosophy', '#hobbies', '#contact'];
 
       if (HOME_SECTION_HASHES.includes(hash) || !hash || hash === '#') {
         setViewRef.current('home');

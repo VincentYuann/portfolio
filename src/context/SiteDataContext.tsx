@@ -96,15 +96,6 @@ export interface SiteProfile {
   about_menu?: AboutMenuItem[];
 }
 
-export interface PhilosophyPillar {
-  position: number;
-  kanji: string;
-  romaji: string;
-  title: string;
-  tag: string;
-  description: string;
-}
-
 export interface Project {
   id: string;
   title: string;
@@ -152,8 +143,7 @@ export interface ExperienceRecord {
 
 export interface SiteData {
   profile: SiteProfile;
-  pillars: PhilosophyPillar[];
-  projects: Project[];
+    projects: Project[];
   experiences: ExperienceRecord[];
   hobbies: HobbyItem[];
   loading: boolean;
@@ -176,7 +166,6 @@ export const EMPTY_PROFILE: SiteProfile = {
 
 const SiteDataContext = createContext<SiteData>({
   profile: EMPTY_PROFILE,
-  pillars: [],
   projects: [],
   experiences: [],
   hobbies: [],
@@ -255,18 +244,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return EMPTY_PROFILE;
   });
 
-  const [pillars, setPillars] = useState<PhilosophyPillar[]>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const cached = localStorage.getItem('portfolio_pillars_cache');
-        if (cached) return JSON.parse(cached);
-      } catch (e) {
-        console.warn('Pillars cache parse error', e);
-      }
-    }
-    return [];
-  });
-
+  
   const [projects, setProjects] = useState<Project[]>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -389,8 +367,6 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       } else {
         setProfile(EMPTY_PROFILE);
       }
-
-      setPillars([]);
 
       if (projectsRes.data && projectsRes.data.length > 0) {
         const mapped = projectsRes.data.map((row: any, idx: number) => {
@@ -540,7 +516,6 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     <SiteDataContext.Provider
       value={{
         profile,
-        pillars,
         projects,
         experiences,
         hobbies: profile.hobbies || [],

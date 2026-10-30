@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { IntroEditor } from './sections/IntroEditor';
 import { ExperienceEditor } from './sections/ExperienceEditor';
 import { ProjectsEditor } from './sections/ProjectsEditor';
-import { PhilosophyEditor } from './sections/PhilosophyEditor';
+import { AboutEditor } from './sections/AboutEditor';
 import { HobbiesEditor } from './sections/HobbiesEditor';
 import { ResumeEditor } from './sections/ResumeEditor';
 import {
@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 import { ViewMode } from '../../App';
 import { PageContainer } from '../common/PageContainer';
 
-type EditSection = 'intro' | 'experience' | 'projects' | 'philosophy' | 'hobbies' | 'resume';
+type EditSection = 'intro' | 'experience' | 'projects' | 'about' | 'hobbies' | 'resume';
 
 interface EditPageProps {
   onNavigate: (view: ViewMode) => void;
@@ -39,7 +39,7 @@ const SECTIONS: SectionMeta[] = [
   { id: 'intro', label: 'Intro', shortLabel: 'Intro', num: '01', icon: User },
   { id: 'experience', label: 'Experience', shortLabel: 'Experience', num: '02', icon: Briefcase },
   { id: 'projects', label: 'Projects', shortLabel: 'Projects', num: '03', icon: FolderGit2 },
-  { id: 'philosophy', label: 'About Me', shortLabel: 'About Me', num: '04', icon: Compass },
+  { id: 'about', label: 'About Me', shortLabel: 'About', num: '04', icon: Compass },
   { id: 'hobbies', label: 'Hobbies', shortLabel: 'Hobbies', num: '05', icon: Palette },
   { id: 'resume', label: 'Resume', shortLabel: 'Resume', num: '06', icon: FileText },
 ];
@@ -47,7 +47,8 @@ const SECTIONS: SectionMeta[] = [
 export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
   const [activeSection, setActiveSection] = useState<EditSection>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('portfolio_admin_section') as EditSection | null;
+      const raw = localStorage.getItem('portfolio_admin_section');
+      const saved = (raw === 'philosophy' ? 'about' : raw) as EditSection | null;
       if (saved && SECTIONS.some((s) => s.id === saved)) {
         return saved;
       }
@@ -60,7 +61,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
     intro: false,
     experience: false,
     projects: false,
-    philosophy: false,
+    about: false,
     hobbies: false,
     resume: false,
   });
@@ -86,7 +87,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
           intro: false,
           experience: false,
           projects: false,
-          philosophy: false,
+          about: false,
           hobbies: false,
           resume: false,
         });
@@ -263,7 +264,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
           {activeSection === 'intro' && <IntroEditor />}
           {activeSection === 'experience' && <ExperienceEditor />}
           {activeSection === 'projects' && <ProjectsEditor />}
-          {activeSection === 'philosophy' && <PhilosophyEditor />}
+          {activeSection === 'about' && <AboutEditor />}
           {activeSection === 'hobbies' && <HobbiesEditor />}
           {activeSection === 'resume' && <ResumeEditor />}
         </div>

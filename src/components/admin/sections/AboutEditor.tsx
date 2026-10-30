@@ -12,49 +12,15 @@ import {
 import { supabase, formatErrorMessage, withTimeout, uploadProfileAvatar } from '../../../lib/supabase';
 import { useSiteData, AboutMenuItem } from '../../../context/SiteDataContext';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
-
 import { useAdminDirty } from '../shared/useAdminDirty';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
 import { Button } from '../../ui/button';
 import { toast } from 'sonner';
+import { DEFAULT_ABOUT_MENU } from '../../../lib/constants';
 
-const DEFAULT_ABOUT_MENU: AboutMenuItem[] = [
-  {
-    id: 'education',
-    title: 'Education',
-    items: [
-      'Drexel University · Math and Computer Science',
-      'GPA: 3.52',
-    ],
-  },
-  {
-    id: 'about',
-    title: 'About',
-    items: [
-      "Hi, my name is Vincent Yuan. I find coding interesting and fun, which is why I'm studying Computer Science. Coding expands into 2 industries I'm deeply passionate about:",
-      'First is Software Engineering: when we code, we need to think about the product for customers and what problems it can solve. Being a SWE also means I build programs to solve everyday problems around me, from idea to implementation, and I find genuine enjoyment in that.',
-      'Secondly, I want to get into game development.',
-    ],
-  },
-  {
-    id: 'achievement',
-    title: "One Achievement I'm Proud Of",
-    items: [
-      "When I started stepping outside of tutorials, that's when I learned more. Copying tutorials step-by-step only brings me so far. Ever since I had my own idea, I could no longer follow along and had to complete the rest myself. With the help of AI as a personal mentor, I'm able to achieve far more than I was before.",
-    ],
-  },
-  {
-    id: 'vision',
-    title: '5 Years From Now...',
-    items: [
-      'I want to be a full-stack engineer working on enterprise projects and solving problems that interact directly with customers. I see myself becoming a person who is really good at designing, connecting application components, and building robust distributed systems.',
-    ],
-  },
-];
-
-export const PhilosophyEditor: React.FC = () => {
+export const AboutEditor: React.FC = () => {
   const { profile: contextProfile, refresh } = useSiteData();
 
   // Collapsible cards state
@@ -69,7 +35,9 @@ export const PhilosophyEditor: React.FC = () => {
 
   // Form State
   const [aboutImageUrl, setAboutImageUrl] = useState<string>('');
-  const [aboutDescription, setAboutDescription] = useState<string>('Education, engineering background, and future aspirations.');
+  const [aboutDescription, setAboutDescription] = useState<string>(
+    'Education, engineering background, and future aspirations.'
+  );
   const [education, setEducation] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   const [menuItems, setMenuItems] = useState<AboutMenuItem[]>(DEFAULT_ABOUT_MENU);
@@ -78,9 +46,7 @@ export const PhilosophyEditor: React.FC = () => {
   const [uploadingImage, setUploadingImage] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Kanji picker modal
-
-  const { notifyDirty, notifyClean } = useAdminDirty('philosophy');
+  const { notifyDirty, notifyClean } = useAdminDirty('about');
 
   // Sync state from context
   useEffect(() => {
@@ -228,7 +194,7 @@ export const PhilosophyEditor: React.FC = () => {
         <button
           type="button"
           onClick={() => toggle('portrait')}
-          className="w-full flex items-center justify-between p-4 sm:p-5 text-left border-b border-light-border/60 dark:border-dark-border/60 hover:bg-light-surface-muted/40 dark:hover:bg-dark-canvas/40 transition-colors"
+          className="w-full flex items-center justify-between p-4 sm:p-5 text-left border-b border-light-border/60 dark:border-dark-border/60 hover:bg-light-surface-muted/40 dark:hover:bg-dark-canvas/40 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
             <User className="w-4 h-4 text-terracotta dark:text-ochre" />
@@ -236,13 +202,16 @@ export const PhilosophyEditor: React.FC = () => {
               Vertical Portrait Photo &amp; Location
             </h3>
           </div>
-          {collapsed.portrait ? <ChevronRight className="w-4 h-4 text-light-ink-muted" /> : <ChevronDown className="w-4 h-4 text-light-ink-muted" />}
+          {collapsed.portrait ? (
+            <ChevronRight className="w-4 h-4 text-light-ink-muted" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-light-ink-muted" />
+          )}
         </button>
 
         {!collapsed.portrait && (
           <div className="p-4 sm:p-6 space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
-              
               {/* Photo Preview Frame (Vertical Rectangle) */}
               <div className="md:col-span-4 flex flex-col items-center">
                 <div className="w-36 h-48 sm:w-40 sm:h-52 rounded-[3px] overflow-hidden border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-canvas shadow-xs relative group">
@@ -257,7 +226,7 @@ export const PhilosophyEditor: React.FC = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => fileInputRef.current?.click()}
-                      className="text-xs bg-white/90 text-black hover:bg-white border-none"
+                      className="text-xs bg-white/90 text-black hover:bg-white border-none cursor-pointer"
                     >
                       Change Photo
                     </Button>
@@ -293,7 +262,11 @@ export const PhilosophyEditor: React.FC = () => {
                     ) : (
                       <Upload className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
                     )}
-                    <span>{uploadingImage ? 'Uploading...' : 'Upload Image (PNG, JPG, WebP < 5MB)'}</span>
+                    <span>
+                      {uploadingImage
+                        ? 'Uploading...'
+                        : 'Upload Image (PNG, JPG, WebP < 5MB)'}
+                    </span>
                   </Button>
                 </div>
 
@@ -360,7 +333,6 @@ export const PhilosophyEditor: React.FC = () => {
                     Displayed below the &quot;About Me&quot; section heading. Easily customizable when your story evolves.
                   </p>
                 </div>
-
               </div>
             </div>
           </div>
@@ -372,7 +344,7 @@ export const PhilosophyEditor: React.FC = () => {
         <button
           type="button"
           onClick={() => toggle('menu')}
-          className="w-full flex items-center justify-between p-4 sm:p-5 text-left border-b border-light-border/60 dark:border-dark-border/60 hover:bg-light-surface-muted/40 dark:hover:bg-dark-canvas/40 transition-colors"
+          className="w-full flex items-center justify-between p-4 sm:p-5 text-left border-b border-light-border/60 dark:border-dark-border/60 hover:bg-light-surface-muted/40 dark:hover:bg-dark-canvas/40 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
             <BookOpen className="w-4 h-4 text-terracotta dark:text-ochre" />
@@ -380,7 +352,11 @@ export const PhilosophyEditor: React.FC = () => {
               Story Menu Sections ({menuItems.length})
             </h3>
           </div>
-          {collapsed.menu ? <ChevronRight className="w-4 h-4 text-light-ink-muted" /> : <ChevronDown className="w-4 h-4 text-light-ink-muted" />}
+          {collapsed.menu ? (
+            <ChevronRight className="w-4 h-4 text-light-ink-muted" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-light-ink-muted" />
+          )}
         </button>
 
         {!collapsed.menu && (
@@ -404,7 +380,7 @@ export const PhilosophyEditor: React.FC = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => deleteMenuItem(idx)}
-                      className="text-light-ink-muted hover:text-red-500 h-7 px-2 text-xs"
+                      className="text-light-ink-muted hover:text-red-500 h-7 px-2 text-xs cursor-pointer"
                       title="Delete this section"
                     >
                       <Trash2 className="w-3.5 h-3.5 mr-1" />
@@ -444,7 +420,7 @@ export const PhilosophyEditor: React.FC = () => {
               type="button"
               variant="outline"
               onClick={addMenuItem}
-              className="w-full h-10 text-xs font-mono font-medium border-dashed border-light-border dark:border-dark-border flex items-center justify-center gap-2 hover:border-terracotta dark:hover:border-ochre"
+              className="w-full h-10 text-xs font-mono font-medium border-dashed border-light-border dark:border-dark-border flex items-center justify-center gap-2 hover:border-terracotta dark:hover:border-ochre cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5 text-terracotta dark:text-ochre" />
               <span>Add Menu Section</span>
@@ -452,8 +428,6 @@ export const PhilosophyEditor: React.FC = () => {
           </div>
         )}
       </div>
-
-
     </div>
   );
 };
