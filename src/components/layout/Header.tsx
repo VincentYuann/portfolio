@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { X, Sun, Moon, LogOut, LogIn, SlidersHorizontal, Eye, Palette } from 'lucide-react';
 import { HankoStamp } from '../common/HankoStamp';
-import { CANVAS_WIDTH } from '../common/PageContainer';
 
 export type ViewMode = 'home' | 'projects' | 'resume' | 'login' | 'edit' | 'hobbies' | 'visual-system';
 
@@ -149,10 +148,10 @@ export const Header: React.FC<HeaderProps> = ({
     };
   }, [currentView]);
 
-  // Close mobile drawer on resize to desktop
+  // Close mobile drawer on resize to desktop (lg: 1024px)
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1280) {
+      if (window.innerWidth >= 1024) {
         setMobileDrawerOpen(false);
       }
     };
@@ -194,7 +193,7 @@ export const Header: React.FC<HeaderProps> = ({
           : 'bg-light-canvas/95 dark:bg-dark-canvas/95 backdrop-blur-md border-b border-light-border/70 dark:border-dark-border/80 shadow-xs'
       }`}
     >
-      <div className={`h-20 ${CANVAS_WIDTH.container} flex items-center justify-between gap-3 sm:gap-4`}>
+      <div className="h-20 w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-6 xl:px-8 flex items-center justify-between gap-2.5 sm:gap-3.5">
         {/* Left: Brand / Hanko Stamp (Enlarged) */}
         <div className="flex items-center gap-3 shrink-0">
           <a
@@ -214,8 +213,8 @@ export const Header: React.FC<HeaderProps> = ({
           </a>
         </div>
 
-        {/* Center: Desktop Navigation with Fluid Spacing & Symmetrical Breathing Room (>= xl / 1280px) */}
-        <nav className="hidden xl:flex items-center justify-center gap-5 2xl:gap-7 flex-1 mx-auto px-2">
+        {/* Center: Desktop Navigation with Fluid Spacing & Symmetrical Breathing Room (>= lg / 1024px) */}
+        <nav className="hidden lg:flex items-center justify-center gap-2 xl:gap-4 2xl:gap-7 flex-1 mx-auto px-1 xl:px-2">
           {navItems.map((item) => {
             const isActive =
               currentView === 'edit'
@@ -233,18 +232,18 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.id}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`group relative font-sans text-xs tracking-wider uppercase transition-colors flex items-center gap-1.5 py-1.5 whitespace-nowrap ${
+                className={`group relative font-sans text-xs xl:text-[13px] 2xl:text-sm tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 xl:gap-2 py-2 px-1 xl:px-2 rounded-sm whitespace-nowrap ${
                   isActive
                     ? 'text-light-ink dark:text-dark-ink font-semibold'
-                    : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink'
+                    : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised/40 dark:hover:bg-dark-surface/40'
                 }`}
               >
                 <span>{item.label}</span>
-                <span className={`font-mono text-2xs tracking-tight transition-colors ${isActive ? 'text-terracotta dark:text-ochre font-bold opacity-100' : 'text-light-ink-muted/70 dark:text-dark-ink-muted/70 group-hover:text-terracotta dark:group-hover:text-ochre group-hover:opacity-100'}`}>
+                <span className={`font-mono text-[11px] xl:text-xs tracking-tight transition-colors ${isActive ? 'text-terracotta dark:text-ochre font-bold opacity-100' : 'text-light-ink-muted/70 dark:text-dark-ink-muted/70 group-hover:text-terracotta dark:group-hover:text-ochre group-hover:opacity-100'}`}>
                   {item.num}
                 </span>
                 <span
-                  className={`absolute bottom-0 left-0 h-[1.5px] bg-terracotta dark:bg-ochre rounded-full transition-all duration-300 ${
+                  className={`absolute bottom-0 left-0 h-[2px] bg-terracotta dark:bg-ochre rounded-full transition-all duration-300 ${
                     isActive ? 'w-full' : 'w-0 group-hover:w-full'
                   }`}
                 />
@@ -254,12 +253,12 @@ export const Header: React.FC<HeaderProps> = ({
         </nav>
 
         {/* Right side cluster: neatly aligned with zero overlap across all breakpoints */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 xl:gap-2.5 shrink-0">
           {/* Theme Switcher: Flat 2-segment track without nested card elevations */}
           <div className="flex items-center p-0.5 rounded-[3px] bg-light-ink/[0.04] dark:bg-white/[0.05] border border-light-border/40 dark:border-dark-border/40 text-xs select-none shrink-0 min-h-[40px]">
             <button
               onClick={() => setTheme('day')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[36px] ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[36px] ${
                 theme === 'day'
                   ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink shadow-2xs'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -267,12 +266,12 @@ export const Header: React.FC<HeaderProps> = ({
               title="Day Mode"
               aria-label="Switch to Day Mode"
             >
-              <Sun className={`w-3.5 h-3.5 sm:w-3 sm:h-3 transition-transform duration-300 ${theme === 'day' ? 'rotate-0 text-terracotta dark:text-ochre' : '-rotate-45 group-hover/theme:rotate-0'}`} />
-              <span className="hidden sm:inline">DAY</span>
+              <Sun className={`w-3.5 h-3.5 transition-transform duration-300 ${theme === 'day' ? 'rotate-0 text-terracotta dark:text-ochre' : '-rotate-45 group-hover/theme:rotate-0'}`} />
+              <span className="hidden xl:inline">DAY</span>
             </button>
             <button
               onClick={() => setTheme('night')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[36px] ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[2px] font-sans font-semibold tracking-wider transition-all duration-200 cursor-pointer group/theme min-h-[36px] ${
                 theme === 'night'
                   ? 'bg-light-surface dark:bg-dark-surface-card text-light-ink dark:text-dark-ink shadow-2xs'
                   : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink'
@@ -280,15 +279,15 @@ export const Header: React.FC<HeaderProps> = ({
               title="Night Mode"
               aria-label="Switch to Night Mode"
             >
-              <Moon className={`w-3.5 h-3.5 sm:w-3 sm:h-3 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 text-terracotta dark:text-ochre' : 'rotate-45 group-hover/theme:rotate-0'}`} />
-              <span className="hidden sm:inline">NIGHT</span>
+              <Moon className={`w-3.5 h-3.5 transition-transform duration-300 ${theme === 'night' ? 'rotate-0 text-terracotta dark:text-ochre' : 'rotate-45 group-hover/theme:rotate-0'}`} />
+              <span className="hidden xl:inline">NIGHT</span>
             </button>
           </div>
 
           {/* Visual System / Art Button */}
           <button
             onClick={() => onNavigate?.('visual-system')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 rounded-[3px] font-sans font-semibold text-xs tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[36px] group/art ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-[3px] font-sans font-semibold text-xs xl:text-[13px] tracking-wider transition-all duration-200 cursor-pointer shrink-0 min-h-[40px] group/art ${
               currentView === 'visual-system'
                 ? 'bg-terracotta/10 dark:bg-ochre/15 text-terracotta dark:text-ochre border border-terracotta/40 dark:border-ochre/40 shadow-2xs'
                 : 'text-light-ink-muted hover:text-light-ink dark:text-dark-ink-muted dark:hover:text-dark-ink border border-light-border/40 dark:border-dark-border/40 hover:bg-light-surface-card/40 dark:hover:bg-dark-surface/40'
@@ -296,71 +295,71 @@ export const Header: React.FC<HeaderProps> = ({
             title="Design System & Visual Settings"
             aria-label="Open Art & Visual Settings"
           >
-            <Palette className={`w-3.5 h-3.5 sm:w-3 sm:h-3 text-terracotta dark:text-ochre transition-transform duration-300 ${currentView === 'visual-system' ? 'scale-110' : 'group-hover/art:scale-110'}`} />
-            <span className="hidden sm:inline">ART</span>
+            <Palette className={`w-3.5 h-3.5 xl:w-4 xl:h-4 text-terracotta dark:text-ochre transition-transform duration-300 ${currentView === 'visual-system' ? 'scale-110' : 'group-hover/art:scale-110'}`} />
+            <span className="hidden xl:inline">ART</span>
           </button>
 
-          {/* Desktop Action Cluster: Admin controls with clean icon + text label (>= xl) */}
+          {/* Desktop Action Cluster: Admin controls with clean icon on lg, icon + label on xl */}
           {isAdmin ? (
-            <div className="hidden xl:flex items-center gap-2 shrink-0">
+            <div className="hidden lg:flex items-center gap-1.5 xl:gap-2 shrink-0">
               <button
                 onClick={() => onNavigate?.(currentView === 'edit' ? 'home' : 'edit')}
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] border font-sans text-xs font-semibold tracking-wider transition-colors cursor-pointer min-h-[36px] ${
+                className={`inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-[2px] border font-sans text-xs xl:text-[13px] font-semibold tracking-wider transition-colors cursor-pointer min-h-[40px] ${
                   currentView === 'edit'
                     ? 'bg-terracotta dark:bg-ochre text-white dark:text-[#121316] border-terracotta dark:border-ochre hover:bg-terracotta-hover dark:hover:bg-[#C29845] shadow-xs'
-                    : 'text-terracotta dark:text-ochre border-terracotta/40 dark:border-ochre/40 bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta/20 dark:hover:bg-ochre/20 hover:border-terracotta dark:hover:border-ochre'
+                    : 'text-terracotta dark:text-ochre border-terracotta/40 dark:border-ochre/40 bg-terracotta/10 dark:bg-ochre/10 hover:bg-terracotta/20 dark:hover:bg-ochre/20 hover:border-terracotta dark:border-ochre'
                 }`}
                 title={currentView === 'edit' ? 'Exit Studio & view public site' : 'Open Studio to edit portfolio'}
                 aria-label={currentView === 'edit' ? 'View Site' : 'Edit Site'}
               >
                 {currentView === 'edit' ? (
                   <>
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>View Site</span>
+                    <Eye className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
+                    <span className="hidden xl:inline">View Site</span>
                   </>
                 ) : (
                   <>
-                    <SlidersHorizontal className="w-3.5 h-3.5" />
-                    <span>Edit Site</span>
+                    <SlidersHorizontal className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
+                    <span className="hidden xl:inline">Edit Site</span>
                   </>
                 )}
               </button>
               <button
                 onClick={onLogout}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[36px]"
+                className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-[2px] font-sans text-xs xl:text-[13px] font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[40px]"
                 title="Sign Out"
                 aria-label="Sign Out"
               >
-                <LogOut className="w-3.5 h-3.5" />
-                <span>Sign Out</span>
+                <LogOut className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
+                <span className="hidden xl:inline">Sign Out</span>
               </button>
             </div>
           ) : isVisitor ? (
-            <div className="hidden xl:flex items-center gap-2 shrink-0">
+            <div className="hidden lg:flex items-center gap-1.5 xl:gap-2 shrink-0">
               <button
                 onClick={onLogout}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[36px]"
+                className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-[2px] font-sans text-xs xl:text-[13px] font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-red-500 hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer min-h-[40px]"
                 title="Exit Visitor session"
                 aria-label="Exit Visitor"
               >
-                <LogOut className="w-3.5 h-3.5" />
-                <span>Sign Out</span>
+                <LogOut className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
+                <span className="hidden xl:inline">Sign Out</span>
               </button>
             </div>
           ) : (
             <button
               onClick={() => onNavigate?.('login')}
-              className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] font-sans text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[36px]"
+              className="hidden lg:inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-[2px] font-sans text-xs xl:text-[13px] font-semibold text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised dark:hover:bg-dark-surface border border-light-border dark:border-dark-border transition-colors cursor-pointer shrink-0 min-h-[40px]"
               title="Admin Sign In"
               aria-label="Admin Sign In"
             >
-              <LogIn className="w-3.5 h-3.5" />
-              <span>Admin</span>
+              <LogIn className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
+              <span className="hidden xl:inline">Admin</span>
             </button>
           )}
 
-          {/* ── Bordered 三 Menu Button: Exclusively on Mobile and Tablet (< xl) ── */}
-          <div className="relative xl:hidden">
+          {/* ── Bordered 三 Menu Button: Exclusively on Mobile and Tablet (< lg) ── */}
+          <div className="relative lg:hidden">
             <button
               onClick={() => setMobileDrawerOpen((prev) => !prev)}
               className={`w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-[2px] border transition-all duration-200 select-none cursor-pointer shrink-0 ${
@@ -381,9 +380,9 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* ── Tablet & Mobile Navigation Drawer (Active on < xl screens) ── */}
+      {/* ── Tablet & Mobile Navigation Drawer (Active on < lg screens) ── */}
       {mobileDrawerOpen && (
-        <div className="xl:hidden px-6 py-5 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xl animate-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden px-6 py-5 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xl animate-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col space-y-1">
             {navItems.map((item) => {
               const isActive =

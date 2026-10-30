@@ -1,12 +1,10 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { ArrowRight, Layers, Github, ExternalLink } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { Card } from '../../ui/card';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { SectionHeading } from '../../common/SectionHeading';
 import { handleImageError } from '../../../lib/constants';
-import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { SectionDivider } from '../../common/SectionDivider';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
@@ -89,19 +87,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
       <div className="absolute right-0 sm:right-24 top-1/3 w-96 h-96 bg-radial-[at_center] from-ochre/[0.04] dark:from-ochre/[0.025] to-transparent pointer-events-none z-0" />
       
       {/* 16:9 Cedar Wood Ground & Dynamic Cresting Wave across Lower/Right Canvas */}
-      <SectionSideBackdrop
-        textureDay="./background/white wood.webp"
-        textureNight="./background/black wood.webp"
-        painting="./decorators/ocean.webp"
-        paintingAlt="Sumi-e ocean wave ink wash painting"
-        placement="bottom-right"
-        artworkWidth="w-full lg:w-[75%]"
-        maskCenter="at 70% 65%"
-        textureOpacityDay={0.65}
-        textureOpacityNight={0.45}
-        paintingOpacityDay={0.35}
-        paintingOpacityNight={0.14}
-      />
+      
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
@@ -137,7 +123,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                     size={120}
                     active={hoveredProjectId === project.id}
                   />
-                  <CornerBrackets size="md" />
+                  
 
                   <div
                     className={`grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-12 items-center ${
@@ -218,7 +204,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                           className="inline-flex items-center gap-2 px-3.5 py-2 rounded-[2px] font-sans text-xs font-bold uppercase tracking-wider bg-light-surface-raised dark:bg-dark-surface hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre transition-all duration-200 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer group/btn shadow-2xs"
                         >
                           <span>
-                            {project.links.caseStudyText || 'View Architecture'}
+                            {project.links.caseStudyText || 'View Details'}
                           </span>
                           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1 text-terracotta dark:text-ochre group-hover/btn:text-white dark:group-hover/btn:text-dark-canvas" />
                         </button>

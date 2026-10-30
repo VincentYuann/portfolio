@@ -1,25 +1,22 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
-  Trash2,
+  Upload,
+  Loader2,
+  User,
+  Compass,
   ChevronDown,
   ChevronRight,
-  Compass,
-  ScrollText,
+  BookOpen,
 } from 'lucide-react';
-import { supabase, formatErrorMessage, withTimeout } from '../../../lib/supabase';
-import {
-  useSiteData,
-  OriginStoryConfig,
-  OriginMilestone,
-} from '../../../context/SiteDataContext';
-import { CornerBrackets } from '../../common/CornerBrackets';
+import { supabase, formatErrorMessage, withTimeout, uploadProfileAvatar } from '../../../lib/supabase';
+import { useSiteData } from '../../../context/SiteDataContext';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
-import { EmblemKanjiSelector } from '../shared/EmblemKanjiSelector';
+import { KanjiPickerModal } from '../modals/KanjiPickerModal';
 import { useAdminDirty } from '../shared/useAdminDirty';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Label } from '../../ui/label';
-import { Badge } from '../../ui/badge';
+import { Button } from '../../ui/button';
 import { toast } from 'sonner';
 
 interface PillarEntry {
@@ -42,115 +39,104 @@ const mapPillarsFromContext = (contextPillars: any[]): PillarEntry[] => {
       description: p.description || '',
     }));
   }
-  return [];
+  return [
+    { position: 1, kanji: '間', romaji: 'MA', title: 'Spatial Clarity & Focus', tag: 'MINIMAL ARCHITECTURE', description: 'Intentional negative space and low cognitive load. Removing noise to elevate signal.' },
+    { position: 2, kanji: '匠', romaji: 'SHOKUNIN', title: 'Artisanal Craftsmanship', tag: 'METICULOUS DETAIL', description: 'Obsessive care for pixel alignment, smooth framerates, type contrast, and robust typing.' },
+    { position: 3, kanji: '侘', romaji: 'WABI-SABI', title: 'Authentic Materiality', tag: 'TACTILE INTERFACES', description: 'Respecting honest digital texture, warm palettes, and timeless structural integrity.' },
+  ];
 };
-
-const newPillar = (pos: number): PillarEntry => ({
-  position: pos,
-  kanji: pos === 1 ? '間' : pos === 2 ? '匠' : '侘',
-  romaji: pos === 1 ? 'MA' : pos === 2 ? 'SHOKUNIN' : 'WABI-SABI',
-  title: '',
-  tag: '',
-  description: '',
-});
-
-const createEmptyOriginStory = (): OriginStoryConfig => ({
-  badge: 'ORIGIN & TRAJECTORY · 原点と軌跡',
-  headline: '',
-  leadParagraph: '',
-  milestones: [
-    { era: 'PHASE 01', title: '', subtitle: '', tag: '', description: '' },
-    { era: 'PHASE 02', title: '', subtitle: '', tag: '', description: '' },
-    { era: 'PHASE 03', title: '', subtitle: '', tag: '', description: '' },
-    { era: 'PHASE 04', title: '', subtitle: '', tag: '', description: '' },
-  ],
-});
 
 export const PhilosophyEditor: React.FC = () => {
   const { pillars: contextPillars, profile: contextProfile, refresh } = useSiteData();
 
-  // Collapsible cards state: both open by default
+  // Collapsible cards state
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({
-    origin: false,
-    pillars: false,
+    about: false,
+    principles: false,
   });
 
   const toggle = (section: string) => {
     setCollapsed((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
-  // Origin Trajectory state
-  const [originData, setOriginData] = useState<OriginStoryConfig>(() => {
-    return contextProfile?.origin_story || createEmptyOriginStory();
-  });
+  // About Me profile state
+  const [careerObjective, setCareerObjective] = useState<string>(
+    contextProfile?.career_objective || ''
+  );
+  const [aboutMe, setAboutMe] = useState<string>(
+    contextProfile?.about_me || ''
+  );
+  const [aboutImageUrl, setAboutImageUrl] = useState<string>(
+    contextProfile?.about_image_url || './images/photo.png'
+  );
+  const [education, setEducation] = useState<string>(
+    contextProfile?.education || 'Drexel University · CS & Math'
+  );
+  const [location, setLocation] = useState<string>(
+    contextProfile?.location || 'Philadelphia, PA'
+  );
 
   // Pillars state
-  const [pillars, setPillars] = useState<PillarEntry[]>(() => {
-    return mapPillarsFromContext(contextPillars);
-  });
+  const [pillars, setPillars] = useState<PillarEntry[]>(() =>
+    mapPillarsFromContext(contextPillars)
+  );
 
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [kanjiPickerTargetPos, setKanjiPickerTargetPos] = useState<number | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
 
-  const resetPhilosophy = useCallback(() => {
-    setOriginData(contextProfile?.origin_story || createEmptyOriginStory());
+  const resetData = useCallback(() => {
+    if (contextProfile) {
+      setCareerObjective(contextProfile.career_objective || '');
+      setAboutMe(contextProfile.about_me || '');
+      setAboutImageUrl(contextProfile.about_image_url || './images/photo.png');
+      setEducation(contextProfile.education || 'Drexel University · CS & Math');
+      setLocation(contextProfile.location || 'Philadelphia, PA');
+    }
     setPillars(mapPillarsFromContext(contextPillars));
-  }, [contextProfile?.origin_story, contextPillars]);
+  }, [contextProfile, contextPillars]);
 
-  // Sync from context
   useEffect(() => {
-    resetPhilosophy();
-  }, [resetPhilosophy]);
+    resetData();
+  }, [resetData]);
 
   const handleSaveRef = useRef<() => void>(() => {});
 
-  const { notifyDirty, notifyClean } = useAdminDirty('philosophy', resetPhilosophy, () => {
+  const { notifyDirty, notifyClean } = useAdminDirty('philosophy', resetData, () => {
     handleSaveRef.current();
   });
 
-  // Origin Story updaters
-  const updateOrigin = (patch: Partial<OriginStoryConfig>) => {
-    notifyDirty();
-    setOriginData((prev) => ({ ...prev, ...patch }));
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 8 * 1024 * 1024) {
+      toast.error('Image must be under 8 MB');
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const url = await uploadProfileAvatar(file);
+      if (url) {
+        notifyDirty();
+        setAboutImageUrl(url);
+        toast.success('Portrait photo uploaded to Supabase Storage!');
+      }
+    } catch (err) {
+      toast.error('Failed to upload photo: ' + formatErrorMessage(err));
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
 
-  const updateMilestone = (index: number, patch: Partial<OriginMilestone>) => {
-    notifyDirty();
-    setOriginData((prev) => {
-      const currentList = prev.milestones || [];
-      const updated = currentList.map((m, idx) => (idx === index ? { ...m, ...patch } : m));
-      return { ...prev, milestones: updated };
-    });
-  };
-
-  // Pillar updaters
   const updatePillar = (pos: number, patch: Partial<PillarEntry>) => {
     notifyDirty();
     setPillars((prev) =>
-      prev.map((p) => (p.position === pos ? { ...p, ...patch } : p)),
+      prev.map((p) => (p.position === pos ? { ...p, ...patch } : p))
     );
-  };
-
-  const addPillar = () => {
-    if (pillars.length >= 3) {
-      toast.info('Maximum 3 philosophy pillars allowed for homepage layout.');
-      return;
-    }
-    notifyDirty();
-    const created = newPillar(pillars.length + 1);
-    setPillars((prev) => [...prev, created]);
-  };
-
-  const deletePillar = (pos: number) => {
-    if (pillars.length <= 1) {
-      toast.error('You must keep at least 1 philosophy pillar.');
-      return;
-    }
-    notifyDirty();
-    const remaining = pillars
-      .filter((p) => p.position !== pos)
-      .map((p, idx) => ({ ...p, position: idx + 1 }));
-    setPillars(remaining);
-    toast.success('Pillar removed. Click Save to persist.');
   };
 
   const handleSave = async () => {
@@ -170,20 +156,9 @@ export const PhilosophyEditor: React.FC = () => {
         updated_at: new Date().toISOString(),
       }));
 
-      try {
-        localStorage.setItem('portfolio_origin_story_override', JSON.stringify(originData));
-        localStorage.setItem('portfolio_pillars_cache', JSON.stringify(rows));
-      } catch {}
-
       await withTimeout(
         (async () => {
           // 1. Save pillars to philosophy_pillars table
-          const { error: delErr } = await supabase
-            .from('philosophy_pillars')
-            .delete()
-            .gt('position', rows.length);
-          if (delErr) console.warn('Could not prune removed pillars:', delErr);
-
           if (rows.length > 0) {
             const { error: pillarErr } = await supabase
               .from('philosophy_pillars')
@@ -191,26 +166,20 @@ export const PhilosophyEditor: React.FC = () => {
             if (pillarErr) throw pillarErr;
           }
 
-          // 2. Save origin_story to profile table
-          try {
-            const { error: profileErr } = await supabase
-              .from('profile')
-              .update({
-                origin_story: originData,
-                updated_at: new Date().toISOString(),
-              })
-              .eq('id', 1);
+          // 2. Save about me fields to profile table
+          const { error: profileErr } = await supabase
+            .from('profile')
+            .update({
+              career_objective: careerObjective,
+              about_me: aboutMe,
+              about_image_url: aboutImageUrl,
+              education: education,
+              location: location,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', 1);
 
-            if (profileErr) {
-              if (profileErr.code === '42703' || profileErr.message?.includes('origin_story')) {
-                console.warn('origin_story column not in database yet; cached locally in localStorage');
-              } else {
-                console.warn('Profile origin_story update warning:', profileErr);
-              }
-            }
-          } catch (pErr) {
-            console.warn('Origin story save caught exception:', pErr);
-          }
+          if (profileErr) throw profileErr;
         })(),
         15000,
         'Save request timed out. Please check your network and try again.'
@@ -219,56 +188,54 @@ export const PhilosophyEditor: React.FC = () => {
       await refresh();
       notifyClean();
       setSaveState('success');
-      toast.success('Philosophy & Origin Story saved & synced to homepage!');
+      toast.success('About Me & Principles saved & synced to homepage!');
       setTimeout(() => setSaveState('idle'), 4000);
     } catch (err: unknown) {
       setSaveState('error');
-      toast.error('Failed to save philosophy: ' + formatErrorMessage(err));
+      toast.error('Failed to save: ' + formatErrorMessage(err));
       setTimeout(() => setSaveState('idle'), 6000);
     }
   };
 
   handleSaveRef.current = handleSave;
 
-  const milestoneList = originData.milestones || [];
+  const activePickerChar =
+    pillars.find((p) => p.position === kanjiPickerTargetPos)?.kanji || '';
 
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Universal Section Header */}
       <EditorSectionHeader
-        title="Origin Trajectory & Philosophy"
-        subtitle="Manage your 4-phase personal engineering journey and the 3 architectural pillars on the homepage."
+        title="About Me & Principles"
+        subtitle="Manage your portrait photo, career objective, biography, and the 3 core engineering principles."
         saveState={saveState}
         onSave={handleSave}
-        saveLabel="Save All Changes"
-        onAdd={pillars.length < 3 ? addPillar : undefined}
-        addLabel="Add Pillar"
+        saveLabel="Save About Me"
       />
 
-      {/* Collapsible Card 1: Origin Trajectory Narrative */}
-      <div className="rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs classical-card-frame overflow-hidden transition-colors">
-        <CornerBrackets size="sm" />
+      {/* Card 1: About Me Biography & Portrait */}
+      <div className="rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs overflow-hidden transition-colors">
         <button
           type="button"
-          onClick={() => toggle('origin')}
+          onClick={() => toggle('about')}
           className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-light-surface/50 dark:hover:bg-dark-surface-raised/50 transition-colors cursor-pointer select-none"
-          aria-expanded={!collapsed.origin}
+          aria-expanded={!collapsed.about}
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-[3px] bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
-              <Compass className="w-4 h-4" />
+              <User className="w-4 h-4" />
             </div>
             <div>
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
-                Origin Trajectory &amp; Journey (原点と軌跡)
+                Biography &amp; Career Objective
               </h3>
               <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
-                Engineering trajectory milestones and personal journey narrative.
+                Portrait image, university credentials, and concise personal summary.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {!collapsed.origin ? (
+            {!collapsed.about ? (
               <ChevronDown className="w-4 h-4 text-terracotta dark:text-ochre" />
             ) : (
               <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
@@ -276,237 +243,265 @@ export const PhilosophyEditor: React.FC = () => {
           </div>
         </button>
 
-        {!collapsed.origin && (
-          <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-5 border-t border-light-border/60 dark:border-dark-border/60">
-            {/* Headline */}
-            <div>
-              <Label className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                Narrative Headline
+        {!collapsed.about && (
+          <div className="p-4 sm:p-6 border-t border-light-border/60 dark:border-dark-border/60 space-y-5">
+            {/* Portrait Photo Section */}
+            <div className="space-y-2">
+              <Label className="text-xs font-semibold text-light-ink dark:text-dark-ink uppercase font-mono">
+                Portrait Photo
               </Label>
-              <Input
-                value={originData.headline || ''}
-                onChange={(e) => updateOrigin({ headline: e.target.value })}
-                placeholder="From Logic Puzzles to Full-Stack Systems"
-                className="font-serif text-sm font-medium h-9"
-              />
+              <div className="flex flex-wrap items-center gap-4 p-3 rounded-[3px] bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border">
+                <img
+                  src={aboutImageUrl || './images/photo.png'}
+                  alt="Portrait Preview"
+                  className="w-20 h-24 object-cover rounded-[2px] border border-light-border dark:border-dark-border shadow-2xs"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = './images/photo.png';
+                  }}
+                />
+                <div className="space-y-2 flex-1 min-w-[200px]">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageUpload}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={uploadingImage}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="text-xs font-mono h-8 border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre cursor-pointer"
+                    >
+                      {uploadingImage ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                          <span>Uploading...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-3.5 h-3.5 mr-1.5 text-terracotta dark:text-ochre" />
+                          <span>Upload Photo</span>
+                        </>
+                      )}
+                    </Button>
+                    {aboutImageUrl && aboutImageUrl !== './images/photo.png' && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          notifyDirty();
+                          setAboutImageUrl('./images/photo.png');
+                        }}
+                        className="text-xs font-mono h-8 text-light-ink-muted hover:text-red-500 cursor-pointer"
+                      >
+                        Reset to Default
+                      </Button>
+                    )}
+                  </div>
+                  <Input
+                    value={aboutImageUrl}
+                    onChange={(e) => {
+                      notifyDirty();
+                      setAboutImageUrl(e.target.value);
+                    }}
+                    placeholder="Or paste image URL (https://...)"
+                    className="text-xs font-mono"
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* Lead Narrative Paragraph */}
-            <div>
-              <Label className="text-xs font-mono uppercase tracking-wider text-light-ink-muted dark:text-dark-ink-muted mb-1 block">
-                Origin Lead Paragraph
+            {/* Education & Location */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
+                  Education / University
+                </Label>
+                <Input
+                  value={education}
+                  onChange={(e) => {
+                    notifyDirty();
+                    setEducation(e.target.value);
+                  }}
+                  placeholder="Drexel University · CS & Math"
+                  className="text-xs"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
+                  Location
+                </Label>
+                <Input
+                  value={location}
+                  onChange={(e) => {
+                    notifyDirty();
+                    setLocation(e.target.value);
+                  }}
+                  placeholder="Philadelphia, PA"
+                  className="text-xs"
+                />
+              </div>
+            </div>
+
+            {/* Career Objective */}
+            <div className="space-y-1.5">
+              <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
+                Career Objective
               </Label>
               <Textarea
                 rows={3}
-                value={originData.leadParagraph || ''}
-                onChange={(e) => updateOrigin({ leadParagraph: e.target.value })}
-                placeholder="Explain the spark, curiosity, and human principles behind your engineering path…"
-                className="text-sm leading-relaxed"
+                value={careerObjective}
+                onChange={(e) => {
+                  notifyDirty();
+                  setCareerObjective(e.target.value);
+                }}
+                placeholder="What roles or engineering challenges are you seeking? (e.g. Seeking software engineering internships...)"
+                className="text-xs sm:text-sm leading-relaxed"
               />
             </div>
 
-            {/* 4 Milestones */}
-            <div className="space-y-3 pt-3 border-t border-light-border/60 dark:border-dark-border/60">
-              <Label className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted block">
-                Four Trajectory Milestones (Phases 01-04)
+            {/* About Me Story */}
+            <div className="space-y-1.5">
+              <Label className="text-xs font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
+                About Me / Background
               </Label>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {milestoneList.map((milestone, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3.5 space-y-3 rounded-[3px] border border-light-border/80 dark:border-dark-border/80 bg-light-surface/40 dark:bg-dark-surface/40 hover:border-terracotta/40 dark:hover:border-ochre/40 transition-colors"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <Input
-                        value={milestone.era}
-                        onChange={(e) => updateMilestone(idx, { era: e.target.value })}
-                        placeholder={`PHASE 0${idx + 1}`}
-                        className="w-28 font-mono font-bold text-terracotta dark:text-ochre text-xs h-8 uppercase"
-                      />
-                      <Input
-                        value={milestone.tag || ''}
-                        onChange={(e) => updateMilestone(idx, { tag: e.target.value })}
-                        placeholder="ERA TAG"
-                        className="w-32 font-mono text-xs text-right h-8 uppercase"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Input
-                        value={milestone.title}
-                        onChange={(e) => updateMilestone(idx, { title: e.target.value })}
-                        placeholder="Milestone Title"
-                        className="font-serif font-medium text-sm h-8"
-                      />
-                      <Input
-                        value={milestone.subtitle || ''}
-                        onChange={(e) => updateMilestone(idx, { subtitle: e.target.value })}
-                        placeholder="Subtitle (e.g. Technology or Context)"
-                        className="text-xs text-light-ink-muted dark:text-dark-ink-muted h-8"
-                      />
-                      <Textarea
-                        rows={3}
-                        value={milestone.description}
-                        onChange={(e) => updateMilestone(idx, { description: e.target.value })}
-                        placeholder="Milestone description…"
-                        className="text-sm leading-relaxed min-h-[75px]"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Textarea
+                rows={5}
+                value={aboutMe}
+                onChange={(e) => {
+                  notifyDirty();
+                  setAboutMe(e.target.value);
+                }}
+                placeholder="Your personal story, focus areas, and approach to software development..."
+                className="text-xs sm:text-sm leading-relaxed"
+              />
             </div>
           </div>
         )}
       </div>
 
-      {/* Collapsible Card 2: Core Philosophy Pillars */}
-      <div className="rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs classical-card-frame overflow-hidden transition-colors">
-        <CornerBrackets size="sm" />
+      {/* Card 2: 3 Core Engineering Principles (Pillars) */}
+      <div className="rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card shadow-xs overflow-hidden transition-colors">
         <button
           type="button"
-          onClick={() => toggle('pillars')}
+          onClick={() => toggle('principles')}
           className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-light-surface/50 dark:hover:bg-dark-surface-raised/50 transition-colors cursor-pointer select-none"
-          aria-expanded={!collapsed.pillars}
+          aria-expanded={!collapsed.principles}
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-[3px] bg-light-surface-raised dark:bg-dark-surface-muted border border-light-border dark:border-dark-border flex items-center justify-center text-terracotta dark:text-ochre shrink-0">
-              <ScrollText className="w-4 h-4" />
+              <Compass className="w-4 h-4" />
             </div>
             <div>
               <h3 className="font-mono text-xs sm:text-sm font-semibold text-light-ink dark:text-dark-ink tracking-wide uppercase">
-                Architectural Philosophy Pillars (三つの信条)
+                Core Engineering Principles (3 Pillars)
               </h3>
-              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block max-w-prose">
-                Up to 3 core architectural tenets displayed on the homepage showcase.
+              <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hidden sm:block">
+                The 3 foundational tenets displayed alongside your bio cards.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs uppercase tracking-wider text-light-ink dark:text-dark-ink font-semibold px-2 py-0.5 rounded-[2px] bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
-              {pillars.length}/3 PILLARS
+            <span className="font-mono text-xs uppercase tracking-wider text-light-ink dark:text-dark-ink font-semibold px-2 py-0.5 rounded bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border">
+              {pillars.length} PILLARS
             </span>
-            {!collapsed.pillars ? (
+            {!collapsed.principles ? (
               <ChevronDown className="w-4 h-4 text-terracotta dark:text-ochre" />
             ) : (
-              <ChevronRight className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
+              <ChevronRight className="w-4 h-4 text-light-ink-subtle" />
             )}
           </div>
         </button>
 
-        {!collapsed.pillars && (
-          <div className="p-4 sm:p-6 pt-2 sm:pt-2 space-y-6 border-t border-light-border/60 dark:border-dark-border/60">
-            {/* Pillars Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-start">
-              {pillars.map((pillar) => (
+        {!collapsed.principles && (
+          <div className="p-4 sm:p-6 border-t border-light-border/60 dark:border-dark-border/60 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {pillars.map((p, idx) => (
                 <div
-                  key={pillar.position}
-                  className="relative rounded-[3px] border border-light-border/80 dark:border-dark-border/80 bg-light-surface/40 dark:bg-dark-surface/40 p-4 sm:p-5 shadow-2xs group hover:border-terracotta/40 dark:hover:border-ochre/40 transition-colors"
+                  key={p.position}
+                  className="p-4 rounded-[3px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface space-y-3"
                 >
-                  <div className="space-y-4">
-                    {/* Header Pill & Delete */}
-                    <div className="flex items-center justify-between pb-2.5 border-b border-light-border/60 dark:border-dark-border/60">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="terracotta" className="font-mono text-xs px-2.5 py-0.5 font-semibold">
-                          PILLAR 0{pillar.position}
-                        </Badge>
-                        <span className="font-mono text-xs text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-wider">
-                          CORE TENET
-                        </span>
-                      </div>
-                      {pillars.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => deletePillar(pillar.position)}
-                          className="p-1.5 text-light-ink-subtle hover:text-red-500 rounded-[2px] hover:bg-light-surface dark:hover:bg-dark-surface-raised transition-colors cursor-pointer"
-                          title="Delete pillar"
-                          aria-label={`Delete Pillar 0${pillar.position}`}
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      )}
+                  <div className="flex items-center justify-between pb-2 border-b border-light-border/50 dark:border-dark-border/50">
+                    <span className="text-xs font-mono font-bold text-terracotta dark:text-ochre">
+                      PILLAR 0{idx + 1}
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-serif text-sm font-bold text-light-ink dark:text-dark-ink">
+                        {p.kanji}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setKanjiPickerTargetPos(p.position)}
+                        className="h-6 px-1.5 text-xs text-light-ink-muted hover:text-terracotta dark:hover:text-ochre cursor-pointer"
+                        title="Pick Kanji Emblem"
+                      >
+                        <BookOpen className="w-3 h-3" />
+                      </Button>
                     </div>
+                  </div>
 
-                    {/* Universal Emblem Kanji Selector (Embedded Mode) */}
-                    <EmblemKanjiSelector
-                      kanji={pillar.kanji}
-                      kanjiSubtitle={pillar.romaji}
-                      onKanjiChange={(char, romaji) =>
-                        updatePillar(pillar.position, { kanji: char, romaji: romaji || pillar.romaji })
-                      }
-                      onKanjiSubtitleChange={(romaji) => updatePillar(pillar.position, { romaji })}
-                      showLogoOption={false}
-                      variant="embedded"
-                      label="Kanji Concept & Reading"
+                  <div className="space-y-1">
+                    <Label className="text-[11px] font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
+                      Title
+                    </Label>
+                    <Input
+                      value={p.title}
+                      onChange={(e) => updatePillar(p.position, { title: e.target.value })}
+                      placeholder="e.g. Spatial Clarity"
+                      className="text-xs font-semibold h-8"
                     />
+                  </div>
 
-                    {/* Title & Tag */}
-                    <div>
-                      <Label
-                        htmlFor={`pillar-${pillar.position}-title`}
-                        className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
-                        required
-                      >
-                        Pillar Title
-                      </Label>
-                      <Input
-                        id={`pillar-${pillar.position}-title`}
-                        value={pillar.title}
-                        onChange={(e) => updatePillar(pillar.position, { title: e.target.value })}
-                        placeholder="e.g. Negative Space & Intentionality"
-                        className="font-serif text-sm font-medium h-9"
-                      />
-                    </div>
+                  <div className="space-y-1">
+                    <Label className="text-[11px] font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
+                      Category Tag
+                    </Label>
+                    <Input
+                      value={p.tag}
+                      onChange={(e) => updatePillar(p.position, { tag: e.target.value.toUpperCase() })}
+                      placeholder="e.g. MINIMAL ARCHITECTURE"
+                      className="text-[11px] font-mono uppercase h-8"
+                    />
+                  </div>
 
-                    <div>
-                      <Label
-                        htmlFor={`pillar-${pillar.position}-tag`}
-                        className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
-                      >
-                        Category Tag
-                      </Label>
-                      <Input
-                        id={`pillar-${pillar.position}-tag`}
-                        value={pillar.tag}
-                        onChange={(e) => updatePillar(pillar.position, { tag: e.target.value })}
-                        placeholder="e.g. ARCHITECTURE · SPATIAL HARMONY"
-                        className="text-xs font-mono uppercase h-8"
-                      />
-                    </div>
-
-                    {/* Philosophical Narrative */}
-                    <div>
-                      <Label
-                        htmlFor={`pillar-${pillar.position}-desc`}
-                        className="text-xs font-medium text-light-ink-muted dark:text-dark-ink-muted mb-1 block"
-                      >
-                        Philosophical Narrative
-                      </Label>
-                      <Textarea
-                        id={`pillar-${pillar.position}-desc`}
-                        rows={5}
-                        value={pillar.description}
-                        onChange={(e) => updatePillar(pillar.position, { description: e.target.value })}
-                        placeholder="Explain how this Japanese aesthetic principle informs your engineering and software craft…"
-                        className="text-sm leading-relaxed min-h-[130px] resize-y"
-                      />
-                    </div>
+                  <div className="space-y-1">
+                    <Label className="text-[11px] font-mono uppercase text-light-ink-muted dark:text-dark-ink-muted">
+                      Description
+                    </Label>
+                    <Textarea
+                      rows={3}
+                      value={p.description}
+                      onChange={(e) => updatePillar(p.position, { description: e.target.value })}
+                      placeholder="Concise explanation of this engineering tenet..."
+                      className="text-xs leading-relaxed"
+                    />
                   </div>
                 </div>
               ))}
-
-              {pillars.length === 0 && (
-                <div className="col-span-3 text-center py-12 border border-dashed border-light-border dark:border-dark-border rounded-[3px] bg-light-surface/30 dark:bg-dark-surface/30">
-                  <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-                    No philosophy pillars defined. Click "+ Add Pillar" above to create one.
-                  </p>
-                </div>
-              )}
             </div>
           </div>
         )}
       </div>
+
+      {/* Kanji Picker Modal */}
+      <KanjiPickerModal
+        isOpen={kanjiPickerTargetPos !== null}
+        onClose={() => setKanjiPickerTargetPos(null)}
+        selectedChar={activePickerChar}
+        onSelect={(kanjiChar: string) => {
+          if (kanjiPickerTargetPos !== null) {
+            updatePillar(kanjiPickerTargetPos, { kanji: kanjiChar });
+          }
+          setKanjiPickerTargetPos(null);
+        }}
+      />
     </div>
   );
 };

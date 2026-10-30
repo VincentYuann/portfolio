@@ -1,7 +1,6 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { Image as ImageIcon, Maximize2 } from 'lucide-react';
 import { HobbyItem } from '../../../context/SiteDataContext';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { Card } from '../../ui/card';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
@@ -44,7 +43,7 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
         hoverOnly={true}
       />
 
-      <CornerBrackets size="md" />
+      
 
       {/* Card Header */}
       <div className="relative z-10">
@@ -144,29 +143,6 @@ export const HobbyCard: React.FC<HobbyCardProps> = ({ hobby, index }) => {
         <p className="font-sans text-xs sm:text-sm text-light-ink-muted dark:text-dark-ink-muted leading-relaxed font-light mb-4">
           {hobby.whyDescription}
         </p>
-
-        {/* Metadata Key-Value Badges (Flat architectural typography) */}
-        {hobby.metadata && hobby.metadata.length > 0 && (
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-3 border-t border-light-border/60 dark:border-dark-border/60 text-xs">
-            {hobby.metadata.map((item, mIdx) => {
-              const rawLabel = (item as any).label || (item as any).key || '';
-              const labelText = rawLabel.includes('(')
-                ? rawLabel.split('(')[0].trim()
-                : rawLabel.replace(/_/g, ' ');
-
-              return (
-                <div key={mIdx} className="inline-flex items-center gap-1.5 font-sans">
-                  <span className="font-semibold text-light-ink dark:text-dark-ink text-xs uppercase tracking-wider">
-                    {labelText}:
-                  </span>
-                  <span className="text-light-ink-muted dark:text-dark-ink-muted text-xs">
-                    {item.value}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        )}
       </div>
 
       {/* Lightbox Modal (Loaded dynamically on-demand) */}

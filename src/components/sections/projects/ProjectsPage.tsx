@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Search, ExternalLink, Github, Layers } from 'lucide-react';
 import { TechTag } from '../../common/TechTag';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { useSiteData, Project } from '../../../context/SiteDataContext';
 import { handleImageError } from '../../../lib/constants';
-import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
 import { PageContainer } from '../../common/PageContainer';
@@ -105,19 +103,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
       {/* 16:9 Cedar Wood Ground & Dynamic Cresting Wave (Retains exact Projects Showcase identity) */}
-      <SectionSideBackdrop
-        textureDay="./background/white wood.webp"
-        textureNight="./background/black wood.webp"
-        painting="./decorators/ocean.webp"
-        paintingAlt="Sumi-e ocean wave ink wash painting"
-        placement="bottom-right"
-        artworkWidth="w-full lg:w-[65%]"
-        maskCenter="at 75% 65%"
-        textureOpacityDay={0.65}
-        textureOpacityNight={0.45}
-        paintingOpacityDay={0.35}
-        paintingOpacityNight={0.14}
-      />
+      
       <PageContainer className="pt-20 sm:pt-28 pb-16 sm:pb-20 relative z-10">
         {/* Detail Modal (Loaded dynamically on-demand) */}
         {selectedProject && (
@@ -139,7 +125,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
         {/* Header Title Section */}
         <SubpageHeader
           archiveKicker="ARCHIVE //"
-          categoryTag="SELECTED PORTFOLIO · 作品全集"
+          categoryTag="SELECTED PORTFOLIO"
           title="All Engineering Works"
           kanjiSubtitle="作品全集"
           description="A comprehensive collection of web applications, system architectures, and software engineering projects."
@@ -210,8 +196,6 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                   active={hoveredProjectId === project.id}
                 />
 
-                {/* Corner Hairline Brackets (Subtle) */}
-                <CornerBrackets size="sm" />
 
                 <div>
                   {/* Thumbnail Image Header */}
@@ -268,7 +252,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onNavigate }) => {
                       onClick={() => openProject(project)}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] font-sans text-xs font-bold uppercase tracking-wider bg-light-surface-raised dark:bg-dark-surface hover:bg-terracotta hover:text-white dark:hover:bg-ochre dark:hover:text-dark-canvas text-light-ink dark:text-dark-ink border border-light-border dark:border-dark-border hover:border-terracotta dark:hover:border-ochre transition-all duration-200 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer group/btn shadow-2xs"
                     >
-                      <span>Inspect System</span>
+                      <span>View Details</span>
                       <span className="transition-transform duration-200 group-hover/btn:translate-x-1 text-terracotta dark:text-ochre group-hover/btn:text-white dark:group-hover/btn:text-dark-canvas">→</span>
                     </button>
 

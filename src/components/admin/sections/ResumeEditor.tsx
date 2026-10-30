@@ -22,7 +22,6 @@ import {
 } from '../../../lib/supabase';
 import { tokenizeLatexLine, getTokenClassName } from '../../../lib/latexHighlight';
 import { toast } from 'sonner';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { useAdminDirty } from '../shared/useAdminDirty';
 import { Button } from '../../ui/button';
@@ -466,8 +465,7 @@ export const ResumeEditor: React.FC = () => {
             {/* Right Column: Tall Portrait Studio PDF Viewer Stage */}
             <div className="lg:col-span-8 xl:col-span-8">
               <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] shadow-xs overflow-hidden classical-card-frame">
-                <CornerBrackets size="md" />
-
+                
                 {/* Viewer Header Bar */}
                 <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">
                   <div className="flex items-center gap-2 min-w-0">
@@ -522,8 +520,7 @@ export const ResumeEditor: React.FC = () => {
       {/* LaTeX Code Editor & Syntax-Highlighted Themed Viewer */}
       {tab === 'editor' && (
         <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-[3px] shadow-xs overflow-hidden classical-card-frame">
-          <CornerBrackets size="md" />
-
+          
           {/* Editor Header Bar (Unified with ResumePage.tsx) */}
           <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-light-surface/90 dark:bg-dark-surface/90 border-b border-light-border dark:border-dark-border flex-wrap gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">

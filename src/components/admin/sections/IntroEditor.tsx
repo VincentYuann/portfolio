@@ -21,7 +21,6 @@ import {
   parsePillarTags,
   HankoCardConfig,
 } from '../../../context/SiteDataContext';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { EditorSectionHeader, SaveState } from '../shared/EditorSectionHeader';
 import { TechTagSelector } from '../shared/TechTagSelector';
 import { useAdminDirty } from '../shared/useAdminDirty';
@@ -36,11 +35,12 @@ interface IntroData {
   name: string;
   role: string;
   headline: string;
-  tagline: string;
   avatar_url?: string;
   email: string;
   github: string;
   linkedin: string;
+  education?: string;
+  location?: string;
   capability_pillars: CapabilityPillar[];
   hanko_card: HankoCardConfig;
 }
@@ -49,18 +49,19 @@ const mapProfileToIntroData = (profile: any): IntroData => ({
   name: profile?.name || '',
   role: profile?.role || '',
   headline: profile?.headline || '',
-  tagline: profile?.tagline || '',
   avatar_url: profile?.avatar_url || profile?.hanko_card?.avatarUrl || '',
   email: profile?.email || '',
   github: profile?.github || '',
   linkedin: profile?.linkedin || '',
+  education: profile?.education || profile?.hanko_card?.headerLabel || 'Drexel University ? CS & Math',
+  location: profile?.location || profile?.hanko_card?.locationArchive || 'Philadelphia, PA',
   capability_pillars:
     Array.isArray(profile?.capability_pillars)
       ? profile.capability_pillars
       : [],
   hanko_card: profile?.hanko_card || {
-    headerLabel: '',
-    locationArchive: '',
+    headerLabel: profile?.education || '',
+    locationArchive: profile?.location || '',
     statusBadge: '',
     avatarUrl: profile?.avatar_url || '',
     lines: [],
@@ -289,8 +290,7 @@ export const IntroEditor: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         {/* CARD 1: Left Hero Canvas (Headline & Technical Domain Shelves) */}
         <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
-          <CornerBrackets size="sm" />
-          <button
+                    <button
             type="button"
             onClick={() => toggle('left_canvas')}
             className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-light-surface/40 dark:hover:bg-dark-surface/40 transition-colors cursor-pointer select-none text-left"
@@ -413,8 +413,7 @@ export const IntroEditor: React.FC = () => {
 
         {/* CARD 2: Right Profile Plaque (Recruiter Credentials, Hanko Seal, Channels) */}
         <div className="relative bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border rounded-xl shadow-xs classical-card-frame overflow-hidden">
-          <CornerBrackets size="sm" />
-          <button
+                    <button
             type="button"
             onClick={() => toggle('right_plaque')}
             className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-light-surface/40 dark:hover:bg-dark-surface/40 transition-colors cursor-pointer select-none text-left"
@@ -546,8 +545,12 @@ export const IntroEditor: React.FC = () => {
                     <span>University &amp; Major</span>
                   </Label>
                   <Input
-                    value={hankoData.headerLabel || ''}
-                    onChange={(e) => updateHanko({ headerLabel: e.target.value })}
+                    value={data.education || hankoData.headerLabel || ''}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      set('education', val);
+                      updateHanko({ headerLabel: val });
+                    }}
                     placeholder="Drexel University · CS & Math"
                     className="font-mono text-xs h-8"
                   />
@@ -560,8 +563,12 @@ export const IntroEditor: React.FC = () => {
                       <span>Location / City</span>
                     </Label>
                     <Input
-                      value={hankoData.locationArchive || ''}
-                      onChange={(e) => updateHanko({ locationArchive: e.target.value })}
+                      value={data.location || hankoData.locationArchive || ''}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        set('location', val);
+                        updateHanko({ locationArchive: val });
+                      }}
                       placeholder="PHILADELPHIA, PA"
                       className="font-mono uppercase text-xs h-8"
                     />

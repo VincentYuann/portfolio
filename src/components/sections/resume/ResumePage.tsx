@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Code2, Download, Copy, Check, ExternalLink } from 'lucide-react';
 import { tokenizeLatexLine, getTokenClassName } from '../../../lib/latexHighlight';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
-import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { PageContainer } from '../../common/PageContainer';
 import { ReturnToPortfolio } from '../../common/ReturnToPortfolio';
 import { SubpageHeader } from '../../common/SubpageHeader';
@@ -200,19 +198,7 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
       {/* 16:9 Washi Paper Ground & Sumi-e Bamboo Art (Editorial CV Foundation) */}
-      <SectionSideBackdrop
-        textureDay="./background/white paper texture.webp"
-        textureNight="./background/black paper.webp"
-        painting="./decorators/bamboo.webp"
-        paintingAlt="Sumi-e bamboo ink wash painting"
-        placement="right"
-        artworkWidth="w-full lg:w-[48%]"
-        maskCenter="at 75% 45%"
-        textureOpacityDay={0.65}
-        textureOpacityNight={0.45}
-        paintingOpacityDay={0.35}
-        paintingOpacityNight={0.14}
-      />
+      
       <PageContainer className="pt-20 sm:pt-28 pb-16 sm:pb-20 relative z-10">
         {/* Back navigation button */}
         <ReturnToPortfolio onNavigate={onNavigate} />
@@ -289,7 +275,6 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             /* PDF Document Tab */
             <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] overflow-visible shadow-sm classical-card-frame">
               <EnsoOrbital placement="top-left" size={120} hoverOnly={true} />
-              <CornerBrackets size="lg" />
 
               {/* Top Bar for PDF Viewer */}
               <div className="px-4 py-2.5 bg-light-surface-muted/90 dark:bg-dark-surface-muted border-b border-light-border dark:border-dark-border flex items-center justify-between text-xs text-light-ink-muted dark:text-dark-ink-muted rounded-t-[3px]">
@@ -350,7 +335,6 @@ export const ResumePage: React.FC<ResumePageProps> = ({ onNavigate }) => {
             /* LaTeX Source Tab */
             <div className="interactive-card group relative bg-light-surface-card dark:bg-dark-surface-card craft-card border border-light-border dark:border-dark-border rounded-[3px] overflow-visible shadow-sm classical-card-frame">
               <EnsoOrbital placement="top-left" size={120} hoverOnly={true} />
-              <CornerBrackets size="lg" />
 
               {/* Header with quick stats */}
               <div className="px-4 py-2.5 bg-light-surface-muted/90 dark:bg-dark-surface-muted border-b border-light-border dark:border-dark-border flex items-center justify-between text-xs text-light-ink-muted dark:text-dark-ink-muted rounded-t-[3px]">

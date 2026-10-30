@@ -167,7 +167,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                     className="flex-1 min-w-[140px] min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] bg-terracotta hover:bg-terracotta-hover text-white dark:bg-ochre dark:text-[#121316] dark:hover:bg-[#C29845] transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none shadow-xs"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    <span>Live Deployment</span>
+                    <span>Live Demo</span>
                   </a>
                 )}
                 {project.links.github && (
@@ -178,7 +178,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                     className="flex-1 min-w-[140px] min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-sans font-medium rounded-[2px] border border-light-border dark:border-dark-border hover:bg-light-surface dark:hover:bg-dark-surface text-light-ink dark:text-dark-ink transition-colors focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none"
                   >
                     <Github className="w-3.5 h-3.5" />
-                    <span>Repository</span>
+                    <span>GitHub</span>
                   </a>
                 )}
               </div>
@@ -214,7 +214,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                 <div className="space-y-2.5">
                   <h3 className="font-serif text-base sm:text-lg text-light-ink dark:text-dark-ink font-semibold flex items-center gap-2">
                     <ListChecks className="w-4 h-4 text-light-ink-muted dark:text-dark-ink-muted" />
-                    <span>Highlights</span>
+                    <span>Key Features</span>
                   </h3>
                   <ul className="space-y-2">
                     {project.bullets.map((point, idx) => (
@@ -238,7 +238,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               {project.metrics && project.metrics.length > 0 && (
                 <div className="space-y-2 pt-1">
                   <div className="font-sans text-xs uppercase tracking-wider font-semibold text-light-ink-muted dark:text-dark-ink-muted">
-                    Operational Metrics
+                    Key Metrics
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                     {project.metrics.map((metric, idx) => (
@@ -275,28 +275,6 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
-            {(onPrev || onNext) && (
-              <div className="flex items-center gap-1.5 sm:hidden">
-                <button
-                  type="button"
-                  onClick={onPrev}
-                  disabled={!hasPrev}
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 cursor-pointer"
-                  aria-label="Previous Project"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={onNext}
-                  disabled={!hasNext}
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-[2px] border border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface text-light-ink dark:text-dark-ink disabled:opacity-30 cursor-pointer"
-                  aria-label="Next Project"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            )}
             <button
               type="button"
               onClick={onClose}

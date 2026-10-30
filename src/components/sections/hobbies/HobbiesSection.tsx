@@ -4,7 +4,6 @@ import { ArrowRight, Layers } from 'lucide-react';
 import { ViewMode } from '../../../App';
 import { HobbyCard } from './HobbyCard';
 import { SectionHeading } from '../../common/SectionHeading';
-import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
 
 
@@ -49,19 +48,7 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
       <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-[28rem] max-w-full h-[28rem] bg-radial-[at_center] from-bamboo/[0.035] dark:from-bamboo/[0.02] to-transparent pointer-events-none z-0" />
 
       {/* 16:9 Linen Texture Ground & Asymmetric Sumi-e Pine Tree on Right */}
-      <SectionSideBackdrop
-        textureDay="./background/white linen.webp"
-        textureNight="./background/black linen.webp"
-        painting="./decorators/tree.webp"
-        paintingAlt="Sumi-e pine tree ink wash painting"
-        placement="right"
-        artworkWidth="w-full lg:w-[50%]"
-        maskCenter="at 75% 50%"
-        textureOpacityDay={0.65}
-        textureOpacityNight={0.45}
-        paintingOpacityDay={0.35}
-        paintingOpacityNight={0.14}
-      />
+      
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">

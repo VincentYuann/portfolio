@@ -36,12 +36,12 @@ interface SectionMeta {
 }
 
 const SECTIONS: SectionMeta[] = [
-  { id: 'intro', label: 'Identity & Intro', shortLabel: 'Intro', num: '01', icon: User },
+  { id: 'intro', label: 'Intro', shortLabel: 'Intro', num: '01', icon: User },
   { id: 'experience', label: 'Experience', shortLabel: 'Experience', num: '02', icon: Briefcase },
   { id: 'projects', label: 'Projects', shortLabel: 'Projects', num: '03', icon: FolderGit2 },
-  { id: 'philosophy', label: 'Philosophy', shortLabel: 'Philosophy', num: '04', icon: Compass },
-  { id: 'hobbies', label: 'Hobbies & Interests', shortLabel: 'Hobbies', num: '05', icon: Palette },
-  { id: 'resume', label: 'Resume & CV', shortLabel: 'Resume', num: '06', icon: FileText },
+  { id: 'philosophy', label: 'About Me', shortLabel: 'About Me', num: '04', icon: Compass },
+  { id: 'hobbies', label: 'Hobbies', shortLabel: 'Hobbies', num: '05', icon: Palette },
+  { id: 'resume', label: 'Resume', shortLabel: 'Resume', num: '06', icon: FileText },
 ];
 
 export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
@@ -52,7 +52,7 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
         return saved;
       }
     }
-    return 'projects';
+    return 'intro';
   });
 
   // Track unsaved dirty state per individual section
@@ -184,70 +184,74 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
         />
       </div>
 
-      {/* Sub Navbar: sticks just below main header with smooth horizontal scrolling */}
-      <div className="sticky top-20 z-40 bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border shadow-xs">
-        <PageContainer className="h-14 flex items-center justify-between gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden relative">
-          <div
-            role="tablist"
-            aria-label="Editor sections"
-            className="flex items-center gap-1.5 sm:gap-2 shrink-0 py-1"
-          >
-            {/* Section toggles with rich icons & isolated unsaved badges */}
-            {SECTIONS.map((s) => {
-              const isCurrent = activeSection === s.id;
-              const isSectionDirty = Boolean(dirtySections[s.id]);
-              const Icon = s.icon;
+      {/* Sub Navbar: sticks just below main header with smooth horizontal scrolling and balanced spread */}
+      <div className="sticky top-20 z-40 bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-b border-light-border dark:border-dark-border shadow-xs">
+        <PageContainer className="h-16 flex items-center justify-between gap-3 sm:gap-4 relative">
+          {/* Scrollable Tablist on smaller screens, evenly distributed 6-column grid on desktop */}
+          <div className="flex-1 min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-1">
+            <div
+              role="tablist"
+              aria-label="Editor sections"
+              className="flex items-center gap-1.5 sm:gap-2 lg:grid lg:grid-cols-6 lg:gap-2 xl:gap-2.5 2xl:gap-3.5 w-max lg:w-full"
+            >
+              {/* Section toggles with rich icons & isolated unsaved badges */}
+              {SECTIONS.map((s) => {
+                const isCurrent = activeSection === s.id;
+                const isSectionDirty = Boolean(dirtySections[s.id]);
+                const Icon = s.icon;
 
-              return (
-                <button
-                  key={s.id}
-                  role="tab"
-                  id={`tab-${s.id}`}
-                  aria-controls={`panel-${s.id}`}
-                  aria-selected={isCurrent}
-                  onClick={() => handleSelectSection(s.id)}
-                  className={`flex items-center gap-2 px-3 py-2 min-h-[42px] rounded-lg font-sans text-xs whitespace-nowrap transition-all duration-200 shrink-0 cursor-pointer relative group ${
-                    isCurrent
-                      ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-light-ink dark:text-dark-ink font-semibold border border-light-border dark:border-dark-border shadow-xs'
-                      : isSectionDirty
-                      ? 'text-amber-700 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/15 border border-amber-500/30'
-                      : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised/60 dark:hover:bg-dark-surface-raised/60 border border-transparent'
-                  }`}
-                >
-                  <Icon
-                    className={`w-3.5 h-3.5 transition-colors shrink-0 ${
+                return (
+                  <button
+                    key={s.id}
+                    role="tab"
+                    id={`tab-${s.id}`}
+                    aria-controls={`panel-${s.id}`}
+                    aria-selected={isCurrent}
+                    onClick={() => handleSelectSection(s.id)}
+                    className={`w-auto lg:w-full flex items-center justify-center gap-1.5 xl:gap-2 px-3 xl:px-3 py-2.5 min-h-[46px] rounded-lg font-sans text-xs xl:text-[13px] 2xl:text-sm whitespace-nowrap transition-all duration-200 shrink-0 cursor-pointer relative group text-center ${
                       isCurrent
-                        ? 'text-terracotta dark:text-ochre'
+                        ? 'bg-light-surface-raised dark:bg-dark-surface-raised text-light-ink dark:text-dark-ink font-semibold border border-light-border dark:border-dark-border shadow-xs ring-1 ring-terracotta/20 dark:ring-ochre/25'
                         : isSectionDirty
-                        ? 'text-amber-600 dark:text-amber-400'
-                        : 'text-light-ink-muted dark:text-dark-ink-muted group-hover:text-light-ink dark:group-hover:text-dark-ink'
+                        ? 'text-amber-700 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/15 border border-amber-500/30'
+                        : 'text-light-ink-muted dark:text-dark-ink-muted hover:text-light-ink dark:hover:text-dark-ink hover:bg-light-surface-raised/60 dark:hover:bg-dark-surface-raised/60 border border-transparent'
                     }`}
-                  />
-                  <span className="font-mono text-xs opacity-70">{s.num}</span>
-                  <span className="hidden sm:inline">{s.label}</span>
-                  <span className="sm:hidden">{s.shortLabel}</span>
-
-                  {/* Section-Specific Unsaved Indicator Dot */}
-                  {isSectionDirty && (
-                    <span
-                      className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0 ml-0.5"
-                      title={`${s.label} has unsaved changes`}
-                      aria-label="Unsaved changes"
+                  >
+                    <Icon
+                      className={`w-3.5 h-3.5 xl:w-4 xl:h-4 transition-colors shrink-0 ${
+                        isCurrent
+                          ? 'text-terracotta dark:text-ochre'
+                          : isSectionDirty
+                          ? 'text-amber-600 dark:text-amber-400'
+                          : 'text-light-ink-muted dark:text-dark-ink-muted group-hover:text-light-ink dark:group-hover:text-dark-ink'
+                      }`}
                     />
-                  )}
-                </button>
-              );
-            })}
+                    <span className="font-mono text-[11px] xl:text-xs font-semibold opacity-75 shrink-0">{s.num}</span>
+                    <span className="truncate">{s.shortLabel}</span>
+
+                    {/* Section-Specific Unsaved Indicator Dot */}
+                    {isSectionDirty && (
+                      <span
+                        className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0 ml-0.5"
+                        title={`${s.label} has unsaved changes`}
+                        aria-label="Unsaved changes"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 pl-1 sm:pl-2">
+          {/* Anchored Return to Portfolio Action on the right - never cut off */}
+          <div className="flex items-center shrink-0 pl-2 sm:pl-3 border-l border-light-border/60 dark:border-dark-border/60">
             <button
               onClick={handleExit}
-              className="inline-flex items-center gap-1.5 font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors whitespace-nowrap cursor-pointer py-1.5 px-2.5 sm:px-3 min-h-[42px] rounded-lg hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised shrink-0 border border-transparent hover:border-light-border dark:hover:border-dark-border"
+              className="inline-flex items-center gap-2 font-sans text-xs sm:text-[13px] font-medium text-light-ink-muted dark:text-dark-ink-muted hover:text-terracotta dark:hover:text-ochre transition-colors whitespace-nowrap cursor-pointer py-2 px-3 sm:px-3.5 min-h-[46px] rounded-lg hover:bg-light-surface-raised dark:hover:bg-dark-surface-raised shrink-0 border border-transparent hover:border-light-border dark:hover:border-dark-border"
+              title="Return to Portfolio"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Return to Portfolio</span>
-              <span className="sm:hidden">Exit</span>
+              <ArrowLeft className="w-4 h-4 shrink-0 text-terracotta dark:text-ochre" />
+              <span className="hidden md:inline">Return to Portfolio</span>
+              <span className="md:hidden">Exit</span>
             </button>
           </div>
         </PageContainer>
@@ -265,12 +269,12 @@ export const EditPage: React.FC<EditPageProps> = ({ onNavigate }) => {
         </div>
       </PageContainer>
 
-      {/* Floating Bottom Unsaved Changes Dock (Mobile-Friendly & Clear) */}
+      {/* Floating Bottom Unsaved Changes Dock (Mobile & Tablet Support - Hidden on Desktop to avoid duplicate save buttons) */}
       {hasAnyDirty && (
         <aside
           role="status"
           aria-live="polite"
-          className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[calc(100%-1.5rem)] animate-in slide-in-from-bottom-5 fade-in duration-200 pointer-events-auto select-none"
+          className="lg:hidden fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[calc(100%-1.5rem)] animate-in slide-in-from-bottom-5 fade-in duration-200 pointer-events-auto select-none"
         >
           <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-light-surface dark:bg-dark-surface-card border border-amber-500/40 shadow-2xl text-light-ink dark:text-dark-ink">
             <div className="flex items-center gap-2.5 min-w-0">

@@ -8,7 +8,6 @@ import {
   GripVertical,
   AlertTriangle,
 } from 'lucide-react';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { Badge } from '../../ui/badge';
 import {
   Collapsible,
@@ -116,8 +115,7 @@ export const EditorCardShell: React.FC<EditorCardShellProps> = ({
         isOver ? 'ring-2 ring-terracotta/60 dark:ring-ochre/60 border-terracotta dark:border-ochre scale-[1.01]' : ''
       } ${className}`}
     >
-      <CornerBrackets size="sm" />
-
+      
       {/* Accordion Header / Scannable Bar */}
       <div
         className={`w-full flex flex-col sm:flex-row sm:items-center justify-between p-3.5 sm:p-5 gap-3 select-none group ${

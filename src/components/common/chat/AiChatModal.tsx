@@ -63,6 +63,9 @@ interface ActionSpec {
 interface MessageTelemetry {
   model: string;
   tokensPerSec?: number;
+  totalTokens?: number;
+  promptTokens?: number;
+  candidatesTokens?: number;
   latencyMs: number;
   interactionId?: string;
   isFallback: boolean;
@@ -110,24 +113,24 @@ const BroomIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) 
 
 const UNIVERSAL_PROMPT_PILLS = [
   {
-    id: 'arch',
-    label: 'AI Architecture',
-    prompt: 'How do you approach AI systems architecture, latency, and engineering craft?',
+    id: 'skills',
+    label: 'Technical Skills',
+    prompt: 'What are Vincent\'s primary programming languages, frameworks, and technical strengths?',
   },
   {
     id: 'works',
-    label: 'Featured Works',
-    prompt: 'What are your most significant engineering projects and technical accomplishments?',
+    label: 'Featured Projects',
+    prompt: 'Can you summarize Vincent’s key engineering projects and accomplishments?',
   },
   {
-    id: 'philosophy',
-    label: 'Design Philosophy',
-    prompt: 'What core principles guide your software engineering and system design?',
+    id: 'experience',
+    label: 'Experience & Education',
+    prompt: 'Tell me about Vincent’s engineering background, Drexel education, and previous roles.',
   },
   {
-    id: 'dialogue',
-    label: 'Work With Vincent',
-    prompt: 'Are you available for engineering roles or architectural collaborations?',
+    id: 'opportunities',
+    label: 'Open Opportunities',
+    prompt: 'What kinds of engineering roles or internships is Vincent currently seeking?',
   },
 ];
 
@@ -1246,8 +1249,8 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                     )}
                   </div>
 
-                  {/* Optional Telemetry Inspector Drawer */}
-                  {msg.telemetry && (
+                  {/* Optional Telemetry Inspector Drawer (Admin only) */}
+                  {isAdmin && msg.telemetry && (
                     <div className="px-1">
                       <button
                         type="button"

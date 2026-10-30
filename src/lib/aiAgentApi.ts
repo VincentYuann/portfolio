@@ -1,5 +1,11 @@
 import { supabase } from './supabase';
 
+export interface TokenUsage {
+  prompt_tokens?: number;
+  candidates_tokens?: number;
+  total_tokens?: number;
+}
+
 /**
  * TypeScript mirror of FastAPI ChatResponse Pydantic model:
  * (C:\Users\litej\OneDrive\Desktop\PersonalProject\AI Agent\app\main.py)
@@ -11,6 +17,7 @@ export interface ChatResponse {
   user_email?: string | null;
   status: string;
   model?: string | null;
+  usage?: TokenUsage | null;
 }
 
 export interface SendMessageOptions {
@@ -145,6 +152,7 @@ export async function sendToAiAgent({
     let resolvedUserType = 'Guest';
     let resolvedUserEmail: string | null = null;
     let resolvedModel = 'gemini-3.5-flash-lite';
+    let resolvedUsage: TokenUsage | null = null;
 
     try {
       while (true) {
@@ -177,6 +185,7 @@ export async function sendToAiAgent({
               } else if (event.type === 'done') {
                 if (event.interaction_id) finalInteractionId = event.interaction_id;
                 if (event.model) resolvedModel = event.model;
+                if (event.usage) resolvedUsage = event.usage;
               }
             } catch (jsonErr: any) {
               // Re-throw genuine streaming error events from server
@@ -202,6 +211,7 @@ export async function sendToAiAgent({
       user_type: resolvedUserType,
       user_email: resolvedUserEmail,
       model: resolvedModel,
+      usage: resolvedUsage,
     };
   }
 

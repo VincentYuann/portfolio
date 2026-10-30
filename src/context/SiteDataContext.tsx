@@ -70,12 +70,17 @@ export interface HobbyItem {
 export interface SiteProfile {
   name: string;
   headline: string;
-  tagline: string;
+  tagline?: string;
   email: string;
   github: string;
   linkedin: string;
   role: string;
   avatar_url?: string;
+  about_image_url?: string;
+  education?: string;
+  location?: string;
+  career_objective?: string;
+  about_me?: string;
   capability_pillars: CapabilityPillar[];
   hanko_card?: HankoCardConfig;
   origin_story?: OriginStoryConfig;
@@ -347,6 +352,11 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           headline: row.headline || '',
           tagline:  row.tagline  || '',
           avatar_url: row.avatar_url || '',
+          about_image_url: row.about_image_url || '',
+          education: row.education || (row.hanko_card ? row.hanko_card.headerLabel : '') || 'Drexel University · CS & Math',
+          location: row.location || (row.hanko_card ? row.hanko_card.locationArchive : '') || 'Philadelphia, PA',
+          career_objective: row.career_objective || '',
+          about_me: row.about_me || '',
           email:    row.email    || '',
           github:   row.github   || '',
           linkedin: row.linkedin || '',

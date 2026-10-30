@@ -29,7 +29,7 @@ export interface ProjectEntry {
   summary: string;
   overview: string;
   kanji: string;
-  badge: string;
+  category?: string;
   image: string;
   bullets: string[];
   techStacks: string[];
@@ -51,7 +51,6 @@ const mapProjectsFromContext = (contextProjects: Project[]): ProjectEntry[] => {
     summary: p.description || '',
     overview: p.overview || p.description || '',
     kanji: p.kanji || '案',
-    badge: p.badge || 'ENGINEERING ARCHIVE',
     image: p.image || './images/sumi-os-workspace.webp',
     bullets: Array.isArray(p.bullets) && p.bullets.length > 0 ? p.bullets : [''],
     techStacks: p.tags || [],
@@ -73,7 +72,6 @@ const newProject = (order: number = 0): ProjectEntry => ({
   summary: '',
   overview: '',
   kanji: '案',
-  badge: 'ENGINEERING ARCHIVE',
   image: '',
   bullets: [''],
   techStacks: [],
@@ -240,15 +238,13 @@ export const ProjectsEditor: React.FC = () => {
         id: p.id,
         title: p.title || `Project ${idx + 1}`,
         subtitle: p.subtitle || '',
-        category: p.badge || '',
+        category: p.category || 'ENGINEERING ARCHIVE',
         start_date: p.startDate || '',
         end_date: p.endDate || '',
         is_active: Boolean(p.isActive),
-        status_label: p.statusLabel || (p.isActive ? 'ACTIVE / 稼働中' : 'COMPLETED / 完了'),
         description: p.overview || p.summary || '',
         overview: p.overview || p.summary || '',
         kanji: p.kanji || '案',
-        badge: p.badge || 'ENGINEERING ARCHIVE',
         image: p.image || './images/sumi-os-workspace.webp',
         tech_stacks: p.techStacks || [],
         bullets: p.bullets.filter(Boolean),

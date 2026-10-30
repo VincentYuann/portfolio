@@ -92,7 +92,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
-                Philosophy &amp; Craft
+                About Me
               </a>
               <a
                 href="#hobbies"
@@ -128,7 +128,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 }}
                 className="hover:text-terracotta dark:hover:text-ochre transition-colors"
               >
-                Curriculum Vitae
+                Resume
               </a>
             </div>
           </div>
@@ -144,7 +144,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="flex items-center gap-3 text-light-ink-subtle dark:text-dark-ink-subtle text-xs font-sans">
             <span className="uppercase tracking-widest text-xs font-mono">Clarity · Balance · Craft</span>
             <span className="text-terracotta dark:text-ochre text-xs">✦</span>
-            <span className="uppercase tracking-widest text-xs font-mono">Solid Washi</span>
+            <span className="uppercase tracking-widest text-xs font-mono">Built with React, TypeScript &amp; Tailwind CSS</span>
           </div>
         </div>
       </div>

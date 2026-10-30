@@ -3,7 +3,6 @@ import { Search, Layers } from 'lucide-react';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { ViewMode } from '../../../App';
 import { HobbyCard } from './HobbyCard';
-import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { PageContainer } from '../../common/PageContainer';
 import { ReturnToPortfolio } from '../../common/ReturnToPortfolio';
 import { SubpageHeader } from '../../common/SubpageHeader';
@@ -44,19 +43,7 @@ export const HobbiesPage: React.FC<HobbiesPageProps> = ({ onNavigate }) => {
   return (
     <div className="relative w-full min-h-screen overflow-x-clip">
       {/* 16:9 Linen Texture Ground & Sumi-e Pine Tree (Retains exact Hobbies Section identity) */}
-      <SectionSideBackdrop
-        textureDay="./background/white linen.webp"
-        textureNight="./background/black linen.webp"
-        painting="./decorators/tree.webp"
-        paintingAlt="Sumi-e pine tree ink wash painting"
-        placement="right"
-        artworkWidth="w-full lg:w-[50%]"
-        maskCenter="at 75% 50%"
-        textureOpacityDay={0.65}
-        textureOpacityNight={0.45}
-        paintingOpacityDay={0.35}
-        paintingOpacityNight={0.14}
-      />
+      
       <PageContainer className="pt-20 sm:pt-28 pb-16 sm:pb-20 relative z-10">
         {/* Back navigation button */}
         <ReturnToPortfolio onNavigate={onNavigate} sectionId="hobbies" />

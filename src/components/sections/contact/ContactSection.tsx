@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Mail, Github, Linkedin, Send, CheckCircle2, AlertCircle, Copy, Check } from 'lucide-react';
 import { sendContactMessage } from '../../../lib/supabase';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
-import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
 
 
@@ -28,7 +26,7 @@ export const ContactSection: React.FC = () => {
   const validateField = (field: 'name' | 'email' | 'message', value: string): string | undefined => {
     const trimmed = value.trim();
     if (field === 'name') {
-      if (!trimmed) return 'Name is required to initiate dialogue.';
+      if (!trimmed) return 'Please enter your name.';
       if (trimmed.length < 2) return 'Please provide at least 2 characters.';
     }
     if (field === 'email') {
@@ -128,19 +126,7 @@ export const ContactSection: React.FC = () => {
       <div className="absolute inset-0 bg-radial-[at_50%_40%] from-terracotta/[0.03] dark:from-terracotta/[0.02] to-transparent pointer-events-none z-0" />
 
       {/* 16:9 Cedar Wood Ground & Asymmetric Sumi-e Bamboo Art (Anchored Left for alternating rhythm) */}
-      <SectionSideBackdrop
-        textureDay="./background/white wood.webp"
-        textureNight="./background/black wood.webp"
-        painting="./decorators/bamboo.webp"
-        paintingAlt="Sumi-e bamboo ink wash painting"
-        placement="left"
-        artworkWidth="w-full lg:w-[48%]"
-        maskCenter="at 25% 50%"
-        textureOpacityDay={0.65}
-        textureOpacityNight={0.45}
-        paintingOpacityDay={0.35}
-        paintingOpacityNight={0.14}
-      />
+      
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
@@ -157,7 +143,7 @@ export const ContactSection: React.FC = () => {
           />
 
           {/* Corner Hairline Brackets (Subtle) */}
-          <CornerBrackets size="lg" />
+          
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start">
             {/* Left Column: Narrative & Direct Links */}
@@ -267,7 +253,7 @@ export const ContactSection: React.FC = () => {
                     Message Delivered Directly
                   </h3>
                   <p className="font-sans text-xs text-light-ink-muted dark:text-dark-ink-muted">
-                    Your transmission was delivered directly to Vincent's inbox. He will review it and respond promptly.
+                    Thanks for reaching out! I'll review your note and get back to you shortly.
                   </p>
                 </div>
               ) : (
@@ -294,7 +280,7 @@ export const ContactSection: React.FC = () => {
                         name="name"
                         type="text"
                         required
-                        placeholder="e.g. Kenji Tanaka"
+                        placeholder="e.g. Jane Doe"
                         value={name}
                         onChange={(e) => handleFieldChange('name', e.target.value)}
                         onBlur={() => handleBlur('name')}
@@ -322,7 +308,7 @@ export const ContactSection: React.FC = () => {
                         name="email"
                         type="email"
                         required
-                        placeholder="e.g. kenji@studio.jp"
+                        placeholder="e.g. alex@company.com"
                         value={email}
                         onChange={(e) => handleFieldChange('email', e.target.value)}
                         onBlur={() => handleBlur('email')}
@@ -352,7 +338,7 @@ export const ContactSection: React.FC = () => {
                       name="message"
                       rows={4}
                       required
-                      placeholder="Briefly describe what you would like to create or explore together..."
+                      placeholder="Write your message or inquiry here..."
                       value={message}
                       onChange={(e) => handleFieldChange('message', e.target.value)}
                       onBlur={() => handleBlur('message')}
@@ -385,7 +371,7 @@ export const ContactSection: React.FC = () => {
                     className="w-full py-2.5 px-4 rounded-[2px] font-sans text-sm font-medium bg-terracotta hover:bg-terracotta-hover text-white dark:bg-ochre dark:text-[#121316] dark:hover:bg-[#C29845] transition-all flex items-center justify-center gap-2 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:outline-none cursor-pointer shadow-xs"
                   >
                     <Send className="w-3.5 h-3.5" />
-                    <span>{status === 'sending' ? 'Transmitting...' : 'Send Message'}</span>
+                    <span>{status === 'sending' ? 'Sending...' : 'Send Message'}</span>
                   </button>
                 </form>
               )}

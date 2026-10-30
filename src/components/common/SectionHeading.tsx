@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface SectionHeadingProps {
   numeral: string;
-  categoryTag: string;
+  categoryTag?: string;
   title: string;
   kanjiSubtitle?: string;
   description?: string;
@@ -24,10 +24,9 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   const rightAction = actions || action;
   return (
     <div
-      className={`relative flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 pb-8 border-b border-light-border dark:border-dark-border gap-6 overflow-hidden ${className}`}
+      className={`relative flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-14 pb-6 sm:pb-8 border-b border-light-border dark:border-dark-border gap-6 overflow-hidden ${className}`}
     >
-      {/* Ambient Radial Lantern Glow simulating an Akari paper lamp */}
-      {/* Soft Ambient Akari Lantern Warmth: Diffused gently without tight focal spotlight */}
+      {/* Soft Ambient Akari Lantern Warmth */}
       <div
         className="pointer-events-none absolute -left-12 -top-10 w-full max-w-[36rem] h-72 -z-10 select-none opacity-45 dark:opacity-25"
         style={{
@@ -37,29 +36,25 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       />
 
       <div className="max-w-4xl xl:max-w-5xl">
-        {/* Section Anchor & Rubric Seal */}
-        <div className="flex items-center gap-3 mb-3.5">
-          <span
-            className="w-6 h-6 rounded-[2px] bg-terracotta/15 dark:bg-ochre/15 border border-terracotta/60 dark:border-ochre/60 flex items-center justify-center text-2xs font-zen text-terracotta dark:text-ochre font-medium select-none shadow-2xs"
-            title="Vincent Yuan Seal · 原"
-          >
-            原
-          </span>
-          <span className="font-mono text-xs sm:text-sm text-light-ink dark:text-dark-ink font-semibold tracking-wider">{numeral}</span>
-          <span className="font-chakra text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-widest">
-            {categoryTag}
-          </span>
+        {/* Section Anchor & Index */}
+        <div className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-3">
+          <span className="font-mono text-xs sm:text-sm text-terracotta dark:text-ochre font-semibold tracking-wider">{numeral}</span>
+          {categoryTag && (
+            <span className="font-chakra text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-widest">
+              {categoryTag}
+            </span>
+          )}
         </div>
         <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-[1.08]">
           {title}{' '}
           {kanjiSubtitle && (
-            <span aria-hidden="true" className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl sm:text-3xl lg:text-4xl ml-3 whitespace-nowrap inline-block select-none opacity-85">
+            <span aria-hidden="true" className="font-serif font-light text-light-ink-muted dark:text-dark-ink-muted text-2xl sm:text-3xl lg:text-4xl ml-3 whitespace-nowrap inline-block select-none opacity-70">
               {kanjiSubtitle}
             </span>
           )}
         </h2>
         {description && (
-          <p className="font-sans text-base sm:text-lg text-light-ink-muted dark:text-dark-ink-muted mt-3.5 sm:mt-4 font-normal leading-relaxed max-w-xl">
+          <p className="font-sans text-base sm:text-lg text-light-ink-muted dark:text-dark-ink-muted mt-3 sm:mt-3.5 font-normal leading-relaxed max-w-xl">
             {description}
           </p>
         )}

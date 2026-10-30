@@ -6,14 +6,12 @@ import {
   Layers,
   ListChecks,
 } from 'lucide-react';
-import { CornerBrackets } from '../../common/CornerBrackets';
 import { EnsoOrbital } from '../../common/EnsoOrbital';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { TechTag } from '../../common/TechTag';
 import { Card } from '../../ui/card';
 import { SectionHeading } from '../../common/SectionHeading';
 import { handleImageError } from '../../../lib/constants';
-import { SectionSideBackdrop } from '../../common/SectionSideBackdrop';
 import { SectionDivider } from '../../common/SectionDivider';
 import { CardMetaStrip } from '../../common/CardMetaStrip';
 
@@ -153,19 +151,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
       <div className="absolute left-0 sm:left-24 top-1/4 w-96 h-96 bg-radial-[at_center] from-ochre/[0.04] dark:from-ochre/[0.025] to-transparent pointer-events-none z-0" />
       
       {/* 16:9 Linen Texture Ground & Asymmetric Sumi-e Bamboo Art (Anchored Left for alternating rhythm) */}
-      <SectionSideBackdrop
-        textureDay="./background/white linen.webp"
-        textureNight="./background/black linen.webp"
-        painting="./decorators/bamboo.webp"
-        paintingAlt="Sumi-e bamboo ink wash painting"
-        placement="left"
-        artworkWidth="w-full lg:w-[48%]"
-        maskCenter="at 25% 45%"
-        textureOpacityDay={0.65}
-        textureOpacityNight={0.45}
-        paintingOpacityDay={0.35}
-        paintingOpacityNight={0.14}
-      />
+      
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
@@ -194,8 +180,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                 className="group inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-[2px] bg-light-surface-card dark:bg-dark-surface-card border border-light-border dark:border-dark-border hover:border-light-border-strong dark:hover:border-dark-border-strong text-light-ink dark:text-dark-ink font-sans text-xs uppercase tracking-widest shadow-2xs transition-all duration-200"
               >
                 <Briefcase className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted" />
-                <span className="hidden sm:inline">Curriculum Vitae</span>
-                <span className="sm:hidden">CV</span>
+                <span className="hidden sm:inline">View Resume</span>
+                <span className="sm:hidden">Resume</span>
                 <ArrowRight className="w-3.5 h-3.5 text-light-ink-muted dark:text-dark-ink-muted transition-transform duration-200 group-hover:translate-x-1" />
               </a>
             </div>
@@ -311,7 +297,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
               return (
                 <Card className="p-6 sm:p-8 lg:p-9 relative">
-                  <CornerBrackets size="md" />
+                  
 
                   {/* Metadata Header Strip */}
                   <CardMetaStrip
@@ -491,7 +477,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
                     />
 
                     {/* Corner Hairline Brackets (Subtle) */}
-                    <CornerBrackets size="sm" />
+                    
 
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                       {/* Left: Clean Square Emblem */}
