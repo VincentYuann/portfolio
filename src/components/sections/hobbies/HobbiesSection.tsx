@@ -52,15 +52,13 @@ export const HobbiesSection: React.FC<HobbiesSectionProps> = ({ onNavigate }) =>
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
-        <SectionDivider label="HOBBIES & INTERESTS · 趣味と日常" shortLabel="HOBBIES · 趣味" />
+        <SectionDivider label="05 // HOBBIES & INTERESTS · 趣味と日常" shortLabel="05 // HOBBIES · 趣味" />
       </div>
 
       {/* Main Hobbies Content Container */}
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <SectionHeading
-          numeral="05 //"
-          categoryTag="HOBBIES & INTERESTS · 趣味と日常"
           title="Hobbies & Interests"
           kanjiSubtitle="趣味と日常"
           description="What I enjoy doing when I'm away from the keyboard: watching anime, gaming with friends, fitness, day trading, and discovering great food."

@@ -91,7 +91,7 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
-        <SectionDivider label="SELECTED PORTFOLIO · 作品" shortLabel="PORTFOLIO · 作品" />
+        <SectionDivider label="03 // FEATURED WORKS · 主な作品" shortLabel="03 // WORKS · 作品" />
       </div>
 
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

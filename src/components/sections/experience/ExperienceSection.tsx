@@ -155,7 +155,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
-        <SectionDivider label="CAREER TRAJECTORY · 職歴" shortLabel="CAREER · 職歴" />
+        <SectionDivider label="02 // WORK & MILESTONES · 職歴" shortLabel="02 // CAREER · 職歴" />
       </div>
 
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

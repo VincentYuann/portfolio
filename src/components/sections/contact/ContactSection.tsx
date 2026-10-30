@@ -130,7 +130,7 @@ export const ContactSection: React.FC = () => {
 
       {/* Section Divider on Top of Section */}
       <div className="relative z-10 w-full mb-10 sm:mb-14">
-        <SectionDivider label="GET IN TOUCH · 連絡" shortLabel="CONTACT · 連絡" />
+        <SectionDivider label="06 // GET IN TOUCH · 連絡" shortLabel="06 // CONTACT · 連絡" />
       </div>
 
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

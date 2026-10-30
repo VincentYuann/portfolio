@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface SectionHeadingProps {
-  numeral: string;
+  numeral?: string;
   categoryTag?: string;
   title: string;
   kanjiSubtitle?: string;
@@ -36,15 +36,19 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       />
 
       <div className="max-w-4xl xl:max-w-5xl">
-        {/* Section Anchor & Index */}
-        <div className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-3">
-          <span className="font-mono text-xs sm:text-sm text-terracotta dark:text-ochre font-semibold tracking-wider">{numeral}</span>
-          {categoryTag && (
-            <span className="font-chakra text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-widest">
-              {categoryTag}
-            </span>
-          )}
-        </div>
+        {/* Section Anchor & Index (Only rendered if numeral or categoryTag explicitly passed) */}
+        {(numeral || categoryTag) && (
+          <div className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-3">
+            {numeral && (
+              <span className="font-mono text-xs sm:text-sm text-terracotta dark:text-ochre font-semibold tracking-wider">{numeral}</span>
+            )}
+            {categoryTag && (
+              <span className="font-chakra text-xs font-semibold text-light-ink-muted dark:text-dark-ink-muted uppercase tracking-widest">
+                {categoryTag}
+              </span>
+            )}
+          </div>
+        )}
         <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-light-ink dark:text-dark-ink tracking-tight font-normal leading-[1.08]">
           {title}{' '}
           {kanjiSubtitle && (
