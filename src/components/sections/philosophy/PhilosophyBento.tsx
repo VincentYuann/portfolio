@@ -103,7 +103,7 @@ export const PhilosophyBento: React.FC = () => {
 
           {/* Right Column (7 cols): Editorial Menu inside 1 Big Border */}
           <div className="lg:col-span-7 flex flex-col">
-            <Card className="p-6 sm:p-8 lg:p-9 flex flex-col justify-between h-full relative overflow-hidden group shadow-sm border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card">
+            <Card className="p-6 sm:p-8 lg:p-9 flex flex-col justify-between h-full relative overflow-visible group shadow-sm border border-light-border dark:border-dark-border bg-light-surface-card dark:bg-dark-surface-card">
               {/* Ensō brush placed on top-left, subtle and atmospheric */}
               <EnsoOrbital placement="top-left" size={90} hoverOnly={true} />
 

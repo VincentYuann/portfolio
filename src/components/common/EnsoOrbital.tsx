@@ -2,7 +2,8 @@ import React from 'react';
 
 interface EnsoOrbitalProps {
   className?: string;
-  size?: number; // Size in px (default 96)
+  style?: React.CSSProperties;
+  size?: number; // Size in px (default 100)
   placement?: 'top-left' | 'top-right' | 'center' | 'custom';
   interactive?: boolean;
   hoverOnly?: boolean;
@@ -12,39 +13,60 @@ interface EnsoOrbitalProps {
 /**
  * EnsoOrbital
  * Authentic Japanese sumi-e Ensō calligraphic brush circle:
+ * - Anchored right on the top-left or top-right corner vertex of the card
  * - Restored original organic calligraphic brushwork with ink bleed (not a stroked noodle)
  * - Subtle, atmospheric water-wash presence that does not overpower content
- * - Safely inset at top-left/top-right corners without clipping
  */
 export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
   className = '',
-  size = 96,
+  style: userStyle,
+  size = 100,
   placement = 'top-left',
   interactive = true,
   hoverOnly = true,
   active,
 }) => {
+  const half = Math.round(size * 0.5);
+
+  const placementStyle: React.CSSProperties = React.useMemo(() => {
+    switch (placement) {
+      case 'top-left':
+        return { top: `-${half}px`, left: `-${half}px` };
+      case 'top-right':
+        return { top: `-${half}px`, right: `-${half}px` };
+      case 'center':
+        return { top: '50%', left: '50%' };
+      default:
+        return {};
+    }
+  }, [placement, half]);
+
   const placementClasses = {
-    'top-left': 'top-2.5 left-2.5 sm:top-3.5 sm:left-3.5',
-    'top-right': 'top-2.5 right-2.5 sm:top-3.5 sm:right-3.5',
-    center: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+    'top-left': '',
+    'top-right': '',
+    center: 'transform -translate-x-1/2 -translate-y-1/2',
     custom: '',
   }[placement];
 
   const hoverClasses = typeof active === 'boolean'
     ? (active
-        ? 'opacity-30 dark:opacity-25 scale-100 transition-all duration-500 ease-out'
+        ? 'opacity-35 dark:opacity-30 scale-100 transition-all duration-500 ease-out'
         : 'opacity-0 scale-95 pointer-events-none transition-all duration-500 ease-out')
     : hoverOnly
-      ? 'opacity-0 scale-95 pointer-events-none group-hover:opacity-30 dark:group-hover:opacity-25 group-hover:scale-100 transition-all duration-500 ease-out'
-      : 'opacity-20 dark:opacity-15 group-hover:opacity-35 dark:group-hover:opacity-30 transition-all duration-500';
+      ? 'opacity-0 scale-95 pointer-events-none group-hover:opacity-35 dark:group-hover:opacity-30 group-hover:scale-100 transition-all duration-500 ease-out'
+      : 'opacity-25 dark:opacity-20 group-hover:opacity-40 dark:group-hover:opacity-35 transition-all duration-500';
 
   return (
     <div
       className={`absolute ${placementClasses} pointer-events-none select-none z-10 ${hoverClasses} ${
         interactive ? 'group-hover:scale-102' : ''
       } ${className}`}
-      style={{ width: `${size}px`, height: `${size}px` }}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        ...placementStyle,
+        ...userStyle,
+      }}
       aria-hidden="true"
     >
       <svg
