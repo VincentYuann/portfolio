@@ -161,8 +161,6 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onNavigate
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & Standardized Layout */}
         <SectionHeading
-          numeral="02 //"
-          categoryTag="CAREER TRAJECTORY · 職歴"
           title="Work & Milestones"
           kanjiSubtitle="職歴"
           description="A chronology of software engineering roles, full-stack systems development, and real-world impact."

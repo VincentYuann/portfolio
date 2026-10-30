@@ -67,6 +67,13 @@ export interface HobbyItem {
   displayOrder?: number;
 }
 
+export interface AboutMenuItem {
+  id: string;
+  title: string;
+  kanji?: string;
+  items: string[];
+}
+
 export interface SiteProfile {
   name: string;
   headline: string;
@@ -85,6 +92,7 @@ export interface SiteProfile {
   hanko_card?: HankoCardConfig;
   origin_story?: OriginStoryConfig;
   hobbies?: HobbyItem[];
+  about_menu?: AboutMenuItem[];
 }
 
 export interface PhilosophyPillar {

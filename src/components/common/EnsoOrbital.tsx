@@ -2,7 +2,7 @@ import React from 'react';
 
 interface EnsoOrbitalProps {
   className?: string;
-  size?: number; // Size in px (default 100)
+  size?: number; // Size in px (default 96)
   placement?: 'top-left' | 'top-right' | 'center' | 'custom';
   interactive?: boolean;
   hoverOnly?: boolean;
@@ -11,38 +11,38 @@ interface EnsoOrbitalProps {
 
 /**
  * EnsoOrbital
- * Authentic Japanese sumi-e Ens? brush circle featuring:
- * - Single expressive organic calligraphic brushstroke with sumi ink texture
- * - Fluid live brush drawing animation on hover (no inner red wire, no orbiting dots)
- * - Safe internal placement so the brush is never clipped or hidden by overflow-hidden
+ * Authentic Japanese sumi-e Ensō calligraphic brush circle:
+ * - Restored original organic calligraphic brushwork with ink bleed (not a stroked noodle)
+ * - Subtle, atmospheric water-wash presence that does not overpower content
+ * - Safely inset at top-left/top-right corners without clipping
  */
 export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
   className = '',
-  size = 100,
-  placement = 'top-right',
+  size = 96,
+  placement = 'top-left',
   interactive = true,
   hoverOnly = true,
   active,
 }) => {
   const placementClasses = {
-    'top-left': 'top-3 left-3 sm:top-4 sm:left-4',
-    'top-right': 'top-3 right-3 sm:top-4 sm:right-4',
+    'top-left': 'top-2.5 left-2.5 sm:top-3.5 sm:left-3.5',
+    'top-right': 'top-2.5 right-2.5 sm:top-3.5 sm:right-3.5',
     center: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
     custom: '',
   }[placement];
 
   const hoverClasses = typeof active === 'boolean'
     ? (active
-        ? 'opacity-100 scale-100 transition-all duration-300 ease-out'
-        : 'opacity-0 scale-90 pointer-events-none transition-all duration-300 ease-out')
+        ? 'opacity-30 dark:opacity-25 scale-100 transition-all duration-500 ease-out'
+        : 'opacity-0 scale-95 pointer-events-none transition-all duration-500 ease-out')
     : hoverOnly
-      ? 'opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 ease-out'
-      : 'opacity-100 transition-transform duration-300';
+      ? 'opacity-0 scale-95 pointer-events-none group-hover:opacity-30 dark:group-hover:opacity-25 group-hover:scale-100 transition-all duration-500 ease-out'
+      : 'opacity-20 dark:opacity-15 group-hover:opacity-35 dark:group-hover:opacity-30 transition-all duration-500';
 
   return (
     <div
-      className={`absolute ${placementClasses} pointer-events-none select-none z-20 ${hoverClasses} ${
-        interactive ? 'group-hover:scale-105' : ''
+      className={`absolute ${placementClasses} pointer-events-none select-none z-10 ${hoverClasses} ${
+        interactive ? 'group-hover:scale-102' : ''
       } ${className}`}
       style={{ width: `${size}px`, height: `${size}px` }}
       aria-hidden="true"
@@ -54,28 +54,30 @@ export const EnsoOrbital: React.FC<EnsoOrbitalProps> = ({
         className="w-full h-full overflow-visible"
       >
         <defs>
-          {/* Subtle sumi ink bleed texture */}
-          <filter id="enso-brush-bleed" x="-20%" y="-20%" width="140%" height="140%">
+          {/* Subtle sumi ink bleed filter */}
+          <filter id="enso-ink-bleed" x="-15%" y="-15%" width="130%" height="130%">
             <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
 
-        {/* Unified Calligraphic Sumi-e Brushstroke Ens? */}
-        <g className="origin-center" filter="url(#enso-brush-bleed)">
-          {/* Live Brush Drawing Stroke: sweeps fluidly around once on card hover */}
+        {/* Authentic Calligraphic Sumi-e Ensō Brushstroke */}
+        <g className="origin-center transition-opacity duration-300">
           <path
-            d="M 100,28
-               C 142,28 174,56 180,96
-               C 186,138 160,174 124,180
-               C 86,186 38,166 26,124
-               C 16,86 44,38 94,26
-               C 114,21 138,25 154,36"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="11"
-            strokeLinecap="round"
-            className="text-terracotta/80 dark:text-ochre/80 animate-enso-draw"
+            d="M 100,24
+               C 138,23 172,46 182,82
+               C 192,120 174,160 142,178
+               C 106,198 62,192 36,162
+               C 10,132 14,84 46,52
+               C 60,38 78,28 100,24
+               C 92,30 76,40 66,54
+               C 38,90 44,136 78,160
+               C 112,182 152,158 162,126
+               C 170,98 152,58 116,42
+               C 104,36 94,33 86,30
+               Z"
+            className="fill-light-ink dark:fill-dark-ink transition-colors duration-300"
+            filter="url(#enso-ink-bleed)"
           />
         </g>
       </svg>

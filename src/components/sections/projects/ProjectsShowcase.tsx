@@ -97,8 +97,6 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header with Classical Wabi-Sabi Numerals & View All Action */}
         <SectionHeading
-          numeral="03 //"
-          categoryTag="SELECTED PORTFOLIO · 作品"
           title="Featured Works"
           kanjiSubtitle="主な作品"
           description="Production-grade web platforms, interactive applications, and scalable architectures crafted with disciplined full-stack precision."
@@ -154,7 +152,6 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onNavigate }
                     >
                       <div>
                         <CardMetaStrip
-                          index={index + 1}
                           startDate={project.startDate}
                           endDate={project.endDate}
                           isActive={isCurrent}
