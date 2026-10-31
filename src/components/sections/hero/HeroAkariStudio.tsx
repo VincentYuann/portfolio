@@ -11,7 +11,7 @@ import {
 import { useSiteData, parsePillarTags } from '../../../context/SiteDataContext';
 import { useTheme } from '../../../context/ThemeContext';
 import { TechTag } from '../../common/TechTag';
-import { Avatar, AvatarImage, AvatarFallback } from '../../ui/avatar';
+import { ThematicAvatar } from '../../common/ThematicAvatar';
 import { getResumePdfUrl, fetchResumeData } from '../../../lib/supabase';
 import { ViewMode } from '../../../App';
 
@@ -217,21 +217,11 @@ export const HeroAkariStudio: React.FC<HeroAkariStudioProps> = ({ onNavigate }) 
 
               {/* Core Profile Stack: Centered Avatar */}
               <div className="w-full flex flex-col items-center text-center gap-3.5 py-1 relative z-10">
-                {/* Circular Profile Picture via shadcn Avatar */}
-                <div className="relative inline-block animate-seal-breathe">
-                  <Avatar className="size-24 sm:size-28 border border-light-border dark:border-dark-border shadow-xs ring-2 ring-terracotta/20 dark:ring-ochre/25 group-hover:ring-terracotta/40 dark:group-hover:ring-ochre/45 transition-all duration-500">
-                    <AvatarImage
-                      src={avatarUrl}
-                      alt={displayName || 'Profile Avatar'}
-                      className="object-cover"
-                    />
-                    <AvatarFallback className="bg-[#E5E1D8] dark:bg-[#1E2027]">
-                      <svg className="size-13 sm:size-16 text-[#9E9A8E] dark:text-[#736F64]" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                      </svg>
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
+                {/* Thematic Profile Picture (Garden Window / Ink-Wash / Stele / Hanko) */}
+                <ThematicAvatar
+                  src={avatarUrl}
+                  alt={displayName || 'Profile Avatar'}
+                />
 
                 {/* Identity: Centered Full-width Name & Title */}
                 <div className="w-full flex flex-col items-center text-center gap-1">

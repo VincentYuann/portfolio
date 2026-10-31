@@ -10,7 +10,10 @@ export interface AiChatWidgetProps {
   isAdmin?: boolean;
 }
 
-export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin = false }) => {
+export const AiChatWidget: React.FC<AiChatWidgetProps> = ({
+  onNavigate,
+  isAdmin = false,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isStamping, setIsStamping] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
@@ -32,7 +35,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
     setTimeout(() => {
       setIsOpen(true);
       setIsStamping(false);
-    }, 240);
+    }, 200);
   };
 
   const prefetchModal = () => {
@@ -42,7 +45,7 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
 
   return (
     <>
-      {/* ─── 1. SINGULAR HANKO TRIGGER (DESIGN SYSTEM ALIGNED) ─── */}
+      {/* ─── HANGING SEAL PLAQUE (問 SIDE TAG) ─── */}
       {!isOpen && (
         <button
           ref={launcherRef}
@@ -50,39 +53,31 @@ export const AiChatWidget: React.FC<AiChatWidgetProps> = ({ onNavigate, isAdmin 
           onClick={handleOpen}
           onMouseEnter={prefetchModal}
           onFocus={prefetchModal}
-          className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2.5 p-1.5 sm:pl-2 sm:pr-3.5 sm:py-1.5 rounded-full bg-light-surface-card dark:bg-dark-surface-card border border-terracotta/40 hover:border-terracotta dark:border-ochre/40 dark:hover:border-ochre text-light-ink dark:text-dark-ink shadow-md hover:shadow-hanko-glow transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre focus-visible:ring-offset-2 active:scale-95 cursor-pointer min-h-[48px] min-w-[48px] ${
-            isStamping ? 'scale-90 ring-4 ring-terracotta/30 dark:ring-ochre/30 shadow-hanko-glow' : ''
+          className={`fixed right-0 top-[52%] -translate-y-1/2 z-50 flex flex-col items-center gap-1.5 py-3 px-2 rounded-l-md bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-md border-l border-y border-light-border dark:border-dark-border hover:border-terracotta/70 dark:hover:border-ochre/70 text-light-ink dark:text-dark-ink shadow-xs transition-all duration-200 group cursor-pointer translate-x-1 hover:translate-x-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:focus-visible:ring-ochre ${
+            isStamping ? 'scale-90 ring-1 ring-terracotta/40 dark:ring-ochre/40' : ''
           }`}
-          aria-label="Open Vincent's AI Companion (Press Cmd+K or Ctrl+K)"
+          aria-label="Ask Vincent AI (Press Cmd+K or Ctrl+K)"
           aria-haspopup="dialog"
           aria-expanded={false}
-          title="Ask Vincent's AI (⌘K)"
+          title="Ask Vincent (⌘K)"
         >
-          {/* Vermilion Stamp Impression Ripple (Inshu Seal Wave) */}
-          {isStamping && (
-            <span className="absolute inset-0 rounded-full border-2 border-terracotta dark:border-ochre animate-ping pointer-events-none opacity-80" />
-          )}
-
           {/* Authentic Hanko Stamp Mark */}
-          <div className="size-9 rounded-full bg-terracotta text-white dark:bg-ochre dark:text-[#121316] flex items-center justify-center font-serif font-bold text-sm shadow-xs group-hover:scale-105 transition-transform shrink-0 relative overflow-hidden">
+          <div className="size-8 rounded-[3px] bg-terracotta text-white dark:bg-ochre dark:text-[#121316] flex items-center justify-center font-serif font-bold text-base shadow-xs group-hover:scale-105 transition-transform shrink-0 relative overflow-hidden">
             問
             {isStamping && (
               <span className="absolute inset-0 bg-white/25 dark:bg-black/20 animate-pulse pointer-events-none" />
             )}
           </div>
-          {/* Launcher Label & Shortcut Affordance (Responsive Desktop Expansion) */}
-          <div className="hidden sm:flex items-center gap-2 pr-0.5">
-            <span className="font-serif text-xs sm:text-sm font-medium tracking-tight">
-              Ask Vincent's AI
-            </span>
-            <kbd className="inline-flex items-center px-1.5 py-0.5 text-xs font-mono font-medium rounded border border-light-border dark:border-dark-border bg-light-surface-raised dark:bg-dark-surface text-light-ink-muted dark:text-stone-300">
-              ⌘K
-            </kbd>
-          </div>
+          <span className="font-mono text-[9px] uppercase tracking-widest text-light-ink-muted dark:text-dark-ink-muted [writing-mode:vertical-rl] font-semibold">
+            ASK
+          </span>
+          <kbd className="hidden sm:block text-[9px] font-mono font-medium text-light-ink-muted dark:text-dark-ink-muted group-hover:text-terracotta dark:group-hover:text-ochre transition-colors">
+            ⌘K
+          </kbd>
         </button>
       )}
 
-      {/* ─── 2. CODE-SPLIT LAZY CHAT MODAL ─── */}
+      {/* ─── CODE-SPLIT LAZY CHAT MODAL ─── */}
       {isOpen && (
         <Suspense fallback={null}>
           <AiChatModal
