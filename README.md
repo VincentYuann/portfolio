@@ -69,7 +69,6 @@ graph TD
 The portfolio embeds an interactive engineering assistant (`<AiChatWidget />`) designed around Wabi-Sabi artisan principles and powered by a dedicated Python microservice:
 - **Server-Side Knowledge Aggregation (`supabase/get_portfolio_ai_context.sql`)**: PostgreSQL RPC function `public.get_portfolio_ai_context()` serves structured, canonical context (`profile`, `projects`, `experience`, `philosophy_pillars`) directly to the AI agent, stripping heavy image assets and internal database IDs in-engine for maximal token efficiency.
 - **Admin Database Copilot & Semantic SQL (`supabase/execute_admin_sql.sql`)**: For verified administrators, the agent can understand uploaded resumes, spec images, or text instructions, generate safe SQL with 1-to-1 fidelity on instructed fields and aesthetic semantic inference on omitted fields, executing via `public.execute_admin_sql` with zero personal access tokens (`sbp_...`).
-- **Admin Speech-to-Text Voice Dictation**: Verified administrators can dictate prompt queries via microphone using a dedicated dictation button powered by `react-speech-recognition` with real-time speech feedback and continuous transcribing.
 - **Live Real-Time Synchronization**: Any database mutation executed by the AI immediately updates the portfolio in the browser via Supabase Realtime CDC (`postgres_changes`) and eager client synchronization.
 - **3-Layer Security & Leak Protection**: Guests and regular users receive role-isolated prompts with zero database schema exposure, and administrative SQL tools are excluded from their session both at the LLM tool declaration and server verification levels.
 - **Automated Database Webhook Invalidation**: Schema mutations (`INSERT`, `UPDATE`, `DELETE`) trigger Supabase Database Webhooks targeting the AI service (`/api/v1/webhook/supabase-invalidate`), keeping the server RAM cache synchronized without frontend coupling.
@@ -112,7 +111,7 @@ src/
 The portfolio is continuously benchmarked against Google Lighthouse with an architecture optimized for near-instant paints and minimal main-thread contention:
 
 * **Sub-Second First Contentful Paint (FCP ~500ms)**: Non-render-blocking typography streaming, zero-flash canvas styles, and immediate critical hero rendering.
-* **On-Demand Bundle Architecture**: Heavy AI engines (KaTeX math rendering, React-Markdown AST, Web Speech API) and non-critical route pages are strictly code-split and loaded on user interaction.
+* **On-Demand Bundle Architecture**: Heavy AI engines (KaTeX math rendering, React-Markdown AST) and non-critical route pages are strictly code-split and loaded on user interaction.
 * **GPU-Composited Motion System**: Calligraphic Ensō brushwork, lanterns, and seal animations run on isolated GPU compositor layers, pausing when off-screen or unhovered to eliminate CPU paint thrashing.
 * **Lean Typography Streaming**: Only the active design variant's fonts are loaded upfront (~25 KB CSS vs 1.59 MB), streaming alternative typographic archetypes on-demand.
 

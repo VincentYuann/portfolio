@@ -9,7 +9,7 @@ This document outlines the core performance bottlenecks identified during Lighth
 ```mermaid
 flowchart TD
     subgraph TBT["1. Total Blocking Time (392 ms) & Forced Reflow"]
-        A[AiChatWidget mounted on initial boot] --> B[Eagerly parses 395 KB KaTeX + Markdown AST + Speech API]
+        A[AiChatWidget mounted on initial boot] --> B[Eagerly parses 395 KB KaTeX + Markdown AST]
         C[message-scroller.tsx missing useEffect deps] --> D[Continuous render loop & synchronous scrollHeight reads]
         E[Header.tsx reads window.scrollY on mount] --> F[Forced reflow before layout settles]
     end
@@ -30,7 +30,7 @@ flowchart TD
 ## 2. Identified Bottlenecks
 
 ### A. Total Blocking Time (TBT: 392 ms) & Main-Thread Contention
-* **Eager Chat Evaluation**: `<AiChatWidget>` mounted unconditionally on page load. Even though minimized, it pulled in 500+ KB of JavaScript (KaTeX engine, Markdown parsers, Web Speech API) and ran geometric layout measurements during boot.
+* **Eager Chat Evaluation**: `<AiChatWidget>` mounted unconditionally on page load. Even though minimized, it pulled in 500+ KB of JavaScript (KaTeX engine, Markdown parsers) and ran geometric layout measurements during boot.
 * **Layout Thrashing in Scroll Viewport**: `message-scroller.tsx` lacked a dependency array on its auto-scroll `useEffect`, triggering repeated layout recalculations (`scrollHeight`, `scrollTop`) on every render.
 * **Synchronous Mount Layout Queries**: `Header.tsx` read `window.scrollY` immediately upon mount before styles settled.
 * **Non-Composited Animations**: SVG stroke animations (`stroke-dashoffset`) and un-promoted multi-layer blur filters (`blur-3xl`) forced CPU repaints on inactive elements.

@@ -15,8 +15,6 @@ import {
   Maximize2,
   Minimize2,
   Lock,
-  Mic,
-  MicOff,
 } from 'lucide-react';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { useDraggableWindow } from './useDraggableWindow';
@@ -25,7 +23,6 @@ import { toast } from 'sonner';
 import { ViewMode } from '../../../App';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { sendToAiAgent, ChatResponse } from '../../../lib/aiAgentApi';
-import { useSpeechToText } from '../../../hooks/useSpeechToText';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '../../ui/tooltip';
@@ -192,27 +189,6 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [expandedTelemetryId, setExpandedTelemetryId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Speech-To-Text hook for admin voice dictation
-  const {
-    isListening: isSttListening,
-    isSupported: isSttSupported,
-    stopListening: stopStt,
-    toggleListening: toggleStt,
-  } = useSpeechToText({
-    isAdmin,
-    value: inputValue,
-    onChange: (val) => setInputValue(val),
-  });
-
-  // Stop STT listening on unmount
-  useEffect(() => {
-    return () => {
-      if (isSttListening) {
-        stopStt();
-      }
-    };
-  }, [isSttListening, stopStt]);
 
   // Auto-generate and clean up object URLs for image preview thumbnails
   useEffect(() => {
@@ -397,9 +373,6 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
 
 
   const handleSendMessage = async (textToSend?: string) => {
-    if (isSttListening) {
-      stopStt();
-    }
     const rawText = textToSend ?? inputValue;
     const trimmed = rawText.trim();
     if ((!trimmed && !attachedFile) || isStreaming) return;
@@ -531,9 +504,6 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
   };
 
   const handleClearHistory = () => {
-    if (isSttListening) {
-      stopStt();
-    }
     if (streamIntervalRef.current) {
       clearInterval(streamIntervalRef.current);
     }
@@ -1383,25 +1353,6 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
               </div>
             )}
 
-            {/* Live speech dictation indicator */}
-            {isAdmin && isSttListening && (
-              <div className="mb-2 flex items-center justify-between px-3 py-1.5 rounded-[2px] bg-terracotta/10 dark:bg-ochre/10 border border-terracotta/20 dark:border-ochre/30 text-xs text-terracotta dark:text-ochre animate-in fade-in duration-150">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-terracotta dark:bg-ochre animate-ping shrink-0" />
-                  <span className="font-sans font-medium text-xs">
-                    Listening to microphone... Speak to dictate.
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => stopStt()}
-                  className="font-mono text-xs underline hover:text-terracotta-hover dark:hover:text-ochre transition-colors ml-2 cursor-pointer"
-                >
-                  Done
-                </button>
-              </div>
-            )}
-
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -1464,47 +1415,6 @@ export const AiChatModal: React.FC<AiChatModalProps> = ({
                   <span className="hidden sm:inline font-mono text-xs text-light-ink-subtle dark:text-dark-ink-subtle select-none">
                     {inputValue.length}/800
                   </span>
-                )}
-                {/* Admin Speech-to-Text Dictation Button */}
-                {isAdmin && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={async () => {
-                          await toggleStt();
-                        }}
-                        disabled={isStreaming}
-                        className={`w-9 h-9 sm:w-8 sm:h-8 min-w-[36px] min-h-[36px] sm:min-w-[32px] sm:min-h-[32px] rounded-[2px] shrink-0 transition-colors ${
-                          isSttListening
-                            ? 'text-terracotta dark:text-ochre bg-terracotta/20 dark:bg-ochre/20 ring-2 ring-terracotta/40 dark:ring-ochre/40 animate-pulse'
-                            : 'text-light-ink-subtle hover:text-terracotta dark:hover:text-ochre hover:bg-terracotta/10 dark:hover:bg-ochre/10'
-                        }`}
-                        aria-label={
-                          isSttListening
-                            ? 'Stop voice dictation'
-                            : isSttSupported
-                            ? 'Dictate with voice (Admin STT)'
-                            : 'Speech-to-text unavailable in this browser'
-                        }
-                      >
-                        {isSttListening ? (
-                          <MicOff className="w-4 h-4 text-terracotta dark:text-ochre animate-pulse" />
-                        ) : (
-                          <Mic className="w-4 h-4" />
-                        )}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">
-                      {isSttListening
-                        ? 'Stop dictating (Admin STT)'
-                        : isSttSupported
-                        ? 'Dictate with voice (Admin STT)'
-                        : 'Voice dictation requires Chrome/Edge'}
-                    </TooltipContent>
-                  </Tooltip>
                 )}
 
                 <Tooltip>
